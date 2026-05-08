@@ -57,6 +57,15 @@
     .btn-add-flow { background: #f0f9ff; border: 1px dashed #2c7be5; color: #1d4ed8; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; }
     .btn-add-flow:hover { background: #dbeafe; }
 
+    /* 添付ファイル */
+    .attach-input { display: block; margin-bottom: 8px; font-size: 13px; }
+    .attach-item { background: #fff; border: 1px solid #e0e6ed; border-radius: 6px; padding: 6px 12px; margin-bottom: 6px; display: flex; align-items: center; gap: 10px; font-size: 13px; }
+    .attach-item .att-name { flex: 1; color: #1a3a5c; word-break: break-all; }
+    .attach-item .att-size { color: #6b7280; font-size: 12px; }
+    .attach-item .att-del { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; padding: 4px 10px; border-radius: 12px; cursor: pointer; font-size: 12px; }
+    .attach-item .att-del:hover { background: #fee2e2; }
+    .case-card .attaches { font-size: 11px; color: #6b7280; line-height: 1.6; word-break: break-all; }
+
     .filter-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; }
     .filter-grid > div { display: flex; flex-direction: column; gap: 6px; font-size: 12px; color: #6b7280; }
     .filter-grid input, .filter-grid select { padding: 8px 10px; border: 2px solid #e0e6ed; border-radius: 6px; font-size: 13px; box-sizing: border-box; width: 100%; }
@@ -151,6 +160,16 @@
               <button type="button" class="btn-add-flow" id="btnAddFlow">+ サブフローを追加</button>
             </div>
 
+            <div class="flow-section">
+              <h4>📎 添付ファイル（任意）</h4>
+              <div class="hint">
+                Excelテンプレート、CSV、画像など、フローと一緒に共有したいファイルをアップロードできます。<br>
+                1ファイル最大25MBまで。複数ファイル選択可。
+              </div>
+              <input type="file" id="fAttachInput" class="attach-input" multiple>
+              <div id="attachList"></div>
+            </div>
+
             <div class="err-msg" id="formErr" style="display:none;"></div>
             <div class="ok-msg" id="formOk" style="display:none;">投稿しました</div>
             <div style="margin-top:14px;">
@@ -226,7 +245,11 @@
     let likeMap = {};       // { case_study_id: count }
     let likedSet = new Set();
     let flowFileSet = new Set(); // フローファイルが1件以上ある case_study_id
+    let attachmentMap = {};      // { case_study_id: [{file_name, storage_path}, ...] }
     let profileMap = {};         // { user_id: display_name }
+    let attachFiles = [];        // 投稿フォームで選択中の File オブジェクト
+
+    const ATTACH_MAX_SIZE = 25 * 1024 * 1024;
 
     const FILE_NAME_FORBIDDEN = /[\\/:*?"<>|]/g;
 
@@ -306,6 +329,46 @@
       return Array.from(document.querySelectorAll('#' + containerId + ' input[type=checkbox]:checked')).map(c => c.value);
     }
 
+    // -------- 添付ファイル選択UI --------
+    function formatBytes(n) {
+      if (n < 1024) return n + ' B';
+      if (n < 1024*1024) return (n/1024).toFixed(1) + ' KB';
+      return (n/1024/1024).toFixed(2) + ' MB';
+    }
+
+    function renderAttachList() {
+      const list = document.getElementById('attachList');
+      list.innerHTML = attachFiles.map((f, i) => `
+        <div class="attach-item">
+          <span class="att-name">📎 ${escapeHtml(f.name)}</span>
+          <span class="att-size">${formatBytes(f.size)}</span>
+          <button type="button" class="att-del" data-att-i="${i}">削除</button>
+        </div>
+      `).join('');
+      list.querySelectorAll('[data-att-i]').forEach(btn => {
+        btn.onclick = () => {
+          attachFiles.splice(parseInt(btn.dataset.attI, 10), 1);
+          renderAttachList();
+        };
+      });
+    }
+
+    function onAttachInputChange(e) {
+      const errEl = document.getElementById('formErr');
+      const newFiles = Array.from(e.target.files || []);
+      const tooBig = newFiles.filter(f => f.size > ATTACH_MAX_SIZE);
+      if (tooBig.length > 0) {
+        errEl.textContent = '25MBを超えるファイルは添付できません：' + tooBig.map(f => f.name).join(', ');
+        errEl.style.display = 'block';
+        e.target.value = '';
+        return;
+      }
+      errEl.style.display = 'none';
+      attachFiles.push(...newFiles);
+      e.target.value = ''; // 同じファイルを再選択できるようリセット
+      renderAttachList();
+    }
+
     // -------- データ取得 --------
     async function loadAll() {
       const { data: caseData, error: caseErr } = await window.supabaseClient
@@ -335,6 +398,17 @@
         .select('case_study_id');
       if (flowErr) console.warn('フロー集計失敗', flowErr);
       flowFileSet = new Set((flowCounts || []).map(r => r.case_study_id));
+
+      // 添付ファイルメタ情報を取得（実体は取らない）
+      const { data: attachData, error: attachErr } = await window.supabaseClient
+        .from('case_attachments')
+        .select('case_study_id, file_name, storage_path');
+      if (attachErr) console.warn('添付メタ取得失敗', attachErr);
+      attachmentMap = {};
+      (attachData || []).forEach(a => {
+        if (!attachmentMap[a.case_study_id]) attachmentMap[a.case_study_id] = [];
+        attachmentMap[a.case_study_id].push({ file_name: a.file_name, storage_path: a.storage_path });
+      });
 
       const { data: likeData, error: likeErr } = await window.supabaseClient
         .from('case_likes')
@@ -388,6 +462,9 @@
         const liked = likedSet.has(c.id);
         const canDelete = isAdminFlag || c.user_id === currentUser.id;
         const hasFlow = flowFileSet.has(c.id);
+        const attaches = attachmentMap[c.id] || [];
+        const hasAttach = attaches.length > 0;
+        const hasAnyDownload = hasFlow || hasAttach;
         const actsDisplay = (c.actions || '').split(',').map(s => s.trim()).filter(Boolean).join(' / ');
         return `
         <div class="case-card">
@@ -398,10 +475,11 @@
           <h4>${escapeHtml(c.title)}</h4>
           <div class="summary">${escapeHtml(c.summary)}</div>
           ${actsDisplay ? `<div class="actions">🔧 ${escapeHtml(actsDisplay)}</div>` : ''}
+          ${hasAttach ? `<div class="attaches">📎 ${attaches.map(a => escapeHtml(a.file_name)).join('、 ')}</div>` : ''}
           <div class="footer">
             <div class="footer-left">
               <span class="saved">⏱️ 月${c.saved_hours}時間</span>
-              ${hasFlow ? `<button class="download-btn" data-dl="${c.id}" data-title="${escapeHtml(c.title)}">📦 フローをダウンロード</button>` : ''}
+              ${hasAnyDownload ? `<button class="download-btn" data-dl="${c.id}" data-title="${escapeHtml(c.title)}">📦 ファイル一式をダウンロード</button>` : ''}
             </div>
             <button class="like-btn ${liked ? 'liked' : ''}" data-like="${c.id}">${liked ? '❤️' : '🤍'} ${likeCount}</button>
           </div>
@@ -441,33 +519,58 @@
 
     // -------- 削除（ON DELETE CASCADE で flow_files も連動削除） --------
     async function deleteCase(caseId) {
-      if (!confirm('この事例を削除しますか？（添付されたフローファイルも一緒に削除されます）')) return;
+      if (!confirm('この事例を削除しますか？（フローテキスト・添付ファイルも一緒に削除されます）')) return;
       const { error } = await window.supabaseClient.from('case_studies').delete().eq('id', caseId);
       if (error) { alert('削除に失敗：' + error.message); return; }
       cases = cases.filter(c => c.id !== caseId);
       delete likeMap[caseId];
       likedSet.delete(caseId);
       flowFileSet.delete(caseId);
+      delete attachmentMap[caseId];
       render();
     }
 
-    // -------- ZIPダウンロード --------
+    // -------- ZIPダウンロード（フロー＋添付ファイル） --------
     async function downloadFlowZip(caseId, title, btn) {
       const orig = btn.textContent;
       btn.disabled = true;
       btn.textContent = '処理中...';
       try {
-        const { data, error } = await window.supabaseClient
+        const zip = new JSZip();
+        let added = 0;
+
+        // 1. フローテキスト（flows/ フォルダ）
+        const { data: flows, error: flowErr } = await window.supabaseClient
           .from('case_flow_files')
           .select('file_name, flow_text')
           .eq('case_study_id', caseId);
-        if (error) { alert('フローの取得に失敗：' + error.message); return; }
-        if (!data || data.length === 0) { alert('フローファイルが見つかりません'); return; }
+        if (flowErr) console.warn('フロー取得失敗', flowErr);
+        if (flows && flows.length > 0) {
+          const folder = zip.folder('flows');
+          flows.forEach(f => {
+            folder.file(sanitizeFileName(f.file_name) + '.txt', f.flow_text);
+            added++;
+          });
+        }
 
-        const zip = new JSZip();
-        data.forEach(f => {
-          zip.file(sanitizeFileName(f.file_name) + '.txt', f.flow_text);
-        });
+        // 2. 添付ファイル（attachments/ フォルダ）
+        const attaches = attachmentMap[caseId] || [];
+        if (attaches.length > 0) {
+          const folder = zip.folder('attachments');
+          for (const a of attaches) {
+            const { data: blob, error: dlErr } = await window.supabaseClient
+              .storage.from('case-attachments').download(a.storage_path);
+            if (dlErr) {
+              console.warn('添付ダウンロード失敗', a.file_name, dlErr);
+              continue;
+            }
+            folder.file(a.file_name, blob);
+            added++;
+          }
+        }
+
+        if (added === 0) { alert('ダウンロード可能なファイルがありません'); return; }
+
         const blob = await zip.generateAsync({ type: 'blob' });
         const safeTitle = sanitizeFileName(title) || 'untitled';
         const fname = `PADフロー_${safeTitle}_${todayYmd()}.zip`;
@@ -481,6 +584,41 @@
       } finally {
         btn.disabled = false;
         btn.textContent = orig;
+      }
+    }
+
+    // -------- 添付ファイルアップロード（投稿時） --------
+    async function uploadAttachments(caseId, files) {
+      if (!files || files.length === 0) return [];
+      const uploaded = []; // { path } 失敗時のクリーンアップ用
+      try {
+        const inserts = [];
+        for (const f of files) {
+          const safeName = sanitizeFileName(f.name) || 'file';
+          const path = `${currentUser.id}/${caseId}/${Date.now()}_${Math.random().toString(36).slice(2,8)}_${safeName}`;
+          const { error: upErr } = await window.supabaseClient.storage
+            .from('case-attachments')
+            .upload(path, f, { contentType: f.type || 'application/octet-stream' });
+          if (upErr) throw new Error(`「${f.name}」のアップロードに失敗：${upErr.message}`);
+          uploaded.push(path);
+          inserts.push({
+            case_study_id: caseId,
+            file_name: safeName,
+            storage_path: path,
+            file_size: f.size,
+            mime_type: f.type || null
+          });
+        }
+        const { error: insErr } = await window.supabaseClient
+          .from('case_attachments').insert(inserts);
+        if (insErr) throw new Error('添付ファイルの記録に失敗：' + insErr.message);
+        return inserts.map(i => ({ file_name: i.file_name, storage_path: i.storage_path }));
+      } catch (e) {
+        // クリーンアップ：アップロード済みファイルを削除
+        if (uploaded.length > 0) {
+          await window.supabaseClient.storage.from('case-attachments').remove(uploaded).catch(() => {});
+        }
+        throw e;
       }
     }
 
@@ -554,10 +692,8 @@
           flow_text: p.flow_text
         }));
         const { error: flowErr } = await window.supabaseClient
-          .from('case_flow_files')
-          .insert(rows);
+          .from('case_flow_files').insert(rows);
         if (flowErr) {
-          // ロールバック：先ほど作成した case_studies を削除（CASCADEで関連も消える）
           await window.supabaseClient.from('case_studies').delete().eq('id', inserted.id);
           btn.disabled = false; btn.textContent = '投稿する';
           errEl.textContent = 'フローテキストの保存に失敗したため投稿を取り消しました：' + flowErr.message;
@@ -567,9 +703,25 @@
         flowSaved = true;
       }
 
+      // ステップ3：添付ファイルをStorageへアップロード＋メタ行INSERT（任意）
+      let savedAttaches = [];
+      if (attachFiles.length > 0) {
+        btn.textContent = 'ファイルをアップロード中...';
+        try {
+          savedAttaches = await uploadAttachments(inserted.id, attachFiles);
+        } catch (e) {
+          await window.supabaseClient.from('case_studies').delete().eq('id', inserted.id);
+          btn.disabled = false; btn.textContent = '投稿する';
+          errEl.textContent = '投稿を取り消しました：' + e.message;
+          errEl.style.display = 'block';
+          return;
+        }
+      }
+
       btn.disabled = false; btn.textContent = '投稿する';
       cases.unshift(inserted);
       if (flowSaved) flowFileSet.add(inserted.id);
+      if (savedAttaches.length > 0) attachmentMap[inserted.id] = savedAttaches;
       okEl.style.display = 'block';
       setTimeout(() => okEl.style.display = 'none', 3000);
       resetForm();
@@ -587,6 +739,9 @@
       });
       document.getElementById('flowList').innerHTML = '';
       addFlowPair('Main');
+      attachFiles = [];
+      renderAttachList();
+      document.getElementById('fAttachInput').value = '';
       document.getElementById('formErr').style.display = 'none';
     }
 
@@ -610,6 +765,7 @@
       document.getElementById('btnSubmit').onclick = submitCase;
       document.getElementById('btnReset').onclick = resetForm;
       document.getElementById('btnAddFlow').onclick = () => addFlowPair('');
+      document.getElementById('fAttachInput').onchange = onAttachInputChange;
 
       ['fSearch','fFilterCat','fSort'].forEach(id => document.getElementById(id).addEventListener('input', render));
       document.querySelectorAll('#fFilterActions input[type=checkbox]').forEach(cb => cb.addEventListener('change', render));
