@@ -75,7 +75,7 @@
               <div class="desc">業務サイトでは標準起動より安定。第1回で必修。</div>
             </div>
             <div class="pattern">
-              <h4>2. ログイン用のID/PWをグローバル変数に入れておく</h4>
+              <h4>2. ログイン用のID/PWをフローの最初に変数として設定しておく</h4>
               <div class="code-block">%LoginId% = "user"
 %LoginPw% = "pass"</div>
               <div class="desc">サブフロー化したログイン処理から参照する。値の変更は1か所で済む。</div>
@@ -180,7 +180,7 @@ END</div>
           <div class="card-body">
             <div class="point-block">変数名はキャメルケース（例：<code>%StaffId%</code>）に統一。複数人で運用するときの可読性が上がる。</div>
             <div class="point-block">ログイン処理・Excel書き込み・エラー記録の3つは<strong>サブフロー化</strong>してメインフローを短く保つ。</div>
-            <div class="point-block">出力先パスはグローバル変数に置く。テスト時に変更しやすい。</div>
+            <div class="point-block">出力先パスはフロー冒頭で変数に入れておく。テスト時に変更しやすい。</div>
             <div class="point-block">WebDriverのセッションはフロー終了時に必ず閉じる。閉じ忘れるとChromeのプロセスが残り続ける。</div>
           </div>
         </div>
