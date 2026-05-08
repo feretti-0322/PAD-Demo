@@ -235,6 +235,7 @@
     let likeMap = {};       // { case_study_id: count }
     let likedSet = new Set();
     let flowFileSet = new Set(); // フローファイルが1件以上ある case_study_id
+    let profileMap = {};         // { user_id: display_name }
 
     const FILE_NAME_FORBIDDEN = /[\\/:*?"<>|]/g;
 
@@ -318,13 +319,27 @@
     async function loadAll() {
       const { data: caseData, error: caseErr } = await window.supabaseClient
         .from('case_studies')
-        .select('id, user_id, title, category, saved_hours, summary, actions, created_at, profiles(display_name)')
+        .select('id, user_id, title, category, saved_hours, summary, actions, created_at')
         .order('created_at', { ascending: false });
       if (caseErr) {
         document.getElementById('caseList').innerHTML = '<div class="empty-msg">事例の取得に失敗しました：' + escapeHtml(caseErr.message) + '</div>';
         return;
       }
       cases = caseData || [];
+
+      // profiles を別クエリで取得して user_id → display_name のマップを構築
+      const userIds = [...new Set(cases.map(c => c.user_id))];
+      if (userIds.length > 0) {
+        const { data: profs, error: profErr } = await window.supabaseClient
+          .from('profiles')
+          .select('id, display_name')
+          .in('id', userIds);
+        if (profErr) console.warn('profiles取得失敗', profErr);
+        profileMap = {};
+        (profs || []).forEach(p => { profileMap[p.id] = p.display_name; });
+      } else {
+        profileMap = {};
+      }
 
       // フロー有無の集計（ボタン表示判定用）。flow_text 本体は取らない。
       const { data: flowCounts, error: flowErr } = await window.supabaseClient
@@ -380,7 +395,7 @@
       }
 
       list.innerHTML = '<div class="case-grid">' + filtered.map(c => {
-        const author = c.profiles?.display_name || '不明なユーザー';
+        const author = profileMap[c.user_id] || '不明なユーザー';
         const likeCount = likeMap[c.id] || 0;
         const liked = likedSet.has(c.id);
         const canDelete = isAdminFlag || c.user_id === currentUser.id;
@@ -532,7 +547,7 @@
           summary,
           actions: actionsStr || null
         })
-        .select('id, user_id, title, category, saved_hours, summary, actions, created_at, profiles(display_name)')
+        .select('id, user_id, title, category, saved_hours, summary, actions, created_at')
         .single();
 
       if (insErr) {
@@ -594,6 +609,7 @@
 
       const profile = await window.auth.getCurrentProfile();
       document.getElementById('topbarUser').textContent = profile?.display_name || currentUser.email;
+      if (profile?.display_name) profileMap[currentUser.id] = profile.display_name;
       document.getElementById('sidebarContainer').innerHTML = renderSidebar('case-study');
 
       // 初期フローペア
