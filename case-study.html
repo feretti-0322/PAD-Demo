@@ -208,15 +208,6 @@
           </div>
         </div>
 
-        <div class="summary-card">
-          <h4>📝 3行まとめ</h4>
-          <ol>
-            <li>事例投稿は「同僚の自動化アイデアを真似る」ための共有スペース。ゼロから設計するより圧倒的に早く学べる。</li>
-            <li>投稿時は使用アクションを選び、PADフローテキストを貼り付けておくと、他のメンバーがZIPでダウンロードしてそのまま試せる。</li>
-            <li>いいねが多い事例は社内アンバサダー候補。節約時間を書くと社内の効果集計に貢献できる。</li>
-          </ol>
-        </div>
-
       </main>
       <footer class="app-footer">© 2025 PAD練習サイト</footer>
     </div>
@@ -327,7 +318,7 @@
       }
       cases = caseData || [];
 
-      // profiles を別クエリで取得して user_id → display_name のマップを構築
+      // profiles を別クエリで取得して user_id → display_name のマップに追記（既存はクリアしない）
       const userIds = [...new Set(cases.map(c => c.user_id))];
       if (userIds.length > 0) {
         const { data: profs, error: profErr } = await window.supabaseClient
@@ -335,10 +326,7 @@
           .select('id, display_name')
           .in('id', userIds);
         if (profErr) console.warn('profiles取得失敗', profErr);
-        profileMap = {};
         (profs || []).forEach(p => { profileMap[p.id] = p.display_name; });
-      } else {
-        profileMap = {};
       }
 
       // フロー有無の集計（ボタン表示判定用）。flow_text 本体は取らない。
