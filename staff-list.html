@@ -166,8 +166,8 @@
         btn.onclick = () => { currentPage = i; renderTable(); };
         pn.appendChild(btn);
       }
-      document.getElementById('btnPrev').disabled = currentPage === 1;
-      document.getElementById('btnNext').disabled = currentPage === totalPages;
+      document.getElementById('btnPrev').style.display = currentPage === 1 ? 'none' : '';
+      document.getElementById('btnNext').style.display = currentPage === totalPages ? 'none' : '';
     }
 
     function filterTable() {
