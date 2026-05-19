@@ -1164,7 +1164,15 @@ html { scroll-behavior: smooth; }
   margin: 18px 0;
   text-align: center;
 }
-.lesson-figure img,
+.lesson-figure img {
+  max-width: 65%;
+  height: auto;
+  border: 1px solid #d8dee9;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+  display: block;
+  margin: 0 auto;
+}
 .lesson-figure video {
   max-width: 100%;
   height: auto;
