@@ -15,9 +15,12 @@
     .screen-anatomy .panel p { margin:0; font-size:13px; line-height:1.8; color:#374151; }
     .screen-anatomy .panel .tag { display:inline-block; background:#2c7be5; color:#fff; font-size:11px; padding:2px 8px; border-radius:999px; margin-right:6px; font-weight:700; }
     /* 画像左・文字右レイアウト（ChromeDriver 導入解説用） */
-    .step-split { display:grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap:20px; align-items:start; margin-top:8px; }
-    .step-split .step-figure { margin:0; order:2; }
-    .step-split .step-text { order:1; }
+    .step-split { display:grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap:20px; align-items:start; margin-top:8px; }
+    .step-split .step-figure { margin:0; order:1; }
+    .step-split .step-text { order:2; }
+    /* 奇数番手順：画像 左 ／ テキスト 右、偶数番手順：画像 右 ／ テキスト 左 */
+    .instruction-list > li:nth-child(even) .step-split .step-figure { order:2; }
+    .instruction-list > li:nth-child(even) .step-split .step-text   { order:1; }
     .step-split .step-figure img { width:100%; height:auto; border:1px solid #d8dee9; border-radius:8px; display:block; }
     .step-split .step-figure figcaption { font-size:12px; color:#64748b; margin-top:6px; text-align:center; }
     .step-split .step-text { font-size:14px; line-height:1.9; }
