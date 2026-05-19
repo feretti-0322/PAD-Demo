@@ -9,6 +9,13 @@
     .handson-callout { border:3px solid #dc2626; background:#fff1f2; border-radius:10px; padding:16px 20px; font-size:14px; line-height:1.9; color:#7f1d1d; margin:20px 0; box-shadow:0 4px 14px rgba(220,38,38,0.18); position:relative; }
     .handson-callout::before { content:'🎯 ハンズオン'; position:absolute; top:-12px; left:14px; background:#dc2626; color:#fff; font-size:12px; font-weight:800; padding:3px 12px; border-radius:999px; letter-spacing:0.05em; }
     .handson-callout strong { color:#b91c1c; }
+    /* 画像左・文字右レイアウト */
+    .step-split { display:grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap:20px; align-items:center; margin:14px 0; }
+    .step-split .step-figure { margin:0; }
+    .step-split .step-figure img { width:100%; height:auto; border:1px solid #d8dee9; border-radius:8px; display:block; }
+    .step-split .step-figure figcaption { font-size:12px; color:#64748b; margin-top:6px; text-align:center; }
+    .step-split .step-text { font-size:14px; line-height:1.9; }
+    @media (max-width: 860px) { .step-split { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -110,16 +117,19 @@
                 まずはスタートメニューから起動して、アプリケーションが存在するかを確認しましょう。
               </p>
 
-              <ol class="instruction-list">
-                <li>スタートメニュー（左下の Windows ロゴ）をクリックする</li>
-                <li>検索バーに「<strong>Power Automate</strong>」と入力して検索する</li>
-                <li>「<strong>Power Automate</strong>」（Microsoft Corporation 製）が表示されたら、それをクリックして起動する</li>
-              </ol>
-
-              <figure class="lesson-figure">
-                <img src="assets/lessons/lesson-0_05_start_menu_search.png" alt="スタートメニューで「Power Automate」を検索している様子">
-                <figcaption>スタートメニューで「Power Automate」を検索している様子</figcaption>
-              </figure>
+              <div class="step-split">
+                <figure class="step-figure">
+                  <img src="assets/lessons/lesson-0_05_start_menu_search.png" alt="スタートメニューで「Power Automate」を検索している様子">
+                  <figcaption>スタートメニューで「Power Automate」を検索している様子</figcaption>
+                </figure>
+                <div class="step-text">
+                  <ol class="instruction-list" style="margin:0 0 0 20px;">
+                    <li>スタートメニュー（左下の Windows ロゴ）をクリックする</li>
+                    <li>検索バーに「<strong>Power Automate</strong>」と入力して検索する</li>
+                    <li>「<strong>Power Automate</strong>」（Microsoft Corporation 製）が表示されたら、それをクリックして起動する</li>
+                  </ol>
+                </div>
+              </div>
 
               <div class="point-block">
                 💡 <strong>アプリが見つからない場合</strong><br>
@@ -148,12 +158,16 @@
           <div class="card">
             <div class="card-header"><h3>0-F. デモサイトのアカウント作成（別資料）</h3></div>
             <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <p>本研修で進捗バッジや事例集投稿に使う <strong>デモサイトのアカウント作成手順</strong>は、研修事務局から配布される PowerPoint 資料（<code>成果物_アカウント作成手順.pptx</code>）を参照してください。</p>
-              <p>研修当日までに、配布された手順書に沿って <strong>signup → 認証メール承認 → ログイン確認</strong> までを済ませておいてください。</p>
-              <figure class="lesson-figure">
-                <img src="assets/lessons/lesson-0_03_signup_form.png" alt="デモサイトの新規登録フォーム">
-                <figcaption>デモサイトの新規登録フォーム（メールアドレス・パスワード・表示名を入力）</figcaption>
-              </figure>
+              <div class="step-split">
+                <figure class="step-figure">
+                  <img src="assets/lessons/lesson-0_03_signup_form.png" alt="デモサイトの新規登録フォーム">
+                  <figcaption>デモサイトの新規登録フォーム（メールアドレス・パスワード・表示名を入力）</figcaption>
+                </figure>
+                <div class="step-text">
+                  <p>本研修で進捗バッジや事例集投稿に使う <strong>デモサイトのアカウント作成手順</strong>は、研修事務局から配布される PowerPoint 資料（<code>成果物_アカウント作成手順.pptx</code>）を参照してください。</p>
+                  <p>研修当日までに、配布された手順書に沿って <strong>signup → 認証メール承認 → ログイン確認</strong> までを済ませておいてください。</p>
+                </div>
+              </div>
               <div class="warning-block">
                 <strong>⚠️ 注意：</strong> アカウント作成が完了していないと、進捗バッジ付与や事例集投稿などの機能が使えません。第1回までに必ず完了させてください。
               </div>
