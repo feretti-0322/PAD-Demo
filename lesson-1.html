@@ -14,6 +14,13 @@
     .screen-anatomy .panel h4 { margin:0 0 8px; color:#1f2937; font-size:14px; }
     .screen-anatomy .panel p { margin:0; font-size:13px; line-height:1.8; color:#374151; }
     .screen-anatomy .panel .tag { display:inline-block; background:#2c7be5; color:#fff; font-size:11px; padding:2px 8px; border-radius:999px; margin-right:6px; font-weight:700; }
+    /* 画像左・文字右レイアウト（ChromeDriver 導入解説用） */
+    .step-split { display:grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap:20px; align-items:start; margin-top:8px; }
+    .step-split .step-figure { margin:0; }
+    .step-split .step-figure img { width:100%; height:auto; border:1px solid #d8dee9; border-radius:8px; display:block; }
+    .step-split .step-figure figcaption { font-size:12px; color:#64748b; margin-top:6px; text-align:center; }
+    .step-split .step-text { font-size:14px; line-height:1.9; }
+    @media (max-width: 860px) { .step-split { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -164,12 +171,12 @@
 
               <!-- ハンズオン課題①：新しいフローを作って画面に慣れる -->
               <div class="handson-callout">
-                <strong>ハンズオン課題①：</strong>PAD コンソールから「+ 新しいフロー」をクリックして<code>練習フロー</code>という名前で新規作成し、フローデザイナーが開いたら<strong>4つのペインの位置を指差し確認</strong>してから保存（<code>Ctrl+S</code>）してみましょう。
+                <strong>ハンズオン課題①：</strong>PAD コンソールから「+ 新しいフロー」をクリックして<code>練習フロー_第1回</code>という名前で新規作成し、フローデザイナーが開いたら<strong>4つのペインの位置を指差し確認</strong>してから保存（<code>Ctrl+S</code>）してみましょう。
               </div>
 
               <!-- ハンズオン課題②：メッセージ表示で動作確認 -->
               <div class="handson-callout">
-                <strong>ハンズオン課題②：</strong>課題①で作成した<code>練習フロー</code>に「メッセージを表示する」アクションを追加し、<strong>「こんにちは」</strong>と表示してみましょう。実行（<code>F5</code>）して、画面にメッセージダイアログが出れば成功です。
+                <strong>ハンズオン課題②：</strong>課題①で作成した<code>練習フロー_第1回</code>に「メッセージを表示する」アクションを追加し、<strong>「こんにちは」</strong>と表示してみましょう。実行（<code>F5</code>）して、画面にメッセージダイアログが出れば成功です。
               </div>
             </div>
           </div>
@@ -201,16 +208,19 @@
                 </tbody>
               </table>
 
-              <figure class="lesson-figure">
-                <img src="assets/lessons/lesson-1_03_action_operation_dropdown.png" alt="「新しい Chrome を起動する」アクション設定の「操作方法」プルダウン">
-                <figcaption>「新しい Chrome を起動する」アクション設定の「操作方法」プルダウン</figcaption>
-              </figure>
-
-              <div class="point-block">
-                <strong>📌 アクション名は同じ、設定で切り替える：</strong> PAD ではどちらも <strong>「新しい Chrome を起動する」</strong> という同じアクションです。設定画面の <strong>「操作方法」</strong> プルダウンで「ブラウザー拡張機能」と「Webdriver」を切り替えます。
-              </div>
-              <div class="point-block">
-                <strong>たとえるなら：</strong> 標準起動は「すでに走っている車に後から乗り込む」方式。WebDriver起動は「PAD が運転席に最初から座る」方式。後者のほうが業務サイトで安定して走れます。
+              <div class="step-split">
+                <figure class="step-figure">
+                  <img src="assets/lessons/lesson-1_03_action_operation_dropdown.png" alt="「新しい Chrome を起動する」アクション設定の「操作方法」プルダウン">
+                  <figcaption>「新しい Chrome を起動する」アクション設定の「操作方法」プルダウン</figcaption>
+                </figure>
+                <div class="step-text">
+                  <div class="point-block">
+                    <strong>📌 アクション名は同じ、設定で切り替える：</strong> PAD ではどちらも <strong>「新しい Chrome を起動する」</strong> という同じアクションです。設定画面の <strong>「操作方法」</strong> プルダウンで「ブラウザー拡張機能」と「Webdriver」を切り替えます。
+                  </div>
+                  <div class="point-block">
+                    <strong>たとえるなら：</strong> 標準起動は「すでに走っている車に後から乗り込む」方式。WebDriver起動は「PAD が運転席に最初から座る」方式。後者のほうが業務サイトで安定して走れます。
+                  </div>
+                </div>
               </div>
 
             </div>
@@ -222,66 +232,76 @@
             <div class="card-body" style="font-size:14px; line-height:1.9;">
               <ol class="instruction-list">
                 <li>
-                  <div>
-                    <strong>手順1：Chrome のバージョンを確認する</strong><br>
-                    Chrome を開き、アドレスバーに <code>chrome://settings/help</code> と入力する。<br>
-                    バージョン番号（例: <code>138.0.7204.169</code>）をメモする。
-                    <figure class="lesson-figure">
+                  <div class="step-split">
+                    <figure class="step-figure">
                       <img src="assets/lessons/lesson-1_04_chrome_version_check.png" alt="chrome://settings/help でバージョン表示している画面">
                       <figcaption><code>chrome://settings/help</code> でバージョン番号を確認</figcaption>
                     </figure>
+                    <div class="step-text">
+                      <strong>手順1：Chrome のバージョンを確認する</strong><br>
+                      Chrome を開き、アドレスバーに <code>chrome://settings/help</code> と入力する。<br>
+                      バージョン番号（例: <code>138.0.7204.169</code>）をメモする。
+                    </div>
                   </div>
                 </li>
                 <li>
-                  <div>
-                    <strong>手順2：対応する ChromeDriver をダウンロードする</strong><br>
-                    公式 Chrome for Testing ページ（ <a href="https://googlechromelabs.github.io/chrome-for-testing/" target="_blank" style="color:#2c7be5;">https://googlechromelabs.github.io/chrome-for-testing/</a> ）にアクセスする。<br>
-                    Chrome ブラウザのバージョンと一致するバージョンを選択（通常、最初の3つの数字が一致していれば OK）。<br>
-                    <code>win-x64</code> アーキテクチャ用の ZIP をダウンロード。
-                    <figure class="lesson-figure">
+                  <div class="step-split">
+                    <figure class="step-figure">
                       <img src="assets/lessons/lesson-1_05_chromedriver_download_page.png" alt="Chrome for Testing 公式ダウンロードページ（win-x64 を選んでいる箇所）">
                       <figcaption>Chrome for Testing 公式ダウンロードページ（win-x64 を選択）</figcaption>
                     </figure>
+                    <div class="step-text">
+                      <strong>手順2：対応する ChromeDriver をダウンロードする</strong><br>
+                      公式 Chrome for Testing ページ（ <a href="https://googlechromelabs.github.io/chrome-for-testing/" target="_blank" style="color:#2c7be5;">https://googlechromelabs.github.io/chrome-for-testing/</a> ）にアクセスする。<br>
+                      Chrome ブラウザのバージョンと一致するバージョンを選択（通常、最初の3つの数字が一致していれば OK）。<br>
+                      <code>win-x64</code> アーキテクチャ用の ZIP をダウンロード。
+                    </div>
                   </div>
                 </li>
                 <li>
-                  <div>
-                    <strong>手順3：ダウンロードした ZIP ファイルを解凍する</strong><br>
-                    ZIP ファイル（例：<code>chromedriver-win64.zip</code>）を右クリック →「すべて展開」を選択。展開先は既定のままで OK。<code>chromedriver-win64\chromedriver.exe</code> ができる。
-                    <figure class="lesson-figure">
+                  <div class="step-split">
+                    <figure class="step-figure">
                       <img src="assets/lessons/lesson-1_06_zip_extract.png" alt="ZIP の「すべて展開」コンテキストメニュー">
                       <figcaption>ZIP を右クリック →「すべて展開」</figcaption>
                     </figure>
+                    <div class="step-text">
+                      <strong>手順3：ダウンロードした ZIP ファイルを解凍する</strong><br>
+                      ZIP ファイル（例：<code>chromedriver-win64.zip</code>）を右クリック →「すべて展開」を選択。展開先は既定のままで OK。<code>chromedriver-win64\chromedriver.exe</code> ができる。
+                    </div>
                   </div>
                 </li>
                 <li>
-                  <div>
-                    <strong>手順4：Power Automate Desktop 用のフォルダを作成する</strong><br>
-                    エクスプローラーを開き、アドレスバーに以下を貼り付けて Enter：<br>
-                    <div class="code-block" style="margin-top:6px;">%LOCALAPPDATA%\Microsoft\Power Automate Desktop</div>
-                    フォルダー内で右クリック →「新規作成」→「フォルダー」を選択。<br>
-                    フォルダー名を <code>WebDrivers</code> にする（<strong>大文字・小文字を正確に</strong>）。
-                    <figure class="lesson-figure">
+                  <div class="step-split">
+                    <figure class="step-figure">
                       <img src="assets/lessons/lesson-1_07_create_webdrivers_folder.png" alt="WebDrivers フォルダを新規作成している画面">
                       <figcaption>WebDrivers フォルダを新規作成</figcaption>
                     </figure>
+                    <div class="step-text">
+                      <strong>手順4：Power Automate Desktop 用のフォルダを作成する</strong><br>
+                      エクスプローラーを開き、アドレスバーに以下を貼り付けて Enter：<br>
+                      <div class="code-block" style="margin-top:6px;">%LOCALAPPDATA%\Microsoft\Power Automate Desktop</div>
+                      フォルダー内で右クリック →「新規作成」→「フォルダー」を選択。<br>
+                      フォルダー名を <code>WebDrivers</code> にする（<strong>大文字・小文字を正確に</strong>）。
+                    </div>
                   </div>
                 </li>
                 <li>
-                  <div>
-                    <strong>手順5：chromedriver.exe を配置する</strong><br>
-                    手順3で解凍したフォルダから <code>chromedriver.exe</code> をコピー → 手順4で作成した <code>WebDrivers</code> フォルダに貼り付ける。<br><br>
-                    最終的なフォルダー構成：
-                    <div class="code-block" style="margin-top:6px;">AppData
+                  <div class="step-split">
+                    <figure class="step-figure">
+                      <img src="assets/lessons/lesson-1_08_chromedriver_placed.png" alt="WebDrivers フォルダ内に chromedriver.exe が配置された最終状態">
+                      <figcaption>WebDrivers フォルダ内に chromedriver.exe が配置された最終状態</figcaption>
+                    </figure>
+                    <div class="step-text">
+                      <strong>手順5：chromedriver.exe を配置する</strong><br>
+                      手順3で解凍したフォルダから <code>chromedriver.exe</code> をコピー → 手順4で作成した <code>WebDrivers</code> フォルダに貼り付ける。<br><br>
+                      最終的なフォルダー構成：
+                      <div class="code-block" style="margin-top:6px;">AppData
  └ Local
    └ Microsoft
      └ Power Automate Desktop
        └ WebDrivers
          └ chromedriver.exe</div>
-                    <figure class="lesson-figure">
-                      <img src="assets/lessons/lesson-1_08_chromedriver_placed.png" alt="WebDrivers フォルダ内に chromedriver.exe が配置された最終状態">
-                      <figcaption>WebDrivers フォルダ内に chromedriver.exe が配置された最終状態</figcaption>
-                    </figure>
+                    </div>
                   </div>
                 </li>
               </ol>
