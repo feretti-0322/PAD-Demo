@@ -71,17 +71,11 @@
           <div class="card">
             <div class="card-header"><h3>0-B. 完成動画 〜プロフィールシート一括出力フロー〜</h3></div>
             <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <p>第7回（総合演習）で受講者全員が組み上げるフローの完成動画を視聴します。10名分のプロフィールシート Excel が <strong>15秒で生成される</strong>様子をまず体感してください。</p>
-              <figure class="pad-image-placeholder" data-image-slot="lesson-0/01_final_flow_demo">
-                <span class="placeholder-icon">🎬</span>
-                <strong>動画差し込み枠</strong><br>
-                最終演習フローの完成動画（ブラウザ起動 → ログイン → 一覧取得 → 詳細スクレイピング → Excel 一括出力）<br>
-                <code>data-image-slot="lesson-0/01_final_flow_demo"</code>
-              </figure>
-              <figure class="pad-image-placeholder" data-image-slot="lesson-0/02_output_folder">
-                <span class="placeholder-icon">📁</span>
-                生成された日時フォルダの中に「氏名_ID.xlsx」が整然と並んでいるスクリーンショット<br>
-                <code>data-image-slot="lesson-0/02_output_folder"</code>
+              <p>第7回（総合演習）で受講者全員が組み上げるフローの完成動画です。<br>
+              ブラウザ自動操作 → スタッフ情報を取得 → Excel に出力までを一貫して行います。</p>
+              <figure class="lesson-figure">
+                <video src="assets/lessons/lesson-0_01_final_flow_demo.mov" controls playsinline preload="metadata"></video>
+                <figcaption>最終演習フローの完成動画（ブラウザ起動 → ログイン → 一覧取得 → 詳細スクレイピング → Excel 一括出力）</figcaption>
               </figure>
             </div>
           </div>
@@ -122,10 +116,9 @@
                 <li>「<strong>Power Automate</strong>」（Microsoft Corporation 製）が表示されたら、それをクリックして起動する</li>
               </ol>
 
-              <figure class="pad-image-placeholder" data-image-slot="lesson-0/05_start_menu_search">
-                <span class="placeholder-icon">🖼️</span>
-                スタートメニューで「Power Automate」を検索している様子<br>
-                <code>data-image-slot="lesson-0/05_start_menu_search"</code>
+              <figure class="lesson-figure">
+                <img src="assets/lessons/lesson-0_05_start_menu_search.png" alt="スタートメニューで「Power Automate」を検索している様子">
+                <figcaption>スタートメニューで「Power Automate」を検索している様子</figcaption>
               </figure>
 
               <div class="point-block">
@@ -146,12 +139,6 @@
                 <li>初回起動時は使用許諾やテレメトリの確認画面が出ることがある（既定のままで OK）</li>
               </ol>
 
-              <figure class="pad-image-placeholder" data-image-slot="lesson-0/06_signin_work_account">
-                <span class="placeholder-icon">🖼️</span>
-                Microsoft 職場・学校アカウントでのサインイン画面<br>
-                <code>data-image-slot="lesson-0/06_signin_work_account"</code>
-              </figure>
-
               <div class="point-block">
                 <strong>📌 職場アカウントが手元にない場合：</strong> Windows の「設定 → アカウント → 職場または学校用アカウントの追加」から、会社のメールアドレス（name@company.com 形式）で登録してください。
               </div>
@@ -163,6 +150,10 @@
             <div class="card-body" style="font-size:14px; line-height:1.9;">
               <p>本研修で進捗バッジや事例集投稿に使う <strong>デモサイトのアカウント作成手順</strong>は、研修事務局から配布される PowerPoint 資料（<code>成果物_アカウント作成手順.pptx</code>）を参照してください。</p>
               <p>研修当日までに、配布された手順書に沿って <strong>signup → 認証メール承認 → ログイン確認</strong> までを済ませておいてください。</p>
+              <figure class="lesson-figure">
+                <img src="assets/lessons/lesson-0_03_signup_form.png" alt="デモサイトの新規登録フォーム">
+                <figcaption>デモサイトの新規登録フォーム（メールアドレス・パスワード・表示名を入力）</figcaption>
+              </figure>
               <div class="warning-block">
                 <strong>⚠️ 注意：</strong> アカウント作成が完了していないと、進捗バッジ付与や事例集投稿などの機能が使えません。第1回までに必ず完了させてください。
               </div>
@@ -186,15 +177,23 @@
         <section class="lesson-section" id="faq">
           <h2 class="lesson-section-title"><span class="sec-icon">❓</span>よくある詰まりと FAQ</h2>
           <div class="lesson-faq">
-            <div class="q">Q1. スタートメニューで検索しても「Power Automate」が出てこない</div>
+            <div class="q">Q1. 登録時に「このメールはすでに登録されています」と表示される</div>
+            <div class="a">入力したメールアドレスでは過去にアカウント作成が完了しています。新規登録を続ける必要はありません。<a href="index.html" style="color:#2c7be5;">デモサイトのログイン画面</a>に戻り、そのメールアドレスとパスワードでログインしてください。パスワードを忘れた場合のみ、ログイン画面の再設定リンクから手続きしてください。</div>
+          </div>
+          <div class="lesson-faq">
+            <div class="q">Q2. 認証メールのリンクをクリックすると「このサイトにアクセスできません」と表示される</div>
+            <div class="a">これは<strong>正常な挙動</strong>です。本研修のデモサイトは GitHub Pages 上で動作しており、認証メールのリンク先がローカルホストになっているためブラウザがエラー画面を出します。エラー画面はそのまま閉じて、<a href="index.html" style="color:#2c7be5;">デモサイトのログイン画面</a>に戻り、登録したメールアドレスとパスワードでログインしてください。</div>
+          </div>
+          <div class="lesson-faq">
+            <div class="q">Q3. スタートメニューで検索しても「Power Automate」が出てこない</div>
             <div class="a">Microsoft Store を開き「Power Automate」で検索 →「Power Automate」（Microsoft Corporation 製）の「インストール」をクリックしてください。</div>
           </div>
           <div class="lesson-faq">
-            <div class="q">Q2. サインイン時に「このアカウントは使用できません」と出る</div>
+            <div class="q">Q4. サインイン時に「このアカウントは使用できません」と出る</div>
             <div class="a">個人 Microsoft アカウントを使っている可能性があります。会社支給のメール（職場・学校アカウント）でサインインし直してください。</div>
           </div>
           <div class="lesson-faq">
-            <div class="q">Q3. デモサイトのアカウント作成手順書がどこにあるか分からない</div>
+            <div class="q">Q5. デモサイトのアカウント作成手順書がどこにあるか分からない</div>
             <div class="a">研修事務局から配布された <code>成果物_アカウント作成手順.pptx</code> を参照してください。配布されていない場合は TA に問い合わせてください。</div>
           </div>
         </section>
