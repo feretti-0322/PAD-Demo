@@ -22,6 +22,10 @@
     .instruction-list > li { margin-bottom: 48px; }
     .instruction-list > li::marker { content: ''; }
     .instruction-list > li:last-child { margin-bottom: 0; }
+    /* 中央配置（max-width 70%） */
+    .figure-center { display:flex; flex-direction:column; align-items:center; margin:14px 0; }
+    .figure-center img { max-width:70%; height:auto; border:1px solid #d8dee9; border-radius:8px; display:block; }
+    .figure-center figcaption { font-size:12px; color:#64748b; margin-top:6px; text-align:center; }
     .step-split .step-figure img { width:100%; height:auto; border:1px solid #d8dee9; border-radius:8px; display:block; }
     .step-split .step-figure figcaption { font-size:12px; color:#64748b; margin-top:6px; text-align:center; }
     .step-split .step-text { font-size:14px; line-height:1.9; }
@@ -102,7 +106,7 @@
             <div class="card-body" style="font-size:14px; line-height:1.9;">
               <p>PAD を起動して最初に開く画面が <strong>「コンソール」</strong>です。ここでは自分が作成したフローが<strong>一覧表示</strong>され、新規作成・実行・編集・削除・名前変更などができます。</p>
 
-              <figure class="lesson-figure">
+              <figure class="figure-center">
                 <img src="assets/lessons/lesson-1_10_console_overview.png" alt="PAD コンソール画面（マイフロー一覧）全体">
                 <figcaption>PAD コンソール画面（マイフロー一覧）— ①〜④の位置を確認</figcaption>
               </figure>
@@ -138,7 +142,7 @@
             <div class="card-body" style="font-size:14px; line-height:1.9;">
               <p>コンソールから新規作成または既存フローを開くと、<strong>フローデザイナー</strong>（編集画面）が新しいウィンドウで開きます。実際の作業時間の 9 割以上はこの画面を使います。</p>
 
-              <figure class="lesson-figure">
+              <figure class="figure-center">
                 <img src="assets/lessons/lesson-1_11_designer_overview.png" alt="フローデザイナー全体（番号付き）">
                 <figcaption>フローデザイナー全体 — 画像内の①〜⑥が下表のエリアに対応します</figcaption>
               </figure>
