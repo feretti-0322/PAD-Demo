@@ -990,3 +990,227 @@ table tbody tr:last-child td {
 .road-step.completed { background: #d1fae5; border-color: #10b981; }
 .road-step.completed .num { color: #065f46; }
 .road-step.current { background: #dbeafe; border-color: #2c7be5; box-shadow: 0 0 0 3px rgba(44,123,229,0.2); }
+
+/* =========================================
+   研修回別ページ（lesson-N.html）専用スタイル【v6】
+   ========================================= */
+.lesson-hero {
+  background: linear-gradient(135deg, #1a3a5c 0%, #0d7377 100%);
+  border-radius: 12px;
+  padding: 36px;
+  color: #fff;
+  margin-bottom: 24px;
+}
+.lesson-hero .lesson-tag {
+  display: inline-block;
+  background: rgba(255,255,255,0.18);
+  border-radius: 999px;
+  padding: 4px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
+}
+.lesson-hero h1 { font-size: 26px; font-weight: 800; margin: 0 0 12px; }
+.lesson-hero p  { font-size: 15px; line-height: 1.9; margin: 0; opacity: 0.95; }
+.lesson-meta {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+  font-size: 13px;
+  opacity: 0.95;
+}
+.lesson-meta span { background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 6px; }
+
+.lesson-section { margin-bottom: 28px; }
+.lesson-section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 800;
+  color: #1a3a5c;
+  margin: 0 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #e0e6ed;
+}
+.lesson-section-title .num {
+  background: #1a3a5c;
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 800;
+}
+.lesson-section-title .sec-icon {
+  font-size: 22px;
+  line-height: 1;
+}
+
+/* 目次（ページ内ジャンプ） */
+html { scroll-behavior: smooth; }
+.lesson-section { scroll-margin-top: 16px; }
+.lesson-toc {
+  background: #f8fafc;
+  border: 1px solid #e0e6ed;
+  border-left: 4px solid #2c7be5;
+  border-radius: 8px;
+  padding: 18px 22px;
+  margin-bottom: 24px;
+}
+.lesson-toc h3 {
+  margin: 0 0 12px;
+  font-size: 15px;
+  color: #1a3a5c;
+  font-weight: 800;
+}
+.lesson-toc ol {
+  margin: 0;
+  padding-left: 22px;
+  columns: 2;
+  column-gap: 28px;
+}
+.lesson-toc li {
+  margin-bottom: 6px;
+  font-size: 14px;
+  break-inside: avoid;
+}
+.lesson-toc a {
+  color: #1a3a5c;
+  text-decoration: none;
+  border-bottom: 1px dashed transparent;
+  transition: border-color 0.15s, color 0.15s;
+}
+.lesson-toc a:hover {
+  color: #2c7be5;
+  border-bottom-color: #2c7be5;
+}
+@media (max-width: 720px) {
+  .lesson-toc ol { columns: 1; }
+}
+
+.lesson-goal-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.lesson-goal-list li {
+  background: #f0fdf4;
+  border-left: 4px solid #10b981;
+  padding: 10px 16px;
+  margin-bottom: 8px;
+  border-radius: 0 6px 6px 0;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.lesson-goal-list li::before { content: '✅ '; margin-right: 6px; }
+
+.lesson-schedule {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.lesson-schedule th, .lesson-schedule td {
+  border: 1px solid #e0e6ed;
+  padding: 10px 14px;
+  text-align: left;
+}
+.lesson-schedule th { background: #f4f6f9; color: #1a3a5c; font-weight: 700; }
+.lesson-schedule td.time { width: 22%; font-family: monospace; color: #475569; }
+
+/* PAD画像差し込み枠（プレースホルダー） */
+.pad-image {
+  margin: 18px 0;
+  text-align: center;
+}
+.pad-image img {
+  max-width: 100%;
+  border: 1px solid #e0e6ed;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.pad-image figcaption {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 8px;
+  font-style: italic;
+}
+.pad-image-placeholder {
+  margin: 18px 0;
+  border: 2px dashed #c4cbd6;
+  border-radius: 8px;
+  padding: 28px 20px;
+  text-align: center;
+  background: #fafbfc;
+  color: #8a93a6;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.pad-image-placeholder .placeholder-icon { font-size: 32px; display: block; margin-bottom: 6px; }
+.pad-image-placeholder code {
+  background: #eef1f5;
+  color: #475569;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.lesson-faq {
+  background: #fffaf0;
+  border-left: 4px solid #f6a623;
+  border-radius: 0 8px 8px 0;
+  padding: 14px 18px;
+  margin-bottom: 10px;
+}
+.lesson-faq .q { font-weight: 700; color: #92400e; margin-bottom: 6px; }
+.lesson-faq .a { font-size: 14px; line-height: 1.8; color: #333; }
+
+.lesson-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 32px;
+}
+.lesson-nav a {
+  flex: 1;
+  background: #fff;
+  border: 1px solid #e0e6ed;
+  border-radius: 8px;
+  padding: 14px 18px;
+  text-decoration: none;
+  color: #1a3a5c;
+  font-weight: 700;
+  font-size: 14px;
+  transition: all 0.15s;
+}
+.lesson-nav a:hover { background: #f4f6f9; border-color: #2c7be5; }
+.lesson-nav a.prev::before { content: '← '; }
+.lesson-nav a.next { text-align: right; }
+.lesson-nav a.next::after { content: ' →'; }
+
+/* 解答ダウンロードボタン */
+.answer-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #2c7be5 0%, #1a3a5c 100%);
+  color: #fff !important;
+  padding: 14px 24px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(44,123,229,0.25);
+  transition: transform 0.15s, box-shadow 0.15s;
+  margin: 8px 8px 8px 0;
+}
+.answer-download:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(44,123,229,0.35);
+}
+.answer-download .icon { font-size: 18px; }

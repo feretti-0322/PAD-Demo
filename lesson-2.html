@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第2回 変数を完全理解 | PAD練習サイト</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .magic-box { background: #0d9488; border-radius: 12px; width: 120px; height: 90px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; font-weight: 700; box-shadow: 0 4px 16px rgba(13,148,136,0.3); }
+    .magic-box .box-label { font-size: 11px; background: rgba(255,255,255,0.25); border-radius: 4px; padding: 2px 8px; margin-bottom: 6px; }
+    .magic-box .box-value { font-size: 14px; }
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .compare-box { border-radius: 10px; padding: 18px; }
+    .compare-box.bad  { background: #fff4f4; border: 2px solid #f87171; }
+    .compare-box.good { background: #f0fdf4; border: 2px solid #34d399; }
+    .compare-box h4 { font-size: 14px; font-weight: 700; margin: 0 0 10px; }
+    .compare-box.bad  h4 { color: #b91c1c; }
+    .compare-box.good h4 { color: #065f46; }
+    /* ===== コードブロックの文字色（見やすく強化） ===== */
+    .compare-box .code-block { background: #1e293b; color: #f1f5f9; border-radius: 6px; padding: 10px 14px; font-family: monospace; font-size: 13px; line-height: 1.8; margin-top: 10px; }
+    .compare-box.bad .code-block { color: #fecaca; }
+    .compare-box.good .code-block { color: #bbf7d0; }
+    .name-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .name-table th { background: #1a3a5c; color: #fff; padding: 10px 14px; text-align: left; font-weight: 700; }
+    .name-table td { padding: 10px 14px; border-bottom: 1px solid #e0e6ed; vertical-align: top; }
+    .name-table tr:nth-child(even) td { background: #f8f9fc; }
+    .badge-good { background: #d1fae5; color: #065f46; font-size: 11px; font-weight: 700; border-radius: 4px; padding: 2px 7px; margin-right: 4px; }
+    .badge-bad  { background: #fee2e2; color: #991b1b; font-size: 11px; font-weight: 700; border-radius: 4px; padding: 2px 7px; margin-right: 4px; }
+    /* データテーブルビューア */
+    .dt-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .dt-table th, .dt-table td { border: 1px solid #e0e6ed; padding: 8px 10px; text-align: left; }
+    .dt-table th { background: #1a3a5c; color: #fff; font-weight: 600; }
+    .dt-table td.idx { background: #f4f6f9; color: #2c7be5; font-weight: 700; text-align: center; width: 60px; }
+    .dt-table tbody tr:hover { background: #f9fafb; }
+    .handson-callout { border:3px solid #dc2626; background:#fff1f2; border-radius:10px; padding:16px 20px; font-size:14px; line-height:1.9; color:#7f1d1d; margin:20px 0; box-shadow:0 4px 14px rgba(220,38,38,0.18); position:relative; }
+    .handson-callout::before { content:'🎯 ハンズオン'; position:absolute; top:-12px; left:14px; background:#dc2626; color:#fff; font-size:12px; font-weight:800; padding:3px 12px; border-radius:999px; letter-spacing:0.05em; }
+    .handson-callout strong { color:#b91c1c; }
+  </style>
+</head>
+<body>
+  <div class="app-layout">
+    <div id="sidebarContainer"></div>
+    <div class="main-content">
+      <header class="topbar">
+        <div class="topbar-title">🔤 第2回 変数を完全理解</div>
+        <div class="topbar-user"><span>👤</span><span id="topbarUser">user</span></div>
+      </header>
+      <main class="page-content">
+
+        <section class="lesson-hero">
+          <div class="lesson-tag">LESSON 2 / 変数を完全理解</div>
+          <h1>第2回 変数を完全理解 〜箱・データテーブル・選択ダイアログ〜</h1>
+          <p>
+            以降の全回の土台となる<strong>「変数」「データテーブル」「ユーザー入力ダイアログ」</strong>を、PC スキルゼロでも腹落ちさせる回です。<br>
+            最終演習 Main で使う「データテーブル直書き → 列リスト化 → 選択ダイアログ」のパターンをここで完成させます。
+          </p>
+          <div class="lesson-meta">
+            <span>🪜 前提：第1回（環境セットアップ）完了</span>
+            <span>🎯 ゴール：部署×役職マスターから選択肢を出すミニフロー完成</span>
+          </div>
+        </section>
+
+        <nav class="lesson-toc">
+          <h3>📑 目次</h3>
+          <ol>
+            <li><a href="#goal">🎯 到達目標</a></li>
+            <li><a href="#prep">🪜 事前準備</a></li>
+            <li><a href="#explain">📖 解説（変数／データテーブル／ダイアログ）</a></li>
+            <li><a href="#answer">✅ 解答例 / 完成フローテキスト</a></li>
+            <li><a href="#faq">❓ よくある詰まりと FAQ</a></li>
+          </ol>
+        </nav>
+
+        <section class="lesson-section" id="goal">
+          <h2 class="lesson-section-title"><span class="sec-icon">🎯</span>到達目標</h2>
+          <ul class="lesson-goal-list">
+            <li>変数を作成・代入・参照できる</li>
+            <li>文字列・数値・日付・データテーブルの違いを説明できる</li>
+            <li><code>新しいデータテーブルを作成</code> でヘッダ付きのデータテーブルを直書きで作成できる</li>
+            <li><code>データテーブル列をリストに取得</code> でデータテーブルの1列をリストに変換できる</li>
+            <li><code>リストから選択ダイアログを表示</code> でユーザーに選択肢を提示し、選ばれた値を変数に格納できる</li>
+          </ul>
+        </section>
+
+        <section class="lesson-section" id="prep">
+          <h2 class="lesson-section-title"><span class="sec-icon">🪜</span>事前準備</h2>
+          <div class="card">
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <ul style="margin:0 0 0 20px;">
+                <li><a href="lesson-1.html" style="color:#2c7be5;">第1回 環境セットアップ</a> が完了している</li>
+                <li>PAD のフロー編集画面で「新規フロー作成」ができる</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="explain">
+          <h2 class="lesson-section-title"><span class="sec-icon">📖</span>解説</h2>
+
+          <!-- ===== 2-A-①: 変数 = 箱 ===== -->
+          <div class="card">
+            <div class="card-header"><h3>2-A-①. 変数 ＝ データを入れておく「箱」</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>変数は、数字や文字などのデータを一時的に保存しておく場所です。箱に名前をつけて、中に好きなデータを入れておけます。</p>
+              <div style="display:flex; gap:20px; align-items:center; justify-content:center; flex-wrap:wrap; padding:12px 0;">
+                <div class="magic-box"><div class="box-label">担当者名</div><div class="box-value">田中さん</div></div>
+                <div class="magic-box" style="background:#1d4ed8;"><div class="box-label">注文数</div><div class="box-value" style="font-size:20px;">50</div></div>
+                <div class="magic-box" style="background:#7c3aed;"><div class="box-label">完了フラグ</div><div class="box-value">True</div></div>
+              </div>
+              <div class="point-block">
+                箱には<strong>数字・文字・Yes/No（True/False）</strong>などいろんな種類のデータを入れられます。<br>
+                PAD では <code style="background:#f0f5ff;border:1px solid #c3d9ff;border-radius:3px;padding:1px 7px;font-family:monospace;color:#1d4ed8;">%変数名%</code> と書くことで、箱の中身をプログラムの中で使えます。
+              </div>
+              <figure class="pad-image-placeholder" data-image-slot="lesson-2/01_variables_pane">
+                <span class="placeholder-icon">🖼️</span>
+                PAD のフロー編集画面：右側の「変数」ペインに変数が並んでいる様子<br>
+                <code>data-image-slot="lesson-2/01_variables_pane"</code>
+              </figure>
+
+              <div class="handson-callout">
+                🛠️ <strong>ハンズオン課題①：</strong>自分の名前を変数 <code>名前</code> に入れ、「メッセージを表示する」アクションで「こんにちは、%名前%さん」と表示するフローを作ってみましょう。
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== 2-A-②: なぜ変数を使う？ ===== -->
+          <div class="card">
+            <div class="card-header"><h3>2-A-②. なぜ変数を使うの？</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <div class="compare-grid">
+                <div class="compare-box bad">
+                  <h4>😰 変数を使わないと…</h4>
+                  <p>担当者が変わるたびにプログラム内の「田中さん」を<strong>全部探して書き直す</strong>必要があります。書き忘れるとバグの原因に！</p>
+                  <div class="code-block">メール送信("田中さんへ")
+レポート作成("田中さん担当")
+通知送信("田中さん確認済")</div>
+                </div>
+                <div class="compare-box good">
+                  <h4>😊 変数を使うと！</h4>
+                  <p>「担当者名」という箱に名前を入れておけば、<strong>箱の中身を1か所変えるだけ</strong>でプログラム全体に反映されます。</p>
+                  <div class="code-block">担当者名 = "田中さん"
+↓
+メール送信(%担当者名%へ)
+レポート作成(%担当者名%担当)
+通知送信(%担当者名%確認済)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== 2-A-③: 名前のつけ方 ===== -->
+          <div class="card">
+            <div class="card-header"><h3>2-A-③. 変数には「わかりやすい名前」をつけよう</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <table class="name-table">
+                <thead><tr><th>何を入れる箱？</th><th>NG な名前</th><th>OK な名前</th></tr></thead>
+                <tbody>
+                  <tr><td>社員の名前</td><td><span class="badge-bad">NG</span><code>a</code> / <code>data1</code></td><td><span class="badge-good">OK</span><code>社員名</code> / <code>EmployeeName</code></td></tr>
+                  <tr><td>今月の売上合計</td><td><span class="badge-bad">NG</span><code>x</code> / <code>num</code></td><td><span class="badge-good">OK</span><code>今月売上合計</code> / <code>TotalSales</code></td></tr>
+                  <tr><td>処理が終わったかどうか</td><td><span class="badge-bad">NG</span><code>flag</code> / <code>b</code></td><td><span class="badge-good">OK</span><code>処理完了フラグ</code> / <code>IsDone</code></td></tr>
+                </tbody>
+              </table>
+              <div class="point-block">
+                変数名は<strong>「日本語でも OK」</strong>です。業務系の人には日本語名のほうが直感的で誤読が減ります。
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== 2-B-①: データテーブル ===== -->
+          <div class="card">
+            <div class="card-header"><h3>2-B-①. データテーブル 〜Excel の表を PAD の中で扱う変数〜</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>スクレイピング結果や Excel から表全体を抽出した場合は、<strong>DataTable 型</strong>の変数に格納されます。行と列を持つ表形式のデータを、PAD の中で自在に操作できます。</p>
+              <ul style="margin:8px 0 0 20px;">
+                <li><strong>作成・読み込み</strong>：スクレイピング結果の格納／Excel ワークシートからの読み込み</li>
+                <li><strong>行の追加</strong>：「データテーブルに行を挿入」アクションで1行ずつ追加</li>
+                <li><strong>フィルタ・検索</strong>：「フィルターデータテーブル」で条件に合う行だけ抽出</li>
+                <li><strong>書き出し</strong>：「Excel ワークシートに書き込む」で DataTable をシートに反映</li>
+              </ul>
+              <figure class="pad-image-placeholder" data-image-slot="lesson-2/02_datatable_view">
+                <span class="placeholder-icon">🖼️</span>
+                PAD の変数ペインでデータテーブルをダブルクリックして表ビューが開いている様子<br>
+                <code>data-image-slot="lesson-2/02_datatable_view"</code>
+              </figure>
+            </div>
+          </div>
+
+          <!-- ===== 2-B-②: DataTable の値取り出し（インタラクティブビューア復活） ===== -->
+          <div class="card">
+            <div class="card-header"><h3>2-B-②. DataTable の値を取り出す（インタラクティブデモ）</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>DataTable の特定の値を取り出すには、変数名の後ろに <code>[]</code> を使って「行番号」と「列番号 or 列名」を指定します。DataTable の添字は<strong> 0 から数え始める</strong>ことに注意してください。</p>
+              <div class="code-block">StaffList[0]['氏名']        // 1行目の氏名列
+StaffList[0][2]            // 1行目の3列目（インデックス指定）
+CurrentItem['部署']         // FOR EACH 内での現在行の部署列</div>
+              <div class="point-block">
+                列名を使った指定（<code>CurrentItem['氏名']</code>）は、列の順番が変わってもフローが壊れません。インデックスだけ（<code>CurrentItem[0]</code>）はシンプルですが、サイト改修に弱いので注意。
+              </div>
+
+              <p style="margin-top:18px;">
+                下の表は、変数名 <code style="background:#1e293b; color:#facc15; padding:2px 8px; border-radius:4px; font-weight:700;">StaffList</code> という DataTable に格納されたスタッフ一覧（先頭10件）です。<strong>表のセルをクリック</strong>すると、PAD でその値を取り出すときの書き方が表示されます。行・列どちらも <strong>0 から数え始める</strong>ことを確認してください。
+              </p>
+              <table class="dt-table" id="dtTable">
+                <thead>
+                  <tr><th>Index</th><th>ID</th><th>氏名</th><th>部署</th><th>役職</th><th>入社日</th></tr>
+                </thead>
+                <tbody id="dtBody"></tbody>
+              </table>
+
+              <div class="handson-callout">
+                🛠️ <strong>ハンズオン課題②：</strong>上のビューアで「3行目の部署」のセルをクリックして、PAD での書き方を確認してみましょう。
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== 2-C: 選択ダイアログ ===== -->
+          <div class="card">
+            <div class="card-header"><h3>2-C. 直書きデータテーブル ＋ 列リスト化 ＋ 選択ダイアログ（最終演習 Main の縮小版）</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>最終演習の Main では、「部署 × 役職」マスターをフローに直書きし、列を取り出してユーザーに選ばせる仕組みを作ります。</p>
+              <ol class="instruction-list">
+                <li><strong>新しいデータテーブルを作成</strong>：ヘッダ「部署」「役職」を持つデータテーブルを直書きで作る</li>
+                <li><strong>データテーブル列をリストに取得</strong>：「部署」列だけを取り出してリスト化</li>
+                <li><strong>リストから選択ダイアログを表示</strong>：ユーザーにリストから選ばせ、選択結果を変数に格納</li>
+                <li>同じ流れで「役職」も選ばせる</li>
+              </ol>
+              <figure class="pad-image-placeholder" data-image-slot="lesson-2/03_create_datatable_action">
+                <span class="placeholder-icon">🖼️</span>
+                「新しいデータテーブルを作成」アクション設定画面（部署×役職マスターを直書きしている様子）<br>
+                <code>data-image-slot="lesson-2/03_create_datatable_action"</code>
+              </figure>
+              <figure class="pad-image-placeholder" data-image-slot="lesson-2/04_select_from_list_dialog">
+                <span class="placeholder-icon">🖼️</span>
+                実行時に表示される選択ダイアログ（部署リストから選ぶ画面）<br>
+                <code>data-image-slot="lesson-2/04_select_from_list_dialog"</code>
+              </figure>
+
+              <div class="handson-callout">
+                🛠️ <strong>ハンズオン課題③：</strong>「部署×役職」マスターを直書きデータテーブルで作成 → 部署列をリスト化 → 選択ダイアログで選ばせる → 同じく役職も選ばせる → 選択結果を「メッセージを表示する」で表示するフローを実装してみましょう。
+              </div>
+
+              <div class="handson-callout">
+                🛠️ <strong>ハンズオン課題④（最終課題）：</strong>派遣スタッフ名（変数）＋部署（変数）＋入社日（変数）を組み合わせて<strong>プロフィール文を生成</strong>するフローを作ってみましょう。<br>
+                例：「<code>%スタッフ名%</code> さんは <code>%部署%</code> に <code>%入社日%</code> 入社」というメッセージを表示。
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <section class="lesson-section" id="answer">
+          <h2 class="lesson-section-title"><span class="sec-icon">✅</span>解答例 / 完成フローテキスト</h2>
+          <div class="card">
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>本回のハンズオン課題の完成フローテキストをダウンロードして、PAD 編集画面に貼り付けてください。</p>
+              <a href="answers/lesson-2.txt" class="answer-download" download>
+                <span class="icon">⬇️</span>
+                lesson-2.txt をダウンロード
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="faq">
+          <h2 class="lesson-section-title"><span class="sec-icon">❓</span>よくある詰まりと FAQ</h2>
+          <div class="lesson-faq">
+            <div class="q">Q1. 変数名に日本語を入れたら動かない</div>
+            <div class="a">PAD は変数名に日本語 OK ですが、参照時は <code>%変数名%</code> のように半角 % で囲む必要があります。全角 ％ になっていないか確認してください。</div>
+          </div>
+        </section>
+
+        <nav class="lesson-nav">
+          <a href="lesson-1.html" class="prev">第1回 環境セットアップ</a>
+          <a href="lesson-3.html" class="next">第3回 Excel自動化</a>
+        </nav>
+
+      </main>
+      <footer class="app-footer">© 2025 PAD練習サイト</footer>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/env.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/common.js?v=6"></script>
+  <script>
+    bootstrapPage('lesson-2');
+
+    // データテーブルビューア（旧 pad-datatable.html から正本移植）
+    const baseRows = (typeof STAFF_DATA !== 'undefined' ? STAFF_DATA : []).slice(0, 10);
+    const tbody = document.getElementById('dtBody');
+    function renderDt() {
+      if (!tbody) return;
+      tbody.innerHTML = baseRows.map((r, i) => `
+        <tr data-row="${i}">
+          <td class="idx">${i}</td>
+          <td data-col="1" data-name="ID">${r.id}</td>
+          <td data-col="2" data-name="氏名">${r.name}</td>
+          <td data-col="3" data-name="部署">${r.dept}</td>
+          <td data-col="4" data-name="役職">${r.role}</td>
+          <td data-col="5" data-name="入社日">${r.joined}</td>
+        </tr>
+      `).join('');
+      tbody.querySelectorAll('td[data-col]').forEach(td => {
+        td.style.cursor = 'pointer';
+        td.onclick = () => {
+          const row = td.parentElement.dataset.row;
+          const col = td.dataset.col;
+          const name = td.dataset.name;
+          const value = td.textContent;
+          alert(`PADでの取り出し方：\n\n  StaffList[${row}][${col}]\n  StaffList[${row}]['${name}']\n\n→ どちらも値: "${value}"`);
+        };
+      });
+    }
+    // STAFF_DATA は common.js に定義されているので、読み込み後に描画
+    if (typeof STAFF_DATA !== 'undefined') renderDt();
+    else setTimeout(renderDt, 300);
+  </script>
+</body>
+</html>

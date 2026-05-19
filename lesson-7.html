@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第7回 総合演習 | PAD練習サイト</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .subflow-card { background:#fff; border:1px solid #e0e6ed; border-left:4px solid #2c7be5; border-radius:8px; padding:18px 22px; margin-bottom:14px; }
+    .subflow-card h4 { color:#1a3a5c; margin:0 0 8px; font-size:15px; }
+    /* フローのステップ表示 */
+    .flow-step { display:flex; gap:12px; align-items:flex-start; padding:10px 12px; border-radius:6px; margin-bottom:6px; background:#f8fafc; border:1px solid #e0e6ed; font-size:13.5px; line-height:1.7; }
+    .flow-step .step-no { flex-shrink:0; width:30px; height:30px; border-radius:50%; background:#1a3a5c; color:#fff; font-weight:800; display:flex; align-items:center; justify-content:center; font-size:12px; }
+    .flow-step .step-body strong { color:#1a3a5c; }
+    .flow-step .step-body .vchip { display:inline-block; background:#e0f2fe; color:#0c4a6e; border-radius:4px; padding:1px 8px; font-family:monospace; font-size:12px; margin:0 2px; }
+    .flow-step.region { background:#fef3c7; border-color:#fcd34d; }
+    .flow-step.if { background:#eff6ff; border-color:#93c5fd; }
+    .flow-step.block { background:#f3e8ff; border-color:#c4b5fd; }
+    .flow-nested { margin-left:42px; }
+    .handson-callout { border:3px solid #dc2626; background:#fff1f2; border-radius:10px; padding:16px 20px; font-size:14px; line-height:1.9; color:#7f1d1d; margin:20px 0; box-shadow:0 4px 14px rgba(220,38,38,0.18); position:relative; }
+    .handson-callout::before { content:'🎯 ハンズオン'; position:absolute; top:-12px; left:14px; background:#dc2626; color:#fff; font-size:12px; font-weight:800; padding:3px 12px; border-radius:999px; letter-spacing:0.05em; }
+    .handson-callout strong { color:#b91c1c; }
+  </style>
+</head>
+<body>
+  <div class="app-layout">
+    <div id="sidebarContainer"></div>
+    <div class="main-content">
+      <header class="topbar">
+        <div class="topbar-title">🎯 第7回 総合演習（プロフィール一括出力）</div>
+        <div class="topbar-user"><span>👤</span><span id="topbarUser">user</span></div>
+      </header>
+      <main class="page-content">
+
+        <section class="lesson-hero">
+          <div class="lesson-tag">LESSON 7 / 総合演習</div>
+          <h1>第7回 総合演習 〜プロフィール一括出力フローを Main＋3サブフロー構造で完成させる〜</h1>
+          <p>
+            第1〜6回で学んだすべてを統合し、実装済み最終演習フローと同じ <strong>「Main＋ブラウザ操作／スタッフ詳細スクレイピング／エラー の4本構成」</strong> で現場で使えるレベルの自動化を完成させます。
+          </p>
+          <div class="lesson-meta">
+            <span>🪜 前提：第1〜6回すべて完了</span>
+            <span>🎯 ゴール：スタッフ複数名分のプロフィールシート Excel を一括出力</span>
+          </div>
+        </section>
+
+        <nav class="lesson-toc">
+          <h3>📑 目次</h3>
+          <ol>
+            <li><a href="#goal">🎯 到達目標</a></li>
+            <li><a href="#prep">🪜 事前準備</a></li>
+            <li><a href="#explain">📖 解説（最終フローの全体像）</a></li>
+            <li><a href="#answer">✅ 解答例 / 完成フローテキスト</a></li>
+            <li><a href="#faq">❓ よくある詰まりと FAQ</a></li>
+          </ol>
+        </nav>
+
+        <section class="lesson-section" id="goal">
+          <h2 class="lesson-section-title"><span class="sec-icon">🎯</span>到達目標</h2>
+          <ul class="lesson-goal-list">
+            <li>Main＋3サブフロー（ブラウザ操作／スタッフ詳細スクレイピング／エラー）を自力で組み、完走させる</li>
+            <li>故意にデータを壊して個別スキップ＋エラーログ追記が機能することを確認できる</li>
+            <li>故意にログインを失敗させて全体中断が機能することを確認できる</li>
+            <li>デスクトップに「日時名フォルダ」が作られ、その中にスタッフ名で命名された個別 Excel が整然と並ぶ</li>
+          </ul>
+        </section>
+
+        <section class="lesson-section" id="prep">
+          <h2 class="lesson-section-title"><span class="sec-icon">🪜</span>事前準備</h2>
+          <div class="card"><div class="card-body" style="font-size:14px; line-height:1.9;">
+            <ul style="margin:0 0 0 20px;">
+              <li>第1〜6回のフローがすべて手元にある</li>
+              <li>テンプレ <code>スタッフ情報_テンプレート.xlsm</code> が手元にある</li>
+              <li>自分のメール／パスワード（直接暗号化されたテキスト形式で保持済み）</li>
+            </ul>
+          </div></div>
+        </section>
+
+        <section class="lesson-section" id="explain">
+          <h2 class="lesson-section-title"><span class="sec-icon">📖</span>解説</h2>
+
+          <!-- ===== Main フロー ===== -->
+          <div class="card">
+            <div class="card-header"><h3>7-A. Main フロー</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>日時取得・出力フォルダ作成・部署×役職マスター・選択ダイアログ・サブフロー呼び出しまでを Main で行います。</p>
+
+              <div class="flow-step"><div class="step-no">1</div><div class="step-body"><strong>現在の日時を取得</strong><br>現在の日時を取得して、<span class="vchip">現在の日時</span> に保存します</div></div>
+              <div class="flow-step"><div class="step-no">2</div><div class="step-body"><strong>日時の値をテキスト値に変換</strong><br>形式 <code>'yyyyMMdd_HHmmss'</code> を使って datetime <span class="vchip">現在の日時</span> を変換し、<span class="vchip">現在の日時_テキスト値</span> に保存します</div></div>
+              <div class="flow-step"><div class="step-no">3</div><div class="step-body"><strong>フォルダーの作成</strong><br>フォルダー <span class="vchip">現在の日時_テキスト値</span> を <code>C:\Users\haruka.shimura\Desktop\Claude\PADデモサイト作成用\成果物_PADデモサイト\出力ファイル</code> に作成する</div></div>
+              <div class="flow-step"><div class="step-no">4</div><div class="step-body"><strong>Windows 環境変数を取得</strong><br>環境変数 <code>'USERNAME'</code> の値を取得し、<span class="vchip">USERNAME</span> に保存する</div></div>
+
+              <div class="flow-step region"><div class="step-no">5</div><div class="step-body"><strong>リージョン：選択リスト</strong>（部署×役職マスターから選択肢を出すブロック）</div></div>
+
+              <div class="flow-nested">
+                <div class="flow-step"><div class="step-no">6</div><div class="step-body"><strong>新しいデータテーブルを作成する</strong><br>新しいデータ テーブルを作成して <span class="vchip">データテーブル_検索条件</span> に格納する</div></div>
+                <div class="flow-step"><div class="step-no">7</div><div class="step-body"><strong>データ テーブル列をリストに取得</strong><br>データ テーブル <span class="vchip">データテーブル_検索条件</span> から列 <code>'部署'</code> の内容を取得し、新しいリストとして <span class="vchip">部署リスト</span> に保存</div></div>
+                <div class="flow-step"><div class="step-no">8</div><div class="step-body"><strong>リストから選択ダイアログを表示</strong><br>メッセージ <code>'選択してください'</code> を含む選択ダイアログを表示します。ユーザーの選択を <span class="vchip">選択部署</span> に格納します</div></div>
+                <div class="flow-step"><div class="step-no">9</div><div class="step-body"><strong>データ テーブル列をリストに取得</strong><br>データ テーブル <span class="vchip">データテーブル_検索条件</span> から列 <code>'役職'</code> の内容を取得し、新しいリストとして <span class="vchip">役職リスト</span> に保存</div></div>
+                <div class="flow-step"><div class="step-no">10</div><div class="step-body"><strong>リストから選択ダイアログを表示</strong><br>メッセージ <code>'選択してください'</code> を含む選択ダイアログを表示します。ユーザーの選択を <span class="vchip">選択役職</span> に格納します</div></div>
+              </div>
+
+              <div class="flow-step region"><div class="step-no">11</div><div class="step-body"><strong>リージョンの終了</strong></div></div>
+              <div class="flow-step"><div class="step-no">12</div><div class="step-body"><strong>サブフローの実行</strong>　サブフロー <em>ブラウザ操作</em> を実行する</div></div>
+              <div class="flow-step"><div class="step-no">13</div><div class="step-body"><strong>サブフローの実行</strong>　サブフロー <em>スタッフ詳細スクレイピング</em> を実行する</div></div>
+
+              <figure class="pad-image-placeholder" data-image-slot="lesson-7/01_main_flow">
+                <span class="placeholder-icon">🖼️</span>
+                Main フロー全景のスクリーンショット<br>
+                <code>data-image-slot="lesson-7/01_main_flow"</code>
+              </figure>
+
+              <div class="handson-callout">
+                🛠️ <strong>ハンズオン課題①：</strong>上記の Main フローを組んでみましょう（第2回・第3回の流用 + 部署×役職マスターの直書き）。
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== ブラウザ操作 サブフロー ===== -->
+          <div class="card">
+            <div class="card-header"><h3>7-B. ブラウザ操作 サブフロー</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>ChromeDriver 起動 → メール・PW 入力 → 規約チェック → ログインボタン押下までを「ログイン」リージョンで囲んでまとめます。</p>
+
+              <div class="flow-step region"><div class="step-no">1</div><div class="step-body"><strong>リージョン：ログイン</strong></div></div>
+              <div class="flow-nested">
+                <div class="flow-step"><div class="step-no">2</div><div class="step-body"><strong>新しい Chrome を起動する</strong><br>Chrome を起動して <code>'https://feretti0322.github.io/PAD-Demo/'</code> に移動し、インスタンスを <span class="vchip">ブラウザ</span> に保存します</div></div>
+                <div class="flow-step"><div class="step-no">3</div><div class="step-body"><strong>Web ページ内のテキストフィールドに入力する</strong><br>エミュレート入力を使わずにテキスト フィールド <em>Input email 'email'</em> に <code>'shimura.fellows@gmail.com'</code> を入力します</div></div>
+                <div class="flow-step"><div class="step-no">4</div><div class="step-body"><strong>Web ページ内のテキストフィールドに入力する</strong><br>エミュレート入力を使わずにテキスト フィールド <em>Input password 'password' 2</em> に <code>●●●●●</code>（直接暗号化されたテキスト）を入力します</div></div>
+                <div class="flow-step"><div class="step-no">5</div><div class="step-body"><strong>Web ページのチェックボックスの状態を設定します</strong><br>チェック ボックス <em>Input checkbox 'agree' 2</em> の状態を <strong>オン</strong> に設定します</div></div>
+                <div class="flow-step"><div class="step-no">6</div><div class="step-body"><strong>Web ページのボタンを押します</strong><br>Web ページのボタン <em>Button 'ログイン'</em> を押します</div></div>
+              </div>
+              <div class="flow-step region"><div class="step-no">7</div><div class="step-body"><strong>リージョンの終了</strong></div></div>
+
+              <figure class="pad-image-placeholder" data-image-slot="lesson-7/02_browser_flow">
+                <span class="placeholder-icon">🖼️</span>
+                ブラウザ操作 サブフローのスクリーンショット<br>
+                <code>data-image-slot="lesson-7/02_browser_flow"</code>
+              </figure>
+
+              <div class="handson-callout">
+                🛠️ <strong>ハンズオン課題②：</strong>第4回のログインフローを「ブラウザ操作」サブフローとしてそのまま流用しましょう。
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== スタッフ詳細スクレイピング サブフロー ===== -->
+          <div class="card">
+            <div class="card-header"><h3>7-C. スタッフ詳細スクレイピング サブフロー</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>URL 直接ナビゲートで絞り込み一覧へ → ラベル ＋ 移動先で全ページ走破 → ブロックエラー発生時の中で FOR EACH → 詳細取得 → Excel 出力。最終演習の中心となるサブフローです。</p>
+
+              <div class="flow-step"><div class="step-no">1</div><div class="step-body"><strong>Web ページに移動</strong><br><code>'https://feretti0322.github.io/PAD-Demo/staff-list.html?dept='</code> <span class="vchip">選択部署</span> <code>'&role='</code> <span class="vchip">選択役職</span> に移動</div></div>
+              <div class="flow-step"><div class="step-no">2</div><div class="step-body"><strong>新しいデータ テーブルを作成する</strong><br>新しいデータ テーブルを作成して <span class="vchip">データテーブル_スタッフID</span> に格納する</div></div>
+              <div class="flow-step"><div class="step-no">3</div><div class="step-body"><strong>データ テーブルから空の行を削除する</strong><br>データ テーブル <span class="vchip">データテーブル_スタッフID</span> から空の行をすべて削除する</div></div>
+              <div class="flow-step"><div class="step-no">4</div><div class="step-body"><strong>ラベル</strong>　<em>移動先</em> ラベル</div></div>
+
+              <div class="flow-step region"><div class="step-no">5</div><div class="step-body"><strong>リージョン：スタッフ詳細スクレイピング</strong></div></div>
+              <div class="flow-nested">
+                <div class="flow-step"><div class="step-no">6</div><div class="step-body"><strong>Web ページからデータを抽出する</strong><br>複数の Web ページから、ページングを使用してリストを抽出し、仮想テーブルを作成して <span class="vchip">スクレイピング_ID</span> にストアします</div></div>
+                <div class="flow-step"><div class="step-no">7</div><div class="step-body"><strong>Web ページ上の要素の詳細を取得します</strong><br>Web ページから要素 <em>Button '›'</em> の属性 <code>'Disabled'</code> を取得し、<span class="vchip">ページャー要素</span> に保存します</div></div>
+                <div class="flow-step"><div class="step-no">8</div><div class="step-body"><strong>データ テーブルをマージする</strong><br><span class="vchip">スクレイピング_ID</span> を <span class="vchip">データテーブル_スタッフID</span> にマージする</div></div>
+
+                <div class="flow-step if"><div class="step-no">9</div><div class="step-body"><strong>If</strong> <span class="vchip">ページャー要素</span> <code>&lt;&gt;'true'</code> then</div></div>
+                <div class="flow-nested">
+                  <div class="flow-step"><div class="step-no">10</div><div class="step-body"><strong>Web ページのボタンを押します</strong><br>Web ページのボタン <em>Button '›'</em> を押します</div></div>
+                  <div class="flow-step"><div class="step-no">11</div><div class="step-body"><strong>移動先 に移動する</strong></div></div>
+                </div>
+                <div class="flow-step if"><div class="step-no">12</div><div class="step-body"><strong>End</strong>　終了</div></div>
+              </div>
+              <div class="flow-step region"><div class="step-no">13</div><div class="step-body"><strong>リージョンの終了</strong></div></div>
+
+              <div class="flow-step block"><div class="step-no">14</div><div class="step-body"><strong>ブロック エラー発生時</strong>　<em>Excel出力エラー</em>（エラー発生時はサブフロー「エラー」を呼び出し、次の繰り返しに移動）</div></div>
+              <div class="flow-nested">
+                <div class="flow-step"><div class="step-no">15</div><div class="step-body"><strong>For each</strong> <span class="vchip">フォーイーチ_スタッフID</span> in <span class="vchip">データテーブル_スタッフID</span></div></div>
+
+                <div class="flow-nested">
+                  <div class="flow-step"><div class="step-no">16</div><div class="step-body"><strong>Web ページに移動</strong><br><code>'https://feretti0322.github.io/PAD-Demo/staff-detail.html?id='</code> <span class="vchip">フォーイーチ_スタッフID</span> に移動</div></div>
+                  <div class="flow-step"><div class="step-no">17</div><div class="step-body"><strong>Web ページからデータを抽出する</strong><br>Web ページからリストを抽出し、それを <span class="vchip">スクレイピング_スタッフ詳細</span> にストアします</div></div>
+                  <div class="flow-step"><div class="step-no">18</div><div class="step-body"><strong>ファイルのコピー</strong><br>ファイル <code>'C:\Users\haruka.shimura\Desktop\Claude\PADデモサイト作成用\成果物_PADデモサイト\Excelテンプレート\スタッフ情報_テンプレート.xlsm'</code> を <span class="vchip">出力フォルダ</span> にコピーし、リスト <span class="vchip">コピーファイル</span> に保存します</div></div>
+                  <div class="flow-step"><div class="step-no">19</div><div class="step-body"><strong>ファイルの名前を変更する</strong><br>ファイルの名前を <span class="vchip">コピーファイル</span> から <span class="vchip">スクレイピング_スタッフ詳細</span><code>[0]'_'</code><span class="vchip">スクレイピング_スタッフ詳細</span><code>[1]</code> に変更し、リスト <span class="vchip">コピーファイル</span> に保存します</div></div>
+                  <div class="flow-step"><div class="step-no">20</div><div class="step-body"><strong>Excel の起動</strong><br>Excel を起動し、既存の Excel プロセスを使用してドキュメント <span class="vchip">コピーファイル</span><code>[0]</code> を開き、Excel インスタンス <span class="vchip">Excel</span> に保存します</div></div>
+                  <div class="flow-step"><div class="step-no">21</div><div class="step-body"><strong>Excel ワークシートに書き込む</strong><br>Excel インスタンス <span class="vchip">Excel</span> の列 <strong>2</strong> および行 <strong>2</strong> のセルに値 <span class="vchip">スクレイピング_スタッフ詳細</span> を書き込み</div></div>
+                  <div class="flow-step"><div class="step-no">22</div><div class="step-body"><strong>Excel ワークシートに書き込む</strong><br>Excel インスタンス <span class="vchip">Excel</span> の列 <strong>2</strong> および行 <strong>10</strong> のセルに値 <span class="vchip">現在の日時</span> を書き込み</div></div>
+                  <div class="flow-step"><div class="step-no">23</div><div class="step-body"><strong>Excel マクロの実行</strong><br>インスタンスが <span class="vchip">Excel</span> に保存されている Excel ドキュメントでマクロ <code>'空白削除'</code> を実行</div></div>
+                  <div class="flow-step"><div class="step-no">24</div><div class="step-body"><strong>Excel を閉じる</strong><br>Excel ドキュメントを保存して Excel インスタンス <span class="vchip">Excel</span> を閉じる</div></div>
+                </div>
+
+                <div class="flow-step"><div class="step-no">25</div><div class="step-body"><strong>End</strong>　For each 終了</div></div>
+              </div>
+              <div class="flow-step block"><div class="step-no">26</div><div class="step-body"><strong>End</strong>　ブロック終了</div></div>
+
+              <figure class="pad-image-placeholder" data-image-slot="lesson-7/03_scraping_flow">
+                <span class="placeholder-icon">🖼️</span>
+                スタッフ詳細スクレイピング サブフローのスクリーンショット<br>
+                <code>data-image-slot="lesson-7/03_scraping_flow"</code>
+              </figure>
+
+              <div class="handson-callout">
+                🛠️ <strong>ハンズオン課題③：</strong>第5回・第6回の流用 ＋ 第3回の Excel 操作を統合して、スタッフ詳細スクレイピング サブフローを組んでみましょう。
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== エラー サブフロー ===== -->
+          <div class="card">
+            <div class="card-header"><h3>7-D. エラー サブフロー</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>ブロックエラー発生時に呼ばれます。発生時刻・スタッフ ID・エラー内容をテキストファイルに追記します。</p>
+
+              <div class="flow-step"><div class="step-no">1</div><div class="step-body"><strong>現在の日時を取得</strong><br>現在の日時を取得して <span class="vchip">エラー時刻</span> に保存します</div></div>
+              <div class="flow-step"><div class="step-no">2</div><div class="step-body"><strong>最後のエラーを取得</strong><br>最後に発生したエラーを取得して <span class="vchip">LastError</span> に保存し、エラー値を消去します</div></div>
+              <div class="flow-step"><div class="step-no">3</div><div class="step-body"><strong>テキストをファイルに書き込む</strong><br><code>'C:\Users\haruka.shimura\Desktop\Claude\PADデモサイト作成用\成果物_PADデモサイト\出力ファイル\エラー.txt'</code> に <span class="vchip">エラー時刻</span><code>'_'</code><span class="vchip">フォーイーチ_スタッフID</span><code>'_'</code><span class="vchip">LastError</span> を書き込みます</div></div>
+              <div class="flow-step"><div class="step-no">4</div><div class="step-body"><strong>コメント</strong><br>内容を上書きするだとめ、内容を追加するを選択<br>エンコードは UTF-8<br>新しい行を追加するをオン</div></div>
+
+              <div class="point-block">
+                ※ 上記の手順1〜3を1セットとして、もう1セット同じ流れが続くケース（処理アクション側／FOR EACH 側の両方でブロックエラー発生時を持たせる構成）もあります。詳細はスクショ参照。
+              </div>
+
+              <figure class="pad-image-placeholder" data-image-slot="lesson-7/04_error_flow">
+                <span class="placeholder-icon">🖼️</span>
+                エラー サブフローのスクリーンショット<br>
+                <code>data-image-slot="lesson-7/04_error_flow"</code>
+              </figure>
+
+              <div class="handson-callout">
+                🛠️ <strong>ハンズオン課題④：</strong>第6回のエラー処理パターンを「エラー」サブフローに切り出して、ブロックエラー発生時から呼び出される構造を完成させてください。
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3>7-E. 認証情報の取り扱い（必修）</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>最終フローではメール＋パスワードを使いますが、<strong>フロー内に直接ベタ書きするのは絶対にやめる</strong>。PW 側は第4回で習得した『直接暗号化されたテキストの入力』で保持します。これは外販時に他社へ渡すフローテンプレートとしても本番運用に必須の作法です。</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3>7-F. 通し動作確認</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <figure class="pad-image-placeholder" data-image-slot="lesson-7/05_output_folder_filled">
+                <span class="placeholder-icon">📁</span>
+                実行後の出力フォルダ内：日時フォルダ内に「氏名_ID.xlsm」が並んでいる状態<br>
+                <code>data-image-slot="lesson-7/05_output_folder_filled"</code>
+              </figure>
+
+              <div class="handson-callout">
+                🛠️ <strong>ハンズオン課題⑤：</strong>通しで実行し、出力フォルダに日時フォルダ＋複数 Excel が並ぶことを確認。<br>
+                🛠️ <strong>ハンズオン課題⑥：</strong>故意に1名分のページを開けない URL に書き換え、個別スキップ＋エラーログ追記が動くか検証。<br>
+                🛠️ <strong>ハンズオン課題⑦：</strong>故意に PW を間違え、ログイン失敗で全体中断が動くか検証。
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <section class="lesson-section" id="answer">
+          <h2 class="lesson-section-title"><span class="sec-icon">✅</span>解答例 / 完成フローテキスト</h2>
+          <div class="card"><div class="card-body" style="font-size:14px; line-height:1.9;">
+            <p>各サブフローの完成フローテキストを個別にダウンロードして、PAD 編集画面に貼り付けてください。</p>
+            <div style="display:flex; flex-wrap:wrap; gap:8px;">
+              <a href="answers/lesson-7-Main.txt" class="answer-download" download><span class="icon">⬇️</span>Main.txt</a>
+              <a href="answers/lesson-7-Browser.txt" class="answer-download" download><span class="icon">⬇️</span>ブラウザ操作.txt</a>
+              <a href="answers/lesson-7-Scraping.txt" class="answer-download" download><span class="icon">⬇️</span>スタッフ詳細スクレイピング.txt</a>
+              <a href="answers/lesson-7-Error.txt" class="answer-download" download><span class="icon">⬇️</span>エラー.txt</a>
+            </div>
+            <div class="point-block" style="margin-top:14px;">
+              ⚠️ 解答はあくまで「答え合わせ用」。<strong>まず自力で組んでから</strong>差分を確認するのが学習効果を最大化するコツです。
+            </div>
+          </div></div>
+        </section>
+
+        <section class="lesson-section" id="faq">
+          <h2 class="lesson-section-title"><span class="sec-icon">❓</span>よくある詰まりと FAQ</h2>
+          <div class="lesson-faq">
+            <div class="q">Q1. ループの2件目以降で「Excel が既に開かれています」エラー</div>
+            <div class="a">ループ内の最後に必ず <strong>「Excel を閉じる（保存して閉じる）」</strong> を入れる。閉じ忘れが原因。</div>
+          </div>
+          <div class="lesson-faq">
+            <div class="q">Q2. ブロックエラー発生時でサブフローを呼んだ後にループが止まる</div>
+            <div class="a">エラー発生時の動作を「<strong>次の繰り返しに移動</strong>」に設定し忘れているのが原因。</div>
+          </div>
+        </section>
+
+        <nav class="lesson-nav">
+          <a href="lesson-6.html" class="prev">第6回 制御構造</a>
+          <a href="pad-overview.html" class="next">🏠 ホームに戻る</a>
+        </nav>
+
+      </main>
+      <footer class="app-footer">© 2025 PAD練習サイト</footer>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/env.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/common.js?v=6"></script>
+  <script>bootstrapPage('lesson-7');</script>
+</body>
+</html>

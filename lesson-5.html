@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第5回 ブラウザ自動化② | PAD練習サイト</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .pattern-list { list-style: none; padding: 0; margin: 12px 0; }
+    .pattern-list li { background: #f9fafb; border: 1px solid #e0e6ed; border-radius: 6px; padding: 12px 16px; margin-bottom: 8px; font-size: 14px; line-height: 1.7; }
+    .pattern-list code { background: #1e293b; color: #7dd3fc; padding: 2px 8px; border-radius: 4px; font-size: 13px; margin-right: 8px; }
+    .danger-block { background: #fef2f2; border-left: 4px solid #e63757; border-radius: 0 8px 8px 0; padding: 14px 18px; font-size: 14px; line-height: 1.9; color: #333; margin-top: 16px; }
+    .danger-block strong { color: #991b1b; }
+    .success-block { background: #f0fdf4; border-left: 4px solid #00b274; border-radius: 0 8px 8px 0; padding: 14px 18px; font-size: 14px; line-height: 1.9; color: #333; margin-top: 16px; }
+    .success-block strong { color: #065f46; }
+    /* URLビルダーシミュレーター */
+    .sim-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 14px; align-items: end; }
+    .sim-row label { display: block; font-size: 13px; color: #555; margin-bottom: 6px; }
+    .sim-row select { width: 100%; padding: 10px 12px; border: 1px solid #d0d7de; border-radius: 6px; font-size: 14px; background: #fff; }
+    .url-output { background: #1e293b; color: #facc15; padding: 14px 16px; border-radius: 6px; font-family: monospace; font-size: 14px; word-break: break-all; margin-top: 14px; }
+    .handson-callout { border:3px solid #dc2626; background:#fff1f2; border-radius:10px; padding:16px 20px; font-size:14px; line-height:1.9; color:#7f1d1d; margin:20px 0; box-shadow:0 4px 14px rgba(220,38,38,0.18); position:relative; }
+    .handson-callout::before { content:'🎯 ハンズオン'; position:absolute; top:-12px; left:14px; background:#dc2626; color:#fff; font-size:12px; font-weight:800; padding:3px 12px; border-radius:999px; letter-spacing:0.05em; }
+    .handson-callout strong { color:#b91c1c; }
+  </style>
+</head>
+<body>
+  <div class="app-layout">
+    <div id="sidebarContainer"></div>
+    <div class="main-content">
+      <header class="topbar">
+        <div class="topbar-title">🕷️ 第5回 ブラウザ自動化②（スクレイピング / URL直）</div>
+        <div class="topbar-user"><span>👤</span><span id="topbarUser">user</span></div>
+      </header>
+      <main class="page-content">
+
+        <section class="lesson-hero">
+          <div class="lesson-tag">LESSON 5 / ブラウザ自動化②</div>
+          <h1>第5回 ブラウザ自動化② 〜スクレイピング・URL直接ナビ〜</h1>
+          <p>
+            Web 上の情報を自動取得してデータテーブルに格納する力を身につける、<strong>カリキュラム最大の山場</strong>です。<br>
+            <code>&lt;object&gt;</code> 埋め込み UI への対処として URL 直アクセスを習得します。
+          </p>
+          <div class="lesson-meta">
+            <span>🪜 前提：第4回（ログイン）完了</span>
+            <span>🎯 ゴール：staff-list を絞り込み URL で開き全件取得</span>
+          </div>
+        </section>
+
+        <nav class="lesson-toc">
+          <h3>📑 目次</h3>
+          <ol>
+            <li><a href="#goal">🎯 到達目標</a></li>
+            <li><a href="#prep">🪜 事前準備</a></li>
+            <li><a href="#explain">📖 解説（抽出／object回避／URLパラメータ）</a></li>
+            <li><a href="#answer">✅ 解答例 / 完成フローテキスト</a></li>
+            <li><a href="#faq">❓ よくある詰まりと FAQ</a></li>
+          </ol>
+        </nav>
+
+        <section class="lesson-section" id="goal">
+          <h2 class="lesson-section-title"><span class="sec-icon">🎯</span>到達目標</h2>
+          <ul class="lesson-goal-list">
+            <li>「Webページからデータを抽出する」アクションでテーブルを抽出できる</li>
+            <li>取得した DataTable を Excel に転記できる</li>
+            <li><code>%変数%</code> で URL パラメータを動的に組み立て、目的の状態のページに直接遷移できる（例：<code>staff-list.html?dept=%選択部署%&amp;role=%選択役職%</code>）</li>
+            <li><code>&lt;object&gt;</code> 埋め込みで UI 要素が取得できない場面を正しく診断できる</li>
+            <li>ページネーション（複数ページの走破）の基本を知る</li>
+          </ul>
+        </section>
+
+        <section class="lesson-section" id="prep">
+          <h2 class="lesson-section-title"><span class="sec-icon">🪜</span>事前準備</h2>
+          <div class="card"><div class="card-body" style="font-size:14px; line-height:1.9;">
+            <ul style="margin:0 0 0 20px;">
+              <li><a href="lesson-4.html" style="color:#2c7be5;">第4回</a> のログインフローが手元にある</li>
+              <li>デモサイトの <a href="staff-list.html" style="color:#2c7be5;">staff-list.html</a>／<a href="staff-search-popup.html" style="color:#2c7be5;">staff-search-popup.html</a> を開けることを確認</li>
+            </ul>
+          </div></div>
+        </section>
+
+        <section class="lesson-section" id="explain">
+          <h2 class="lesson-section-title"><span class="sec-icon">📖</span>解説</h2>
+
+          <!-- ===== 5-A: スクレイピング基本 ===== -->
+          <div class="card">
+            <div class="card-header"><h3>5-A. データ抽出の基本手順</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <ol class="instruction-list">
+                <li>Chrome WebDriver でページを開く</li>
+                <li>「ブラウザー自動化」→「Web データ抽出」→「<strong>Web ページからデータを抽出する</strong>」アクションを追加</li>
+                <li>
+                  ライブ Web ヘルパーが起動したら、取得したいテーブル上で右クリックし、以下のどちらかを選ぶ：
+                  <ul style="margin:8px 0 0 0; padding-left:20px; font-size:13px; line-height:1.8;">
+                    <li><strong>「要素の値を抽出」</strong>…会社名や金額など一つの値だけ取得したいとき</li>
+                    <li><strong>「HTMLテーブル全体を抽出する」</strong>…サイト内の表をまるごと取得したいとき</li>
+                  </ul>
+                </li>
+                <li>取得結果は変数に格納される（既定名：<code>DataFromWebPage</code>）。HTML テーブル抽出を選んだ場合は<strong>データテーブル型変数</strong>に格納される。</li>
+                <li>変数名は「DataFromWebPage」のままにせず、「StaffList」など内容がわかる名前に変更する習慣を</li>
+              </ol>
+              <figure class="pad-image-placeholder" data-image-slot="lesson-5/01_live_web_helper">
+                <span class="placeholder-icon">🖼️</span>
+                ライブ Web ヘルパーで表を選択し「HTMLテーブル全体を抽出する」を選んでいる画面<br>
+                <code>data-image-slot="lesson-5/01_live_web_helper"</code>
+              </figure>
+
+              <div class="handson-callout">
+                🛠️ <strong>ハンズオン課題①：</strong><a href="sales-list.html" style="color:#2c7be5;">sales-list.html</a> から売上データ全件をスクレイピングして DataTable に取り込み、Excel に書き出すフローを作ってみましょう。
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== 5-B: ページネーション ===== -->
+          <div class="card">
+            <div class="card-header"><h3>5-B. ページネーション（複数ページの走破）</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>「次へ」などのページャーボタンを右クリックし、「<strong>要素をページャーとして設定</strong>」を選択するだけで、PAD が自動でページ送りをしてくれます。</p>
+              <p>※ ページネーション処理を<strong>「条件付きで終端まで走破する」</strong>高度なパターンは <a href="lesson-6.html" style="color:#2c7be5;">第6回（制御構造）</a> で LABEL ＋ GOTO と組み合わせて扱います。</p>
+
+              <div class="handson-callout">
+                🛠️ <strong>ハンズオン課題②：</strong><a href="customer.html" style="color:#2c7be5;">customer.html</a> の得意先一覧（複数ページ）を全件取得するフローを作ってみましょう。
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== 5-C: object 回避 ===== -->
+          <div class="card">
+            <div class="card-header"><h3>5-C-①. <code>&lt;object&gt;</code> / <code>&lt;iframe&gt;</code> 埋め込み UI の限界（必読）</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <div class="danger-block">
+                見た目はポップアップウィンドウなのに、その中身がこっそり「別のページ」を読み込んでいる作りになっているサイトがあります。こういう UI で PAD の「UI 要素の追加」を使おうとしても、ポップアップの外側の枠しか認識されず、中の入力欄やボタンは取得できません。
+              </div>
+              <div class="point-block">
+                このデモサイトでも、左サイドバーの「スタッフ検索」や「スタッフ追加」を開いて PAD の UI 要素ピッカーを使おうとすると、ポップアップ内に赤い枠が表示されません。これがまさにそのパターンです。
+              </div>
+
+              <div class="handson-callout">
+                🛠️ <strong>ハンズオン課題③：</strong><a href="staff-search-popup.html" style="color:#2c7be5;">staff-search-popup.html</a> に PAD の要素取得をかけ、「中の入力欄が取れない」現象を実際に体験してみましょう。
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3>5-C-②. 解決策 〜埋め込みページの URL を特定して直接ナビゲート〜</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>ポップアップ内を操作する代わりに、<strong>その中身として読み込まれているページの URL そのもの</strong>へ PAD から直接ナビゲートします。URL さえわかれば操作の再現は完了です。</p>
+              <ol class="instruction-list">
+                <li><strong>F12</strong> を押して開発者ツールを開く</li>
+                <li>開発者ツールを開いた状態でポップアップを開くメニューをクリック</li>
+                <li><strong>Elements</strong> タブを開くと、一番下に新しい文字列（ポップアップの HTML ソース）が追加される</li>
+                <li>その文字列をダブルクリックすると、読み込まれているページのフル URL が確認できる</li>
+              </ol>
+              <div class="success-block">
+                使うアクション：<strong>「Web ページに移動する」</strong>。確認した URL をそのまま指定するだけで、ポップアップを開かずに同じ画面にジャンプできます。
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3>5-C-③. URL パラメータを動的に組み立てる</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>業務サイトでは検索結果ページの URL にパラメータが付いていることが多く、入力フォームを操作する代わりに URL を組み立てて直接遷移する手法も使えます。</p>
+              <div class="code-block">// ポップアップを操作する代わりに：
+dept = "営業部"
+role = "主任"
+url = "staff-list.html?dept=" + dept + "&role=" + role
+→ Web ページに移動する: %url%
+  （= staff-list.html?dept=営業部&role=主任 に直接ナビゲート）</div>
+              <ul class="pattern-list">
+                <li><code>?page=2</code> ページ番号の指定</li>
+                <li><code>?search=山田</code> 検索キーワード</li>
+                <li><code>?dept=営業部&amp;role=主任</code> 複数条件（<code>&amp;</code> で連結）</li>
+                <li><code>?id=ST001</code> 特定レコードの直接参照</li>
+              </ul>
+
+              <div class="handson-callout">
+                🛠️ <strong>ハンズオン課題④：</strong>下のシミュレーターで部署・役職を選び、生成された URL を確認。同じパターンを PAD の「Web ページに移動する」アクションに組み込んでみましょう。
+              </div>
+            </div>
+          </div>
+
+          <!-- インタラクティブ：URL組み立てシミュレーター（旧 pad-url-navigate.html から正本移植） -->
+          <div class="card">
+            <div class="card-header"><h3>5-C-④. インタラクティブデモ：URL 組み立てシミュレーター</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>ポップアップと同じ選択肢で部署と役職を選ぶと、生成される URL がリアルタイムに表示されます。「このURLを開く」を押すと実際に staff-list.html に遷移し、<strong>ポップアップを使った場合と同じ結果になる</strong>ことが体感できます。</p>
+              <div class="sim-row">
+                <div>
+                  <label for="simDept">部署</label>
+                  <select id="simDept">
+                    <option value="">（指定なし）</option>
+                    <option value="営業部">営業部</option>
+                    <option value="総務部">総務部</option>
+                    <option value="開発部">開発部</option>
+                    <option value="管理部">管理部</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="simRole">役職</label>
+                  <select id="simRole">
+                    <option value="">（指定なし）</option>
+                    <option value="部長">部長</option>
+                    <option value="課長">課長</option>
+                    <option value="主任">主任</option>
+                    <option value="一般">一般</option>
+                  </select>
+                </div>
+              </div>
+              <div class="url-output" id="urlOut">staff-list.html</div>
+              <div style="margin-top:14px;">
+                <button class="btn btn-primary" id="btnGo">🚀 このURLを開く</button>
+                <span style="font-size:12px; color:#888; margin-left:10px;">※ 実際に staff-list.html に遷移します</span>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <section class="lesson-section" id="answer">
+          <h2 class="lesson-section-title"><span class="sec-icon">✅</span>解答例 / 完成フローテキスト</h2>
+          <div class="card"><div class="card-body" style="font-size:14px; line-height:1.9;">
+            <p>本回のハンズオン課題の完成フローテキストをダウンロードして、PAD 編集画面に貼り付けてください。</p>
+            <a href="answers/lesson-5.txt" class="answer-download" download>
+              <span class="icon">⬇️</span>
+              lesson-5.txt をダウンロード
+            </a>
+          </div></div>
+        </section>
+
+        <section class="lesson-section" id="faq">
+          <h2 class="lesson-section-title"><span class="sec-icon">❓</span>よくある詰まりと FAQ</h2>
+          <div class="lesson-faq"><div class="q">Q1. ポップアップ内の要素がいくら待っても取れない</div><div class="a"><code>&lt;object&gt;</code>/<code>&lt;iframe&gt;</code> 埋め込みの可能性大。F12 で確認し、URL 直接ナビゲートに切り替える。</div></div>
+          <div class="lesson-faq"><div class="q">Q2. 抽出したデータテーブルの列名が文字化けする</div><div class="a">サイト側のヘッダ行が日本語の場合、Excel に書き出した際に文字化けすることがあります。Excel.LaunchExcel で開く際の Encoding を UTF-8 にすると改善することが多いです。</div></div>
+        </section>
+
+        <nav class="lesson-nav">
+          <a href="lesson-4.html" class="prev">第4回 ブラウザ自動化①</a>
+          <a href="lesson-6.html" class="next">第6回 制御構造</a>
+        </nav>
+
+      </main>
+      <footer class="app-footer">© 2025 PAD練習サイト</footer>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/env.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/common.js?v=6"></script>
+  <script>
+    bootstrapPage('lesson-5');
+
+    // URL組み立てシミュレーター（旧 pad-url-navigate.html から正本移植）
+    const simDept = document.getElementById('simDept');
+    const simRole = document.getElementById('simRole');
+    const urlOut = document.getElementById('urlOut');
+    const btnGo = document.getElementById('btnGo');
+    function buildUrl() {
+      const params = new URLSearchParams();
+      if (simDept.value) params.set('dept', simDept.value);
+      if (simRole.value) params.set('role', simRole.value);
+      const qs = params.toString();
+      return 'staff-list.html' + (qs ? '?' + decodeURIComponent(qs) : '');
+    }
+    function update() { urlOut.textContent = buildUrl(); }
+    simDept.onchange = update;
+    simRole.onchange = update;
+    btnGo.onclick = () => { window.location.href = buildUrl(); };
+    update();
+  </script>
+</body>
+</html>

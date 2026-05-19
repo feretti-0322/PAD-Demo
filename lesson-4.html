@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第4回 ブラウザ自動化① | PAD練習サイト</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .handson-callout { border:3px solid #dc2626; background:#fff1f2; border-radius:10px; padding:16px 20px; font-size:14px; line-height:1.9; color:#7f1d1d; margin:20px 0; box-shadow:0 4px 14px rgba(220,38,38,0.18); position:relative; }
+    .handson-callout::before { content:'🎯 ハンズオン'; position:absolute; top:-12px; left:14px; background:#dc2626; color:#fff; font-size:12px; font-weight:800; padding:3px 12px; border-radius:999px; letter-spacing:0.05em; }
+    .handson-callout strong { color:#b91c1c; }
+  </style>
+</head>
+<body>
+  <div class="app-layout">
+    <div id="sidebarContainer"></div>
+    <div class="main-content">
+      <header class="topbar">
+        <div class="topbar-title">🌐 第4回 ブラウザ自動化①（ログイン / クリック）</div>
+        <div class="topbar-user"><span>👤</span><span id="topbarUser">user</span></div>
+      </header>
+      <main class="page-content">
+
+        <section class="lesson-hero">
+          <div class="lesson-tag">LESSON 4 / ブラウザ自動化①</div>
+          <h1>第4回 ブラウザ自動化① 〜WebDriver でログイン＋機密情報テキスト〜</h1>
+          <p>
+            Web ブラウザの自動操作の基礎を <strong>WebDriver 経由前提</strong>で完全に押さえる回です。<br>
+            最終演習で使う<strong>「メール＋暗号化PW＋規約チェック＋ボタン」</strong>のログインフローをここで完成させます。
+          </p>
+          <div class="lesson-meta">
+            <span>🪜 前提：第1回（ChromeDriver 配置完了）／第2回・第3回完了</span>
+            <span>🎯 ゴール：機密情報テキストでPWを保持しログイン成功</span>
+          </div>
+        </section>
+
+        <nav class="lesson-toc">
+          <h3>📑 目次</h3>
+          <ol>
+            <li><a href="#goal">🎯 到達目標</a></li>
+            <li><a href="#prep">🪜 事前準備</a></li>
+            <li><a href="#explain">📖 解説（WebDriver起動／入力／機密情報テキスト）</a></li>
+            <li><a href="#answer">✅ 解答例 / 完成フローテキスト</a></li>
+            <li><a href="#faq">❓ よくある詰まりと FAQ</a></li>
+          </ol>
+        </nav>
+
+        <section class="lesson-section" id="goal">
+          <h2 class="lesson-section-title"><span class="sec-icon">🎯</span>到達目標</h2>
+          <ul class="lesson-goal-list">
+            <li>Chrome WebDriver を起動してデモサイトの URL を開ける</li>
+            <li>メールアドレス／パスワードを入力してログインできる</li>
+            <li>パスワードはベタ書きせず、PAD の<strong>『直接暗号化されたテキストの入力』</strong>機能を使って暗号化テキストとして保持できる</li>
+            <li>利用規約チェックボックス ON・ログインボタンクリックができる</li>
+          </ul>
+        </section>
+
+        <section class="lesson-section" id="prep">
+          <h2 class="lesson-section-title"><span class="sec-icon">🪜</span>事前準備</h2>
+          <div class="card">
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <ul style="margin:0 0 0 20px;">
+                <li><a href="lesson-1.html" style="color:#2c7be5;">第1回</a> で ChromeDriver が <code>%LOCALAPPDATA%\Microsoft\Power Automate Desktop\WebDrivers\</code> に配置済み</li>
+                <li>自分のメール／パスワード（第0回で signup したもの）</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="explain">
+          <h2 class="lesson-section-title"><span class="sec-icon">📖</span>解説</h2>
+
+          <div class="card">
+            <div class="card-header"><h3>4-A. WebDriver でブラウザを起動する</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>「新しい Chrome を起動する」アクションを配置し、<strong>「操作方法」プルダウンで「Webdriver」</strong>を選択。URL には以下のデモサイトのトップを指定します：</p>
+              <div class="code-block">https://feretti0322.github.io/PAD-Demo/</div>
+              <figure class="pad-image-placeholder" data-image-slot="lesson-4/01_webdriver_launch">
+                <span class="placeholder-icon">🖼️</span>
+                「新しい Chrome を起動する」アクションで操作方法=Webdriver・URL=デモサイト を指定している画面<br>
+                <code>data-image-slot="lesson-4/01_webdriver_launch"</code>
+              </figure>
+              <div class="point-block">
+                操作方法プルダウンに「Webdriver」が出ない／起動でエラーになる場合は、<a href="lesson-1.html" style="color:#2c7be5;">第1回</a> の ChromeDriver 配置パスを再確認してください。
+              </div>
+
+              <div class="handson-callout">
+                🛠️ <strong>ハンズオン課題①：</strong>WebDriver 起動でデモサイト <code>https://feretti0322.github.io/PAD-Demo/</code> にアクセスするフローを作りましょう。
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3>4-B. メールアドレスを入力する</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>「<strong>Web ページ内のテキストフィールドに入力する</strong>」アクションで、メール入力欄に自分のアドレスを入れます。UI 要素は「UI 要素の追加」でブラウザから直接ピックします。</p>
+              <figure class="pad-image-placeholder" data-image-slot="lesson-4/02_ui_picker_email">
+                <span class="placeholder-icon">🖼️</span>
+                UI 要素ピッカーでメール入力欄を赤枠で選択している画面<br>
+                <code>data-image-slot="lesson-4/02_ui_picker_email"</code>
+              </figure>
+
+              <div class="handson-callout">
+                🛠️ <strong>ハンズオン課題②：</strong>自分のメールアドレスをメール入力欄に入力するアクションを追加してみましょう。
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3>4-C. パスワードを『直接暗号化されたテキスト』として保持する（必修）</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>通常のテキスト入力欄にパスワードをそのまま書くと、フローを誰かに共有したときに PW も漏洩します。PAD には<strong>テキスト欄横のプルダウン</strong>で<strong>「直接暗号化されたテキストの入力」</strong>という選択肢があり、これを選ぶと値が暗号化されてフロー編集画面でも復元できなくなります。</p>
+              <ol class="instruction-list">
+                <li>「Web ページ内のテキストフィールドに入力する」アクションの設定画面を開く</li>
+                <li>テキスト入力欄の<strong>右側にあるプルダウン</strong>（▼）をクリック</li>
+                <li>「<strong>直接暗号化されたテキストの入力</strong>」を選択する</li>
+                <li>パスワードを入力 → 保存後は暗号化された状態で保持される</li>
+              </ol>
+              <figure class="pad-image-placeholder" data-image-slot="lesson-4/03_encrypted_text_dropdown">
+                <span class="placeholder-icon">🔒</span>
+                テキスト欄右のプルダウンから「直接暗号化されたテキストの入力」を選んでいる画面<br>
+                <code>data-image-slot="lesson-4/03_encrypted_text_dropdown"</code>
+              </figure>
+              <div class="warning-block">
+                <strong>⚠️ 注意：</strong> 暗号化テキストは PAD 内でしか復号できません。フローを共有しても他人がパスワードを盗み見ることはできません。<strong>最終演習ではこの方式が必須</strong>です。
+              </div>
+
+              <div class="handson-callout">
+                🛠️ <strong>ハンズオン課題③：</strong>パスワードを<strong>「直接暗号化されたテキストの入力」</strong>で保持し、PW入力欄に入力するアクションを追加してみましょう。
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3>4-D. チェックボックスON＋ボタンクリック</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <ol style="margin:0 0 0 20px;">
+                <li><strong>Web ページのチェックボックスの状態を設定します</strong>：利用規約チェックボックスを ON</li>
+                <li><strong>Web ページのボタンを押します</strong>：ログインボタンをクリック</li>
+              </ol>
+
+              <div class="handson-callout">
+                🛠️ <strong>ハンズオン課題④（最終課題）：</strong>規約チェックを ON →ログインボタン押下 → ログイン成功で <code>pad-overview.html</code> に遷移することを確認してください。
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3>4-E. ログイン失敗時の動作</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>故意に PW を間違えてログインすると、画面上にエラーメッセージが表示されます。<strong>PAD の初期設定では、何かしらエラーが起きた際は自然に全体中断する仕組み</strong>になっているため、ログイン失敗のときも特別な処理を追加しなくてもフロー全体は止まります。</p>
+              <p>「個別スキップ」「リトライ」など、エラー時の挙動を細かく制御する設計は <a href="lesson-6.html" style="color:#2c7be5;">第6回（制御構造）</a> で扱います。</p>
+            </div>
+          </div>
+
+        </section>
+
+        <section class="lesson-section" id="answer">
+          <h2 class="lesson-section-title"><span class="sec-icon">✅</span>解答例 / 完成フローテキスト</h2>
+          <div class="card">
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>本回のハンズオン課題の完成フローテキストをダウンロードして、PAD 編集画面に貼り付けてください。</p>
+              <a href="answers/lesson-4.txt" class="answer-download" download>
+                <span class="icon">⬇️</span>
+                lesson-4.txt をダウンロード
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="faq">
+          <h2 class="lesson-section-title"><span class="sec-icon">❓</span>よくある詰まりと FAQ</h2>
+
+          <div class="lesson-faq">
+            <div class="q">Q1. UI要素ピッカーで要素を選んでも赤枠が出ない</div>
+            <div class="a">
+              UI 要素ピッカーの赤枠は<strong>ブラウザ拡張機能で PAD が ON になっている Chrome</strong>でないと表示されません。<br>
+              対処法：WebDriver で起動した Chrome に PAD の拡張機能をインストール → その Chrome を<strong>閉じずに「UI 要素取得用ブラウザ」として残しておく</strong>と作業しやすくなります。
+            </div>
+          </div>
+
+          <div class="lesson-faq">
+            <div class="q">Q2. 機密情報テキスト入力欄が見つからない</div>
+            <div class="a">テキスト欄の右側にあるプルダウン（▼）をクリックし、「<strong>直接暗号化されたテキストの入力</strong>」を選択してください。アイコンや鍵マークではなくプルダウンメニューです。</div>
+          </div>
+
+          <div class="lesson-faq">
+            <div class="q">Q3. ログインボタンを押しても遷移しない</div>
+            <div class="a">利用規約チェックボックスを ON し忘れているケースが多発。チェック状態を必ず先に設定すること。</div>
+          </div>
+
+          <div class="lesson-faq">
+            <div class="q">Q4. 自分のメールでログインできない</div>
+            <div class="a">第0回で signup したアカウントを使ってください。パスワード忘れの場合は TA に依頼。</div>
+          </div>
+        </section>
+
+        <nav class="lesson-nav">
+          <a href="lesson-3.html" class="prev">第3回 Excel自動化</a>
+          <a href="lesson-5.html" class="next">第5回 ブラウザ自動化②</a>
+        </nav>
+
+      </main>
+      <footer class="app-footer">© 2025 PAD練習サイト</footer>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/env.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/common.js?v=6"></script>
+  <script>bootstrapPage('lesson-4');</script>
+</body>
+</html>

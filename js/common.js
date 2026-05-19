@@ -34,16 +34,16 @@ function isCompleted(lessonNumber) {
   return (window.__completedLessons || new Set()).has(lessonNumber);
 }
 
-// 学習ページIDと研修回番号の対応
+// 学習ページIDと研修回番号の対応（v6：研修回別ページのみ）
 const LESSON_MAP = {
-  'pad-webdriver': 1,
-  'pad-scraping': 5,
-  'pad-datatable': 5,
-  'pad-url-navigate': 5,
-  'pad-loop': 6,
-  'pad-condition': 6,
-  'pad-error': 6,
-  'pad-subflow': 6,
+  'lesson-0': 0,
+  'lesson-1': 1,
+  'lesson-2': 2,
+  'lesson-3': 3,
+  'lesson-4': 4,
+  'lesson-5': 5,
+  'lesson-6': 6,
+  'lesson-7': 7,
 };
 
 // サイドバー共通HTML生成
@@ -67,37 +67,19 @@ function renderSidebar(activePage, opts) {
     { id: 'cheatsheet', icon: '⚡', label: 'チートシート', href: 'cheatsheet.html' },
   ];
 
+  // v6：「研修回別」1セクションに統合（旧概念別ページの本文は各 lesson に正本移植）
   const learnSections = [
     {
-      name: '事前知識編',
+      name: '研修回別',
       items: [
-        { id: 'pad-overview', icon: '📖', label: 'PADとは', href: 'pad-overview.html' },
-        { id: 'pad-variables', icon: '🔤', label: '変数を学ぼう', href: 'pad-variables.html' },
-        { id: 'pad-variables-eq', icon: '🔢', label: '変数を学ぼう（方程式ver）', href: 'pad-variables-eq.html' },
-      ]
-    },
-    {
-      name: 'セットアップ編',
-      items: [
-        { id: 'pad-setup-install', icon: '⚙️', label: 'インストールと事前準備', href: 'pad-setup-install.html' },
-        { id: 'pad-webdriver', icon: '🚗', label: 'WebDriverと標準起動の違い', href: 'pad-webdriver.html' },
-      ]
-    },
-    {
-      name: 'ブラウザ自動化編',
-      items: [
-        { id: 'pad-scraping', icon: '🕷️', label: 'スクレイピングを学ぼう', href: 'pad-scraping.html' },
-        { id: 'pad-datatable', icon: '📊', label: 'データテーブルを学ぼう', href: 'pad-datatable.html' },
-        { id: 'pad-url-navigate', icon: '🔗', label: 'URL直接ナビゲート', href: 'pad-url-navigate.html' },
-      ]
-    },
-    {
-      name: 'フロー設計編',
-      items: [
-        { id: 'pad-loop', icon: '🔁', label: 'ループを学ぼう', href: 'pad-loop.html' },
-        { id: 'pad-condition', icon: '🔀', label: '条件分岐を学ぼう', href: 'pad-condition.html' },
-        { id: 'pad-error', icon: '🛡️', label: 'エラーハンドリングを学ぼう', href: 'pad-error.html' },
-        { id: 'pad-subflow', icon: '🔧', label: 'サブフローを学ぼう', href: 'pad-subflow.html' },
+        { id: 'lesson-0',     icon: '🚀', label: '第0回 キックオフ',           href: 'lesson-0.html' },
+        { id: 'lesson-1',     icon: '⚙️', label: '第1回 環境セットアップ',     href: 'lesson-1.html' },
+        { id: 'lesson-2',     icon: '🔤', label: '第2回 変数を完全理解',       href: 'lesson-2.html' },
+        { id: 'lesson-3',     icon: '📊', label: '第3回 Excel自動化',          href: 'lesson-3.html' },
+        { id: 'lesson-4',     icon: '🌐', label: '第4回 ブラウザ自動化①',     href: 'lesson-4.html' },
+        { id: 'lesson-5',     icon: '🕷️', label: '第5回 ブラウザ自動化②',     href: 'lesson-5.html' },
+        { id: 'lesson-6',     icon: '🔁', label: '第6回 制御構造',             href: 'lesson-6.html' },
+        { id: 'lesson-7',     icon: '🎯', label: '第7回 総合演習',             href: 'lesson-7.html' },
       ]
     },
   ];
@@ -143,13 +125,19 @@ function renderSidebar(activePage, opts) {
 
   return `
     <aside class="sidebar">
-      <div class="sidebar-brand">
+      <a href="pad-overview.html" class="sidebar-brand" style="text-decoration:none; color:inherit; display:block;">
         <div class="brand-icon">💻</div>
         <h2>PAD練習サイト</h2>
         <div class="brand-sub">Power Automate for Desktop</div>
-      </div>
+      </a>
       <nav class="sidebar-nav">
-        <div class="nav-section">業務デモ</div>
+        <a href="pad-overview.html" class="nav-item ${activePage === 'pad-overview' ? 'active' : ''}">
+          <span class="nav-icon">🏠</span>
+          ホーム（PADとは／ロードマップ）
+        </a>
+        <div class="nav-section" style="margin-top:8px;">学習</div>
+        ${learnSections.map(makeCollapsibleSection).join('')}
+        <div class="nav-section" style="margin-top:8px;">業務デモ</div>
         ${makeNavItems(demoPages)}
         <div class="nav-section" style="margin-top:8px;">スタッフ</div>
         <a href="staff-list.html" class="nav-item ${activePage === 'staff-list' ? 'active' : ''}">
@@ -164,8 +152,6 @@ function renderSidebar(activePage, opts) {
           <span class="nav-icon">➕</span>
           スタッフ追加
         </a>
-        <div class="nav-section" style="margin-top:8px;">学習</div>
-        ${learnSections.map(makeCollapsibleSection).join('')}
         <div class="nav-section" style="margin-top:8px;">リファレンス</div>
         ${makeNavItems(referencePages)}
         ${adminLink}

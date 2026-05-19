@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第1回 環境セットアップ | PAD練習サイト</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .handson-callout { border:3px solid #dc2626; background:#fff1f2; border-radius:10px; padding:16px 20px; font-size:14px; line-height:1.9; color:#7f1d1d; margin:20px 0; box-shadow:0 4px 14px rgba(220,38,38,0.18); position:relative; }
+    .handson-callout::before { content:'🎯 ハンズオン'; position:absolute; top:-12px; left:14px; background:#dc2626; color:#fff; font-size:12px; font-weight:800; padding:3px 12px; border-radius:999px; letter-spacing:0.05em; }
+    .handson-callout strong { color:#b91c1c; }
+  </style>
+</head>
+<body>
+  <div class="app-layout">
+    <div id="sidebarContainer"></div>
+    <div class="main-content">
+      <header class="topbar">
+        <div class="topbar-title">⚙️ 第1回 環境セットアップ</div>
+        <div class="topbar-user"><span>👤</span><span id="topbarUser">user</span></div>
+      </header>
+
+      <main class="page-content">
+
+        <section class="lesson-hero">
+          <div class="lesson-tag">LESSON 1 / 環境セットアップ</div>
+          <h1>第1回 環境セットアップ 〜PAD と Chrome WebDriver を整える〜</h1>
+          <p>
+            全員が「動く環境」を整え、最初のフローを動かして<strong>「自分も自動化した！」</strong>と実感する回です。<br>
+            この回が完了すると、第4回以降のブラウザ自動化フローを全部動かせる土台ができあがります。
+          </p>
+          <div class="lesson-meta">
+            <span>🪜 前提：第0回（キックオフ）でアカウント作成済み</span>
+            <span>🎯 ゴール：ChromeDriver 配置完了＋ログイン体験</span>
+          </div>
+        </section>
+
+        <nav class="lesson-toc">
+          <h3>📑 目次</h3>
+          <ol>
+            <li><a href="#goal">🎯 到達目標</a></li>
+            <li><a href="#prep">🪜 事前準備</a></li>
+            <li><a href="#explain">📖 解説（PAD インストール／ChromeDriver 導入）</a></li>
+            <li><a href="#answer">✅ 解答例 / 完成フローテキスト</a></li>
+            <li><a href="#faq">❓ よくある詰まりと FAQ</a></li>
+          </ol>
+        </nav>
+
+        <section class="lesson-section" id="goal">
+          <h2 class="lesson-section-title"><span class="sec-icon">🎯</span>到達目標</h2>
+          <ul class="lesson-goal-list">
+            <li>PAD を起動し、新しいフローを作成できる</li>
+            <li>「Webページを開く」「メッセージを表示する」フローを単独で組める</li>
+            <li>ChromeDriver をダウンロードし、所定のフォルダ（<code>%LOCALAPPDATA%\Microsoft\Power Automate Desktop\WebDrivers\</code>）に配置できる</li>
+            <li>「新しい Chrome を起動する」アクションの<strong>「操作方法」プルダウンを Webdriver に切り替える</strong>ことができる</li>
+          </ul>
+        </section>
+
+        <section class="lesson-section" id="prep">
+          <h2 class="lesson-section-title"><span class="sec-icon">🪜</span>事前準備</h2>
+          <div class="card">
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>下記が完了していることを確認してください：</p>
+              <ul style="margin:8px 0 0 20px;">
+                <li><a href="lesson-0.html" style="color:#2c7be5;">第0回 キックオフ</a> を視聴済み</li>
+                <li><a href="signup.html" style="color:#2c7be5;">signup.html</a> で自分のアカウントを作成済み（メール＋PW＋表示名）</li>
+                <li>Windows 11 PC が手元にある（Microsoft 職場・学校アカウントでサインイン可能な状態）</li>
+                <li>Chrome ブラウザがインストールされている</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="explain">
+          <h2 class="lesson-section-title"><span class="sec-icon">📖</span>解説</h2>
+
+          <!-- ===== 1-A: PADインストール ===== -->
+          <div class="card">
+            <div class="card-header"><h3>1-A. Power Automate for Desktop をインストールする</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>
+                <strong>Windows 11 には Power Automate for Desktop が標準搭載されています。</strong><br>
+                まずはスタートメニューから起動して、アプリケーションが存在するかを確認しましょう。
+              </p>
+
+              <ol class="instruction-list">
+                <li>スタートメニュー（左下の Windows ロゴ）をクリックする</li>
+                <li>検索バーに「<strong>Power Automate</strong>」と入力して検索する</li>
+                <li>「<strong>Power Automate</strong>」（Microsoft Corporation 製）が表示されたら、それをクリックして起動する</li>
+                <li>Microsoft アカウント（職場・学校アカウント）でサインインする</li>
+              </ol>
+
+              <figure class="pad-image-placeholder" data-image-slot="lesson-1/01_start_menu_search">
+                <span class="placeholder-icon">🖼️</span>
+                スタートメニューで「Power Automate」を検索している様子<br>
+                <code>data-image-slot="lesson-1/01_start_menu_search"</code>
+              </figure>
+
+              <figure class="pad-image-placeholder" data-image-slot="lesson-1/02_signin_work_account">
+                <span class="placeholder-icon">🖼️</span>
+                Microsoft 職場・学校アカウントでのサインイン画面<br>
+                <code>data-image-slot="lesson-1/02_signin_work_account"</code>
+              </figure>
+
+              <div class="point-block">
+                💡 <strong>アプリが見つからない場合</strong><br>
+                Microsoft Store を開き「Power Automate」で検索 →「Power Automate」（Microsoft Corporation 製）の「インストール」をクリックしてください。
+              </div>
+
+              <!-- ハンズオン課題1（1-Aの直後に配置） -->
+              <div class="handson-callout">
+                <strong>ハンズオン課題①：</strong>PAD で新しいフローを作成し、「Webページを開く」アクションを使って <a href="https://feretti0322.github.io/PAD-Demo/" target="_blank" style="color:#065f46;">デモサイトトップページ</a> を<strong>「操作方法 = ブラウザー拡張機能」</strong>で開いてみましょう。
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== 1-B-①: WebDriver比較 ===== -->
+          <div class="card">
+            <div class="card-header"><h3>1-B-①. ChromeDriver vs 標準起動 〜どちらを使うべき？〜</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>PAD には Chrome を起動する方法が2種類あります。本研修では <strong>Chrome WebDriver起動</strong> を必修として使います。その理由をここで理解しましょう。</p>
+
+              <table class="compare-table">
+                <thead>
+                  <tr>
+                    <th>項目</th>
+                    <th>ブラウザー拡張機能</th>
+                    <th>Chrome WebDriver起動</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td class="col-label">PADのアクション名</td><td>新しい Chrome を起動する</td><td>新しい Chrome を起動する</td></tr>
+                  <tr><td class="col-label">仕組み</td><td>すでに起動している Chrome に「割り込む」</td><td>PAD が Chrome を子プロセスとして<strong>完全制御</strong></td></tr>
+                  <tr><td class="col-label">セットアップ</td><td>不要</td><td>ChromeDriver の配置が必要</td></tr>
+                  <tr><td class="col-label">業務サイトでの安定性</td><td class="warn">⚠️ サイトによって要素が取れないことがある</td><td class="recommend">✅ 業務サイトでも安定して動作しやすい</td></tr>
+                  <tr><td class="col-label">本研修での推奨</td><td>△ 学習初期のみ</td><td class="recommend">◎ 必須（第4回以降）</td></tr>
+                </tbody>
+              </table>
+
+              <figure class="pad-image-placeholder" data-image-slot="lesson-1/03_action_operation_dropdown">
+                <span class="placeholder-icon">🖼️</span>
+                「新しい Chrome を起動する」アクション設定の「操作方法」プルダウン<br>
+                <code>data-image-slot="lesson-1/03_action_operation_dropdown"</code>
+              </figure>
+
+              <div class="point-block">
+                <strong>📌 アクション名は同じ、設定で切り替える：</strong> PAD ではどちらも <strong>「新しい Chrome を起動する」</strong> という同じアクションです。設定画面の <strong>「操作方法」</strong> プルダウンで「ブラウザー拡張機能」と「Webdriver」を切り替えます。
+              </div>
+              <div class="point-block">
+                <strong>たとえるなら：</strong> 標準起動は「すでに走っている車に後から乗り込む」方式。WebDriver起動は「PAD が運転席に最初から座る」方式。後者のほうが業務サイトで安定して走れます。
+              </div>
+
+              <!-- ハンズオン課題2（比較直後） -->
+              <div class="handson-callout">
+                <strong>ハンズオン課題②：</strong>課題①で作ったフローの起動アクション設定を開き、<strong>「操作方法 = Webdriver」</strong>に切り替えて再実行してみましょう（次の 1-B-② で ChromeDriver を配置すると正常に動きます）。
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== 1-B-②: ChromeDriver導入5ステップ ===== -->
+          <div class="card">
+            <div class="card-header"><h3>1-B-②. ChromeDriver のインストール手順（5ステップ）</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <ol class="instruction-list">
+                <li>
+                  <div>
+                    <strong>手順1：Chrome のバージョンを確認する</strong><br>
+                    Chrome を開き、アドレスバーに <code>chrome://settings/help</code> と入力する。<br>
+                    バージョン番号（例: <code>138.0.7204.169</code>）をメモする。
+                    <figure class="pad-image-placeholder" data-image-slot="lesson-1/04_chrome_version_check">
+                      <span class="placeholder-icon">🖼️</span>
+                      <code>chrome://settings/help</code> でバージョン表示している画面<br>
+                      <code>data-image-slot="lesson-1/04_chrome_version_check"</code>
+                    </figure>
+                  </div>
+                </li>
+                <li>
+                  <div>
+                    <strong>手順2：対応する ChromeDriver をダウンロードする</strong><br>
+                    公式 ChromeDriver ページ（ <a href="https://developer.chrome.com/docs/chromedriver" target="_blank" style="color:#2c7be5;">https://developer.chrome.com/docs/chromedriver</a> ）にアクセスする。<br>
+                    Chrome ブラウザのバージョンと一致するバージョンを選択（通常、最初の3つの数字が一致していれば OK）。<br>
+                    <code>win-x64</code> アーキテクチャ用の ZIP をダウンロード。
+                    <figure class="pad-image-placeholder" data-image-slot="lesson-1/05_chromedriver_download_page">
+                      <span class="placeholder-icon">🖼️</span>
+                      ChromeDriver 公式ダウンロードページ（win-x64 を選んでいる箇所）<br>
+                      <code>data-image-slot="lesson-1/05_chromedriver_download_page"</code>
+                    </figure>
+                  </div>
+                </li>
+                <li>
+                  <div>
+                    <strong>手順3：ダウンロードした ZIP ファイルを解凍する</strong><br>
+                    ZIP ファイル（例：<code>chromedriver-win64.zip</code>）を右クリック →「すべて展開」を選択。展開先は既定のままで OK。<code>chromedriver-win64\chromedriver.exe</code> ができる。
+                    <figure class="pad-image-placeholder" data-image-slot="lesson-1/06_zip_extract">
+                      <span class="placeholder-icon">🖼️</span>
+                      ZIP の「すべて展開」コンテキストメニュー<br>
+                      <code>data-image-slot="lesson-1/06_zip_extract"</code>
+                    </figure>
+                  </div>
+                </li>
+                <li>
+                  <div>
+                    <strong>手順4：Power Automate Desktop 用のフォルダを作成する</strong><br>
+                    エクスプローラーを開き、アドレスバーに以下を貼り付けて Enter：<br>
+                    <div class="code-block" style="margin-top:6px;">%LOCALAPPDATA%\Microsoft\Power Automate Desktop</div>
+                    フォルダー内で右クリック →「新規作成」→「フォルダー」を選択。<br>
+                    フォルダー名を <code>WebDrivers</code> にする（<strong>大文字・小文字を正確に</strong>）。
+                    <figure class="pad-image-placeholder" data-image-slot="lesson-1/07_create_webdrivers_folder">
+                      <span class="placeholder-icon">🖼️</span>
+                      WebDrivers フォルダを新規作成している画面<br>
+                      <code>data-image-slot="lesson-1/07_create_webdrivers_folder"</code>
+                    </figure>
+                  </div>
+                </li>
+                <li>
+                  <div>
+                    <strong>手順5：chromedriver.exe を配置する</strong><br>
+                    手順3で解凍したフォルダから <code>chromedriver.exe</code> をコピー → 手順4で作成した <code>WebDrivers</code> フォルダに貼り付ける。<br><br>
+                    最終的なフォルダー構成：
+                    <div class="code-block" style="margin-top:6px;">AppData
+ └ Local
+   └ Microsoft
+     └ Power Automate Desktop
+       └ WebDrivers
+         └ chromedriver.exe</div>
+                    <figure class="pad-image-placeholder" data-image-slot="lesson-1/08_chromedriver_placed">
+                      <span class="placeholder-icon">🖼️</span>
+                      WebDrivers フォルダ内に chromedriver.exe が配置された最終状態<br>
+                      <code>data-image-slot="lesson-1/08_chromedriver_placed"</code>
+                    </figure>
+                  </div>
+                </li>
+              </ol>
+
+              <!-- ハンズオン課題3（5ステップ完了直後） -->
+              <div class="handson-callout">
+                <strong>ハンズオン課題③：</strong>「メッセージを表示する」アクションを課題①／②のフローに連結し、<strong>「業務効率化、始まる！」</strong>と表示してみましょう。WebDriver 起動で動くことを確認してください。
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== 1-B-③: バージョン不一致警告 ===== -->
+          <div class="card">
+            <div class="card-header"><h3>1-B-③. バージョン不一致に注意</h3></div>
+            <div class="card-body">
+              <div class="warning-block">
+                <strong>⚠️ 注意：</strong> Chrome は自動更新されます。ChromeDriver のバージョンが古くなると、ある日突然フローが動かなくなります。<br>
+                月に1回、Chrome のバージョンを確認して ChromeDriver を更新する運用を推奨します。<br>
+                典型的な症状：「ChromeDriver と Chrome のバージョンが一致しません」というエラーメッセージ。
+              </div>
+            </div>
+          </div>
+
+          <div class="summary-card">
+            <h4>📝 3行まとめ（1-B）</h4>
+            <ol>
+              <li>PAD の「新しい Chrome を起動する」アクションは「操作方法」プルダウンで <strong>標準起動</strong>と <strong>WebDriver起動</strong>を切り替える。業務サイト対応では後者が本命。</li>
+              <li>ChromeDriver は <code>%LOCALAPPDATA%\Microsoft\Power Automate Desktop\WebDrivers\chromedriver.exe</code> に配置すれば PAD が自動で読み込んでくれる。</li>
+              <li>Chrome の自動更新でバージョン乖離が起きるため、月次で点検する運用が必要。</li>
+            </ol>
+          </div>
+
+        </section>
+
+        <section class="lesson-section" id="answer">
+          <h2 class="lesson-section-title"><span class="sec-icon">✅</span>解答例 / 完成フローテキスト</h2>
+          <div class="card">
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>本回のハンズオン課題の完成フローテキストをダウンロードして、PAD 編集画面に貼り付けてください。</p>
+              <a href="answers/lesson-1.txt" class="answer-download" download>
+                <span class="icon">⬇️</span>
+                lesson-1.txt をダウンロード
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="faq">
+          <h2 class="lesson-section-title"><span class="sec-icon">❓</span>よくある詰まりと FAQ</h2>
+
+          <div class="lesson-faq">
+            <div class="q">Q1. スタートメニューで検索しても「Power Automate」が出てこない</div>
+            <div class="a">Microsoft Store を開き「Power Automate」で検索 →「Power Automate」（Microsoft Corporation 製）の「インストール」をクリックしてください。</div>
+          </div>
+
+          <div class="lesson-faq">
+            <div class="q">Q2. ChromeDriver を入れたのに「バージョンが一致しません」エラーが出る</div>
+            <div class="a"><code>chrome://settings/help</code> で Chrome の最新バージョン番号を再確認し、最初の3桁（例: <code>138.0.7204</code>）が一致する ChromeDriver を再ダウンロードして上書き配置してください。</div>
+          </div>
+
+          <div class="lesson-faq">
+            <div class="q">Q3. WebDrivers フォルダを作ったのに PAD が認識しない</div>
+            <div class="a">フォルダ名のスペルを確認してください（<code>WebDrivers</code>、大文字小文字を含めて正確に）。配置先パスが <code>%LOCALAPPDATA%\Microsoft\Power Automate Desktop\WebDrivers\</code> であることを再確認。</div>
+          </div>
+
+          <div class="lesson-faq">
+            <div class="q">Q4. 「操作方法」プルダウンに「Webdriver」が出てこない</div>
+            <div class="a">PAD のバージョンが古い可能性があります。Microsoft Store から最新版に更新してください。</div>
+          </div>
+        </section>
+
+        <nav class="lesson-nav">
+          <a href="lesson-0.html" class="prev">第0回 キックオフ</a>
+          <a href="lesson-2.html" class="next">第2回 変数を完全理解</a>
+        </nav>
+
+      </main>
+      <footer class="app-footer">© 2025 PAD練習サイト</footer>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/env.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/common.js?v=6"></script>
+  <script>bootstrapPage('lesson-1');</script>
+</body>
+</html>

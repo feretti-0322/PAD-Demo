@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第0回 キックオフ | PAD練習サイト</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-layout">
+    <div id="sidebarContainer"></div>
+    <div class="main-content">
+      <header class="topbar">
+        <div class="topbar-title">🚀 第0回 キックオフ</div>
+        <div class="topbar-user"><span>👤</span><span id="topbarUser">user</span></div>
+      </header>
+      <main class="page-content">
+
+        <section class="lesson-hero">
+          <div class="lesson-tag">LESSON 0 / キックオフ</div>
+          <h1>第0回 キックオフ 〜PADで何が変わるのか〜</h1>
+          <p>
+            本研修のゴール（プロフィールシート一括出力フロー）の完成イメージを<strong>動画レベル</strong>で焼き付け、<br>
+            最終演習で何を作るかをイメージしてから第1回に進むための回です。
+          </p>
+          <div class="lesson-meta">
+            <span>🎯 ゴール：アカウント作成完了＋完成動画視聴</span>
+          </div>
+        </section>
+
+        <nav class="lesson-toc">
+          <h3>📑 目次</h3>
+          <ol>
+            <li><a href="#goal">🎯 到達目標</a></li>
+            <li><a href="#explain">📖 解説（PADとは／完成動画／研修ロードマップ）</a></li>
+            <li><a href="#handson">🛠️ ハンズオン課題</a></li>
+            <li><a href="#answer">✅ アカウント作成手順</a></li>
+            <li><a href="#faq">❓ よくある詰まりと FAQ</a></li>
+          </ol>
+        </nav>
+
+        <section class="lesson-section" id="goal">
+          <h2 class="lesson-section-title"><span class="sec-icon">🎯</span>到達目標</h2>
+          <ul class="lesson-goal-list">
+            <li>本研修のゴール（最終演習フロー）の完成イメージを動画レベルで把握している</li>
+            <li>ホーム（PADとは／研修ロードマップ）を見て、全8回で何を学ぶかを理解している</li>
+            <li>signup.html から自分のアカウント作成までを当日中に完了している</li>
+          </ul>
+        </section>
+
+        <section class="lesson-section" id="explain">
+          <h2 class="lesson-section-title"><span class="sec-icon">📖</span>解説</h2>
+
+          <div class="card">
+            <div class="card-header"><h3>0-A. PAD（Power Automate for Desktop）とは</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>PAD は <strong>Microsoft が提供する RPA（業務自動化）ツール</strong>です。Windows 11 に標準搭載されており、追加費用なしで全社員が使えます。</p>
+              <p>「Excel を開いて、セルに値を書き込んで、保存する」「ブラウザを開いて、ログインして、検索結果をスクレイピングする」といった<strong>「決まった手順の繰り返し作業」</strong>を、人間の代わりに PAD が実行してくれます。</p>
+              <div class="point-block">
+                <strong>生成AI（ChatGPT 等）との違い：</strong> 生成AI は「指示の解釈」に揺れがあり毎回少しずつ違う結果を返します。PAD は<strong>「決めた手順通りに毎回 100% 同じ動作」</strong>を保証します。業務の本番運用では再現性が圧倒的に重要です。
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3>0-B. 完成動画 〜プロフィールシート一括出力フロー〜</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>第7回（総合演習）で受講者全員が組み上げるフローの完成動画を視聴します。10名分のプロフィールシート Excel が <strong>15秒で生成される</strong>様子をまず体感してください。</p>
+              <figure class="pad-image-placeholder" data-image-slot="lesson-0/01_final_flow_demo">
+                <span class="placeholder-icon">🎬</span>
+                <strong>動画差し込み枠</strong><br>
+                最終演習フローの完成動画（ブラウザ起動 → ログイン → 一覧取得 → 詳細スクレイピング → Excel 一括出力）<br>
+                <code>data-image-slot="lesson-0/01_final_flow_demo"</code>
+              </figure>
+              <figure class="pad-image-placeholder" data-image-slot="lesson-0/02_output_folder">
+                <span class="placeholder-icon">📁</span>
+                生成された日時フォルダの中に「氏名_ID.xlsx」が整然と並んでいるスクリーンショット<br>
+                <code>data-image-slot="lesson-0/02_output_folder"</code>
+              </figure>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3>0-C. 研修ロードマップ（全8回）</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>サイドバー上部の「<strong>🏠 ホーム（PADとは／ロードマップ）</strong>」を開くと、全8回のロードマップが表示されます。各回の四角をクリックすると対応する lesson ページに遷移できます。</p>
+              <ul style="margin:8px 0 0 20px;">
+                <li><strong>第0回</strong> キックオフ（今ここ）</li>
+                <li><strong>第1回</strong> 環境セットアップ（PAD導入 / WebDriver）</li>
+                <li><strong>第2回</strong> 変数を完全理解</li>
+                <li><strong>第3回</strong> Excel自動化</li>
+                <li><strong>第4回</strong> ブラウザ自動化①（ログイン / クリック）</li>
+                <li><strong>第5回</strong> ブラウザ自動化②（スクレイピング / URL直）</li>
+                <li><strong>第6回</strong> 制御構造（ループ / 分岐 / 例外 / サブフロー）</li>
+                <li><strong>第7回</strong> 総合演習（プロフィール一括出力）</li>
+              </ul>
+            </div>
+          </div>
+
+        </section>
+
+        <section class="lesson-section" id="handson">
+          <h2 class="lesson-section-title"><span class="sec-icon">🛠️</span>ハンズオン課題</h2>
+          <div class="card">
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <ol style="margin:0 0 0 20px;">
+                <li><strong>課題1：</strong><a href="signup.html" style="color:#2c7be5;">signup.html</a> から自分のアカウントを作成する（メール＋PW＋表示名）</li>
+                <li><strong>課題2：</strong>作成したアカウントで <a href="index.html" style="color:#2c7be5;">index.html</a> からログインし、ホームのロードマップを見て第1回をクリックして lesson-1 が開くことを確認する</li>
+              </ol>
+            </div>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="answer">
+          <h2 class="lesson-section-title"><span class="sec-icon">✅</span>アカウント作成手順</h2>
+          <div class="card">
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <ol class="instruction-list">
+                <li><a href="signup.html" style="color:#2c7be5;">signup.html</a> を開く</li>
+                <li>「メールアドレス」「パスワード（8文字以上）」「表示名（社内で識別できる名前）」を入力</li>
+                <li>「新規登録」ボタンをクリック</li>
+                <li><strong>登録したメールアドレス宛に届く認証メール</strong>を開き、本文中のリンクをクリックする</li>
+                <li>認証が完了したら <a href="index.html" style="color:#2c7be5;">index.html</a> に戻り、登録したメール／パスワードでログインする</li>
+              </ol>
+              <figure class="pad-image-placeholder" data-image-slot="lesson-0/03_signup_form">
+                <span class="placeholder-icon">🖼️</span>
+                signup.html の入力フォーム画面<br>
+                <code>data-image-slot="lesson-0/03_signup_form"</code>
+              </figure>
+              <figure class="pad-image-placeholder" data-image-slot="lesson-0/04_verify_email">
+                <span class="placeholder-icon">✉️</span>
+                認証メールの例（本文中のリンクをクリックする箇所）<br>
+                <code>data-image-slot="lesson-0/04_verify_email"</code>
+              </figure>
+            </div>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="faq">
+          <h2 class="lesson-section-title"><span class="sec-icon">❓</span>よくある詰まりと FAQ</h2>
+          <div class="lesson-faq">
+            <div class="q">Q1. 登録時に「このメールはすでに登録されています」と出る</div>
+            <div class="a">過去に研修でアカウントを作成済みの可能性があります。<a href="index.html" style="color:#2c7be5;">index.html</a> からログインを試してください。パスワードを忘れた場合は TA に問い合わせてください。</div>
+          </div>
+          <div class="lesson-faq">
+            <div class="q">Q2. パスワードを設定してもエラーになる</div>
+            <div class="a">パスワードは8文字以上必要です。半角英数字のみで設定してください（記号は不要）。</div>
+          </div>
+        </section>
+
+        <nav class="lesson-nav">
+          <a href="pad-overview.html" class="prev">🏠 ホームに戻る</a>
+          <a href="lesson-1.html" class="next">第1回 環境セットアップ</a>
+        </nav>
+
+      </main>
+      <footer class="app-footer">© 2025 PAD練習サイト</footer>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/env.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/common.js?v=6"></script>
+  <script>bootstrapPage('lesson-0');</script>
+</body>
+</html>

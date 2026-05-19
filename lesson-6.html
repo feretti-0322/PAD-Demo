@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第6回 制御構造 | PAD練習サイト</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .compare-table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 10px; }
+    .compare-table th, .compare-table td { border: 1px solid #e0e6ed; padding: 12px 14px; text-align: left; vertical-align: top; line-height: 1.7; }
+    .compare-table th { background: #1a3a5c; color: #fff; }
+    .compare-table .stop { background: #fef2f2; color: #991b1b; font-weight: 700; }
+    .compare-table .skip { background: #f0fdf4; color: #065f46; font-weight: 700; }
+    .compare-table .col-label { background: #f4f6f9; font-weight: 700; color: #1a3a5c; width: 24%; }
+    .compare-table .bad { background: #fef2f2; color: #991b1b; }
+    .compare-table .good { background: #f0fdf4; color: #065f46; }
+
+    /* ループデモ */
+    .demo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 16px; }
+    .demo-panel { background: #f9fafb; border: 2px solid #e0e6ed; border-radius: 8px; padding: 16px; min-height: 280px; }
+    .demo-label { font-size: 14px; font-weight: 700; color: #1a3a5c; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 2px solid #e0e6ed; }
+    .demo-item { background: #fff; border: 1px solid #e0e6ed; border-radius: 4px; padding: 8px 12px; margin: 6px 0; font-size: 13px; opacity: 0; transform: translateY(8px); transition: opacity .25s, transform .25s; }
+    .demo-item.show { opacity: 1; transform: translateY(0); }
+    .demo-item.dup { background: #fef2f2; border-color: #fca5a5; color: #991b1b; }
+    .demo-item.sub { background: #eff6ff; border-color: #93c5fd; color: #1d4ed8; font-weight: 700; }
+    .demo-controls { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+    .demo-time { font-size: 12px; color: #888; margin-top: 8px; }
+
+    /* FOR EACH デモ */
+    .fe-table { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 13px; }
+    .fe-table th { padding: 8px 10px; border: 1px solid #e0e6ed; text-align: left; background: #1a3a5c; color: #fff; }
+    .fe-table td { padding: 8px 10px; border: 1px solid #e0e6ed; transition: background .3s; }
+
+    /* IF シミュレーター */
+    .threshold-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 10px; margin-bottom: 16px; }
+    .threshold-table th, .threshold-table td { border: 1px solid #e0e6ed; padding: 8px 12px; text-align: left; }
+    .threshold-table th { background: #1a3a5c; color: #fff; }
+    .threshold-table td:first-child { font-weight: 700; }
+    .sim-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 14px; align-items: start; }
+    .sim-input label { display:block; font-size:13px; color:#444; margin-bottom:6px; }
+    .sim-input input { width: 100%; padding: 10px 12px; border: 1px solid #d0d7de; border-radius: 6px; font-size: 14px; }
+    .sim-result { background: #f9fafb; border: 2px solid #e0e6ed; border-radius: 8px; padding: 18px; min-height: 120px; }
+    .sim-years { font-size: 28px; font-weight: 700; color: #1a3a5c; margin-bottom: 12px; }
+    .badge { display: inline-block; padding: 6px 14px; border-radius: 999px; color: #fff; font-weight: 700; font-size: 14px; }
+    .badge.veteran { background: #00b274; }
+    .badge.mid { background: #f6a623; }
+    .badge.new { background: #2c7be5; }
+
+    /* Switch シミュレーター */
+    .switch-sim-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 14px; align-items: start; }
+    .switch-code { background: #1e293b; border-radius: 6px; padding: 12px 14px; font-family: monospace; font-size: 13px; line-height: 2; }
+    .switch-code .line { color: #7dd3fc; display: block; white-space: pre; }
+    .switch-code .case-line { color: #7dd3fc; display: block; white-space: pre; border-radius: 4px; padding: 0 6px; margin: 0 -6px; transition: background .2s, color .2s; }
+    .switch-code .case-line.active { background: #fef3c7; color: #92400e; }
+    .switch-code .action-line { color: #94a3b8; display: block; white-space: pre; border-radius: 4px; padding: 0 6px; margin: 0 -6px; transition: background .2s, color .2s; }
+    .switch-code .action-line.active { background: #f0fdf4; color: #065f46; font-weight: 700; }
+    .switch-code .default-line { color: #7dd3fc; display: block; white-space: pre; border-radius: 4px; padding: 0 6px; margin: 0 -6px; transition: background .2s, color .2s; }
+    .switch-code .default-line.active { background: #fef3c7; color: #92400e; }
+    .switch-input label { display: block; font-size: 13px; color: #444; margin-bottom: 6px; }
+    .switch-input select { width: 100%; padding: 10px 12px; border: 1px solid #d0d7de; border-radius: 6px; font-size: 14px; background: #fff; }
+    .switch-result { background: #f9fafb; border: 2px solid #e0e6ed; border-radius: 8px; padding: 18px; margin-top: 14px; min-height: 60px; font-size: 14px; color: #333; line-height: 1.8; }
+    .switch-result .match-label { font-size: 12px; color: #888; margin-bottom: 6px; }
+    .switch-result .match-case { font-weight: 700; color: #1a3a5c; font-size: 15px; }
+    .switch-result .match-action { margin-top: 8px; background: #f0fdf4; border-left: 3px solid #00b274; padding: 8px 12px; border-radius: 0 6px 6px 0; font-size: 13px; color: #065f46; }
+
+    /* エラーシミュレーター */
+    .sim-log { background: #f9fafb; border: 2px solid #e0e6ed; border-radius: 8px; padding: 14px; min-height: 200px; font-family: monospace; font-size: 13px; line-height: 1.8; }
+    .log-line { padding: 2px 0; opacity: 0; transform: translateX(-6px); transition: opacity .2s, transform .2s; }
+    .log-line.show { opacity: 1; transform: translateX(0); }
+    .log-ok { color: #065f46; }
+    .log-err { color: #b91c1c; font-weight: 700; }
+    .log-skip { color: #92400e; }
+    .log-stop { color: #b91c1c; font-weight: 700; background: #fef2f2; padding: 4px 8px; border-radius: 4px; display: inline-block; }
+    .log-info { color: #555; }
+
+    .handson-callout { border:3px solid #dc2626; background:#fff1f2; border-radius:10px; padding:16px 20px; font-size:14px; line-height:1.9; color:#7f1d1d; margin:20px 0; box-shadow:0 4px 14px rgba(220,38,38,0.18); position:relative; }
+    .handson-callout::before { content:'🎯 ハンズオン'; position:absolute; top:-12px; left:14px; background:#dc2626; color:#fff; font-size:12px; font-weight:800; padding:3px 12px; border-radius:999px; letter-spacing:0.05em; }
+    .handson-callout strong { color:#b91c1c; }
+  </style>
+</head>
+<body>
+  <div class="app-layout">
+    <div id="sidebarContainer"></div>
+    <div class="main-content">
+      <header class="topbar">
+        <div class="topbar-title">🔁 第6回 制御構造（ループ／分岐／例外／サブフロー）</div>
+        <div class="topbar-user"><span>👤</span><span id="topbarUser">user</span></div>
+      </header>
+      <main class="page-content">
+
+        <section class="lesson-hero">
+          <div class="lesson-tag">LESSON 6 / 制御構造</div>
+          <h1>第6回 制御構造 〜FOR EACH / IF / LABEL+GOTO / BLOCK ERROR / サブフロー〜</h1>
+          <p>
+            最終演習で必要となる<strong>5要素</strong>を一気に押さえる回です：①FOR EACH ②条件分岐 ③LABEL+GOTO ④BLOCK/ON BLOCK ERROR＋エラーログ追記 ⑤サブフロー分割。
+          </p>
+          <div class="lesson-meta">
+            <span>🪜 前提：第5回（スクレイピング）完了</span>
+            <span>🎯 ゴール：Main＋3サブフロー構造の骨格が組める</span>
+          </div>
+        </section>
+
+        <nav class="lesson-toc">
+          <h3>📑 目次</h3>
+          <ol>
+            <li><a href="#goal">🎯 到達目標</a></li>
+            <li><a href="#prep">🪜 事前準備</a></li>
+            <li><a href="#explain">📖 解説（ループ／IF／LABEL+GOTO／エラー／サブフロー）</a></li>
+            <li><a href="#answer">✅ 解答例 / 完成フローテキスト</a></li>
+            <li><a href="#faq">❓ よくある詰まりと FAQ</a></li>
+          </ol>
+        </nav>
+
+        <section class="lesson-section" id="goal">
+          <h2 class="lesson-section-title"><span class="sec-icon">🎯</span>到達目標</h2>
+          <ul class="lesson-goal-list">
+            <li><code>For each</code> でデータテーブルを順次処理できる</li>
+            <li><code>If</code> で条件分岐を作れる</li>
+            <li><code>ラベル</code> ＋ <code>移動先に移動する</code> でページング走破ループを書ける</li>
+            <li><code>ブロックエラー発生時</code> で局所例外時の挙動を制御できる</li>
+            <li>ブロックエラー発生時から別サブフローを呼び出してエラー処理を一元化できる</li>
+            <li><code>最後のエラーを取得</code> で例外メッセージを取得し、<code>テキストをファイルに書き込む</code> で UTF-8・追記モード・改行付きでログに書き出せる</li>
+            <li>「全体中断するエラー」と「個別スキップするエラー」を使い分けられる</li>
+            <li>処理を機能単位でサブフロー化できる（Main / ブラウザ操作 / スタッフ詳細スクレイピング / エラー）</li>
+          </ul>
+        </section>
+
+        <section class="lesson-section" id="prep">
+          <h2 class="lesson-section-title"><span class="sec-icon">🪜</span>事前準備</h2>
+          <div class="card"><div class="card-body" style="font-size:14px; line-height:1.9;">
+            <ul style="margin:0 0 0 20px;">
+              <li><a href="lesson-5.html" style="color:#2c7be5;">第5回</a> のスクレイピングフローが手元にある</li>
+              <li>第4回のログインフローが手元にある</li>
+            </ul>
+          </div></div>
+        </section>
+
+        <section class="lesson-section" id="explain">
+          <h2 class="lesson-section-title"><span class="sec-icon">📖</span>解説</h2>
+
+          <!-- ===== 6-A: ループ ===== -->
+          <div class="card">
+            <div class="card-header"><h3>6-A-①. FOR と FOR EACH の違い</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <table class="compare-table">
+                <thead><tr><th>アクション</th><th>使いどころ</th><th>例</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>Loop（FOR）</strong></td><td>回数を指定して繰り返す</td><td>「メッセージを10回表示する」</td></tr>
+                  <tr><td><strong>For each（FOR EACH）</strong></td><td>リストやデータテーブルの中身を1件ずつ処理する</td><td>「スタッフ一覧の全員に対してプロフィールシートを作る」</td></tr>
+                </tbody>
+              </table>
+              <div class="point-block">
+                <strong>覚え方：</strong> 数えるのが「回数」なら <strong>Loop</strong>、数えるのが「件数」なら <strong>For each</strong>。実務では <strong>FOR EACH</strong> が圧倒的に多く、「データテーブルを1件ずつ処理する」場面がほぼすべてを占めます。
+              </div>
+              <figure class="pad-image-placeholder" data-image-slot="lesson-6/01_foreach_block">
+                <span class="placeholder-icon">🖼️</span>
+                FOR EACH ブロック内に処理を配置している画面<br>
+                <code>data-image-slot="lesson-6/01_foreach_block"</code>
+              </figure>
+            </div>
+          </div>
+
+          <!-- 6-A-②: FOR EACH + DataTable -->
+          <div class="card">
+            <div class="card-header"><h3>6-A-②. FOR EACHとデータテーブルの組み合わせ</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>スクレイピングで取得したスタッフ一覧（DataTable）を1行ずつ処理する典型パターンです。▼ FOR EACH が DataTable を上から1行ずつ処理する様子を確認してみましょう。</p>
+              <div class="demo-controls" style="margin-top:8px;">
+                <button class="btn btn-primary" id="btnForEachStart">▶ FOR EACH スタート</button>
+                <button class="btn btn-outline" id="btnForEachReset">🔄 リセット</button>
+              </div>
+              <table class="fe-table">
+                <thead>
+                  <tr><th>ID</th><th>氏名</th><th>部署</th><th style="width:130px;">状態</th></tr>
+                </thead>
+                <tbody id="feBody"></tbody>
+              </table>
+
+              <div class="handson-callout">
+                🛠️ <strong>ハンズオン課題①：</strong>派遣スタッフ10名分のデータテーブルで FOR EACH を回し、全員に「処理完了」のメッセージを表示するフローを作ってみましょう。
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== 6-B: 条件分岐（IF） ===== -->
+          <div class="card">
+            <div class="card-header"><h3>6-B-①. IF / ELSE IF / ELSE の基本構文</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <div class="code-block">IF 勤続年数 &gt;= 10 THEN
+    ベテランリストに追加
+ELSE IF 勤続年数 &gt;= 5 THEN
+    中堅リストに追加
+ELSE
+    新人リストに追加
+END</div>
+              <div class="point-block">
+                PAD では「If」「Else if」「Else」の3アクションを組み合わせて使います。演算子は <code>=</code> <code>&gt;</code> <code>&lt;</code> <code>&gt;=</code> <code>&lt;=</code> <code>&lt;&gt;</code> から選ぶだけの GUI 操作。
+              </div>
+            </div>
+          </div>
+
+          <!-- 6-B-②: IFシミュレーター -->
+          <div class="card">
+            <div class="card-header"><h3>6-B-②. インタラクティブデモ：スタッフ振り分けシミュレーター（IF）</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>入社日を入力して「判定する」を押すと、勤続年数に応じてベテラン／中堅／新人のいずれかに振り分けられます。</p>
+              <table class="threshold-table">
+                <thead><tr><th>区分</th><th>条件</th></tr></thead>
+                <tbody>
+                  <tr><td><span class="badge veteran" style="font-size:12px;">ベテラン</span></td><td>勤続年数が <strong>10年以上</strong></td></tr>
+                  <tr><td><span class="badge mid" style="font-size:12px;">中堅</span></td><td>勤続年数が <strong>5年以上10年未満</strong></td></tr>
+                  <tr><td><span class="badge new" style="font-size:12px;">新人</span></td><td>勤続年数が <strong>5年未満</strong></td></tr>
+                </tbody>
+              </table>
+              <div class="sim-grid">
+                <div class="sim-input">
+                  <label for="joinDate">入社日</label>
+                  <input type="date" id="joinDate" value="2015-04-01">
+                  <button class="btn btn-primary" id="btnJudge" style="margin-top:12px;">判定する</button>
+                </div>
+                <div class="sim-result" id="simResult">
+                  <div style="color:#888; font-size:13px;">入社日を選んで「判定する」を押してください</div>
+                </div>
+              </div>
+
+              <div class="handson-callout">
+                🛠️ <strong>ハンズオン課題②：</strong>入社年数が10年以上のスタッフだけ Excel に記録する IF 分岐フローを作ってみましょう。
+              </div>
+            </div>
+          </div>
+
+          <!-- 6-B-③: Switch -->
+          <div class="card">
+            <div class="card-header"><h3>6-B-③. Switch の使いどころ（インタラクティブデモ付き）</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>比較する値が1つの変数で、取りうるパターンが複数ある場合は <strong>Switch</strong> を使うとスッキリ書けます。ただし PAD の Switch は<strong>完全一致のみ対応</strong>のため、「以上・以下」のような範囲比較は IF を使ってください。</p>
+              <p>部署を選ぶと、Switch のどの CASE に一致するかがコード上でハイライトされます。</p>
+              <div class="switch-sim-grid">
+                <div class="switch-code">
+                  <span class="line">SWITCH 部署</span>
+                  <span class="case-line" id="case-営業部">    CASE "営業部":</span>
+                  <span class="action-line" id="action-営業部">        営業部用の処理</span>
+                  <span class="case-line" id="case-総務部">    CASE "総務部":</span>
+                  <span class="action-line" id="action-総務部">        総務部用の処理</span>
+                  <span class="case-line" id="case-開発部">    CASE "開発部":</span>
+                  <span class="action-line" id="action-開発部">        開発部用の処理</span>
+                  <span class="case-line" id="case-管理部">    CASE "管理部":</span>
+                  <span class="action-line" id="action-管理部">        管理部用の処理</span>
+                  <span class="default-line" id="case-default">    DEFAULT:</span>
+                  <span class="action-line" id="action-default">        その他の処理</span>
+                  <span class="line">END</span>
+                </div>
+                <div class="switch-input">
+                  <label for="switchDept">部署を選択</label>
+                  <select id="switchDept">
+                    <option value="">（未選択）</option>
+                    <option value="営業部">営業部</option>
+                    <option value="総務部">総務部</option>
+                    <option value="開発部">開発部</option>
+                    <option value="管理部">管理部</option>
+                    <option value="その他">その他（DEFAULT）</option>
+                  </select>
+                  <div class="switch-result" id="switchResult" style="margin-top:14px;">
+                    <div style="color:#888; font-size:13px;">部署を選択してください</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== 6-C: LABEL + GOTO（旧 lesson-5 から移管） ===== -->
+          <div class="card">
+            <div class="card-header"><h3>6-C. ラベル ＋ 移動先に移動する 〜ページング全走破〜</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>第5回のページング走破は、本来「次へボタンが押せる間は繰り返す」というループ。これを<strong>ラベル ＋ 移動先に移動する</strong>で書きます。</p>
+              <ol style="margin:0 0 0 20px;">
+                <li><code>新しいデータテーブルを作成</code>（蓄積用の空データテーブル）</li>
+                <li><code>ラベル</code>（名前：移動先）を置く</li>
+                <li><code>Webページからデータを抽出する</code>（MaxWebPagesToProcess=1、1ページぶん抽出）</li>
+                <li><code>Webページ上の要素の詳細を取得します</code>（次へボタンの <code>Disabled</code> 属性を取得）</li>
+                <li><code>データテーブルをマージする</code>（抽出結果を蓄積データテーブルに追記）</li>
+                <li><code>If ページャー要素 &lt;&gt; 'true' Then</code>
+                  <ul style="margin:6px 0 0 0; padding-left:20px;">
+                    <li><code>Webページのボタンを押します</code>（次へ）</li>
+                    <li><code>移動先に移動する</code>（=ラベルに戻る）</li>
+                  </ul>
+                </li>
+                <li><code>End</code></li>
+              </ol>
+              <figure class="pad-image-placeholder" data-image-slot="lesson-6/02_label_goto">
+                <span class="placeholder-icon">🖼️</span>
+                ラベル＋移動先に移動する でページング走破している PAD 画面<br>
+                <code>data-image-slot="lesson-6/02_label_goto"</code>
+              </figure>
+              <div class="point-block">
+                <strong>紙の地図でイメージ：</strong> ラベル = 目印を置く／移動先に移動する = その目印に戻る。条件を満たす限り戻ってくる仕組みです。<br>
+                ※ 「次へボタンの <code>Disabled</code> 属性が <code>true</code> になったらループ終了」が終端判定のキモ。
+              </div>
+
+              <div class="handson-callout">
+                🛠️ <strong>ハンズオン課題③：</strong>第5回のページング走破を、<strong>ラベル ＋ 移動先に移動する</strong>構造で書き直してみましょう。
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== 6-D: エラー処理 ===== -->
+          <div class="card">
+            <div class="card-header"><h3>6-D-①. エラー（例外処理）の基本</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>PAD では、エラーが発生したときの<strong>エラー発生時の挙動</strong>をあらかじめ設定しておけます。設定方法は2つ：</p>
+              <ul style="margin:0 0 0 20px;">
+                <li><strong>各アクション個別に設定</strong>：アクションを<strong>ダブルクリック</strong> →「エラー発生時」</li>
+                <li><strong>「ブロックエラー発生時」</strong>：FOR EACH ループなど複数アクションをまとめて管理（おすすめ）</li>
+              </ul>
+              <p style="margin-top:10px;">どちらでも、発生時の挙動を以下から選びます：</p>
+              <ul style="margin:0 0 0 20px;">
+                <li><strong>新しいルールを追加 → サブフローへ</strong>：エラー時に独自のリカバリ処理を呼び出す</li>
+                <li><strong>フローを停止</strong>：そこで全体中断（既定）</li>
+                <li><strong>次の繰り返しに移動</strong>：ループ内で個別スキップ</li>
+                <li><strong>ブロックの末尾へ</strong>：エラーをなかったことにして続行</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3>6-D-②. 「全体中断 vs 個別スキップ」の使い分け（最重要）</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <table class="compare-table">
+                <thead><tr><th>場面</th><th>設定</th><th>理由</th></tr></thead>
+                <tbody>
+                  <tr><td>ログインに失敗した場合</td><td class="stop">フロー全体を中断</td><td>ログインできなければ以降の全処理が無意味になるため</td></tr>
+                  <tr><td>700名処理中に1名だけページが取れなかった</td><td class="skip">次の繰り返しに移る</td><td>残り699名分の処理を続けるべき。その1名はログに記録</td></tr>
+                </tbody>
+              </table>
+              <div class="point-block">
+                <strong>設計判断のキモ：</strong>「このエラーが起きたら、続けても意味があるか？」を毎回問う。意味があれば<strong>個別スキップ</strong>、意味がなければ<strong>全体中断</strong>。
+              </div>
+            </div>
+          </div>
+
+          <!-- 6-D-③: エラーシミュレーター -->
+          <div class="card">
+            <div class="card-header"><h3>6-D-③. インタラクティブデモ：エラー動作シミュレーター</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>5名分のスタッフを処理します。<strong>3件目（ST003）は必ずエラーを起こす</strong>設定です。「全体中断モード」と「個別スキップモード」で結果がどう変わるか見てみましょう。</p>
+              <div class="demo-controls">
+                <button class="btn btn-danger" id="btnStop">⛔ 全体中断モード</button>
+                <button class="btn btn-success" id="btnSkip">⏭️ 個別スキップモード</button>
+                <button class="btn btn-outline" id="btnClear">🔄 ログクリア</button>
+              </div>
+              <div class="sim-log" id="simLog">
+                <div style="color:#888;">モードを選んで実行してください</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6-D-④: ログ記録 -->
+          <div class="card">
+            <div class="card-header"><h3>6-D-④. エラーログの記録（テキストをファイルに書き込む・追記モード）</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>スキップしたスタッフの ID や発生時刻をテキストファイルに追記しておくと、後から「何件成功・何件失敗」が一目でわかります。<strong>エラー処理専用のサブフローを用意</strong>しておき、ブロックエラー発生時にそのサブフローを呼び出すのが定番です。</p>
+              <ol class="instruction-list">
+                <li><strong>エラーログ書き込み用のサブフロー</strong>を作成（名前は「エラー」がおすすめ）</li>
+                <li><strong>ブロックエラー発生時 で「新しいルールを追加 → サブフローへ」</strong>を選択。あわせて「次の繰り返しに移動」も設定</li>
+                <li>サブフロー内で <strong>現在の日時を取得 → 最後のエラーを取得 → テキストをファイルに書き込む</strong> を実行</li>
+                <li>「ファイルが存在する場合」の挙動を必ず <strong>「内容を追加する」</strong> に設定（上書きにすると前のログが消える）</li>
+              </ol>
+              <figure class="pad-image-placeholder" data-image-slot="lesson-6/03_block_on_error_setting">
+                <span class="placeholder-icon">🖼️</span>
+                ブロックエラー発生時の「新しいルールを追加 → サブフローへ」設定画面<br>
+                <code>data-image-slot="lesson-6/03_block_on_error_setting"</code>
+              </figure>
+
+              <div class="handson-callout">
+                🛠️ <strong>ハンズオン課題④：</strong>「エラー」サブフローを作り、現在の日時取得 → 最後のエラーを取得 → テキストをファイルに書き込む（UTF-8・追記・改行）で <code>エラー.txt</code> に1行追記するフローを実装してみましょう。
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== 6-E: サブフロー ===== -->
+          <div class="card">
+            <div class="card-header"><h3>6-E-①. サブフロー 〜「使い回せる処理のかたまり」〜</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <table class="compare-table">
+                <thead><tr><th>比較軸</th><th>サブフローなし</th><th>サブフローあり</th></tr></thead>
+                <tbody>
+                  <tr><td class="col-label">メインフローの行数</td><td class="bad">長くなる</td><td class="good">コンパクトに収まる</td></tr>
+                  <tr><td class="col-label">処理の見通し</td><td class="bad">何をしているか分かりにくい</td><td class="good">「ログイン → 取得 → 出力」と一目でわかる</td></tr>
+                  <tr><td class="col-label">修正コスト</td><td class="bad">ログイン処理を3か所直す必要がある</td><td class="good">サブフロー1か所を直すだけ</td></tr>
+                  <tr><td class="col-label">再利用</td><td class="bad">コピー&amp;ペーストで増殖する</td><td class="good">呼び出すだけ</td></tr>
+                </tbody>
+              </table>
+              <p style="margin-top:14px;">最終演習では<strong>4本のサブフロー構成</strong>に分割します：</p>
+              <ul style="margin:8px 0 0 20px;">
+                <li><strong>Main</strong>：日時計算・出力フォルダ作成・部署×役職選択ダイアログ・サブフロー呼び出し</li>
+                <li><strong>ブラウザ操作</strong>：ChromeDriver 起動・ログイン</li>
+                <li><strong>スタッフ詳細スクレイピング</strong>：一覧抽出（ページング）→ FOR EACH → 詳細取得 → Excel 出力</li>
+                <li><strong>エラー</strong>：BLOCK エラー発生時に呼ばれる。エラーログを追記</li>
+              </ul>
+              <figure class="pad-image-placeholder" data-image-slot="lesson-6/04_subflow_tabs">
+                <span class="placeholder-icon">🖼️</span>
+                PAD のサブフロータブ：Main／ブラウザ操作／スタッフ詳細スクレイピング／エラー の4本が並んでいる画面<br>
+                <code>data-image-slot="lesson-6/04_subflow_tabs"</code>
+              </figure>
+            </div>
+          </div>
+
+          <!-- 6-E-②: サブフローデモ -->
+          <div class="card">
+            <div class="card-header"><h3>6-E-②. インタラクティブデモ：サブフローで処理を整理しよう</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>メインフローの「ベタ書き版」と「サブフロー版」を並べて、見通しの違いを体感してみましょう。</p>
+              <div class="demo-controls">
+                <button class="btn btn-primary" id="btnRunSub">▶ サブフロー版を実行</button>
+                <button class="btn btn-outline" id="btnResetSub">🔄 リセット</button>
+              </div>
+              <div class="demo-grid">
+                <div class="demo-panel">
+                  <div class="demo-label">❌ ベタ書き版（サブフローなし）</div>
+                  <div id="rawList"></div>
+                </div>
+                <div class="demo-panel">
+                  <div class="demo-label">✅ サブフロー版</div>
+                  <div id="subList"></div>
+                </div>
+              </div>
+
+              <div class="handson-callout">
+                🛠️ <strong>ハンズオン課題⑤：</strong>「ログイン処理」「スタッフ情報スクレイピング処理」「エラー処理」をそれぞれ独立サブフローに切り出してみましょう。
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <section class="lesson-section" id="answer">
+          <h2 class="lesson-section-title"><span class="sec-icon">✅</span>解答例 / 完成フローテキスト</h2>
+          <div class="card"><div class="card-body" style="font-size:14px; line-height:1.9;">
+            <p>本回のハンズオン課題の完成フローテキストをダウンロードして、PAD 編集画面に貼り付けてください。</p>
+            <a href="answers/lesson-6.txt" class="answer-download" download>
+              <span class="icon">⬇️</span>
+              lesson-6.txt をダウンロード
+            </a>
+          </div></div>
+        </section>
+
+        <section class="lesson-section" id="faq">
+          <h2 class="lesson-section-title"><span class="sec-icon">❓</span>よくある詰まりと FAQ</h2>
+          <div class="lesson-faq"><div class="q">Q1. ラベル／移動先 がメニューに見当たらない</div><div class="a">「フローコントロール」カテゴリの中にあります。検索ボックスに <code>ラベル</code> と入れると早い。</div></div>
+          <div class="lesson-faq"><div class="q">Q2. ブロックエラー発生時でサブフローを呼んだ後にループが止まる</div><div class="a">エラー発生時の動作を「<strong>次の繰り返しに移動</strong>」に設定し忘れているのが原因。</div></div>
+          <div class="lesson-faq"><div class="q">Q3. エラー.txt が毎回上書きされてしまう</div><div class="a">テキストをファイルに書き込む の「ファイルが存在する場合」を<strong>「内容を追加する」</strong>に変更してください。</div></div>
+        </section>
+
+        <nav class="lesson-nav">
+          <a href="lesson-5.html" class="prev">第5回 ブラウザ自動化②</a>
+          <a href="lesson-7.html" class="next">第7回 総合演習</a>
+        </nav>
+
+      </main>
+      <footer class="app-footer">© 2025 PAD練習サイト</footer>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/env.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/common.js?v=6"></script>
+  <script>
+    bootstrapPage('lesson-6');
+
+    function initInteractives() {
+      // ===== FOR EACH デモ =====
+      const feRows = STAFF_DATA.slice(0, 5);
+      const feBody = document.getElementById('feBody');
+      const btnForEachStart = document.getElementById('btnForEachStart');
+      const btnForEachReset = document.getElementById('btnForEachReset');
+      function renderFeTable() {
+        feBody.innerHTML = feRows.map(r => `
+          <tr data-id="${r.id}">
+            <td>${r.id}</td><td>${r.name}</td><td>${r.dept}</td>
+            <td class="status" style="color:#888;">―</td>
+          </tr>
+        `).join('');
+      }
+      btnForEachStart.onclick = async () => {
+        btnForEachStart.disabled = true;
+        renderFeTable();
+        const trs = feBody.querySelectorAll('tr');
+        for (const tr of trs) {
+          tr.style.background = '#fef3c7';
+          tr.querySelector('.status').textContent = '⏳ 処理中...';
+          tr.querySelector('.status').style.color = '#b45309';
+          await new Promise(r => setTimeout(r, 800));
+          tr.style.background = '#f0fdf4';
+          tr.querySelector('.status').textContent = '✓ 完了';
+          tr.querySelector('.status').style.color = '#065f46';
+          tr.querySelector('.status').style.fontWeight = '700';
+          await new Promise(r => setTimeout(r, 200));
+        }
+        btnForEachStart.disabled = false;
+      };
+      btnForEachReset.onclick = renderFeTable;
+      renderFeTable();
+
+      // ===== IF シミュレーター =====
+      document.getElementById('btnJudge').onclick = () => {
+        const v = document.getElementById('joinDate').value;
+        const result = document.getElementById('simResult');
+        if (!v) { result.innerHTML = '<div style="color:#e63757;">入社日を選んでください</div>'; return; }
+        const join = new Date(v);
+        const now = new Date('2026-05-18');
+        let years = now.getFullYear() - join.getFullYear();
+        const m = now.getMonth() - join.getMonth();
+        if (m < 0 || (m === 0 && now.getDate() < join.getDate())) years--;
+        let badge, label;
+        if (years >= 10)     { badge = 'veteran'; label = 'ベテラン（10年以上）'; }
+        else if (years >= 5) { badge = 'mid';     label = '中堅（5年以上）'; }
+        else                 { badge = 'new';     label = '新人（5年未満）'; }
+        result.innerHTML = `
+          <div class="sim-years">${years} 年</div>
+          <div style="font-size:13px; color:#666; margin-bottom:10px;">→ 判定結果</div>
+          <span class="badge ${badge}">${label}</span>
+        `;
+      };
+
+      // ===== Switch シミュレーター =====
+      const CASES = ['営業部', '総務部', '開発部', '管理部'];
+      const ACTION_LABELS = {
+        '営業部': '営業部用の処理を実行', '総務部': '総務部用の処理を実行',
+        '開発部': '開発部用の処理を実行', '管理部': '管理部用の処理を実行',
+        'default': 'DEFAULT：その他の処理を実行',
+      };
+      function clearHighlights() {
+        CASES.forEach(c => {
+          document.getElementById('case-' + c).classList.remove('active');
+          document.getElementById('action-' + c).classList.remove('active');
+        });
+        document.getElementById('case-default').classList.remove('active');
+        document.getElementById('action-default').classList.remove('active');
+      }
+      document.getElementById('switchDept').onchange = function() {
+        clearHighlights();
+        const val = this.value;
+        const result = document.getElementById('switchResult');
+        if (!val) {
+          result.innerHTML = '<div style="color:#888; font-size:13px;">部署を選択してください</div>';
+          return;
+        }
+        const isKnown = CASES.includes(val);
+        const key = isKnown ? val : 'default';
+        if (isKnown) {
+          document.getElementById('case-' + key).classList.add('active');
+          document.getElementById('action-' + key).classList.add('active');
+        } else {
+          document.getElementById('case-default').classList.add('active');
+          document.getElementById('action-default').classList.add('active');
+        }
+        const caseLabel = isKnown ? `CASE "${val}"` : 'DEFAULT';
+        result.innerHTML = `
+          <div class="match-label">一致したケース</div>
+          <div class="match-case">${caseLabel}</div>
+          <div class="match-action">${ACTION_LABELS[key]}</div>
+        `;
+      };
+
+      // ===== エラーシミュレーター =====
+      const errTargets = STAFF_DATA.slice(0, 5);
+      const log = document.getElementById('simLog');
+      const btnStop = document.getElementById('btnStop');
+      const btnSkip = document.getElementById('btnSkip');
+      const btnClear = document.getElementById('btnClear');
+      function addLine(text, cls = '') {
+        const div = document.createElement('div');
+        div.className = `log-line ${cls}`;
+        div.innerHTML = text;
+        log.appendChild(div);
+        requestAnimationFrame(() => div.classList.add('show'));
+      }
+      const wait = ms => new Promise(r => setTimeout(r, ms));
+      async function runSim(mode) {
+        btnStop.disabled = true; btnSkip.disabled = true;
+        log.innerHTML = '';
+        addLine(`▶ 実行モード: ${mode === 'stop' ? '全体中断' : '個別スキップ'}`, 'log-info');
+        let okCount = 0, skipCount = 0;
+        for (let i = 0; i < errTargets.length; i++) {
+          const s = errTargets[i];
+          addLine(`[${i + 1}/5] ${s.id} ${s.name} を処理中...`, 'log-info');
+          await wait(500);
+          if (s.id === 'ST003') {
+            addLine(`✗ エラー発生: ${s.id} の詳細ページが取得できません`, 'log-err');
+            if (mode === 'stop') {
+              addLine(`<span class="log-stop">⛔ フロー全体を中断しました（残り${errTargets.length - i - 1}件は未処理）</span>`, '');
+              btnStop.disabled = false; btnSkip.disabled = false;
+              return;
+            } else {
+              addLine(`⏭️ ${s.id} をスキップしてエラーログに記録 → 次へ`, 'log-skip');
+              skipCount++;
+              await wait(400);
+              continue;
+            }
+          }
+          addLine(`✓ ${s.id} ${s.name} 処理完了`, 'log-ok');
+          okCount++;
+          await wait(300);
+        }
+        addLine(`━━━━━━━━━━━━━━━━━━━━`, 'log-info');
+        addLine(`完了: 成功 ${okCount} 件 / スキップ ${skipCount} 件`, 'log-info');
+        btnStop.disabled = false; btnSkip.disabled = false;
+      }
+      btnStop.onclick = () => runSim('stop');
+      btnSkip.onclick = () => runSim('skip');
+      btnClear.onclick = () => { log.innerHTML = '<div style="color:#888;">モードを選んで実行してください</div>'; };
+
+      // ===== サブフローデモ =====
+      const rawItems = [
+        { text: '1. Chromeを起動する',                               dup: false },
+        { text: '2. URLを開く（index.html）',                        dup: false },
+        { text: '3. IDを入力する',                                   dup: false },
+        { text: '4. PWを入力する',                                   dup: false },
+        { text: '5. ログインボタンをクリックする',                   dup: false },
+        { text: '6. staff-list.html を開く',                         dup: false },
+        { text: '7. テーブルをスクレイピングする',                   dup: false },
+        { text: '8. staff-detail.html?id=... を開く',                dup: false },
+        { text: '9. IDを入力する　← 3の繰り返し',                   dup: true  },
+        { text: '10. PWを入力する　← 4の繰り返し',                  dup: true  },
+        { text: '11. ログインボタンをクリックする　← 5の繰り返し',  dup: true  },
+        { text: '12. …（以下ベタ書き続く）',                        dup: true  },
+      ];
+      const subItems = [
+        { text: '1. 🔧「ログイン処理」を実行',           sub: true  },
+        { text: '2. 一覧テーブルをスクレイピングする',    sub: false },
+        { text: '3. 🔧「ログイン処理」を実行（再利用）', sub: true  },
+      ];
+      const rawList = document.getElementById('rawList');
+      const subList = document.getElementById('subList');
+      const btnRunSub = document.getElementById('btnRunSub');
+      const btnResetSub = document.getElementById('btnResetSub');
+      rawItems.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'demo-item show' + (item.dup ? ' dup' : '');
+        div.textContent = item.text;
+        rawList.appendChild(div);
+      });
+      btnRunSub.onclick = async () => {
+        btnRunSub.disabled = true;
+        subList.innerHTML = '';
+        for (const item of subItems) {
+          const div = document.createElement('div');
+          div.className = 'demo-item' + (item.sub ? ' sub' : '');
+          div.textContent = item.text;
+          subList.appendChild(div);
+          requestAnimationFrame(() => div.classList.add('show'));
+          await new Promise(r => setTimeout(r, 600));
+        }
+        btnRunSub.disabled = false;
+      };
+      btnResetSub.onclick = () => {
+        subList.innerHTML = '';
+        btnRunSub.disabled = false;
+      };
+    }
+    if (typeof STAFF_DATA !== 'undefined') initInteractives();
+    else setTimeout(initInteractives, 300);
+  </script>
+</body>
+</html>
