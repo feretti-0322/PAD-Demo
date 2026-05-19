@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>第0回 キックオフ | PAD練習サイト</title>
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    .handson-callout { border:3px solid #dc2626; background:#fff1f2; border-radius:10px; padding:16px 20px; font-size:14px; line-height:1.9; color:#7f1d1d; margin:20px 0; box-shadow:0 4px 14px rgba(220,38,38,0.18); position:relative; }
+    .handson-callout::before { content:'🎯 ハンズオン'; position:absolute; top:-12px; left:14px; background:#dc2626; color:#fff; font-size:12px; font-weight:800; padding:3px 12px; border-radius:999px; letter-spacing:0.05em; }
+    .handson-callout strong { color:#b91c1c; }
+  </style>
 </head>
 <body>
   <div class="app-layout">
@@ -21,10 +26,10 @@
           <h1>第0回 キックオフ 〜PADで何が変わるのか〜</h1>
           <p>
             本研修のゴール（プロフィールシート一括出力フロー）の完成イメージを<strong>動画レベル</strong>で焼き付け、<br>
-            最終演習で何を作るかをイメージしてから第1回に進むための回です。
+            最終演習で何を作るかをイメージしてから第1回に進むための回です。あわせて、PAD のインストールとサインインまで完了させます。
           </p>
           <div class="lesson-meta">
-            <span>🎯 ゴール：アカウント作成完了＋完成動画視聴</span>
+            <span>🎯 ゴール：PAD インストール＋サインイン＋完成動画視聴</span>
           </div>
         </section>
 
@@ -33,8 +38,8 @@
           <ol>
             <li><a href="#goal">🎯 到達目標</a></li>
             <li><a href="#explain">📖 解説（PADとは／完成動画／研修ロードマップ）</a></li>
+            <li><a href="#install">⚙️ PAD のインストール〜サインイン</a></li>
             <li><a href="#handson">🛠️ ハンズオン課題</a></li>
-            <li><a href="#answer">✅ アカウント作成手順</a></li>
             <li><a href="#faq">❓ よくある詰まりと FAQ</a></li>
           </ol>
         </nav>
@@ -44,7 +49,8 @@
           <ul class="lesson-goal-list">
             <li>本研修のゴール（最終演習フロー）の完成イメージを動画レベルで把握している</li>
             <li>ホーム（PADとは／研修ロードマップ）を見て、全8回で何を学ぶかを理解している</li>
-            <li>signup.html から自分のアカウント作成までを当日中に完了している</li>
+            <li><strong>Power Automate for Desktop をインストールし、Microsoft 職場・学校アカウントでサインインできている</strong></li>
+            <li>デモサイトの自分のアカウントが作成済みである（別資料の手順書を参照）</li>
           </ul>
         </section>
 
@@ -99,39 +105,80 @@
 
         </section>
 
+        <section class="lesson-section" id="install">
+          <h2 class="lesson-section-title"><span class="sec-icon">⚙️</span>PAD のインストール〜サインイン</h2>
+
+          <div class="card">
+            <div class="card-header"><h3>0-D. Power Automate for Desktop を起動する</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>
+                <strong>Windows 11 には Power Automate for Desktop が標準搭載されています。</strong><br>
+                まずはスタートメニューから起動して、アプリケーションが存在するかを確認しましょう。
+              </p>
+
+              <ol class="instruction-list">
+                <li>スタートメニュー（左下の Windows ロゴ）をクリックする</li>
+                <li>検索バーに「<strong>Power Automate</strong>」と入力して検索する</li>
+                <li>「<strong>Power Automate</strong>」（Microsoft Corporation 製）が表示されたら、それをクリックして起動する</li>
+              </ol>
+
+              <figure class="pad-image-placeholder" data-image-slot="lesson-0/05_start_menu_search">
+                <span class="placeholder-icon">🖼️</span>
+                スタートメニューで「Power Automate」を検索している様子<br>
+                <code>data-image-slot="lesson-0/05_start_menu_search"</code>
+              </figure>
+
+              <div class="point-block">
+                💡 <strong>アプリが見つからない場合</strong><br>
+                Microsoft Store を開き「Power Automate」で検索 →「Power Automate」（Microsoft Corporation 製）の「インストール」をクリックしてください。
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3>0-E. Microsoft 職場・学校アカウントでサインインする</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>PAD 起動後、Microsoft アカウントでのサインインが求められます。<strong>個人の Microsoft アカウントではなく、会社のメールアドレス</strong>（職場・学校アカウント）でサインインしてください。</p>
+
+              <ol class="instruction-list">
+                <li>サインイン画面で会社のメールアドレスを入力</li>
+                <li>パスワードを入力してサインインを完了する</li>
+                <li>初回起動時は使用許諾やテレメトリの確認画面が出ることがある（既定のままで OK）</li>
+              </ol>
+
+              <figure class="pad-image-placeholder" data-image-slot="lesson-0/06_signin_work_account">
+                <span class="placeholder-icon">🖼️</span>
+                Microsoft 職場・学校アカウントでのサインイン画面<br>
+                <code>data-image-slot="lesson-0/06_signin_work_account"</code>
+              </figure>
+
+              <div class="point-block">
+                <strong>📌 職場アカウントが手元にない場合：</strong> Windows の「設定 → アカウント → 職場または学校用アカウントの追加」から、会社のメールアドレス（name@company.com 形式）で登録してください。
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3>0-F. デモサイトのアカウント作成（別資料）</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>本研修で進捗バッジや事例集投稿に使う <strong>デモサイトのアカウント作成手順</strong>は、研修事務局から配布される PowerPoint 資料（<code>成果物_アカウント作成手順.pptx</code>）を参照してください。</p>
+              <p>研修当日までに、配布された手順書に沿って <strong>signup → 認証メール承認 → ログイン確認</strong> までを済ませておいてください。</p>
+              <div class="warning-block">
+                <strong>⚠️ 注意：</strong> アカウント作成が完了していないと、進捗バッジ付与や事例集投稿などの機能が使えません。第1回までに必ず完了させてください。
+              </div>
+            </div>
+          </div>
+
+        </section>
+
         <section class="lesson-section" id="handson">
           <h2 class="lesson-section-title"><span class="sec-icon">🛠️</span>ハンズオン課題</h2>
           <div class="card">
             <div class="card-body" style="font-size:14px; line-height:1.9;">
               <ol style="margin:0 0 0 20px;">
-                <li><strong>課題1：</strong><a href="signup.html" style="color:#2c7be5;">signup.html</a> から自分のアカウントを作成する（メール＋PW＋表示名）</li>
-                <li><strong>課題2：</strong>作成したアカウントで <a href="index.html" style="color:#2c7be5;">index.html</a> からログインし、ホームのロードマップを見て第1回をクリックして lesson-1 が開くことを確認する</li>
+                <li><strong>課題1：</strong>PAD をスタートメニューから起動し、Microsoft 職場アカウントでサインインを完了する</li>
+                <li><strong>課題2：</strong>配布された PowerPoint 手順書を見ながら、デモサイトのアカウントを作成し、<a href="index.html" style="color:#2c7be5;">index.html</a> からログインしてホームのロードマップを表示する</li>
               </ol>
-            </div>
-          </div>
-        </section>
-
-        <section class="lesson-section" id="answer">
-          <h2 class="lesson-section-title"><span class="sec-icon">✅</span>アカウント作成手順</h2>
-          <div class="card">
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <ol class="instruction-list">
-                <li><a href="signup.html" style="color:#2c7be5;">signup.html</a> を開く</li>
-                <li>「メールアドレス」「パスワード（8文字以上）」「表示名（社内で識別できる名前）」を入力</li>
-                <li>「新規登録」ボタンをクリック</li>
-                <li><strong>登録したメールアドレス宛に届く認証メール</strong>を開き、本文中のリンクをクリックする</li>
-                <li>認証が完了したら <a href="index.html" style="color:#2c7be5;">index.html</a> に戻り、登録したメール／パスワードでログインする</li>
-              </ol>
-              <figure class="pad-image-placeholder" data-image-slot="lesson-0/03_signup_form">
-                <span class="placeholder-icon">🖼️</span>
-                signup.html の入力フォーム画面<br>
-                <code>data-image-slot="lesson-0/03_signup_form"</code>
-              </figure>
-              <figure class="pad-image-placeholder" data-image-slot="lesson-0/04_verify_email">
-                <span class="placeholder-icon">✉️</span>
-                認証メールの例（本文中のリンクをクリックする箇所）<br>
-                <code>data-image-slot="lesson-0/04_verify_email"</code>
-              </figure>
             </div>
           </div>
         </section>
@@ -139,12 +186,16 @@
         <section class="lesson-section" id="faq">
           <h2 class="lesson-section-title"><span class="sec-icon">❓</span>よくある詰まりと FAQ</h2>
           <div class="lesson-faq">
-            <div class="q">Q1. 登録時に「このメールはすでに登録されています」と出る</div>
-            <div class="a">過去に研修でアカウントを作成済みの可能性があります。<a href="index.html" style="color:#2c7be5;">index.html</a> からログインを試してください。パスワードを忘れた場合は TA に問い合わせてください。</div>
+            <div class="q">Q1. スタートメニューで検索しても「Power Automate」が出てこない</div>
+            <div class="a">Microsoft Store を開き「Power Automate」で検索 →「Power Automate」（Microsoft Corporation 製）の「インストール」をクリックしてください。</div>
           </div>
           <div class="lesson-faq">
-            <div class="q">Q2. パスワードを設定してもエラーになる</div>
-            <div class="a">パスワードは8文字以上必要です。半角英数字のみで設定してください（記号は不要）。</div>
+            <div class="q">Q2. サインイン時に「このアカウントは使用できません」と出る</div>
+            <div class="a">個人 Microsoft アカウントを使っている可能性があります。会社支給のメール（職場・学校アカウント）でサインインし直してください。</div>
+          </div>
+          <div class="lesson-faq">
+            <div class="q">Q3. デモサイトのアカウント作成手順書がどこにあるか分からない</div>
+            <div class="a">研修事務局から配布された <code>成果物_アカウント作成手順.pptx</code> を参照してください。配布されていない場合は TA に問い合わせてください。</div>
           </div>
         </section>
 

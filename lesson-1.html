@@ -9,6 +9,11 @@
     .handson-callout { border:3px solid #dc2626; background:#fff1f2; border-radius:10px; padding:16px 20px; font-size:14px; line-height:1.9; color:#7f1d1d; margin:20px 0; box-shadow:0 4px 14px rgba(220,38,38,0.18); position:relative; }
     .handson-callout::before { content:'🎯 ハンズオン'; position:absolute; top:-12px; left:14px; background:#dc2626; color:#fff; font-size:12px; font-weight:800; padding:3px 12px; border-radius:999px; letter-spacing:0.05em; }
     .handson-callout strong { color:#b91c1c; }
+    .screen-anatomy { display:grid; grid-template-columns:1fr; gap:14px; margin:14px 0; }
+    .screen-anatomy .panel { border:1px solid #d8dee9; border-radius:8px; padding:14px 16px; background:#f9fbfd; }
+    .screen-anatomy .panel h4 { margin:0 0 8px; color:#1f2937; font-size:14px; }
+    .screen-anatomy .panel p { margin:0; font-size:13px; line-height:1.8; color:#374151; }
+    .screen-anatomy .panel .tag { display:inline-block; background:#2c7be5; color:#fff; font-size:11px; padding:2px 8px; border-radius:999px; margin-right:6px; font-weight:700; }
   </style>
 </head>
 <body>
@@ -24,14 +29,14 @@
 
         <section class="lesson-hero">
           <div class="lesson-tag">LESSON 1 / 環境セットアップ</div>
-          <h1>第1回 環境セットアップ 〜PAD と Chrome WebDriver を整える〜</h1>
+          <h1>第1回 環境セットアップ 〜PAD 画面の把握と Chrome WebDriver の導入〜</h1>
           <p>
-            全員が「動く環境」を整え、最初のフローを動かして<strong>「自分も自動化した！」</strong>と実感する回です。<br>
-            この回が完了すると、第4回以降のブラウザ自動化フローを全部動かせる土台ができあがります。
+            第0回でインストール済みの PAD を実際に開き、<strong>各画面の役割を把握</strong>します。<br>
+            あわせて Chrome WebDriver を導入し、業務サイトでも安定動作する自動化フローの土台を完成させます。
           </p>
           <div class="lesson-meta">
-            <span>🪜 前提：第0回（キックオフ）でアカウント作成済み</span>
-            <span>🎯 ゴール：ChromeDriver 配置完了＋ログイン体験</span>
+            <span>🪜 前提：第0回（キックオフ）で PAD インストール＋サインイン完了</span>
+            <span>🎯 ゴール：PAD 画面の把握＋ChromeDriver 配置完了</span>
           </div>
         </section>
 
@@ -40,7 +45,8 @@
           <ol>
             <li><a href="#goal">🎯 到達目標</a></li>
             <li><a href="#prep">🪜 事前準備</a></li>
-            <li><a href="#explain">📖 解説（PAD インストール／ChromeDriver 導入）</a></li>
+            <li><a href="#screens">🖥️ PAD の画面構成を知る</a></li>
+            <li><a href="#explain">📖 解説（ChromeDriver 導入）</a></li>
             <li><a href="#answer">✅ 解答例 / 完成フローテキスト</a></li>
             <li><a href="#faq">❓ よくある詰まりと FAQ</a></li>
           </ol>
@@ -49,8 +55,9 @@
         <section class="lesson-section" id="goal">
           <h2 class="lesson-section-title"><span class="sec-icon">🎯</span>到達目標</h2>
           <ul class="lesson-goal-list">
-            <li>PAD を起動し、新しいフローを作成できる</li>
-            <li>「Webページを開く」「メッセージを表示する」フローを単独で組める</li>
+            <li>PAD の <strong>コンソール画面</strong>（マイフロー一覧）と <strong>フローデザイナー画面</strong>（編集画面）の違いを説明できる</li>
+            <li>フローデザイナーの<strong>「アクションペイン」「ワークスペース」「変数ペイン」「UI 要素ペイン」</strong>それぞれの役割を理解している</li>
+            <li>新しいフローを作成し、「Webページを開く」「メッセージを表示する」アクションを単独で組める</li>
             <li>ChromeDriver をダウンロードし、所定のフォルダ（<code>%LOCALAPPDATA%\Microsoft\Power Automate Desktop\WebDrivers\</code>）に配置できる</li>
             <li>「新しい Chrome を起動する」アクションの<strong>「操作方法」プルダウンを Webdriver に切り替える</strong>ことができる</li>
           </ul>
@@ -62,61 +69,145 @@
             <div class="card-body" style="font-size:14px; line-height:1.9;">
               <p>下記が完了していることを確認してください：</p>
               <ul style="margin:8px 0 0 20px;">
-                <li><a href="lesson-0.html" style="color:#2c7be5;">第0回 キックオフ</a> を視聴済み</li>
-                <li><a href="signup.html" style="color:#2c7be5;">signup.html</a> で自分のアカウントを作成済み（メール＋PW＋表示名）</li>
-                <li>Windows 11 PC が手元にある（Microsoft 職場・学校アカウントでサインイン可能な状態）</li>
+                <li><a href="lesson-0.html" style="color:#2c7be5;">第0回 キックオフ</a> で <strong>PAD のインストール＋Microsoft 職場アカウントでのサインイン</strong>が完了済み</li>
+                <li>配布された PowerPoint 手順書を見ながらデモサイトのアカウントを作成済み</li>
                 <li>Chrome ブラウザがインストールされている</li>
               </ul>
             </div>
           </div>
         </section>
 
-        <section class="lesson-section" id="explain">
-          <h2 class="lesson-section-title"><span class="sec-icon">📖</span>解説</h2>
+        <!-- ===== 新セクション：PAD 画面構成 ===== -->
+        <section class="lesson-section" id="screens">
+          <h2 class="lesson-section-title"><span class="sec-icon">🖥️</span>PAD の画面構成を知る</h2>
+          <p style="font-size:14px; line-height:1.9; margin:0 0 14px;">
+            PAD を起動すると2つの主要画面が登場します。それぞれの<strong>役割と使うタイミング</strong>を把握しておくと、以降の研修中に「どの画面で何をしているか」が分からなくなることを防げます。
+          </p>
 
-          <!-- ===== 1-A: PADインストール ===== -->
+          <!-- ===== コンソール画面 ===== -->
           <div class="card">
-            <div class="card-header"><h3>1-A. Power Automate for Desktop をインストールする</h3></div>
+            <div class="card-header"><h3>1-A. コンソール画面 〜マイフロー一覧〜</h3></div>
             <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <p>
-                <strong>Windows 11 には Power Automate for Desktop が標準搭載されています。</strong><br>
-                まずはスタートメニューから起動して、アプリケーションが存在するかを確認しましょう。
-              </p>
+              <p>PAD を起動して最初に開く画面が <strong>「コンソール」</strong>です。ここでは自分が作成したフローが<strong>一覧表示</strong>され、新規作成・実行・編集・削除・名前変更などができます。</p>
 
-              <ol class="instruction-list">
-                <li>スタートメニュー（左下の Windows ロゴ）をクリックする</li>
-                <li>検索バーに「<strong>Power Automate</strong>」と入力して検索する</li>
-                <li>「<strong>Power Automate</strong>」（Microsoft Corporation 製）が表示されたら、それをクリックして起動する</li>
-                <li>Microsoft アカウント（職場・学校アカウント）でサインインする</li>
-              </ol>
-
-              <figure class="pad-image-placeholder" data-image-slot="lesson-1/01_start_menu_search">
+              <figure class="pad-image-placeholder" data-image-slot="lesson-1/10_console_overview">
                 <span class="placeholder-icon">🖼️</span>
-                スタートメニューで「Power Automate」を検索している様子<br>
-                <code>data-image-slot="lesson-1/01_start_menu_search"</code>
+                PAD コンソール画面（マイフロー一覧）全体スクリーンショット<br>
+                <code>data-image-slot="lesson-1/10_console_overview"</code>
               </figure>
 
-              <figure class="pad-image-placeholder" data-image-slot="lesson-1/02_signin_work_account">
-                <span class="placeholder-icon">🖼️</span>
-                Microsoft 職場・学校アカウントでのサインイン画面<br>
-                <code>data-image-slot="lesson-1/02_signin_work_account"</code>
-              </figure>
-
-              <div class="point-block">
-                💡 <strong>アプリが見つからない場合</strong><br>
-                Microsoft Store を開き「Power Automate」で検索 →「Power Automate」（Microsoft Corporation 製）の「インストール」をクリックしてください。
+              <div class="screen-anatomy">
+                <div class="panel">
+                  <h4><span class="tag">①</span>新しいフローボタン</h4>
+                  <p>左上にある「+ 新しいフロー」ボタン。クリックするとフロー名の入力ダイアログが出て、フローデザイナーが新しいタブで開く。</p>
+                </div>
+                <div class="panel">
+                  <h4><span class="tag">②</span>マイフロー一覧</h4>
+                  <p>自分が作成したフローの一覧。フロー名・更新日時・状態（実行中／停止中）が表示される。行をダブルクリックでフローデザイナーが開く。</p>
+                </div>
+                <div class="panel">
+                  <h4><span class="tag">③</span>実行 / 停止 / 編集ボタン</h4>
+                  <p>各フロー行にカーソルを合わせると表示される。<strong>▶ 実行</strong>はフローを動かす、<strong>⏹ 停止</strong>は実行中のフローを止める、<strong>✏️ 編集</strong>でフローデザイナーが開く。</p>
+                </div>
+                <div class="panel">
+                  <h4><span class="tag">④</span>サインインユーザー表示</h4>
+                  <p>右上に現在サインインしている Microsoft 職場アカウントが表示される。サインアウトもここから可能。</p>
+                </div>
               </div>
 
-              <!-- ハンズオン課題1（1-Aの直後に配置） -->
-              <div class="handson-callout">
-                <strong>ハンズオン課題①：</strong>PAD で新しいフローを作成し、「Webページを開く」アクションを使って <a href="https://feretti0322.github.io/PAD-Demo/" target="_blank" style="color:#065f46;">デモサイトトップページ</a> を<strong>「操作方法 = ブラウザー拡張機能」</strong>で開いてみましょう。
+              <div class="point-block">
+                💡 <strong>覚え方：</strong> コンソール = <strong>「フローの一覧棚」</strong>。実際にフローを組む作業は次のフローデザイナーで行う。
               </div>
             </div>
           </div>
 
-          <!-- ===== 1-B-①: WebDriver比較 ===== -->
+          <!-- ===== フローデザイナー画面 ===== -->
           <div class="card">
-            <div class="card-header"><h3>1-B-①. ChromeDriver vs 標準起動 〜どちらを使うべき？〜</h3></div>
+            <div class="card-header"><h3>1-B. フローデザイナー画面 〜フロー編集画面〜</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>コンソールから新規作成または既存フローを開くと、<strong>フローデザイナー</strong>（編集画面）が新しいウィンドウで開きます。実際の作業時間の 9 割以上はこの画面を使います。</p>
+
+              <figure class="pad-image-placeholder" data-image-slot="lesson-1/11_designer_overview">
+                <span class="placeholder-icon">🖼️</span>
+                フローデザイナー全体（4ペイン構成）スクリーンショット<br>
+                <code>data-image-slot="lesson-1/11_designer_overview"</code>
+              </figure>
+
+              <div class="screen-anatomy">
+                <div class="panel">
+                  <h4><span class="tag">①</span>アクションペイン（左）</h4>
+                  <p>使えるアクションのカタログ。「Excel」「ブラウザー自動化」「変数」などのカテゴリ別に整理されている。<strong>検索バー</strong>でアクション名を絞り込める。ここからドラッグ＆ドロップで真ん中のワークスペースに配置する。</p>
+                  <figure class="pad-image-placeholder" data-image-slot="lesson-1/12_action_pane">
+                    <span class="placeholder-icon">🖼️</span>
+                    アクションペインのカテゴリ展開状態<br>
+                    <code>data-image-slot="lesson-1/12_action_pane"</code>
+                  </figure>
+                </div>
+                <div class="panel">
+                  <h4><span class="tag">②</span>ワークスペース（中央）</h4>
+                  <p>フローの本体。配置したアクションが上から下に順番に並ぶ。ここがフローの「シナリオ」になる。アクションを<strong>ダブルクリック</strong>すると設定画面が開く。</p>
+                  <figure class="pad-image-placeholder" data-image-slot="lesson-1/13_workspace">
+                    <span class="placeholder-icon">🖼️</span>
+                    ワークスペースにアクションが並んでいる例<br>
+                    <code>data-image-slot="lesson-1/13_workspace"</code>
+                  </figure>
+                </div>
+                <div class="panel">
+                  <h4><span class="tag">③</span>変数ペイン（右）</h4>
+                  <p>フロー内で使う変数の一覧。入力変数（フロー開始時にもらう値）・フロー変数（フロー内で生成される値）・出力変数（フロー終了時に返す値）が分かれて表示される。<strong>第2回（変数を完全理解）</strong>で本格的に使う。</p>
+                  <figure class="pad-image-placeholder" data-image-slot="lesson-1/14_variables_pane">
+                    <span class="placeholder-icon">🖼️</span>
+                    変数ペイン（フロー変数が並んでいる状態）<br>
+                    <code>data-image-slot="lesson-1/14_variables_pane"</code>
+                  </figure>
+                </div>
+                <div class="panel">
+                  <h4><span class="tag">④</span>UI 要素ペイン（右タブ切替）</h4>
+                  <p>ブラウザや業務アプリの「ボタン」「入力欄」など、自動化対象の UI 要素を登録しておく場所。<strong>第4回（ブラウザ自動化①）</strong>以降で頻繁に使う。</p>
+                  <figure class="pad-image-placeholder" data-image-slot="lesson-1/15_ui_elements_pane">
+                    <span class="placeholder-icon">🖼️</span>
+                    UI 要素ペイン（登録済み要素のツリー表示）<br>
+                    <code>data-image-slot="lesson-1/15_ui_elements_pane"</code>
+                  </figure>
+                </div>
+                <div class="panel">
+                  <h4><span class="tag">⑤</span>ツールバー（上部）</h4>
+                  <p>▶ 実行 / ⏸ 一時停止 / ⏹ 停止 / 💾 保存 / ↶ 元に戻す などのボタン。ショートカット：<code>Ctrl+S</code>（保存）、<code>F5</code>（実行）、<code>Shift+F5</code>（停止）。</p>
+                  <figure class="pad-image-placeholder" data-image-slot="lesson-1/16_toolbar">
+                    <span class="placeholder-icon">🖼️</span>
+                    フローデザイナー上部のツールバー<br>
+                    <code>data-image-slot="lesson-1/16_toolbar"</code>
+                  </figure>
+                </div>
+                <div class="panel">
+                  <h4><span class="tag">⑥</span>サブフロータブ（中央上部）</h4>
+                  <p>1つのフローを <strong>Main / サブフロー1 / サブフロー2 ...</strong> と複数のタブに分割できる仕組み。<strong>第6回・第7回</strong>で4分割パターン（Main＋ブラウザ操作＋スタッフ詳細スクレイピング＋エラー）を学ぶ。</p>
+                  <figure class="pad-image-placeholder" data-image-slot="lesson-1/17_subflow_tabs">
+                    <span class="placeholder-icon">🖼️</span>
+                    Main / ブラウザ操作 / エラー などのサブフロータブ表示<br>
+                    <code>data-image-slot="lesson-1/17_subflow_tabs"</code>
+                  </figure>
+                </div>
+              </div>
+
+              <div class="point-block">
+                💡 <strong>覚え方：</strong> フローデザイナー = <strong>「左から（アクション）→ 真ん中で組み立て（ワークスペース）→ 右で値を確認（変数 / UI 要素）」</strong>。この左→中→右の流れを意識すると操作が体に入ります。
+              </div>
+
+              <!-- ハンズオン課題①：新しいフローを作って画面に慣れる -->
+              <div class="handson-callout">
+                <strong>ハンズオン課題①：</strong>PAD コンソールから「+ 新しいフロー」をクリックして<code>練習フロー</code>という名前で新規作成し、フローデザイナーが開いたら<strong>4つのペインの位置を指差し確認</strong>してから保存（<code>Ctrl+S</code>）してみましょう。
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="explain">
+          <h2 class="lesson-section-title"><span class="sec-icon">📖</span>解説（ChromeDriver 導入）</h2>
+
+          <!-- ===== 1-C-①: WebDriver比較 ===== -->
+          <div class="card">
+            <div class="card-header"><h3>1-C-①. ChromeDriver vs 標準起動 〜どちらを使うべき？〜</h3></div>
             <div class="card-body" style="font-size:14px; line-height:1.9;">
               <p>PAD には Chrome を起動する方法が2種類あります。本研修では <strong>Chrome WebDriver起動</strong> を必修として使います。その理由をここで理解しましょう。</p>
 
@@ -150,16 +241,16 @@
                 <strong>たとえるなら：</strong> 標準起動は「すでに走っている車に後から乗り込む」方式。WebDriver起動は「PAD が運転席に最初から座る」方式。後者のほうが業務サイトで安定して走れます。
               </div>
 
-              <!-- ハンズオン課題2（比較直後） -->
+              <!-- ハンズオン課題②（比較直後） -->
               <div class="handson-callout">
-                <strong>ハンズオン課題②：</strong>課題①で作ったフローの起動アクション設定を開き、<strong>「操作方法 = Webdriver」</strong>に切り替えて再実行してみましょう（次の 1-B-② で ChromeDriver を配置すると正常に動きます）。
+                <strong>ハンズオン課題②：</strong>課題①で作った<code>練習フロー</code>に「新しい Chrome を起動する」アクションを追加し、URL に <a href="https://feretti0322.github.io/PAD-Demo/" target="_blank" style="color:#065f46;">デモサイトトップ</a> を指定。まずは<strong>「操作方法 = ブラウザー拡張機能」</strong>で実行 → 次に<strong>「操作方法 = Webdriver」</strong>に切り替えて再実行してみましょう（Webdriver は次の 1-C-② で設定すると動きます）。
               </div>
             </div>
           </div>
 
-          <!-- ===== 1-B-②: ChromeDriver導入5ステップ ===== -->
+          <!-- ===== 1-C-②: ChromeDriver導入5ステップ ===== -->
           <div class="card">
-            <div class="card-header"><h3>1-B-②. ChromeDriver のインストール手順（5ステップ）</h3></div>
+            <div class="card-header"><h3>1-C-②. ChromeDriver のインストール手順（5ステップ）</h3></div>
             <div class="card-body" style="font-size:14px; line-height:1.9;">
               <ol class="instruction-list">
                 <li>
@@ -232,16 +323,16 @@
                 </li>
               </ol>
 
-              <!-- ハンズオン課題3（5ステップ完了直後） -->
+              <!-- ハンズオン課題③（5ステップ完了直後） -->
               <div class="handson-callout">
-                <strong>ハンズオン課題③：</strong>「メッセージを表示する」アクションを課題①／②のフローに連結し、<strong>「業務効率化、始まる！」</strong>と表示してみましょう。WebDriver 起動で動くことを確認してください。
+                <strong>ハンズオン課題③：</strong>「メッセージを表示する」アクションを課題②のフローに連結し、<strong>「業務効率化、始まる！」</strong>と表示してみましょう。WebDriver 起動で動くことを確認してください。
               </div>
             </div>
           </div>
 
-          <!-- ===== 1-B-③: バージョン不一致警告 ===== -->
+          <!-- ===== 1-C-③: バージョン不一致警告 ===== -->
           <div class="card">
-            <div class="card-header"><h3>1-B-③. バージョン不一致に注意</h3></div>
+            <div class="card-header"><h3>1-C-③. バージョン不一致に注意</h3></div>
             <div class="card-body">
               <div class="warning-block">
                 <strong>⚠️ 注意：</strong> Chrome は自動更新されます。ChromeDriver のバージョンが古くなると、ある日突然フローが動かなくなります。<br>
@@ -252,7 +343,7 @@
           </div>
 
           <div class="summary-card">
-            <h4>📝 3行まとめ（1-B）</h4>
+            <h4>📝 3行まとめ（1-C）</h4>
             <ol>
               <li>PAD の「新しい Chrome を起動する」アクションは「操作方法」プルダウンで <strong>標準起動</strong>と <strong>WebDriver起動</strong>を切り替える。業務サイト対応では後者が本命。</li>
               <li>ChromeDriver は <code>%LOCALAPPDATA%\Microsoft\Power Automate Desktop\WebDrivers\chromedriver.exe</code> に配置すれば PAD が自動で読み込んでくれる。</li>
@@ -279,22 +370,27 @@
           <h2 class="lesson-section-title"><span class="sec-icon">❓</span>よくある詰まりと FAQ</h2>
 
           <div class="lesson-faq">
-            <div class="q">Q1. スタートメニューで検索しても「Power Automate」が出てこない</div>
-            <div class="a">Microsoft Store を開き「Power Automate」で検索 →「Power Automate」（Microsoft Corporation 製）の「インストール」をクリックしてください。</div>
+            <div class="q">Q1. コンソールに「マイフロー」が表示されない／空のまま</div>
+            <div class="a">初回起動直後はフローが何も登録されていないため空欄です。「+ 新しいフロー」をクリックして1本作成すると一覧に表示されます。</div>
           </div>
 
           <div class="lesson-faq">
-            <div class="q">Q2. ChromeDriver を入れたのに「バージョンが一致しません」エラーが出る</div>
+            <div class="q">Q2. フローデザイナーで右側のペイン（変数 / UI 要素）が見当たらない</div>
+            <div class="a">ウィンドウ右端のタブまたは「表示」メニューから「変数」「UI 要素」のチェックを ON にしてください。ペイン幅が狭くて隠れている場合もあるので、境界線をドラッグして広げてみてください。</div>
+          </div>
+
+          <div class="lesson-faq">
+            <div class="q">Q3. ChromeDriver を入れたのに「バージョンが一致しません」エラーが出る</div>
             <div class="a"><code>chrome://settings/help</code> で Chrome の最新バージョン番号を再確認し、最初の3桁（例: <code>138.0.7204</code>）が一致する ChromeDriver を再ダウンロードして上書き配置してください。</div>
           </div>
 
           <div class="lesson-faq">
-            <div class="q">Q3. WebDrivers フォルダを作ったのに PAD が認識しない</div>
+            <div class="q">Q4. WebDrivers フォルダを作ったのに PAD が認識しない</div>
             <div class="a">フォルダ名のスペルを確認してください（<code>WebDrivers</code>、大文字小文字を含めて正確に）。配置先パスが <code>%LOCALAPPDATA%\Microsoft\Power Automate Desktop\WebDrivers\</code> であることを再確認。</div>
           </div>
 
           <div class="lesson-faq">
-            <div class="q">Q4. 「操作方法」プルダウンに「Webdriver」が出てこない</div>
+            <div class="q">Q5. 「操作方法」プルダウンに「Webdriver」が出てこない</div>
             <div class="a">PAD のバージョンが古い可能性があります。Microsoft Store から最新版に更新してください。</div>
           </div>
         </section>
