@@ -9,6 +9,10 @@
     .handson-callout { border:3px solid #dc2626; background:#fff1f2; border-radius:10px; padding:16px 20px; font-size:14px; line-height:1.9; color:#7f1d1d; margin:20px 0; box-shadow:0 4px 14px rgba(220,38,38,0.18); position:relative; }
     .handson-callout::before { content:'🎯 ハンズオン'; position:absolute; top:-12px; left:14px; background:#dc2626; color:#fff; font-size:12px; font-weight:800; padding:3px 12px; border-radius:999px; letter-spacing:0.05em; }
     .handson-callout strong { color:#b91c1c; }
+    /* 中央配置（max-width 70%） */
+    .figure-center { display:flex; flex-direction:column; align-items:center; margin:14px 0; }
+    .figure-center img, .figure-center video { max-width:70%; height:auto; border:1px solid #d8dee9; border-radius:8px; display:block; }
+    .figure-center figcaption { font-size:12px; color:#64748b; margin-top:6px; text-align:center; }
     /* 画像左・文字右レイアウト */
     .step-split { display:grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap:20px; align-items:center; margin:14px 0; }
     .step-split .step-figure { margin:0; }
@@ -46,6 +50,7 @@
             <li><a href="#goal">🎯 到達目標</a></li>
             <li><a href="#explain">📖 解説（PADとは／完成動画／研修ロードマップ）</a></li>
             <li><a href="#install">⚙️ PAD のインストール〜サインイン</a></li>
+
             <li><a href="#handson">🛠️ ハンズオン課題</a></li>
             <li><a href="#faq">❓ よくある詰まりと FAQ</a></li>
           </ol>
@@ -57,7 +62,6 @@
             <li>本研修のゴール（最終演習フロー）の完成イメージを動画レベルで把握している</li>
             <li>ホーム（PADとは／研修ロードマップ）を見て、全8回で何を学ぶかを理解している</li>
             <li><strong>Power Automate for Desktop をインストールし、Microsoft 職場・学校アカウントでサインインできている</strong></li>
-            <li>デモサイトの自分のアカウントが作成済みである（別資料の手順書を参照）</li>
           </ul>
         </section>
 
@@ -155,25 +159,6 @@
             </div>
           </div>
 
-          <div class="card">
-            <div class="card-header"><h3>0-F. デモサイトのアカウント作成（別資料）</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <div class="step-split">
-                <figure class="step-figure">
-                  <img src="assets/lessons/lesson-0_03_signup_form.png" alt="デモサイトの新規登録フォーム">
-                  <figcaption>デモサイトの新規登録フォーム（メールアドレス・パスワード・表示名を入力）</figcaption>
-                </figure>
-                <div class="step-text">
-                  <p>本研修で進捗バッジや事例集投稿に使う <strong>デモサイトのアカウント作成手順</strong>は、研修事務局から配布される PowerPoint 資料（<code>成果物_アカウント作成手順.pptx</code>）を参照してください。</p>
-                  <p>研修当日までに、配布された手順書に沿って <strong>signup → 認証メール承認 → ログイン確認</strong> までを済ませておいてください。</p>
-                </div>
-              </div>
-              <div class="warning-block">
-                <strong>⚠️ 注意：</strong> アカウント作成が完了していないと、進捗バッジ付与や事例集投稿などの機能が使えません。第1回までに必ず完了させてください。
-              </div>
-            </div>
-          </div>
-
         </section>
 
         <section class="lesson-section" id="handson">
@@ -182,7 +167,6 @@
             <div class="card-body" style="font-size:14px; line-height:1.9;">
               <ol style="margin:0 0 0 20px;">
                 <li><strong>課題1：</strong>PAD をスタートメニューから起動し、Microsoft 職場アカウントでサインインを完了する</li>
-                <li><strong>課題2：</strong>配布された PowerPoint 手順書を見ながら、デモサイトのアカウントを作成し、<a href="index.html" style="color:#2c7be5;">index.html</a> からログインしてホームのロードマップを表示する</li>
               </ol>
             </div>
           </div>
@@ -191,24 +175,12 @@
         <section class="lesson-section" id="faq">
           <h2 class="lesson-section-title"><span class="sec-icon">❓</span>よくある詰まりと FAQ</h2>
           <div class="lesson-faq">
-            <div class="q">Q1. 登録時に「このメールはすでに登録されています」と表示される</div>
-            <div class="a">入力したメールアドレスでは過去にアカウント作成が完了しています。新規登録を続ける必要はありません。<a href="index.html" style="color:#2c7be5;">デモサイトのログイン画面</a>に戻り、そのメールアドレスとパスワードでログインしてください。パスワードを忘れた場合のみ、ログイン画面の再設定リンクから手続きしてください。</div>
-          </div>
-          <div class="lesson-faq">
-            <div class="q">Q2. 認証メールのリンクをクリックすると「このサイトにアクセスできません」と表示される</div>
-            <div class="a">これは<strong>正常な挙動</strong>です。本研修のデモサイトは GitHub Pages 上で動作しており、認証メールのリンク先がローカルホストになっているためブラウザがエラー画面を出します。エラー画面はそのまま閉じて、<a href="index.html" style="color:#2c7be5;">デモサイトのログイン画面</a>に戻り、登録したメールアドレスとパスワードでログインしてください。</div>
-          </div>
-          <div class="lesson-faq">
-            <div class="q">Q3. スタートメニューで検索しても「Power Automate」が出てこない</div>
+            <div class="q">Q1. スタートメニューで検索しても「Power Automate」が出てこない</div>
             <div class="a">Microsoft Store を開き「Power Automate」で検索 →「Power Automate」（Microsoft Corporation 製）の「インストール」をクリックしてください。</div>
           </div>
           <div class="lesson-faq">
-            <div class="q">Q4. サインイン時に「このアカウントは使用できません」と出る</div>
+            <div class="q">Q2. サインイン時に「このアカウントは使用できません」と出る</div>
             <div class="a">個人 Microsoft アカウントを使っている可能性があります。会社支給のメール（職場・学校アカウント）でサインインし直してください。</div>
-          </div>
-          <div class="lesson-faq">
-            <div class="q">Q5. デモサイトのアカウント作成手順書がどこにあるか分からない</div>
-            <div class="a">研修事務局から配布された <code>成果物_アカウント作成手順.pptx</code> を参照してください。配布されていない場合は TA に問い合わせてください。</div>
           </div>
         </section>
 
