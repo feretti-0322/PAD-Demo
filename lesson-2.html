@@ -30,11 +30,46 @@
     .dt-table { width: 100%; border-collapse: collapse; font-size: 13px; }
     .dt-table th, .dt-table td { border: 1px solid #e0e6ed; padding: 8px 10px; text-align: left; }
     .dt-table th { background: #1a3a5c; color: #fff; font-weight: 600; }
-    .dt-table td.idx { background: #f4f6f9; color: #2c7be5; font-weight: 700; text-align: center; width: 60px; }
+    .dt-table td.idx { background: #e2e8f0; color: #475569; font-weight: 700; text-align: center; width: 60px; border: 1px dashed #cbd5e1; border-right: 2px solid #94a3b8; font-size: 12px; }
     .dt-table tbody tr:hover { background: #f9fafb; }
+    /* 列番号の補助ヘッダ行・補助セル（縦横で色を統一） */
+    .dt-table th.dt-aux { background: #e2e8f0; color: #475569; font-weight: 700; text-align: center; border: 1px dashed #cbd5e1; font-size: 12px; }
+    .dt-table th.dt-aux-head { background: #e2e8f0; border: 1px dashed #cbd5e1; border-right: 2px solid #94a3b8; }
+    .dt-table tr.dt-col-index th { padding: 4px 10px; }
     .handson-callout { border:3px solid #dc2626; background:#fff1f2; border-radius:10px; padding:16px 20px; font-size:14px; line-height:1.9; color:#7f1d1d; margin:20px 0; box-shadow:0 4px 14px rgba(220,38,38,0.18); position:relative; }
     .handson-callout::before { content:'🎯 ハンズオン'; position:absolute; top:-12px; left:14px; background:#dc2626; color:#fff; font-size:12px; font-weight:800; padding:3px 12px; border-radius:999px; letter-spacing:0.05em; }
     .handson-callout strong { color:#b91c1c; }
+    /* 変数の型 — スカラー型3カラム配置（テキスト値／数値／日時） */
+    .type-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin: 14px 0; }
+    .type-grid figure { margin: 0; display: flex; flex-direction: column; align-items: center; }
+    .type-grid figure img { max-width: 100%; height: auto; border: 1px solid #d8dee9; border-radius: 8px; display: block; }
+    .type-grid figure figcaption { font-size: 12px; color: #64748b; margin-top: 6px; text-align: center; }
+    @media (max-width: 860px) { .type-grid { grid-template-columns: 1fr; } }
+    /* リスト型・データテーブル型 — 左右2カラム配置 */
+    .type-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 14px 0; }
+    .type-pair figure { margin: 0; display: flex; flex-direction: column; align-items: center; }
+    .type-pair figure img { max-width: 100%; height: auto; border: 1px solid #d8dee9; border-radius: 8px; display: block; }
+    .type-pair figure figcaption { font-size: 12px; color: #64748b; margin-top: 6px; text-align: center; }
+    @media (max-width: 860px) { .type-pair { grid-template-columns: 1fr; } }
+    /* 「複数値の集合」型（リスト・データテーブル）の行ハイライト */
+    .name-table tr.type-row-collection td { background: #fff7ed !important; border-left: 4px solid #f97316; }
+    .name-table tr.type-row-collection td:first-child strong { color: #c2410c; }
+    .collection-tag { display: inline-block; margin-left: 8px; background: #f97316; color: #fff; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; vertical-align: middle; }
+    /* 画像左・文字右レイアウト（手順ごとの図解） */
+    .step-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: center; margin: 18px 0; }
+    .step-split .step-figure { margin: 0; }
+    .step-split .step-figure.pad-image-placeholder { background: #f8fafc; border: 2px dashed #94a3b8; border-radius: 10px; padding: 30px 16px; text-align: center; color: #475569; font-size: 13px; line-height: 1.7; }
+    .step-split .step-figure.pad-image-placeholder .placeholder-icon { display: block; font-size: 40px; margin-bottom: 8px; }
+    .step-split .step-figure img { width: 100%; height: auto; border: 1px solid #d8dee9; border-radius: 8px; display: block; }
+    .step-split .step-figure figcaption { font-size: 12px; color: #64748b; margin-top: 6px; text-align: center; }
+    .step-split .step-text { font-size: 14px; line-height: 1.9; }
+    .step-split .step-text .step-num { display: inline-block; background: #2c7be5; color: #fff; font-weight: 700; border-radius: 999px; width: 26px; height: 26px; line-height: 26px; text-align: center; font-size: 13px; margin-right: 8px; }
+    /* 手順内に差し込むサンプルデータテーブル */
+    .sample-dt-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 10px 0; }
+    .sample-dt-table th { background: #1a3a5c; color: #fff; padding: 6px 10px; text-align: left; font-weight: 700; border: 1px solid #1a3a5c; }
+    .sample-dt-table td { padding: 6px 10px; border: 1px solid #e0e6ed; background: #fff; }
+    .sample-dt-table tbody tr:nth-child(even) td { background: #f8f9fc; }
+    @media (max-width: 860px) { .step-split { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -111,10 +146,9 @@
                 箱には<strong>数字・文字・Yes/No（True/False）</strong>などいろんな種類のデータを入れられます。<br>
                 PAD では <code style="background:#f0f5ff;border:1px solid #c3d9ff;border-radius:3px;padding:1px 7px;font-family:monospace;color:#1d4ed8;">%変数名%</code> と書くことで、箱の中身をプログラムの中で使えます。
               </div>
-              <figure class="pad-image-placeholder" data-image-slot="lesson-2/01_variables_pane">
-                <span class="placeholder-icon">🖼️</span>
-                PAD のフロー編集画面：アクションの詳細画面下に生成された変数が表示されている様子<br>
-                <code>data-image-slot="lesson-2/01_variables_pane"</code>
+              <figure class="figure-center" style="display:flex; flex-direction:column; align-items:center; margin:14px 0;">
+                <img src="assets/lessons/lesson-2_01_variables_pane.png" alt="PAD のフロー編集画面：アクションの詳細画面下に生成された変数が表示されている様子" style="max-width:70%; height:auto; border:1px solid #d8dee9; border-radius:8px; display:block;">
+                <figcaption style="font-size:12px; color:#64748b; margin-top:6px; text-align:center;">PAD のフロー編集画面：アクションの詳細画面下に生成された変数が表示されている様子</figcaption>
               </figure>
             </div>
           </div>
@@ -170,22 +204,77 @@
             </div>
           </div>
 
+          <!-- ===== 2-A-④: 変数の型（データ型）の種類 ===== -->
+          <div class="card">
+            <div class="card-header"><h3>2-A-④. 変数の「型（データ型）」の種類を知ろう</h3></div>
+            <div class="card-body" style="font-size:14px; line-height:1.9;">
+              <p>変数の「箱」には、入れられる値の種類＝<strong>データ型</strong>があります。PAD では型を自分で宣言する必要はなく、<strong>代入した値から自動的に型が決まる</strong>仕組みです。</p>
+
+              <table class="name-table">
+                <thead>
+                  <tr><th>型</th><th>何が入る？</th><th>例</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><strong>テキスト値<br>(Text)</strong></td><td>文字列。氏名・メッセージ・ファイル名など、文字なら何でも。</td><td><code>"山田 太郎"</code> / <code>"こんにちは"</code></td></tr>
+                  <tr><td><strong>数値<br>(Number)</strong></td><td>整数・小数。四則演算（+ − × ÷）ができる。</td><td><code>100</code> / <code>3.14</code></td></tr>
+                  <tr><td><strong>日時<br>(DateTime)</strong></td><td>日付＋時刻。「現在の日時を取得」アクションで生成される。フォーマット変換で文字列化できる。</td><td><code>2026/05/20 14:30:00</code></td></tr>
+                  <tr class="type-row-collection"><td><strong>リスト<br>(List)</strong></td><td>同じ種類の値を一列に並べたもの。<span class="collection-tag">複数値の集合</span></td><td><code>['営業部','総務部','開発部']</code></td></tr>
+                  <tr class="type-row-collection"><td><strong>データテーブル<br>(DataTable)</strong></td><td>行×列の表形式データ。Excel やスクレイピング結果の格納先。次セクション 2-B で詳しく扱う。<span class="collection-tag">複数値の集合</span></td><td>スタッフ一覧の表など</td></tr>
+                </tbody>
+              </table>
+
+              <p style="margin-top:18px;">「テキスト値」「数値」「日時」の3つの型が PAD の変数ペインでどう見えるかは、下のスクリーンショットで確認できます。</p>
+
+              <div class="type-grid">
+                <figure>
+                  <img src="assets/lessons/lesson-2_type_text.png" alt="テキスト値型の変数の例">
+                  <figcaption>テキスト値（Text）— 文字列が格納された変数</figcaption>
+                </figure>
+                <figure>
+                  <img src="assets/lessons/lesson-2_type_number.png" alt="数値型の変数の例">
+                  <figcaption>数値（Number）— 整数・小数が格納された変数</figcaption>
+                </figure>
+                <figure>
+                  <img src="assets/lessons/lesson-2_type_datetime.png" alt="日時型の変数の例">
+                  <figcaption>日時（DateTime）— 日付＋時刻が格納された変数</figcaption>
+                </figure>
+              </div>
+              <p style="font-size:12px; color:#64748b; margin-top:6px;">
+                ※ <strong>リスト</strong>型と<strong>データテーブル</strong>型（複数値の集合）は、次の <strong>2-B-①</strong> セクションで詳しく扱います。
+              </p>
+
+              <p style="font-size:12px; color:#64748b; margin-top:10px;">
+                📚 公式リファレンス：<a href="https://learn.microsoft.com/ja-jp/power-automate/desktop-flows/variable-data-types" target="_blank" rel="noopener" style="color:#2c7be5;">Power Automate Desktop の変数データ型一覧（Microsoft Learn）</a>
+              </p>
+            </div>
+          </div>
+
           <!-- ===== 2-B-①: データテーブル ===== -->
           <div class="card">
-            <div class="card-header"><h3>2-B-①. データテーブル 〜Excel の表を PAD の中で扱う変数〜</h3></div>
+            <div class="card-header"><h3>2-B-①. リスト型 と データテーブル型 〜複数の値を一括で扱う変数〜</h3></div>
             <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <p>スクレイピング結果や Excel から表全体を抽出した場合は、<strong>DataTable 型</strong>の変数に格納されます。行と列を持つ表形式のデータを、PAD の中で自在に操作できます。</p>
+              <p>値が2つ以上ある場合は、<strong>リスト型</strong>または<strong>データテーブル型</strong>の変数に格納されます。スクレイピング結果や Excel から表全体を抽出したときも、これらの型に入ります。行と列を持つ表形式のデータを、PAD の中で自在に操作できます。</p>
+              <div class="point-block">
+                💡 <strong>リスト型とデータテーブル型のちがい：</strong>
+                <strong>リスト型は1列だけ</strong>の集合（例：部署名だけを並べたもの）、<strong>データテーブル型は2列以上</strong>を持つ表（例：ID・氏名・部署・役職… が並んだスタッフ一覧）です。「列が1本ならリスト／複数列ならデータテーブル」とイメージしてください。
+              </div>
               <ul style="margin:8px 0 0 20px;">
-                <li><strong>作成・読み込み</strong>：スクレイピング結果の格納／Excel ワークシートからの読み込み</li>
+                <li><strong>作成・読み込み</strong>：スクレイピング結果の格納／Excel ワークシートからの読み込み／<strong>「新しいデータテーブルを作成」アクションで手書きで直接作成することも可能</strong></li>
                 <li><strong>行の追加</strong>：「データテーブルに行を挿入」アクションで1行ずつ追加</li>
                 <li><strong>フィルタ・検索</strong>：「フィルターデータテーブル」で条件に合う行だけ抽出</li>
                 <li><strong>書き出し</strong>：「Excel ワークシートに書き込む」で DataTable をシートに反映</li>
+                <li><strong>列の取り出し</strong>：「データテーブル列をリストに取得」アクションで<strong>特定の1列をリストとして取り出す</strong>（例：「部署」列だけをリスト化して選択ダイアログに渡す）</li>
               </ul>
-              <figure class="pad-image-placeholder" data-image-slot="lesson-2/02_datatable_view">
-                <span class="placeholder-icon">🖼️</span>
-                PAD の変数ペインでデータテーブルをダブルクリックして表ビューが開いている様子<br>
-                <code>data-image-slot="lesson-2/02_datatable_view"</code>
-              </figure>
+              <div class="type-pair">
+                <figure>
+                  <img src="assets/lessons/lesson-2_type_list.png" alt="リスト型の変数の例">
+                  <figcaption>リスト（List）— 1列だけの値の集合（例：部署名の一覧）</figcaption>
+                </figure>
+                <figure>
+                  <img src="assets/lessons/lesson-2_type_datatable.png" alt="データテーブル型の変数の例">
+                  <figcaption>データテーブル（DataTable）— 2列以上を持つ表形式データ（例：スタッフ一覧）</figcaption>
+                </figure>
+              </div>
             </div>
           </div>
 
@@ -194,22 +283,36 @@
             <div class="card-header"><h3>2-B-②. DataTable の値を取り出す（インタラクティブデモ）</h3></div>
             <div class="card-body" style="font-size:14px; line-height:1.9;">
               <p>DataTable の特定の値を取り出すには、変数名の後ろに <code>[]</code> を使って「行番号」と「列番号 or 列名」を指定します。DataTable の添字は<strong> 0 から数え始める</strong>ことに注意してください。</p>
-              <div class="code-block">StaffList[0]['氏名']        // 1行目の氏名列
-StaffList[0][2]            // 1行目の3列目（インデックス指定）
-CurrentItem['部署']         // FOR EACH 内での現在行の部署列</div>
+              <p>例えば、下の表のように変数名 <code style="background:#1e293b; color:#facc15; padding:2px 8px; border-radius:4px; font-weight:700;">スタッフリスト</code> というデータテーブルにスタッフ情報が格納されているとします。この中で <strong>田中 一郎さん</strong> を抜き出したい場合、<code>%スタッフリスト[2][1]%</code> または <code>%スタッフリスト[2]['氏名']%</code> と記載します。</p>
               <div class="point-block">
-                列名を使った指定（<code>CurrentItem['氏名']</code>）は、列の順番が変わってもフローが壊れません。インデックスだけ（<code>CurrentItem[0]</code>）はシンプルですが、サイト改修に弱いので注意。
+                列名を使った指定（<code>%現在の行['氏名']%</code>）は、列の順番が変わってもフローが壊れません。インデックスだけ（<code>%現在の行[0]%</code>）はシンプルですが、サイト改修に弱いので注意。
               </div>
 
               <p style="margin-top:18px;">
-                下の表は、変数名 <code style="background:#1e293b; color:#facc15; padding:2px 8px; border-radius:4px; font-weight:700;">StaffList</code> という DataTable に格納されたスタッフ一覧（先頭10件）です。<strong>表のセルをクリック</strong>すると、PAD でその値を取り出すときの書き方が表示されます。行・列どちらも <strong>0 から数え始める</strong>ことを確認してください。
+                <strong>表のセルをクリック</strong>すると、PAD でその値を取り出すときの書き方が表示されます。
               </p>
               <table class="dt-table" id="dtTable">
                 <thead>
-                  <tr><th>Index</th><th>ID</th><th>氏名</th><th>部署</th><th>役職</th><th>入社日</th></tr>
+                  <tr class="dt-col-index">
+                    <th class="dt-aux-head"></th>
+                    <th class="dt-aux">0</th>
+                    <th class="dt-aux">1</th>
+                    <th class="dt-aux">2</th>
+                    <th class="dt-aux">3</th>
+                    <th class="dt-aux">4</th>
+                  </tr>
+                  <tr>
+                    <th class="dt-aux-head"></th>
+                    <th>ID</th>
+                    <th>氏名</th>
+                    <th>部署</th>
+                    <th>役職</th>
+                    <th>入社日</th>
+                  </tr>
                 </thead>
                 <tbody id="dtBody"></tbody>
               </table>
+              <p style="font-size:12px; color:#64748b; margin-top:4px;">※ 一番左の数字列・一番上の数字行は「何行目／何列目か」を見るための補助表示です（DataTable 本体には含まれません）。実際のデータは <strong>ID 列〜入社日 列</strong> の範囲です。</p>
 
               <div class="handson-callout">
                 🛠️ <strong>ハンズオン課題②：</strong>上のビューアで「3行目の部署」のセルをクリックして、PAD での書き方を確認してみましょう。
@@ -221,23 +324,61 @@ CurrentItem['部署']         // FOR EACH 内での現在行の部署列</div>
           <div class="card">
             <div class="card-header"><h3>2-C. 直書きデータテーブル ＋ 列リスト化 ＋ 選択ダイアログ（最終演習 Main の縮小版）</h3></div>
             <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <p>最終演習の Main では、「部署 × 役職」マスターをフローに直書きし、列を取り出してユーザーに選ばせる仕組みを作ります。</p>
-              <ol class="instruction-list">
-                <li><strong>新しいデータテーブルを作成</strong>：ヘッダ「部署」「役職」を持つデータテーブルを直書きで作る</li>
-                <li><strong>データテーブル列をリストに取得</strong>：「部署」列だけを取り出してリスト化</li>
-                <li><strong>リストから選択ダイアログを表示</strong>：ユーザーにリストから選ばせ、選択結果を変数に格納</li>
-                <li>同じ流れで「役職」も選ばせる</li>
-              </ol>
-              <figure class="pad-image-placeholder" data-image-slot="lesson-2/03_create_datatable_action">
-                <span class="placeholder-icon">🖼️</span>
-                「新しいデータテーブルを作成」アクション設定画面（部署×役職マスターを直書きしている様子）<br>
-                <code>data-image-slot="lesson-2/03_create_datatable_action"</code>
-              </figure>
-              <figure class="pad-image-placeholder" data-image-slot="lesson-2/04_select_from_list_dialog">
-                <span class="placeholder-icon">🖼️</span>
-                実行時に表示される選択ダイアログ（部署リストから選ぶ画面）<br>
-                <code>data-image-slot="lesson-2/04_select_from_list_dialog"</code>
-              </figure>
+              <p>最終演習の Main では、「部署 × 役職」マスターをフローに直書きし、列を取り出してユーザーに選ばせる仕組みを作ります。下記の手順で順番に作っていきましょう。</p>
+
+              <!-- 手順1：新しいデータテーブルを作成 -->
+              <div class="step-split">
+                <figure class="step-figure">
+                  <img src="assets/lessons/lesson-2_03_create_datatable_action.png" alt="「新しいデータテーブルを作成」アクション設定画面（部署×役職マスターを直書きしている様子）">
+                  <figcaption>「新しいデータテーブルを作成」アクション設定画面（部署×役職マスターを直書きしている様子）</figcaption>
+                </figure>
+                <div class="step-text">
+                  <h4 style="margin:0 0 8px;"><span class="step-num">1</span>新しいデータテーブルを作成</h4>
+                  <p>アクションペインから <strong>「変数 → 新しいデータテーブルを作成」</strong> をワークスペースにドラッグ。設定画面で、下の表のとおり <strong>ヘッダ「部署」「役職」</strong> を持つデータテーブルを直書きで作成してください。</p>
+                  <table class="sample-dt-table">
+                    <thead>
+                      <tr><th>部署</th><th>役職</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>営業部</td><td>部長</td></tr>
+                      <tr><td>開発部</td><td>課長</td></tr>
+                      <tr><td>管理部</td><td>主任</td></tr>
+                      <tr><td>総務部</td><td>一般</td></tr>
+                      <tr><td>すべての部署</td><td>すべての役職</td></tr>
+                    </tbody>
+                  </table>
+                  <div class="point-block" style="margin-top:10px; font-size:13px;">
+                    💡 <strong>列・行の追加方法：</strong> 設定画面の <strong>右上の「＋」</strong> をクリックすると<strong>列が追加</strong>され、<strong>左下の「＋」</strong>をクリックすると<strong>行が追加</strong>されます。
+                  </div>
+                  <p>生成される変数名は <code>%部署役職マスター%</code> などに変更しておくと、後の参照で迷いません。</p>
+                </div>
+              </div>
+
+              <!-- 手順2：データテーブル列をリストに取得 -->
+              <div class="step-split">
+                <figure class="step-figure">
+                  <img src="assets/lessons/lesson-2_05_retrieve_column_to_list.png" alt="「データテーブル列をリストに取得」アクション設定画面（「部署」列を取り出している様子）">
+                  <figcaption>「データテーブル列をリストに取得」アクション設定画面（「部署」列を取り出している様子）</figcaption>
+                </figure>
+                <div class="step-text">
+                  <h4 style="margin:0 0 8px;"><span class="step-num">2</span>データテーブル列をリストに取得</h4>
+                  <p>アクション <strong>「変数 → データテーブル列をリストに取得」</strong> で、手順1で作ったデータテーブルから <strong>「部署」列だけ</strong> を取り出してリスト化します。<br>
+                  出力変数は <code>%部署リスト%</code> のように、リストであることが分かる名前にしておきます。</p>
+                </div>
+              </div>
+
+              <!-- 手順3：リストから選択ダイアログを表示 -->
+              <div class="step-split">
+                <figure class="step-figure">
+                  <img src="assets/lessons/lesson-2_04_select_from_list_dialog.png" alt="実行時に表示される選択ダイアログ（部署リストから選ぶ画面）">
+                  <figcaption>「リストから選択ダイアログを表示」アクション設定画面・実行時の選択ダイアログ</figcaption>
+                </figure>
+                <div class="step-text">
+                  <h4 style="margin:0 0 8px;"><span class="step-num">3</span>リストから選択ダイアログを表示</h4>
+                  <p>アクション <strong>「メッセージボックス → リストから選択ダイアログを表示」</strong> に <code>%部署リスト%</code> を渡すと、実行時にユーザーへ部署選択ダイアログが表示されます。<br>
+                  選ばれた値は <code>%選択部署%</code> に格納され、後続アクションで自由に使えます。同じ流れで「役職」も選ばせて <code>%選択役職%</code> に格納しましょう。</p>
+                </div>
+              </div>
 
               <div class="handson-callout">
                 🛠️ <strong>ハンズオン課題③：</strong>「部署×役職」マスターを直書きデータテーブルで作成 → 部署列をリスト化 → 選択ダイアログで選ばせる → 同じく役職も選ばせる → 選択結果を「メッセージを表示する」で表示するフローを実装してみましょう。
@@ -299,11 +440,11 @@ CurrentItem['部署']         // FOR EACH 内での現在行の部署列</div>
       tbody.innerHTML = baseRows.map((r, i) => `
         <tr data-row="${i}">
           <td class="idx">${i}</td>
-          <td data-col="1" data-name="ID">${r.id}</td>
-          <td data-col="2" data-name="氏名">${r.name}</td>
-          <td data-col="3" data-name="部署">${r.dept}</td>
-          <td data-col="4" data-name="役職">${r.role}</td>
-          <td data-col="5" data-name="入社日">${r.joined}</td>
+          <td data-col="0" data-name="ID">${r.id}</td>
+          <td data-col="1" data-name="氏名">${r.name}</td>
+          <td data-col="2" data-name="部署">${r.dept}</td>
+          <td data-col="3" data-name="役職">${r.role}</td>
+          <td data-col="4" data-name="入社日">${r.joined}</td>
         </tr>
       `).join('');
       tbody.querySelectorAll('td[data-col]').forEach(td => {
@@ -313,7 +454,7 @@ CurrentItem['部署']         // FOR EACH 内での現在行の部署列</div>
           const col = td.dataset.col;
           const name = td.dataset.name;
           const value = td.textContent;
-          alert(`PADでの取り出し方：\n\n  StaffList[${row}][${col}]\n  StaffList[${row}]['${name}']\n\n→ どちらも値: "${value}"`);
+          alert(`PADでの取り出し方：\n\n  %スタッフリスト[${row}][${col}]%\n  %スタッフリスト[${row}]['${name}']%\n\n→ どちらも値: "${value}"`);
         };
       });
     }
