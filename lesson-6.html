@@ -90,9 +90,9 @@
 
         <section class="lesson-hero">
           <div class="lesson-tag">LESSON 6 / 制御構造</div>
-          <h1>第6回 制御構造 〜FOR EACH / IF / LABEL+GOTO / BLOCK ERROR / サブフロー〜</h1>
+          <h1>第6回 制御構造 〜FOR EACH / IF / BLOCK ERROR / サブフロー〜</h1>
           <p>
-            最終演習で必要となる<strong>5要素</strong>を一気に押さえる回です：①FOR EACH ②条件分岐 ③LABEL+GOTO ④BLOCK/ON BLOCK ERROR＋エラーログ追記 ⑤サブフロー分割。
+            最終演習で必要となる<strong>4要素</strong>を一気に押さえる回です：①FOR EACH ②条件分岐 ③BLOCK/ON BLOCK ERROR＋エラーログ追記 ④サブフロー分割。
           </p>
           <div class="lesson-meta">
             <span>🪜 前提：第5回（スクレイピング）完了</span>
@@ -105,7 +105,7 @@
           <ol>
             <li><a href="#goal">🎯 到達目標</a></li>
             <li><a href="#prep">🪜 事前準備</a></li>
-            <li><a href="#explain">📖 解説（ループ／IF／LABEL+GOTO／エラー／サブフロー）</a></li>
+            <li><a href="#explain">📖 解説（ループ／IF／エラー／サブフロー）</a></li>
             <li><a href="#answer">✅ 解答例 / 完成フローテキスト</a></li>
             <li><a href="#faq">❓ よくある詰まりと FAQ</a></li>
           </ol>
@@ -116,7 +116,6 @@
           <ul class="lesson-goal-list">
             <li><code>For each</code> でデータテーブルを順次処理できる</li>
             <li><code>If</code> で条件分岐を作れる</li>
-            <li><code>ラベル</code> ＋ <code>移動先に移動する</code> でページング走破ループを書ける</li>
             <li><code>ブロックエラー発生時</code> で局所例外時の挙動を制御できる</li>
             <li>ブロックエラー発生時から別サブフローを呼び出してエラー処理を一元化できる</li>
             <li><code>最後のエラーを取得</code> で例外メッセージを取得し、<code>テキストをファイルに書き込む</code> で UTF-8・追記モード・改行付きでログに書き出せる</li>
@@ -268,44 +267,9 @@ END</div>
             </div>
           </div>
 
-          <!-- ===== 6-C: LABEL + GOTO（旧 lesson-5 から移管） ===== -->
+          <!-- ===== 6-C: エラー処理 ===== -->
           <div class="card">
-            <div class="card-header"><h3>6-C. ラベル ＋ 移動先に移動する 〜ページング全走破〜</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <p>第5回のページング走破は、本来「次へボタンが押せる間は繰り返す」というループ。これを<strong>ラベル ＋ 移動先に移動する</strong>で書きます。</p>
-              <ol style="margin:0 0 0 20px;">
-                <li><code>新しいデータテーブルを作成</code>（蓄積用の空データテーブル）</li>
-                <li><code>ラベル</code>（名前：移動先）を置く</li>
-                <li><code>Webページからデータを抽出する</code>（MaxWebPagesToProcess=1、1ページぶん抽出）</li>
-                <li><code>Webページ上の要素の詳細を取得します</code>（次へボタンの <code>Disabled</code> 属性を取得）</li>
-                <li><code>データテーブルをマージする</code>（抽出結果を蓄積データテーブルに追記）</li>
-                <li><code>If ページャー要素 &lt;&gt; 'true' Then</code>
-                  <ul style="margin:6px 0 0 0; padding-left:20px;">
-                    <li><code>Webページのボタンを押します</code>（次へ）</li>
-                    <li><code>移動先に移動する</code>（=ラベルに戻る）</li>
-                  </ul>
-                </li>
-                <li><code>End</code></li>
-              </ol>
-              <figure class="pad-image-placeholder" data-image-slot="lesson-6/02_label_goto">
-                <span class="placeholder-icon">🖼️</span>
-                ラベル＋移動先に移動する でページング走破している PAD 画面<br>
-                <code>data-image-slot="lesson-6/02_label_goto"</code>
-              </figure>
-              <div class="point-block">
-                <strong>紙の地図でイメージ：</strong> ラベル = 目印を置く／移動先に移動する = その目印に戻る。条件を満たす限り戻ってくる仕組みです。<br>
-                ※ 「次へボタンの <code>Disabled</code> 属性が <code>true</code> になったらループ終了」が終端判定のキモ。
-              </div>
-
-              <div class="handson-callout">
-                🛠️ <strong>ハンズオン課題③：</strong>第5回のページング走破を、<strong>ラベル ＋ 移動先に移動する</strong>構造で書き直してみましょう。
-              </div>
-            </div>
-          </div>
-
-          <!-- ===== 6-D: エラー処理 ===== -->
-          <div class="card">
-            <div class="card-header"><h3>6-D-①. エラー（例外処理）の基本</h3></div>
+            <div class="card-header"><h3>6-C-①. エラー（例外処理）の基本</h3></div>
             <div class="card-body" style="font-size:14px; line-height:1.9;">
               <p>PAD では、エラーが発生したときの<strong>エラー発生時の挙動</strong>をあらかじめ設定しておけます。設定方法は2つ：</p>
               <ul style="margin:0 0 0 20px;">
@@ -323,7 +287,7 @@ END</div>
           </div>
 
           <div class="card">
-            <div class="card-header"><h3>6-D-②. 「全体中断 vs 個別スキップ」の使い分け（最重要）</h3></div>
+            <div class="card-header"><h3>6-C-②. 「全体中断 vs 個別スキップ」の使い分け（最重要）</h3></div>
             <div class="card-body" style="font-size:14px; line-height:1.9;">
               <table class="compare-table">
                 <thead><tr><th>場面</th><th>設定</th><th>理由</th></tr></thead>
@@ -338,9 +302,9 @@ END</div>
             </div>
           </div>
 
-          <!-- 6-D-③: エラーシミュレーター -->
+          <!-- 6-C-③: エラーシミュレーター -->
           <div class="card">
-            <div class="card-header"><h3>6-D-③. インタラクティブデモ：エラー動作シミュレーター</h3></div>
+            <div class="card-header"><h3>6-C-③. インタラクティブデモ：エラー動作シミュレーター</h3></div>
             <div class="card-body" style="font-size:14px; line-height:1.9;">
               <p>5名分のスタッフを処理します。<strong>3件目（ST003）は必ずエラーを起こす</strong>設定です。「全体中断モード」と「個別スキップモード」で結果がどう変わるか見てみましょう。</p>
               <div class="demo-controls">
@@ -354,9 +318,9 @@ END</div>
             </div>
           </div>
 
-          <!-- 6-D-④: ログ記録 -->
+          <!-- 6-C-④: ログ記録 -->
           <div class="card">
-            <div class="card-header"><h3>6-D-④. エラーログの記録（テキストをファイルに書き込む・追記モード）</h3></div>
+            <div class="card-header"><h3>6-C-④. エラーログの記録（テキストをファイルに書き込む・追記モード）</h3></div>
             <div class="card-body" style="font-size:14px; line-height:1.9;">
               <p>スキップしたスタッフの ID や発生時刻をテキストファイルに追記しておくと、後から「何件成功・何件失敗」が一目でわかります。<strong>エラー処理専用のサブフローを用意</strong>しておき、ブロックエラー発生時にそのサブフローを呼び出すのが定番です。</p>
               <ol class="instruction-list">
@@ -372,14 +336,14 @@ END</div>
               </figure>
 
               <div class="handson-callout">
-                🛠️ <strong>ハンズオン課題④：</strong>「エラー」サブフローを作り、現在の日時取得 → 最後のエラーを取得 → テキストをファイルに書き込む（UTF-8・追記・改行）で <code>エラー.txt</code> に1行追記するフローを実装してみましょう。
+                🛠️ <strong>ハンズオン課題③：</strong>「エラー」サブフローを作り、現在の日時取得 → 最後のエラーを取得 → テキストをファイルに書き込む（UTF-8・追記・改行）で <code>エラー.txt</code> に1行追記するフローを実装してみましょう。
               </div>
             </div>
           </div>
 
-          <!-- ===== 6-E: サブフロー ===== -->
+          <!-- ===== 6-D: サブフロー ===== -->
           <div class="card">
-            <div class="card-header"><h3>6-E-①. サブフロー 〜「使い回せる処理のかたまり」〜</h3></div>
+            <div class="card-header"><h3>6-D-①. サブフロー 〜「使い回せる処理のかたまり」〜</h3></div>
             <div class="card-body" style="font-size:14px; line-height:1.9;">
               <table class="compare-table">
                 <thead><tr><th>比較軸</th><th>サブフローなし</th><th>サブフローあり</th></tr></thead>
@@ -405,9 +369,9 @@ END</div>
             </div>
           </div>
 
-          <!-- 6-E-②: サブフローデモ -->
+          <!-- 6-D-②: サブフローデモ -->
           <div class="card">
-            <div class="card-header"><h3>6-E-②. インタラクティブデモ：サブフローで処理を整理しよう</h3></div>
+            <div class="card-header"><h3>6-D-②. インタラクティブデモ：サブフローで処理を整理しよう</h3></div>
             <div class="card-body" style="font-size:14px; line-height:1.9;">
               <p>メインフローの「ベタ書き版」と「サブフロー版」を並べて、見通しの違いを体感してみましょう。</p>
               <div class="demo-controls">
@@ -426,7 +390,7 @@ END</div>
               </div>
 
               <div class="handson-callout">
-                🛠️ <strong>ハンズオン課題⑤：</strong>「ログイン処理」「スタッフ情報スクレイピング処理」「エラー処理」をそれぞれ独立サブフローに切り出してみましょう。
+                🛠️ <strong>ハンズオン課題④：</strong>「ログイン処理」「スタッフ情報スクレイピング処理」「エラー処理」をそれぞれ独立サブフローに切り出してみましょう。
               </div>
             </div>
           </div>
@@ -446,9 +410,8 @@ END</div>
 
         <section class="lesson-section" id="faq">
           <h2 class="lesson-section-title"><span class="sec-icon">❓</span>よくある詰まりと FAQ</h2>
-          <div class="lesson-faq"><div class="q">Q1. ラベル／移動先 がメニューに見当たらない</div><div class="a">「フローコントロール」カテゴリの中にあります。検索ボックスに <code>ラベル</code> と入れると早い。</div></div>
-          <div class="lesson-faq"><div class="q">Q2. ブロックエラー発生時でサブフローを呼んだ後にループが止まる</div><div class="a">エラー発生時の動作を「<strong>次の繰り返しに移動</strong>」に設定し忘れているのが原因。</div></div>
-          <div class="lesson-faq"><div class="q">Q3. エラー.txt が毎回上書きされてしまう</div><div class="a">テキストをファイルに書き込む の「ファイルが存在する場合」を<strong>「内容を追加する」</strong>に変更してください。</div></div>
+          <div class="lesson-faq"><div class="q">Q1. ブロックエラー発生時でサブフローを呼んだ後にループが止まる</div><div class="a">エラー発生時の動作を「<strong>次の繰り返しに移動</strong>」に設定し忘れているのが原因。</div></div>
+          <div class="lesson-faq"><div class="q">Q2. エラー.txt が毎回上書きされてしまう</div><div class="a">テキストをファイルに書き込む の「ファイルが存在する場合」を<strong>「内容を追加する」</strong>に変更してください。</div></div>
         </section>
 
         <nav class="lesson-nav">
