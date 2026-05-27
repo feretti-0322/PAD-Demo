@@ -122,7 +122,7 @@
 <section class="lesson-section" id="sec-c"><div class="card">
 <div class="card-header"><h3>C. スタッフ詳細スクレイピング サブフロー</h3></div>
 <div class="card-body" style="font-size:14px; line-height:1.9;">
-<p>URL 直接ナビゲートで絞り込み一覧へ → ラベル ＋ 移動先で全ページ走破 → ブロックエラー発生時の中で FOR EACH → 詳細取得 → Excel 出力。最終演習の中心となるサブフローです。</p>
+<p>URL 直接ナビゲートで絞り込み一覧へ → ラベル ＋ 移動先で全ページ走破 → ブロックエラー発生時の中で For each → 詳細取得 → Excel 出力。最終演習の中心となるサブフローです。</p>
 <div class="flow-step"><div class="step-no">1</div><div class="step-body"><strong>Web ページに移動</strong><br/><code>'https://feretti0322.github.io/PAD-Demo/staff-list.html?dept='</code> <span class="vchip">選択部署</span> <code>'&amp;role='</code> <span class="vchip">選択役職</span> に移動</div></div>
 <div class="flow-step"><div class="step-no">2</div><div class="step-body"><strong>新しいデータ テーブルを作成する</strong><br/>新しいデータ テーブルを作成して <span class="vchip">データテーブル_スタッフID</span> に格納する</div></div>
 <div class="flow-step"><div class="step-no">3</div><div class="step-body"><strong>データ テーブルから空の行を削除する</strong><br/>データ テーブル <span class="vchip">データテーブル_スタッフID</span> から空の行をすべて削除する</div></div>
@@ -176,7 +176,7 @@
 <div class="flow-step"><div class="step-no">3</div><div class="step-body"><strong>テキストをファイルに書き込む</strong><br/><code>'C:\Users\haruka.shimura\Desktop\Claude\PADデモサイト作成用\成果物_PADデモサイト\出力ファイル\エラー.txt'</code> に <span class="vchip">エラー時刻</span><code>'_'</code><span class="vchip">フォーイーチ_スタッフID</span><code>'_'</code><span class="vchip">LastError</span> を書き込みます</div></div>
 <div class="flow-step"><div class="step-no">4</div><div class="step-body"><strong>コメント</strong><br/>内容を上書きするだとめ、内容を追加するを選択<br/>エンコードは UTF-8<br/>新しい行を追加するをオン</div></div>
 <div class="point-block">
-                ※ 上記の手順1〜3を1セットとして、もう1セット同じ流れが続くケース（処理アクション側／FOR EACH 側の両方でブロックエラー発生時を持たせる構成）もあります。詳細はスクショ参照。
+                ※ 上記の手順1〜3を1セットとして、もう1セット同じ流れが続くケース（処理アクション側／For each 側の両方でブロックエラー発生時を持たせる構成）もあります。詳細はスクショ参照。
               </div>
 <figure class="pad-image-placeholder" data-image-slot="lesson-7/04_error_flow">
 <span class="placeholder-icon">🖼️</span>

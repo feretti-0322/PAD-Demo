@@ -27,7 +27,7 @@
     .demo-controls { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
     .demo-time { font-size: 12px; color: #888; margin-top: 8px; }
 
-    /* FOR EACH デモ */
+    /* For each デモ */
     .fe-table { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 13px; }
     .fe-table th { padding: 8px 10px; border: 1px solid #e0e6ed; text-align: left; background: #1a3a5c; color: #fff; }
     .fe-table td { padding: 8px 10px; border: 1px solid #e0e6ed; transition: background .3s; }
@@ -90,9 +90,9 @@
 <main class="page-content">
 <section class="lesson-hero">
 <div class="lesson-tag">LESSON 6 / 制御構造</div>
-<h1>第6回 制御構造 〜FOR EACH / IF / BLOCK ERROR / サブフロー〜</h1>
+<h1>第6回 制御構造 〜For each / IF / BLOCK ERROR / サブフロー〜</h1>
 <p>
-            最終演習で必要となる<strong>4要素</strong>を一気に押さえる回です：①FOR EACH ②条件分岐 ③BLOCK/ON BLOCK ERROR＋エラーログ追記 ④サブフロー分割。
+            最終演習で必要となる<strong>4要素</strong>を一気に押さえる回です：①For each ②条件分岐 ③BLOCK/ON BLOCK ERROR＋エラーログ追記 ④サブフロー分割。
           </p>
 <div class="lesson-meta">
 <span>🪜 前提：第5回（スクレイピング）完了</span>
@@ -103,9 +103,9 @@
 <h3>📑 目次</h3>
 <ol>
             <li><a href="#prep">🪜 事前準備</a></li>
-            <li class="toc-group">📘 A. Loop</li>
-            <li class="toc-sub"><a href="#sec-a-1">A-1. FOR と FOR EACH の違い</a></li>
-            <li class="toc-sub"><a href="#sec-a-2">A-2. FOR EACHとデータテーブルの組み合わせ</a></li>
+            <li class="toc-group">📘 A. ループ処理</li>
+            <li class="toc-sub"><a href="#sec-a-1">A-1. Loop と For each の違い</a></li>
+            <li class="toc-sub"><a href="#sec-a-2">A-2. For eachとデータテーブルの組み合わせ</a></li>
             <li class="toc-group">📘 B. 条件分岐（IF / Switch）</li>
             <li class="toc-sub"><a href="#sec-b-1">B-1. IF / ELSE IF / ELSE の基本構文</a></li>
             <li class="toc-sub"><a href="#sec-b-2">B-2. インタラクティブデモ：スタッフ振り分けシミュレーター（IF）</a></li>
@@ -131,32 +131,32 @@
 </ul>
 </div></div>
 </section>
-<div class="lesson-group-header"><span class="lesson-group-label">GROUP A</span><h2>A. Loop</h2><span class="lesson-group-desc">繰り返し処理の基本とデータテーブルとの組み合わせ</span></div><section class="lesson-section" id="sec-a-1"><div class="card">
-<div class="card-header"><h3>A-1. FOR と FOR EACH の違い</h3></div>
+<div class="lesson-group-header"><span class="lesson-group-label">GROUP A</span><h2>A. ループ処理</h2><span class="lesson-group-desc">繰り返し処理の基本とデータテーブルとの組み合わせ</span></div><section class="lesson-section" id="sec-a-1"><div class="card">
+<div class="card-header"><h3>A-1. Loop と For each の違い</h3></div>
 <div class="card-body" style="font-size:14px; line-height:1.9;">
 <table class="compare-table">
 <thead><tr><th>アクション</th><th>使いどころ</th><th>例</th></tr></thead>
 <tbody>
-<tr><td><strong>Loop（FOR）</strong></td><td>回数を指定して繰り返す</td><td>「メッセージを10回表示する」</td></tr>
-<tr><td><strong>For each（FOR EACH）</strong></td><td>リストやデータテーブルの中身を1件ずつ処理する</td><td>「スタッフ一覧の全員に対してプロフィールシートを作る」</td></tr>
+<tr><td><strong>Loop</strong></td><td>回数を指定して繰り返す</td><td>「メッセージを10回表示する」</td></tr>
+<tr><td><strong>For each</strong></td><td>リストやデータテーブルの中身を1件ずつ処理する</td><td>「スタッフ一覧の全員に対してプロフィールシートを作る」</td></tr>
 </tbody>
 </table>
 <div class="point-block">
-<strong>覚え方：</strong> 数えるのが「回数」なら <strong>Loop</strong>、数えるのが「件数」なら <strong>For each</strong>。実務では <strong>FOR EACH</strong> が圧倒的に多く、「データテーブルを1件ずつ処理する」場面がほぼすべてを占めます。
+<strong>覚え方：</strong> 数えるのが「回数」なら <strong>Loop</strong>、数えるのが「件数」なら <strong>For each</strong>。実務では <strong>For each</strong> が圧倒的に多く、「データテーブルを1件ずつ処理する」場面がほぼすべてを占めます。
               </div>
 <figure class="pad-image-placeholder" data-image-slot="lesson-6/01_foreach_block">
 <span class="placeholder-icon">🖼️</span>
-                FOR EACH ブロック内に処理を配置している画面<br/>
+                For each ブロック内に処理を配置している画面<br/>
 <code>data-image-slot="lesson-6/01_foreach_block"</code>
 </figure>
 </div>
 </div></section>
 <section class="lesson-section" id="sec-a-2"><div class="card">
-<div class="card-header"><h3>A-2. FOR EACHとデータテーブルの組み合わせ</h3></div>
+<div class="card-header"><h3>A-2. For eachとデータテーブルの組み合わせ</h3></div>
 <div class="card-body" style="font-size:14px; line-height:1.9;">
-<p>スクレイピングで取得したスタッフ一覧（DataTable）を1行ずつ処理する典型パターンです。▼ FOR EACH が DataTable を上から1行ずつ処理する様子を確認してみましょう。</p>
+<p>スクレイピングで取得したスタッフ一覧（DataTable）を1行ずつ処理する典型パターンです。▼ For each が DataTable を上から1行ずつ処理する様子を確認してみましょう。</p>
 <div class="demo-controls" style="margin-top:8px;">
-<button class="btn btn-primary" id="btnForEachStart">▶ FOR EACH スタート</button>
+<button class="btn btn-primary" id="btnForEachStart">▶ For each スタート</button>
 <button class="btn btn-outline" id="btnForEachReset">🔄 リセット</button>
 </div>
 <table class="fe-table">
@@ -329,7 +329,7 @@ END</div>
 <p>PAD では、エラーが発生したときの<strong>エラー発生時の挙動</strong>をあらかじめ設定しておけます。設定方法は2つ：</p>
 <ul style="margin:0 0 0 20px;">
 <li><strong>各アクション個別に設定</strong>：アクションを<strong>ダブルクリック</strong> →「エラー発生時」</li>
-<li><strong>「ブロックエラー発生時」</strong>：FOR EACH ループなど複数アクションをまとめて管理（おすすめ）</li>
+<li><strong>「ブロックエラー発生時」</strong>：For each ループなど複数アクションをまとめて管理（おすすめ）</li>
 </ul>
 <p style="margin-top:10px;">どちらでも、発生時の挙動を以下から選びます：</p>
 <ul style="margin:0 0 0 20px;">
@@ -405,7 +405,7 @@ END</div>
 <ul style="margin:8px 0 0 20px;">
 <li><strong>Main</strong>：日時計算・出力フォルダ作成・部署×役職選択ダイアログ・サブフロー呼び出し</li>
 <li><strong>ブラウザ操作</strong>：ChromeDriver 起動・ログイン</li>
-<li><strong>スタッフ詳細スクレイピング</strong>：一覧抽出（ページング）→ FOR EACH → 詳細取得 → Excel 出力</li>
+<li><strong>スタッフ詳細スクレイピング</strong>：一覧抽出（ページング）→ For each → 詳細取得 → Excel 出力</li>
 <li><strong>エラー</strong>：BLOCK エラー発生時に呼ばれる。エラーログを追記</li>
 </ul>
 <figure class="pad-image-placeholder" data-image-slot="lesson-6/04_subflow_tabs">
@@ -470,7 +470,7 @@ END</div>
     bootstrapPage('lesson-6');
 
     function initInteractives() {
-      // ===== FOR EACH デモ =====
+      // ===== For each デモ =====
       const feRows = STAFF_DATA.slice(0, 5);
       const feBody = document.getElementById('feBody');
       const btnForEachStart = document.getElementById('btnForEachStart');
