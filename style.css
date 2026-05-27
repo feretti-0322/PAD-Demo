@@ -1085,7 +1085,8 @@ html { scroll-behavior: smooth; }
 }
 .lesson-toc ol {
   margin: 0;
-  padding-left: 22px;
+  padding-left: 0;
+  list-style: none;
   columns: 2;
   column-gap: 28px;
 }
@@ -1256,3 +1257,58 @@ html { scroll-behavior: smooth; }
   box-shadow: 0 4px 14px rgba(44,123,229,0.35);
 }
 .answer-download .icon { font-size: 18px; }
+
+/* === レッスンページの大項目グループヘッダー === */
+.lesson-group-header {
+  margin: 36px 0 18px;
+  padding: 18px 24px;
+  background: linear-gradient(135deg, #1e3a8a 0%, #2c7be5 100%);
+  color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(44,123,229,0.25);
+  position: relative;
+}
+.lesson-group-header::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 70%;
+  background: #facc15;
+  border-radius: 0 4px 4px 0;
+}
+.lesson-group-header .lesson-group-label {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #facc15;
+  margin-bottom: 6px;
+}
+.lesson-group-header h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.5;
+}
+.lesson-group-header .lesson-group-desc {
+  display: block;
+  margin-top: 8px;
+  font-size: 14px;
+  color: #dbeafe;
+  line-height: 1.7;
+}
+/* TOC のグループ見出し */
+.lesson-toc .toc-group {
+  margin-top: 10px;
+  font-weight: 800;
+  color: #1e3a8a;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+}
+.lesson-toc .toc-sub {
+  padding-left: 22px;
+}
