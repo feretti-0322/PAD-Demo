@@ -1309,6 +1309,16 @@ html { scroll-behavior: smooth; }
   font-size: 14px;
   letter-spacing: 0.04em;
 }
+/* 小項目のない解説の大項目（toc-sub でも toc-group でもないが #sec- に飛ぶ li）も同じ太字に */
+.lesson-toc li:not(.toc-sub):not(.toc-group):has(> a[href^="#sec-"]) {
+  margin-top: 10px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+.lesson-toc li:not(.toc-sub):not(.toc-group):has(> a[href^="#sec-"]) > a {
+  font-weight: 800;
+  color: #1e3a8a;
+}
 .lesson-toc .toc-sub {
   padding-left: 22px;
 }
