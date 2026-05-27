@@ -5,7 +5,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>第5回 ブラウザ自動化② | PAD練習サイト</title>
-<link href="css/style.css" rel="stylesheet"/>
+<link href="css/style.css?v=7" rel="stylesheet"/>
 <style>
     .pattern-list { list-style: none; padding: 0; margin: 12px 0; }
     .pattern-list li { background: #f9fafb; border: 1px solid #e0e6ed; border-radius: 6px; padding: 12px 16px; margin-bottom: 8px; font-size: 14px; line-height: 1.7; }
@@ -34,6 +34,8 @@
     /* 組み立て順：画像左／番号付き説明右の 2 カラムリスト */
     .proc-list { list-style: none; counter-reset: proc; padding: 0; margin: 14px 0 0; }
     .proc-list > li { counter-increment: proc; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; align-items: start; margin-bottom: 22px; padding-bottom: 18px; border-bottom: 1px dashed #e5e7eb; }
+    /* 画像のないステップは全幅 */
+    .proc-list > li.no-image { grid-template-columns: 1fr; }
     .proc-list > li:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
     .proc-list .proc-figure { margin: 0; }
     .proc-list .proc-figure img { width: 100%; height: auto; border: 1px solid #d8dee9; border-radius: 8px; display: block; }
@@ -97,70 +99,69 @@
 <section class="lesson-section" id="sec-a"><div class="card">
 <div class="card-header"><h3>A. データ抽出の基本手順</h3></div>
 <div class="card-body" style="font-size:14px; line-height:1.9;">
-<!-- 5-A-①：スタッフ一覧ページを開く（画像なし） -->
-<div style="margin:4px 0 18px; padding:14px 18px; background:#f8fafc; border-left:4px solid #2c7be5; border-radius:6px; font-size:16px; line-height:1.9;">
-<strong>① 第4回のログインフローの続きに、スタッフ一覧ページを開く処理を追加する</strong><br/>
-                開き方は次のどちらでも OK：
-                <ul style="margin:8px 0 0 22px; line-height:1.8;">
-<li><strong>(A) UI 要素ピッカーで「スタッフ一覧」サイドバーボタンを取得 → 「Web ページのリンクをクリック」</strong>でナビゲートする</li>
-<li><strong>(B) 「Web ページに移動する」アクションで <code>staff-list.html</code> の URL を直接指定</strong>して飛ぶ</li>
-</ul>
-</div>
-<!-- 5-A-②：抽出アクションの追加 -->
-<div class="step-split">
-<figure class="step-figure">
-<img alt="アクションペインから「ブラウザー自動化 ＞ Web データ抽出 ＞ Web ページからデータを抽出する」を配置している画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_01_add_extract_action.png"/>
-<figure class="pad-image-placeholder" data-image-slot="lesson-5/01_add_extract_action" style="display:none;">
-<span class="placeholder-icon">🖼️</span>
-                    アクションペインから「ブラウザー自動化 ＞ Web データ抽出 ＞ Web ページからデータを抽出する」を配置している画面<br/>
-<code>data-image-slot="lesson-5/01_add_extract_action"</code>
-</figure>
-</figure>
-<div class="step-text">
-<strong>② 抽出アクションを配置する</strong><br/>
-                  アクションペインで「<strong>ブラウザー自動化 ＞ Web データ抽出 ＞ Web ページからデータを抽出する</strong>」を選び、フロー上にドラッグ＆ドロップします。<br/>
-                  検索ボックスに <code>抽出</code> と入力すると一発で出てきます。<br/>
-<em style="color:#64748b;">※ このアクションは、いま PAD が制御している Chrome（4-A で WebDriver 起動したもの）に対して動きます。別タブや別 Chrome は対象外。</em>
-</div>
-</div>
-<!-- 5-A-③：ライブ Web ヘルパーで右クリック -->
-<div class="step-split">
-<figure class="step-figure">
-<img alt="ライブ Web ヘルパー起動中、取得したいテーブル上で右クリックし「HTML テーブル全体を抽出する／要素の値を抽出」のコンテキストメニューが表示されている画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_02_live_web_helper_rightclick.png"/>
-<figure class="pad-image-placeholder" data-image-slot="lesson-5/02_live_web_helper_rightclick" style="display:none;">
-<span class="placeholder-icon">🖼️</span>
-                    ライブ Web ヘルパー起動中、取得したいテーブル上で右クリックし「HTML テーブル全体を抽出する／要素の値を抽出」のコンテキストメニューが表示されている画面<br/>
-<code>data-image-slot="lesson-5/02_live_web_helper_rightclick"</code>
-</figure>
-</figure>
-<div class="step-text">
-<strong>③ ライブ Web ヘルパーで取得したい部分を右クリック</strong><br/>
-                  ② のアクションを配置すると、<strong>ライブ Web ヘルパー</strong>が自動で立ち上がります。マウスを画面上で動かすと、要素ごとに枠線が出ます。<br/>
-                  取得したいテーブル（例：スタッフ一覧の表）の上で<strong>右クリック</strong>し、出てきたメニューから次のどちらかを選びます：
-                  <ul style="margin:6px 0 0 22px;">
-<li><strong>「要素の値を抽出」</strong>… 会社名や金額など、<strong>一つの値だけ</strong>取得したいとき</li>
-<li><strong>「HTMLテーブル全体を抽出する」</strong>… サイト内の表を<strong>まるごと</strong>取得したいとき</li>
-</ul>
-</div>
-</div>
-<!-- 5-A-④：変数に格納される / リネーム -->
-<div class="step-split">
-<figure class="step-figure">
-<img alt="画面右の「変数」ペインに DataFromWebPage（データテーブル型）が登録され、右クリック→名前の変更で StaffList にリネームしている画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_03_extracted_variable.png"/>
-<figure class="pad-image-placeholder" data-image-slot="lesson-5/03_extracted_variable" style="display:none;">
-<span class="placeholder-icon">📋</span>
-                    画面右の「変数」ペインに <code>DataFromWebPage</code>（データテーブル型）が登録され、右クリック→名前の変更で <code>StaffList</code> にリネームしている画面<br/>
-<code>data-image-slot="lesson-5/03_extracted_variable"</code>
-</figure>
-</figure>
-<div class="step-text">
-<strong>④ 取得結果は変数に格納される（既定名：<code>DataFromWebPage</code>）</strong><br/>
-                  ライブ Web ヘルパーを「完了」で閉じると、抽出結果は自動で変数に格納されます。<strong>「HTML テーブル全体を抽出する」</strong>を選んだ場合は<strong>データテーブル型</strong>の変数に入ります（Excel の表のように行×列で持っているイメージ）。
-                  <div class="point-block" style="margin-top:10px;">
-<strong>💡 変数名はリネームしておく：</strong> 既定の <code>DataFromWebPage</code> のままだと、複数の抽出を組み合わせたときに「どれがどれだか分からない」事故が起きます。右側の「変数」ペインで右クリック →「名前の変更」で <code>StaffList</code> など<strong>内容がわかる名前</strong>に変えておくのがおすすめです。
-                  </div>
-</div>
-</div>
+<ol class="proc-list">
+<li class="no-image">
+  <div class="proc-content">
+    <span class="proc-headline">第4回のログインフローの続きに、スタッフ一覧ページを開く処理を追加する</span>
+    開き方は次のどちらでも OK：
+    <ul style="margin:6px 0 0 22px;">
+      <li><strong>(A) UI 要素ピッカーで「スタッフ一覧」サイドバーボタンを取得 → 「Web ページのリンクをクリック」</strong>でナビゲートする</li>
+      <li><strong>(B) 「Web ページに移動する」アクションで <code>staff-list.html</code> の URL を直接指定</strong>して飛ぶ</li>
+    </ul>
+  </div>
+</li>
+<li>
+  <figure class="proc-figure">
+    <img alt="アクションペインから「ブラウザー自動化 ＞ Web データ抽出 ＞ Web ページからデータを抽出する」を配置している画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_01_add_extract_action.png"/>
+    <figure class="pad-image-placeholder" data-image-slot="lesson-5/01_add_extract_action" style="display:none;">
+      <span class="placeholder-icon">🖼️</span>
+      アクションペインから「ブラウザー自動化 ＞ Web データ抽出 ＞ Web ページからデータを抽出する」を配置している画面<br/>
+      <code>data-image-slot="lesson-5/01_add_extract_action"</code>
+    </figure>
+  </figure>
+  <div class="proc-content">
+    <span class="proc-headline">抽出アクションを配置する</span>
+    アクションペインで「<strong>ブラウザー自動化 ＞ Web データ抽出 ＞ Web ページからデータを抽出する</strong>」を選び、フロー上にドラッグ＆ドロップします。検索ボックスに <code>抽出</code> と入力すると一発で出てきます。
+    <span style="display:block; margin-top:6px; color:#64748b; font-size:14px;">※ このアクションは、いま PAD が制御している Chrome（4-A で WebDriver 起動したもの）に対して動きます。別タブや別 Chrome は対象外。</span>
+  </div>
+</li>
+<li>
+  <figure class="proc-figure">
+    <img alt="ライブ Web ヘルパー起動中、取得したいテーブル上で右クリックし「HTML テーブル全体を抽出する／要素の値を抽出」のコンテキストメニューが表示されている画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_02_live_web_helper_rightclick.png"/>
+    <figure class="pad-image-placeholder" data-image-slot="lesson-5/02_live_web_helper_rightclick" style="display:none;">
+      <span class="placeholder-icon">🖼️</span>
+      ライブ Web ヘルパー起動中、取得したいテーブル上で右クリックし「HTML テーブル全体を抽出する／要素の値を抽出」のコンテキストメニューが表示されている画面<br/>
+      <code>data-image-slot="lesson-5/02_live_web_helper_rightclick"</code>
+    </figure>
+  </figure>
+  <div class="proc-content">
+    <span class="proc-headline">ライブ Web ヘルパーで取得したい部分を右クリック</span>
+    前の手順のアクションを配置すると、<strong>ライブ Web ヘルパー</strong>が自動で立ち上がります。マウスを画面上で動かすと、要素ごとに枠線が出ます。<br>
+    取得したいテーブル（例：スタッフ一覧の表）の上で<strong>右クリック</strong>し、出てきたメニューから次のどちらかを選びます：
+    <ul style="margin:6px 0 0 22px;">
+      <li><strong>「要素の値を抽出」</strong>… 会社名や金額など、<strong>一つの値だけ</strong>取得したいとき</li>
+      <li><strong>「HTMLテーブル全体を抽出する」</strong>… サイト内の表を<strong>まるごと</strong>取得したいとき</li>
+    </ul>
+  </div>
+</li>
+<li>
+  <figure class="proc-figure">
+    <img alt="画面右の「変数」ペインに DataFromWebPage（データテーブル型）が登録され、右クリック→名前の変更で StaffList にリネームしている画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_03_extracted_variable.png"/>
+    <figure class="pad-image-placeholder" data-image-slot="lesson-5/03_extracted_variable" style="display:none;">
+      <span class="placeholder-icon">📋</span>
+      画面右の「変数」ペインに <code>DataFromWebPage</code>（データテーブル型）が登録され、右クリック→名前の変更で <code>StaffList</code> にリネームしている画面<br/>
+      <code>data-image-slot="lesson-5/03_extracted_variable"</code>
+    </figure>
+  </figure>
+  <div class="proc-content">
+    <span class="proc-headline">取得結果は変数に格納される（既定名：<code>DataFromWebPage</code>）</span>
+    ライブ Web ヘルパーを「完了」で閉じると、抽出結果は自動で変数に格納されます。<strong>「HTML テーブル全体を抽出する」</strong>を選んだ場合は<strong>データテーブル型</strong>の変数に入ります（Excel の表のように行×列で持っているイメージ）。
+    <div class="point-block" style="margin-top:10px;">
+      <strong>💡 変数名はリネームしておく：</strong> 既定の <code>DataFromWebPage</code> のままだと、複数の抽出を組み合わせたときに「どれがどれだか分からない」事故が起きます。右側の「変数」ペインで右クリック →「名前の変更」で <code>StaffList</code> など<strong>内容がわかる名前</strong>に変えておくのがおすすめです。
+    </div>
+  </div>
+</li>
+</ol>
 <div class="handson-callout">
                 🛠️ <strong>ハンズオン課題①：</strong><a href="sales-list.html" style="color:#2c7be5;">sales-list.html</a> から売上データ全件をスクレイピングして DataTable に取り込み、Excel に書き出すフローを作ってみましょう。
               </div>
@@ -170,70 +171,70 @@
 <div class="card-header"><h3>B-1. ページネーション（基本編）〜「ページャーとして設定」〜</h3></div>
 <div class="card-body" style="font-size:14px; line-height:1.9;">
 <p>1 ページだけでなく、「次へ」「&gt;」などのページネーションが付いているサイトから<strong>全ページ分のデータをまとめて取得したい</strong>とき、最初に試すのは PAD 標準の機能です。</p>
-<!-- ① ページャーを設定 -->
-<div class="step-split">
-<figure class="step-figure">
-<img alt="ライブ Web ヘルパー上で「次へ」ボタンを右クリックし「要素をページャーとして設定」を選んでいる画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_04a_set_as_pager.png"/>
-<figure class="pad-image-placeholder" data-image-slot="lesson-5/04a_set_as_pager" style="display:none;">
-<span class="placeholder-icon">🖼️</span>
-                    ライブ Web ヘルパー上で「次へ」ボタンを右クリックし「要素をページャーとして設定」を選んでいる画面<br/>
-<code>data-image-slot="lesson-5/04a_set_as_pager"</code>
-</figure>
-</figure>
-<div class="step-text">
-<strong>① ページャーボタンを設定する</strong><br/>
-                  「Web ページからデータを抽出する」アクションで通常どおりライブ Web ヘルパーを起動し、5-A の③と同じ手順でテーブルを取得します。<br/>
-                  そのままライブ Web ヘルパー上で「<strong>次へ</strong>」などのページャーボタンを<strong>右クリック</strong>し、出てきたメニューから「<strong>要素をページャーとして設定</strong>」を選択。
-                </div>
-</div>
-<!-- ② 実際に次ページに進んで点線確認 -->
-<div class="step-split">
-<figure class="step-figure">
-<img alt="次のページに進んだあと、テーブルの周りに点線が表示されていて、抽出対象として認識されている画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_04b_dotted_line_ok.png"/>
-<figure class="pad-image-placeholder" data-image-slot="lesson-5/04b_dotted_line_ok" style="display:none;">
-<span class="placeholder-icon">✅</span>
-                    次のページに進んだあと、テーブルの周りに点線が表示されていて、抽出対象として認識されている画面<br/>
-<code>data-image-slot="lesson-5/04b_dotted_line_ok"</code>
-</figure>
-</figure>
-<div class="step-text">
-<strong>② 実際に次のページに進んで、テーブルが認識されているか確かめる</strong><br/>
-                  ページャー設定の直後は必ず確認します。ブラウザ側で実際に「次へ」を押して<strong>次のページに進んでみる</strong>。
-                  <div class="point-block" style="margin-top:10px;">
-<strong>👀 チェックポイント：</strong>次のページのテーブルの周りに <strong>点線（破線）の枠</strong> が表示されていれば、PAD が「ここも同じ取得先」と認識してくれています。このまま <strong>④ のデータ抽出元設定</strong>に進んで OK。
-                  </div>
-</div>
-</div>
-<!-- ③ 点線が出ないときの対処（画像なし・全幅で詳述） -->
-<div style="margin:14px 0; padding:16px 20px; background:#fff7ed; border-left:4px solid #f59e0b; border-radius:6px; font-size:16px; line-height:1.9;">
-<strong>③ 点線が出ていなかったら、次のページでも同じ取得設定をやり直す</strong><br/>
-                HTML 構造が 1 ページ目と微妙に違うサイトでは、PAD が「これは別物」と判断して点線が出ないことがあります。その場合：
-                <ol style="margin:6px 0 0 22px;">
-<li>次のページのテーブル上で<strong>右クリック</strong></li>
-<li>「<strong>HTML テーブル全体を抽出する</strong>」をもう一度選び直す</li>
-<li>点線が表示されたら、その後ろのページも同様に確認していく（点線が出ない都度やり直す）</li>
+<ol class="proc-list">
+<li>
+  <figure class="proc-figure">
+    <img alt="ライブ Web ヘルパー上で「次へ」ボタンを右クリックし「要素をページャーとして設定」を選んでいる画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_04a_set_as_pager.png"/>
+    <figure class="pad-image-placeholder" data-image-slot="lesson-5/04a_set_as_pager" style="display:none;">
+      <span class="placeholder-icon">🖼️</span>
+      ライブ Web ヘルパー上で「次へ」ボタンを右クリックし「要素をページャーとして設定」を選んでいる画面<br/>
+      <code>data-image-slot="lesson-5/04a_set_as_pager"</code>
+    </figure>
+  </figure>
+  <div class="proc-content">
+    <span class="proc-headline">ページャーボタンを設定する</span>
+    「Web ページからデータを抽出する」アクションで通常どおりライブ Web ヘルパーを起動し、5-A の③と同じ手順でテーブルを取得します。<br>
+    そのままライブ Web ヘルパー上で「<strong>次へ</strong>」などのページャーボタンを<strong>右クリック</strong>し、出てきたメニューから「<strong>要素をページャーとして設定</strong>」を選択。
+  </div>
+</li>
+<li>
+  <figure class="proc-figure">
+    <img alt="次のページに進んだあと、テーブルの周りに点線が表示されていて、抽出対象として認識されている画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_04b_dotted_line_ok.png"/>
+    <figure class="pad-image-placeholder" data-image-slot="lesson-5/04b_dotted_line_ok" style="display:none;">
+      <span class="placeholder-icon">✅</span>
+      次のページに進んだあと、テーブルの周りに点線が表示されていて、抽出対象として認識されている画面<br/>
+      <code>data-image-slot="lesson-5/04b_dotted_line_ok"</code>
+    </figure>
+  </figure>
+  <div class="proc-content">
+    <span class="proc-headline">実際に次のページに進んで、テーブルが認識されているか確かめる</span>
+    ページャー設定の直後は必ず確認します。ブラウザ側で実際に「次へ」を押して<strong>次のページに進んでみる</strong>。
+    <div class="point-block" style="margin-top:10px;">
+      <strong>👀 チェックポイント：</strong>次のページのテーブルの周りに <strong>点線（破線）の枠</strong> が表示されていれば、PAD が「ここも同じ取得先」と認識してくれています。このまま次の手順（データ抽出元設定）に進んで OK。
+    </div>
+  </div>
+</li>
+<li class="no-image">
+  <div class="proc-content" style="background:#fff7ed; border-left:4px solid #f59e0b; border-radius:6px; padding:14px 18px;">
+    <span class="proc-headline">点線が出ていなかったら、次のページでも同じ取得設定をやり直す</span>
+    HTML 構造が 1 ページ目と微妙に違うサイトでは、PAD が「これは別物」と判断して点線が出ないことがあります。その場合：
+    <ol style="margin:6px 0 0 22px;">
+      <li>次のページのテーブル上で<strong>右クリック</strong></li>
+      <li>「<strong>HTML テーブル全体を抽出する</strong>」をもう一度選び直す</li>
+      <li>点線が表示されたら、その後ろのページも同様に確認していく（点線が出ない都度やり直す）</li>
+    </ol>
+    <p style="margin:8px 0 0;">これで「<strong>このテーブルとあのテーブルは同じ取得対象だよ</strong>」と PAD に教え込んでいきます。</p>
+  </div>
+</li>
+<li>
+  <figure class="proc-figure">
+    <img alt="アクション設定の「データの抽出元」プルダウンと「処理する Web ページの最大数」入力欄が表示されている画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_04d_extract_source_dropdown.png"/>
+    <figure class="pad-image-placeholder" data-image-slot="lesson-5/04d_extract_source_dropdown" style="display:none;">
+      <span class="placeholder-icon">🖼️</span>
+      アクション設定の「データの抽出元」プルダウンと「処理する Web ページの最大数」入力欄が表示されている画面<br/>
+      <code>data-image-slot="lesson-5/04d_extract_source_dropdown"</code>
+    </figure>
+  </figure>
+  <div class="proc-content">
+    <span class="proc-headline">アクション設定に戻り、「データの抽出元」プルダウンで動作を選ぶ</span>
+    <ul style="margin:6px 0 0 22px;">
+      <li><strong>「すべて使用できます」</strong>を選ぶ → PAD が<strong>最後のページまで自動でページ送り</strong>してすべて取得</li>
+      <li><strong>「最初のみ」</strong>を選ぶ → 下に <strong>「処理する Web ページの最大数」</strong> 入力欄が出てくるので、走破したいページ数（例：<code>10</code>）を入力</li>
+    </ul>
+    <p style="margin-top:10px;">これで、PAD が自動で「次へ」を押しながらページを送り、抽出結果を <strong>1 つのデータテーブル</strong>にまとめてくれます。</p>
+  </div>
+</li>
 </ol>
-<p style="margin:8px 0 0;">これで「<strong>このテーブルとあのテーブルは同じ取得対象だよ</strong>」と PAD に教え込んでいきます。</p>
-</div>
-<!-- ④ データの抽出元プルダウン -->
-<div class="step-split">
-<figure class="step-figure">
-<img alt="アクション設定の「データの抽出元」プルダウンと「処理する Web ページの最大数」入力欄が表示されている画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_04d_extract_source_dropdown.png"/>
-<figure class="pad-image-placeholder" data-image-slot="lesson-5/04d_extract_source_dropdown" style="display:none;">
-<span class="placeholder-icon">🖼️</span>
-                    アクション設定の「データの抽出元」プルダウンと「処理する Web ページの最大数」入力欄が表示されている画面<br/>
-<code>data-image-slot="lesson-5/04d_extract_source_dropdown"</code>
-</figure>
-</figure>
-<div class="step-text">
-<strong>④ アクション設定に戻り、「データの抽出元」プルダウンで動作を選ぶ</strong>
-<ul style="margin:6px 0 0 22px;">
-<li><strong>「すべて使用できます」</strong>を選ぶ → PAD が<strong>最後のページまで自動でページ送り</strong>してすべて取得</li>
-<li><strong>「最初のみ」</strong>を選ぶ → 下に <strong>「処理する Web ページの最大数」</strong> 入力欄が出てくるので、走破したいページ数（例：<code>10</code>）を入力</li>
-</ul>
-<p style="margin-top:10px;">これで、PAD が自動で「次へ」を押しながらページを送り、抽出結果を <strong>1 つのデータテーブル</strong>にまとめてくれます。</p>
-</div>
-</div>
 <!-- 強調アラート -->
 <div class="alert-strong">
 <span class="alert-title">😱 サイトによっては、最後のページまで行ってもループが止まらない</span>

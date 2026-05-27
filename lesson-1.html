@@ -5,7 +5,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>第1回 環境セットアップ | PAD練習サイト</title>
-<link href="css/style.css" rel="stylesheet"/>
+<link href="css/style.css?v=7" rel="stylesheet"/>
 <style>
     .handson-callout { border:3px solid #dc2626; background:#fff1f2; border-radius:10px; padding:16px 20px; font-size:14px; line-height:1.9; color:#7f1d1d; margin:20px 0; box-shadow:0 4px 14px rgba(220,38,38,0.18); position:relative; }
     .handson-callout::before { content:'🎯 ハンズオン'; position:absolute; top:-12px; left:14px; background:#dc2626; color:#fff; font-size:12px; font-weight:800; padding:3px 12px; border-radius:999px; letter-spacing:0.05em; }
@@ -214,79 +214,64 @@
 <section class="lesson-section" id="sec-c-2"><div class="card">
 <div class="card-header"><h3>C-2. ChromeDriver のインストール手順（5ステップ）</h3></div>
 <div class="card-body" style="font-size:14px; line-height:1.9;">
-<ol class="instruction-list">
+<ol class="proc-list">
 <li>
-<div class="step-split">
-<figure class="step-figure">
-<img alt="chrome://settings/help でバージョン表示している画面" src="assets/lessons/lesson-1_04_chrome_version_check.png"/>
-<figcaption><code>chrome://settings/help</code> でバージョン番号を確認</figcaption>
-</figure>
-<div class="step-text">
-<strong>手順1：Chrome のバージョンを確認する</strong><br/>
-                      Chrome を開き、アドレスバーに <code>chrome://settings/help</code> と入力する。<br/>
-                      バージョン番号（例: <code>138.0.7204.169</code>）をメモする。
-                    </div>
-</div>
+  <figure class="proc-figure">
+    <img alt="chrome://settings/help でバージョン表示している画面" src="assets/lessons/lesson-1_04_chrome_version_check.png"/>
+  </figure>
+  <div class="proc-content">
+    <span class="proc-headline">Chrome のバージョンを確認する</span>
+    Chrome を開き、アドレスバーに <code>chrome://settings/help</code> と入力する。<br>
+    バージョン番号（例: <code>138.0.7204.169</code>）をメモする。
+  </div>
 </li>
 <li>
-<div class="step-split">
-<figure class="step-figure">
-<img alt="Chrome for Testing 公式ダウンロードページ（win-x64 を選んでいる箇所）" src="assets/lessons/lesson-1_05_chromedriver_download_page.png"/>
-<figcaption>Chrome for Testing 公式ダウンロードページ（win-x64 を選択）</figcaption>
-</figure>
-<div class="step-text">
-<strong>手順2：対応する ChromeDriver をダウンロードする</strong><br/>
-                      公式 Chrome for Testing ページ（ <a href="https://googlechromelabs.github.io/chrome-for-testing/" style="color:#2c7be5;" target="_blank">https://googlechromelabs.github.io/chrome-for-testing/</a> ）にアクセスする。<br/>
-                      Chrome ブラウザのバージョンと一致するバージョンを選択（通常、最初の3つの数字が一致していれば OK）。<br/>
-<code>win-x64</code> アーキテクチャ用の ZIP をダウンロード。
-                    </div>
-</div>
+  <figure class="proc-figure">
+    <img alt="Chrome for Testing 公式ダウンロードページ（win-x64 を選んでいる箇所）" src="assets/lessons/lesson-1_05_chromedriver_download_page.png"/>
+  </figure>
+  <div class="proc-content">
+    <span class="proc-headline">対応する ChromeDriver をダウンロードする</span>
+    公式 Chrome for Testing ページ（ <a href="https://googlechromelabs.github.io/chrome-for-testing/" style="color:#2c7be5;" target="_blank">https://googlechromelabs.github.io/chrome-for-testing/</a> ）にアクセスする。<br>
+    Chrome ブラウザのバージョンと一致するバージョンを選択（通常、最初の3つの数字が一致していれば OK）。<br>
+    <code>win-x64</code> アーキテクチャ用の ZIP をダウンロード。
+  </div>
 </li>
 <li>
-<div class="step-split">
-<figure class="step-figure">
-<img alt="ZIP の「すべて展開」コンテキストメニュー" src="assets/lessons/lesson-1_06_zip_extract.png"/>
-<figcaption>ZIP を右クリック →「すべて展開」</figcaption>
-</figure>
-<div class="step-text">
-<strong>手順3：ダウンロードした ZIP ファイルを解凍する</strong><br/>
-                      ZIP ファイル（例：<code>chromedriver-win64.zip</code>）を右クリック →「すべて展開」を選択。展開先は既定のままで OK。<code>chromedriver-win64\chromedriver.exe</code> ができる。
-                    </div>
-</div>
+  <figure class="proc-figure">
+    <img alt="ZIP の「すべて展開」コンテキストメニュー" src="assets/lessons/lesson-1_06_zip_extract.png"/>
+  </figure>
+  <div class="proc-content">
+    <span class="proc-headline">ダウンロードした ZIP ファイルを解凍する</span>
+    ZIP ファイル（例：<code>chromedriver-win64.zip</code>）を右クリック →「すべて展開」を選択。展開先は既定のままで OK。<code>chromedriver-win64\chromedriver.exe</code> ができる。
+  </div>
 </li>
 <li>
-<div class="step-split">
-<figure class="step-figure">
-<img alt="WebDrivers フォルダを新規作成している画面" src="assets/lessons/lesson-1_07_create_webdrivers_folder.png"/>
-<figcaption>WebDrivers フォルダを新規作成</figcaption>
-</figure>
-<div class="step-text">
-<strong>手順4：Power Automate Desktop 用のフォルダを作成する</strong><br/>
-                      エクスプローラーを開き、アドレスバーに以下を貼り付けて Enter：<br/>
-<div class="code-block" style="margin-top:6px;">%LOCALAPPDATA%\Microsoft\Power Automate Desktop</div>
-                      フォルダー内で右クリック →「新規作成」→「フォルダー」を選択。<br/>
-                      フォルダー名を <code>WebDrivers</code> にする（<strong>大文字・小文字を正確に</strong>）。
-                    </div>
-</div>
+  <figure class="proc-figure">
+    <img alt="WebDrivers フォルダを新規作成している画面" src="assets/lessons/lesson-1_07_create_webdrivers_folder.png"/>
+  </figure>
+  <div class="proc-content">
+    <span class="proc-headline">Power Automate Desktop 用のフォルダを作成する</span>
+    エクスプローラーを開き、アドレスバーに以下を貼り付けて Enter：
+    <div class="code-block" style="margin-top:6px;">%LOCALAPPDATA%\Microsoft\Power Automate Desktop</div>
+    フォルダー内で右クリック →「新規作成」→「フォルダー」を選択。<br>
+    フォルダー名を <code>WebDrivers</code> にする（<strong>大文字・小文字を正確に</strong>）。
+  </div>
 </li>
 <li>
-<div class="step-split">
-<figure class="step-figure">
-<img alt="WebDrivers フォルダ内に chromedriver.exe が配置された最終状態" src="assets/lessons/lesson-1_08_chromedriver_placed.png"/>
-<figcaption>WebDrivers フォルダ内に chromedriver.exe が配置された最終状態</figcaption>
-</figure>
-<div class="step-text">
-<strong>手順5：chromedriver.exe を配置する</strong><br/>
-                      手順3で解凍したフォルダから <code>chromedriver.exe</code> をコピー → 手順4で作成した <code>WebDrivers</code> フォルダに貼り付ける。<br/><br/>
-                      最終的なフォルダー構成：
-                      <div class="code-block" style="margin-top:6px;">AppData
+  <figure class="proc-figure">
+    <img alt="WebDrivers フォルダ内に chromedriver.exe が配置された最終状態" src="assets/lessons/lesson-1_08_chromedriver_placed.png"/>
+  </figure>
+  <div class="proc-content">
+    <span class="proc-headline">chromedriver.exe を配置する</span>
+    手順3で解凍したフォルダから <code>chromedriver.exe</code> をコピー → 手順4で作成した <code>WebDrivers</code> フォルダに貼り付ける。<br>
+    最終的なフォルダー構成：
+    <div class="code-block" style="margin-top:6px;">AppData
  └ Local
    └ Microsoft
      └ Power Automate Desktop
        └ WebDrivers
          └ chromedriver.exe</div>
-</div>
-</div>
+  </div>
 </li>
 </ol>
 <!-- ハンズオン課題③（5ステップ完了直後） -->

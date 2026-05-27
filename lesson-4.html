@@ -5,7 +5,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>第4回 ブラウザ自動化① | PAD練習サイト</title>
-<link href="css/style.css" rel="stylesheet"/>
+<link href="css/style.css?v=7" rel="stylesheet"/>
 <style>
     .handson-callout { border:3px solid #dc2626; background:#fff1f2; border-radius:10px; padding:16px 20px; font-size:14px; line-height:1.9; color:#7f1d1d; margin:20px 0; box-shadow:0 4px 14px rgba(220,38,38,0.18); position:relative; }
     .handson-callout::before { content:'🎯 ハンズオン'; position:absolute; top:-12px; left:14px; background:#dc2626; color:#fff; font-size:12px; font-weight:800; padding:3px 12px; border-radius:999px; letter-spacing:0.05em; }
@@ -104,89 +104,103 @@
 <div class="point-block">
 <strong>📌 ここがキモです：</strong> ブラウザ自動化の成否は <strong>「PAD に Web ページ上の正しい部品（UI 要素）を覚えさせられるか」</strong> にかかっています。アクションの配置自体は数クリックで終わりますが、<strong>UI 要素ピッカーを正しく扱えないと、何を入力しても狙った欄に入りません</strong>。ここで丁寧に手順を体に入れます。
               </div>
-<!-- 4-B-準備：Chrome 拡張機能を有効化 -->
-<div class="warning-block" style="margin:14px 0;">
-<strong>⚠️ 事前準備：Microsoft Power Automate 拡張機能を Chrome に入れる（必須）</strong><br/>
-<strong>UI 要素ピッカーは Chrome の拡張機能が ON になっていないと反応しません。</strong>4-B に入る前に、必ず下記の手順で拡張機能を有効にしてください。
-                <ol style="margin:10px 0 0 22px; line-height:1.9;">
-<li>4-A のハンズオン課題①で立ち上げた Chrome（デモサイトが開いているもの）の<strong>「+」ボタンで新しいタブを開く</strong></li>
-<li>下の Chrome ウェブストアの URL にアクセス：
-                    <div style="margin:6px 0; padding:8px 12px; background:#eff6ff; border:1px solid #bfdbfe; border-radius:6px; word-break:break-all;">
-<a href="https://chromewebstore.google.com/detail/microsoft-power-automate/ljglajjnnkapghbckkcmodicjhacbfhk" rel="noopener" style="color:#1d4ed8; text-decoration:underline; font-weight:600;" target="_blank">
-                        https://chromewebstore.google.com/detail/microsoft-power-automate/ljglajjnnkapghbckkcmodicjhacbfhk
-                      </a>
-</div>
-</li>
-<li>「<strong>Chrome に追加</strong>」をクリック → 確認ダイアログで「<strong>拡張機能を追加</strong>」</li>
-<li>追加後、Chrome 右上のパズルピース 🧩 アイコンから <strong>「Microsoft Power Automate」</strong> がオン（青色）になっていることを確認</li>
-</ol>
-<p style="margin:10px 0 0;">この拡張機能が入っていれば、次のステップで PAD からブラウザに切り替えたときに<strong>赤枠ハイライト</strong>が出るようになります。</p>
-</div>
-<!-- 4-B-①〜④：1 画像（メール入力欄ホバー）でまとめて説明 -->
-<div class="step-split">
-<figure class="step-figure">
-<img alt="メールアドレス入力欄にマウスを乗せたとき、赤枠でハイライトされている様子" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-4_02c_email_field_hover.png"/>
-<figure class="pad-image-placeholder" data-image-slot="lesson-4/02c_email_field_hover" style="display:none;">
-<span class="placeholder-icon">🖼️</span>
-                    メールアドレス入力欄にマウスを乗せたとき、赤枠でハイライトされている画面<br/>
-<code>data-image-slot="lesson-4/02c_email_field_hover"</code>
-</figure>
-<figcaption>メール入力欄にホバー → 赤枠が出る</figcaption>
-</figure>
-<div class="step-text">
-<strong>① アクションを配置する</strong><br/>
-                  左のアクション一覧から「<strong>ブラウザー自動化 ＞ Web フォーム入力 ＞ Web ページ内のテキストフィールドに入力する</strong>」をフロー上にドラッグ＆ドロップします。設定ダイアログが開いたら、<strong>「UI 要素」</strong> 欄の右にある <strong>▼ →「UI 要素の追加」</strong> をクリック。
+<!-- ===== 事前準備セクション（独立したセクションとして視覚的に区切る） ===== -->
+<section style="margin:18px 0 28px; padding:18px 22px; background:#fff7ed; border:2px solid #f59e0b; border-radius:12px; box-shadow:0 4px 14px rgba(245,158,11,0.15); position:relative;">
+  <div style="position:absolute; top:-13px; left:18px; background:#f59e0b; color:#fff; font-size:13px; font-weight:800; padding:4px 14px; border-radius:999px; letter-spacing:0.05em;">⚠️ 事前準備</div>
+  <h4 style="margin:6px 0 10px; color:#92400e; font-size:17px; font-weight:800;">Microsoft Power Automate 拡張機能を Chrome に入れる（必須）</h4>
+  <p style="margin:0 0 8px;"><strong>UI 要素ピッカーは Chrome の拡張機能が ON になっていないと反応しません。</strong>本編に入る前に、必ず下記の手順で拡張機能を有効にしてください。</p>
+  <ol style="margin:10px 0 0 22px; line-height:1.9;">
+    <li>4-A のハンズオン課題①で立ち上げた Chrome（デモサイトが開いているもの）の<strong>「+」ボタンで新しいタブを開く</strong></li>
+    <li>下の Chrome ウェブストアの URL にアクセス：
+      <div style="margin:6px 0; padding:8px 12px; background:#eff6ff; border:1px solid #bfdbfe; border-radius:6px; word-break:break-all;">
+        <a href="https://chromewebstore.google.com/detail/microsoft-power-automate/ljglajjnnkapghbckkcmodicjhacbfhk" rel="noopener" style="color:#1d4ed8; text-decoration:underline; font-weight:600;" target="_blank">https://chromewebstore.google.com/detail/microsoft-power-automate/ljglajjnnkapghbckkcmodicjhacbfhk</a>
+      </div>
+    </li>
+    <li>「<strong>Chrome に追加</strong>」をクリック → 確認ダイアログで「<strong>拡張機能を追加</strong>」</li>
+    <li>追加後、Chrome 右上のパズルピース 🧩 アイコンから <strong>「Microsoft Power Automate」</strong> がオン（青色）になっていることを確認</li>
+  </ol>
+  <p style="margin:10px 0 0;">この拡張機能が入っていれば、本編で PAD からブラウザに切り替えたときに<strong>赤枠ハイライト</strong>が出るようになります。</p>
+</section>
 
-                  <p style="margin-top:14px;"><strong>② UI 要素ピッカーが起動する</strong><br/>
-                  画面に <strong>「UI 要素ピッカー」</strong> のオーバーレイが出ます。この状態のまま<strong>ブラウザのどこかを 1 回クリック</strong>すると、以降マウスを乗せた要素が<strong>赤枠でハイライト</strong>されるようになります。</p>
-<p style="margin-top:14px;"><strong>③ ブラウザ上で対象の部品にマウスを合わせる</strong><br/>
-                  Chrome 側の <strong>メールアドレス入力欄</strong> にマウスカーソルを合わせると、その要素が <strong>赤い枠線</strong> で囲まれます（左の画像の状態）。<br/>
-                  この赤枠が「いま PAD に覚えさせようとしている部品」です。狙いたい欄に正しく枠が乗っているか必ず目で確認してください。</p>
-<div class="warning-block" style="margin-top:10px;">
-<strong>⚠️ よくあるミス：</strong> ボタンの<em>外側のラベル</em>や、入力欄を包んでいる<em>カードの外枠</em>に赤枠が乗ってしまうことがあります。その状態で確定すると、後で入力アクションが失敗します。<strong>枠の大きさが入力欄ぴったりに重なる位置</strong>でホバーしてください。
-                  </div>
-<p style="margin-top:14px;"><strong>④ <span class="key-chip">Ctrl</span> ＋ クリックで要素を確定する</strong><br/>
-                  赤枠が正しい位置に乗ったら、<strong><span class="key-chip">Ctrl</span> キーを押しながら左クリック</strong>します。これで PAD に「この部品を覚える」と指示が入ります。<br/>
-<em style="color:#64748b;">※ ただクリックすると Web ページのリンクが反応してしまうので、必ず <span class="key-chip">Ctrl</span> を押しながらクリック。</em></p>
+<!-- ===== 本編：UI 要素ピッカーで部品を取得する 7 ステップ ===== -->
+<div style="margin:28px 0 14px; padding:16px 22px; background:linear-gradient(135deg,#1e3a8a 0%,#2c7be5 100%); color:#fff; border-radius:12px; box-shadow:0 6px 18px rgba(44,123,229,0.25); position:relative;">
+  <div style="position:absolute; left:0; top:50%; transform:translateY(-50%); width:6px; height:70%; background:#facc15; border-radius:0 4px 4px 0;"></div>
+  <span style="display:inline-block; font-size:13px; font-weight:800; letter-spacing:0.08em; color:#facc15; margin-bottom:4px;">本編</span>
+  <h4 style="margin:0; font-size:19px; font-weight:800; color:#fff; line-height:1.5;">UI 要素ピッカーで部品を取得する 7 ステップ</h4>
 </div>
-</div>
-<!-- 4-B-⑤ アクション設定に戻り入力テキストを指定（画像なし） -->
-<div style="margin:24px 0; padding:14px 18px; background:#f8fafc; border-left:4px solid #2c7be5; border-radius:6px; font-size:16px; line-height:1.9;">
-<strong>⑤ アクション設定に戻り、入力テキストを指定する</strong><br/>
-                「Web ページ内のテキストフィールドに入力する」アクション設定で：
-                <ul style="margin:6px 0 6px 20px;">
-<li><strong>UI 要素</strong>：先ほど取得したメール入力欄を選択</li>
-<li><strong>テキスト</strong>：自分のメールアドレス（例：<code>shimura.fellows@gmail.com</code>）</li>
-</ul>
-                「保存」で確定します。
-              </div>
-<!-- 4-B-⑥ UI要素ペイン -->
-<div class="step-split">
-<figure class="step-figure">
-<img alt="画面右の「UI 要素」ペインに、いま取得した要素が登録された状態" src="assets/lessons/lesson-4_02e_ui_elements_pane.png"/>
-<figcaption>右側の「UI 要素」ペインに追加された状態</figcaption>
-</figure>
-<div class="step-text">
-<strong>⑥ PAD の「UI 要素」ペインに登録される</strong><br/>
-                  PAD の編集画面に戻ると、右側の <strong>「UI 要素」ペイン</strong> に取得した要素が追加されています（例：<code>Input text 'email'</code>）。<br/>
-                  この要素はフロー内のどのアクションからでも再利用できます。
-                  <div class="point-block" style="margin-top:10px;">
-                    💡 <strong>名前の変更も可能：</strong> 右クリック →「名前の変更」で自由にリネームできます。
-                  </div>
-</div>
-</div>
-<!-- 4-B-⑦ セレクタを確認 -->
-<div class="step-split">
-<figure class="step-figure">
-<img alt="UI 要素のセレクタを表示している画面" src="assets/lessons/lesson-4_02f_selector_view.png"/>
-<figcaption>UI 要素のセレクタ確認画面</figcaption>
-</figure>
-<div class="step-text">
-<strong>⑦ セレクタを確認しておく（任意 / トラブル時のために）</strong><br/>
-                  UI 要素を右クリック →「<strong>編集</strong>」を選ぶと、PAD が内部で覚えているセレクタ（例：<code>#email</code> や <code>input[type='email']</code>）を確認できます。<br/>
-                  ふだんは触らなくて OK。ただし<strong>「要素が見つかりません」エラーが出たとき</strong>は、ここを開いてセレクタが想定どおりか確認するクセをつけておくと、原因が一発で分かります。
-                </div>
-</div>
+
+<ol class="proc-list">
+  <li class="no-image">
+    <div class="proc-content">
+      <span class="proc-headline">アクションを配置する</span>
+      左のアクション一覧から「<strong>ブラウザー自動化 ＞ Web フォーム入力 ＞ Web ページ内のテキストフィールドに入力する</strong>」をフロー上にドラッグ＆ドロップします。設定ダイアログが開いたら、<strong>「UI 要素」</strong> 欄の右にある <strong>▼ →「UI 要素の追加」</strong> をクリック。
+    </div>
+  </li>
+  <li class="no-image">
+    <div class="proc-content">
+      <span class="proc-headline">UI 要素ピッカーが起動する</span>
+      画面に <strong>「UI 要素ピッカー」</strong> のオーバーレイが出ます。この状態のまま<strong>ブラウザのどこかを 1 回クリック</strong>すると、以降マウスを乗せた要素が<strong>赤枠でハイライト</strong>されるようになります。
+    </div>
+  </li>
+  <li>
+    <figure class="proc-figure">
+      <img alt="メールアドレス入力欄にマウスを乗せたとき、赤枠でハイライトされている様子" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-4_02c_email_field_hover.png"/>
+      <figure class="pad-image-placeholder" data-image-slot="lesson-4/02c_email_field_hover" style="display:none;">
+        <span class="placeholder-icon">🖼️</span>
+        メールアドレス入力欄にマウスを乗せたとき、赤枠でハイライトされている画面<br/>
+        <code>data-image-slot="lesson-4/02c_email_field_hover"</code>
+      </figure>
+    </figure>
+    <div class="proc-content">
+      <span class="proc-headline">ブラウザ上で対象の部品にマウスを合わせる</span>
+      Chrome 側の <strong>メールアドレス入力欄</strong> にマウスカーソルを合わせると、その要素が <strong>赤い枠線</strong> で囲まれます（左の画像の状態）。<br>
+      この赤枠が「いま PAD に覚えさせようとしている部品」です。狙いたい欄に正しく枠が乗っているか必ず目で確認してください。
+      <div class="warning-block" style="margin-top:10px;">
+        <strong>⚠️ よくあるミス：</strong> ボタンの<em>外側のラベル</em>や、入力欄を包んでいる<em>カードの外枠</em>に赤枠が乗ってしまうことがあります。その状態で確定すると、後で入力アクションが失敗します。<strong>枠の大きさが入力欄ぴったりに重なる位置</strong>でホバーしてください。
+      </div>
+    </div>
+  </li>
+  <li class="no-image">
+    <div class="proc-content">
+      <span class="proc-headline"><span class="key-chip">Ctrl</span> ＋ クリックで要素を確定する</span>
+      赤枠が正しい位置に乗ったら、<strong><span class="key-chip">Ctrl</span> キーを押しながら左クリック</strong>します。これで PAD に「この部品を覚える」と指示が入ります。<br>
+      <em style="color:#64748b;">※ ただクリックすると Web ページのリンクが反応してしまうので、必ず <span class="key-chip">Ctrl</span> を押しながらクリック。</em>
+    </div>
+  </li>
+  <li class="no-image">
+    <div class="proc-content">
+      <span class="proc-headline">アクション設定に戻り、入力テキストを指定する</span>
+      「Web ページ内のテキストフィールドに入力する」アクション設定で：
+      <ul style="margin:6px 0 6px 22px;">
+        <li><strong>UI 要素</strong>：先ほど取得したメール入力欄を選択</li>
+        <li><strong>テキスト</strong>：自分のメールアドレス（例：<code>shimura.fellows@gmail.com</code>）</li>
+      </ul>
+      「保存」で確定します。
+    </div>
+  </li>
+  <li>
+    <figure class="proc-figure">
+      <img alt="画面右の「UI 要素」ペインに、いま取得した要素が登録された状態" src="assets/lessons/lesson-4_02e_ui_elements_pane.png"/>
+    </figure>
+    <div class="proc-content">
+      <span class="proc-headline">PAD の「UI 要素」ペインに登録される</span>
+      PAD の編集画面に戻ると、右側の <strong>「UI 要素」ペイン</strong> に取得した要素が追加されています（例：<code>Input text 'email'</code>）。この要素はフロー内のどのアクションからでも再利用できます。
+      <div class="point-block" style="margin-top:10px;">
+        💡 <strong>名前の変更も可能：</strong> 右クリック →「名前の変更」で自由にリネームできます。
+      </div>
+    </div>
+  </li>
+  <li>
+    <figure class="proc-figure">
+      <img alt="UI 要素のセレクタを表示している画面" src="assets/lessons/lesson-4_02f_selector_view.png"/>
+    </figure>
+    <div class="proc-content">
+      <span class="proc-headline">セレクタを確認しておく（任意 / トラブル時のために）</span>
+      UI 要素を右クリック →「<strong>編集</strong>」を選ぶと、PAD が内部で覚えているセレクタ（例：<code>#email</code> や <code>input[type='email']</code>）を確認できます。<br>
+      ふだんは触らなくて OK。ただし<strong>「要素が見つかりません」エラーが出たとき</strong>は、ここを開いてセレクタが想定どおりか確認するクセをつけておくと、原因が一発で分かります。
+    </div>
+  </li>
+</ol>
 <div class="handson-callout">
                 🛠️ <strong>ハンズオン課題②：</strong>UI 要素ピッカーを使ってメール入力欄を取得し、自分のメールアドレスを入力するアクションを完成させてください。
               </div>

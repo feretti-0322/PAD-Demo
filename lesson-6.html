@@ -5,7 +5,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>第6回 制御構造 | PAD練習サイト</title>
-<link href="css/style.css" rel="stylesheet"/>
+<link href="css/style.css?v=7" rel="stylesheet"/>
 <style>
     .compare-table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 10px; }
     .compare-table th, .compare-table td { border: 1px solid #e0e6ed; padding: 12px 14px; text-align: left; vertical-align: top; line-height: 1.7; }
@@ -103,7 +103,7 @@
 <h3>📑 目次</h3>
 <ol>
             <li><a href="#prep">🪜 事前準備</a></li>
-            <li class="toc-group">📘 A. ループ（FOR / FOR EACH）</li>
+            <li class="toc-group">📘 A. Loop</li>
             <li class="toc-sub"><a href="#sec-a-1">A-1. FOR と FOR EACH の違い</a></li>
             <li class="toc-sub"><a href="#sec-a-2">A-2. FOR EACHとデータテーブルの組み合わせ</a></li>
             <li class="toc-group">📘 B. 条件分岐（IF / Switch）</li>
@@ -131,7 +131,7 @@
 </ul>
 </div></div>
 </section>
-<div class="lesson-group-header"><span class="lesson-group-label">GROUP A</span><h2>A. ループ（FOR / FOR EACH）</h2><span class="lesson-group-desc">繰り返し処理の基本とデータテーブルとの組み合わせ</span></div><section class="lesson-section" id="sec-a-1"><div class="card">
+<div class="lesson-group-header"><span class="lesson-group-label">GROUP A</span><h2>A. Loop</h2><span class="lesson-group-desc">繰り返し処理の基本とデータテーブルとの組み合わせ</span></div><section class="lesson-section" id="sec-a-1"><div class="card">
 <div class="card-header"><h3>A-1. FOR と FOR EACH の違い</h3></div>
 <div class="card-body" style="font-size:14px; line-height:1.9;">
 <table class="compare-table">
@@ -166,8 +166,82 @@
 <tbody id="feBody"></tbody>
 </table>
 <div class="handson-callout">
-                🛠️ <strong>ハンズオン課題①：</strong>派遣スタッフ10名分のデータテーブルで FOR EACH を回し、全員に「処理完了」のメッセージを表示するフローを作ってみましょう。
+                🛠️ <strong>ハンズオン課題①：</strong>第5回で取得した<strong>蓄積データテーブル</strong>に対して <strong>For each</strong> を回し、各スタッフの詳細ページに次々と飛ぶフローを作ってみましょう。<br>
+                <strong>URL 直接ナビゲート</strong>（第5回 C-3 で扱ったパターン）を使い、URL の <code>id=ST001</code> の部分を <strong>For each の現在の項目（変数）</strong>に置き換える、というのがポイントです。
               </div>
+
+              <ol class="proc-list">
+                <li>
+                  <figure class="proc-figure">
+                    <figure class="pad-image-placeholder" data-image-slot="lesson-6/01_foreach_setup">
+                      <span class="placeholder-icon">🔁</span>
+                      「For each」アクション設定画面（反復処理を行う値＝%蓄積テーブル%／保存先＝%CurrentItem%）<br>
+                      <code>data-image-slot="lesson-6/01_foreach_setup"</code>
+                    </figure>
+                  </figure>
+                  <div class="proc-content">
+                    <span class="proc-headline">For each アクションを置く</span>
+                    アクションペインの「ループ」カテゴリから「<code>For each</code>」を配置し、設定画面で：
+                    <ul style="margin:6px 0 0 22px;">
+                      <li><strong>反復処理を行う値</strong>：第5回で作った <code>%蓄積テーブル%</code> を指定</li>
+                      <li><strong>保存先</strong>：<code>%CurrentItem%</code>（1 行ずつここに入ってきます）</li>
+                    </ul>
+                    <span style="display:block; margin-top:6px; color:#374151;">これでデータテーブルの上から 1 行ずつ <code>%CurrentItem%</code> に入って、ループの中身が繰り返し実行されます。</span>
+                  </div>
+                </li>
+
+                <li>
+                  <figure class="proc-figure">
+                    <figure class="pad-image-placeholder" data-image-slot="lesson-6/02_currentitem_id">
+                      <span class="placeholder-icon">🆔</span>
+                      %CurrentItem% から ID 列だけを取り出す指定（例：<code>%CurrentItem['ID']%</code> または <code>%CurrentItem[0]%</code>）<br>
+                      <code>data-image-slot="lesson-6/02_currentitem_id"</code>
+                    </figure>
+                  </figure>
+                  <div class="proc-content">
+                    <span class="proc-headline">現在の行から ID 列を取り出す</span>
+                    <code>%CurrentItem%</code> は 1 行ぶんのデータです。その中から <strong>「ID」列</strong>（例：<code>ST001</code>）だけを取り出すには、<strong>列名で指定</strong>します。
+                    <ul style="margin:6px 0 0 22px;">
+                      <li>列名が <code>ID</code> なら → <code>%CurrentItem['ID']%</code></li>
+                      <li>列番号で指定するなら → <code>%CurrentItem[0]%</code>（先頭列の場合）</li>
+                    </ul>
+                    <span style="display:block; margin-top:6px; color:#374151;">第5回 A-④ で取得した <code>%蓄積テーブル%</code> の列名を見て、ID 列の名前に合わせてください。</span>
+                  </div>
+                </li>
+
+                <li>
+                  <figure class="proc-figure">
+                    <figure class="pad-image-placeholder" data-image-slot="lesson-6/03_webpage_navigate">
+                      <span class="placeholder-icon">🌐</span>
+                      「Web ページに移動する」アクション設定画面（URL＝<code>https://feretti0322.github.io/PAD-Demo/staff-detail.html?id=%CurrentItem['ID']%</code>）<br>
+                      <code>data-image-slot="lesson-6/03_webpage_navigate"</code>
+                    </figure>
+                  </figure>
+                  <div class="proc-content">
+                    <span class="proc-headline">「Web ページに移動する」を For each の中に置く</span>
+                    For each のループの内側に、「<strong>Web ページに移動する</strong>」アクションを追加し、URL 欄に下記の文字列を入力します：
+                    <div class="code-block" style="margin-top:8px;">https://feretti0322.github.io/PAD-Demo/staff-detail.html?id=%CurrentItem['ID']%</div>
+                    <span style="display:block; margin-top:6px; color:#374151;">固定部分の URL に、<strong>For each で取り出した ID 変数</strong>を埋め込むかたちです。実行すると、ループの周回ごとに <code>?id=ST001</code> → <code>?id=ST002</code> → … と URL が動的に変わって、各スタッフの詳細ページが次々と開きます。</span>
+                  </div>
+                </li>
+
+                <li>
+                  <figure class="proc-figure">
+                    <figure class="pad-image-placeholder" data-image-slot="lesson-6/04_run_check">
+                      <span class="placeholder-icon">▶️</span>
+                      実行ボタンを押し、ブラウザで詳細ページが次々と切り替わっていく様子<br>
+                      <code>data-image-slot="lesson-6/04_run_check"</code>
+                    </figure>
+                  </figure>
+                  <div class="proc-content">
+                    <span class="proc-headline">実行して確認</span>
+                    フローを実行（▷）すると、4-A で立ち上げた Chrome の中で <strong>staff-detail.html?id=…</strong> が周回ごとに切り替わり、全スタッフの詳細ページを順番に開いていけば成功です。
+                    <div class="point-block" style="margin-top:10px;">
+                      <strong>💡 速すぎて中身が見えない場合：</strong> 「Web ページに移動する」の後に「<strong>待機</strong>」アクションを置いて 2 秒待つようにすると、ループの動きが目で追えるようになります。
+                    </div>
+                  </div>
+                </li>
+              </ol>
 </div>
 </div></section>
 <div class="lesson-group-header"><span class="lesson-group-label">GROUP B</span><h2>B. 条件分岐（IF / Switch）</h2><span class="lesson-group-desc">If / ElseIf / Else の使い方と Switch の使いどころ</span></div><section class="lesson-section" id="sec-b-1"><div class="card">

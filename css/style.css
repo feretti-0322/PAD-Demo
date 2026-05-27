@@ -1322,3 +1322,16 @@ html { scroll-behavior: smooth; }
 .lesson-toc .toc-sub {
   padding-left: 22px;
 }
+
+/* === 手順カード（全 lesson 共通）：画像左／番号付き説明右 === */
+.proc-list { list-style: none; counter-reset: proc; padding: 0; margin: 14px 0 0; }
+.proc-list > li { counter-increment: proc; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; align-items: start; margin-bottom: 22px; padding-bottom: 18px; border-bottom: 1px dashed #e5e7eb; }
+.proc-list > li:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.proc-list > li.no-image { grid-template-columns: 1fr; }
+.proc-list .proc-figure { margin: 0; }
+.proc-list .proc-figure img { width: 100%; height: auto; border: 1px solid #d8dee9; border-radius: 8px; display: block; }
+.proc-list .proc-figure .pad-image-placeholder { margin: 0; }
+.proc-list .proc-content { font-size: 15.5px; line-height: 1.9; }
+.proc-list .proc-content .proc-headline { font-size: 16px; font-weight: 700; color: #1f2937; display: block; margin-bottom: 6px; }
+.proc-list .proc-content .proc-headline::before { content: counter(proc) ". "; color: #2c7be5; font-weight: 800; margin-right: 2px; }
+@media (max-width: 860px) { .proc-list > li { grid-template-columns: 1fr; } }
