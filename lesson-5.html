@@ -30,6 +30,16 @@
     .step-split .step-text { font-size:16px; line-height:1.9; }
     .step-split .step-text > *:first-child { margin-top:0; }
     @media (max-width: 860px) { .step-split { grid-template-columns: 1fr; } }
+    /* 組み立て順：画像左／番号付き説明右の 2 カラムリスト */
+    .proc-list { list-style: none; counter-reset: proc; padding: 0; margin: 14px 0 0; }
+    .proc-list > li { counter-increment: proc; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; align-items: start; margin-bottom: 22px; padding-bottom: 18px; border-bottom: 1px dashed #e5e7eb; }
+    .proc-list > li:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .proc-list .proc-figure { margin: 0; }
+    .proc-list .proc-figure img { width: 100%; height: auto; border: 1px solid #d8dee9; border-radius: 8px; display: block; }
+    .proc-list .proc-content { font-size: 15.5px; line-height: 1.9; }
+    .proc-list .proc-content .proc-headline { font-size: 16px; font-weight: 700; color: #1f2937; display: block; margin-bottom: 6px; }
+    .proc-list .proc-content .proc-headline::before { content: counter(proc) ". "; color: #2c7be5; font-weight: 800; margin-right: 2px; }
+    @media (max-width: 860px) { .proc-list > li { grid-template-columns: 1fr; } }
     /* 強調アラート（ループ止まらない注意） */
     .alert-strong { background:linear-gradient(135deg,#fef2f2,#fee2e2); border:3px solid #dc2626; border-radius:12px; padding:18px 22px 18px 24px; margin:20px 0; box-shadow:0 6px 18px rgba(220,38,38,0.2); position:relative; font-size:16px; line-height:1.9; }
     .alert-strong::before { content:'⚠️ 重要な落とし穴'; position:absolute; top:-14px; left:18px; background:#dc2626; color:#fff; font-size:13px; font-weight:800; padding:4px 14px; border-radius:999px; letter-spacing:0.05em; }
@@ -330,68 +340,106 @@
                 </div>
               </div>
 
-              <!-- ① ラベル＋移動先 のアクションペイン位置 -->
-              <div class="step-split" style="margin-top:18px;">
-                <figure class="step-figure">
-                  <img src="assets/lessons/lesson-5_05a_label_goto_action_pane.png"
-                       alt="アクションペインで「フロー コントロール」カテゴリを開き、「ラベル」「移動先に移動する」アクションの位置を矢印で示している画面"
-                       onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                  <figure class="pad-image-placeholder" data-image-slot="lesson-5/05a_label_goto_action_pane" style="display:none;">
-                    <span class="placeholder-icon">🖼️</span>
-                    アクションペインで「フロー コントロール」カテゴリを開き、「ラベル」「移動先に移動する」アクションの位置を矢印で示している画面<br>
-                    <code>data-image-slot="lesson-5/05a_label_goto_action_pane"</code>
-                  </figure>
-                </figure>
-                <div class="step-text">
-                  <strong>① 使うアクションの場所を覚える</strong><br>
-                  「ラベル」「移動先に移動する」は、アクションペインの <strong>「フロー コントロール」</strong> カテゴリの下のほうにあります。検索ボックスに <code>ラベル</code> と入力すると一発で出てきます。<br>
-                  「Webページ上の要素の詳細を取得します」は、これまでと同じ <strong>「ブラウザー自動化 ＞ Web データ抽出」</strong> の中。
-                </div>
-              </div>
-
               <!-- 組み立て順（孤立ブロック） -->
               <div style="margin:28px 0 18px; padding:22px 26px; background:#fff; border:2px solid #2c7be5; border-radius:12px; box-shadow:0 4px 14px rgba(44,123,229,0.12);">
                 <h4 style="margin:0 0 12px; color:#1e3a8a; font-size:18px; border-bottom:2px dashed #bfdbfe; padding-bottom:8px;">📋 組み立て順（蓄積データテーブル方式）— 全 10 アクション</h4>
 
-                  <ol style="margin:10px 0 0 22px;">
-                    <li><code>新しいデータテーブルを作成</code>（蓄積用の空テーブル）<br>
-                      <span style="font-size:14px; color:#374151;">列名は <strong>Web から取得するテーブルとまったく同じ</strong>になるように<strong>手入力で揃える</strong>。<strong>行はなにも入れない</strong>（あとから追記していく）。</span>
-
-                      <div style="margin:10px 0 4px; padding:12px 16px; background:#f0fdf4; border-left:4px solid #00b274; border-radius:6px; font-size:15px; line-height:1.85;">
-                        <strong style="color:#065f46;">💡 なぜ「新しいデータテーブルを作成」が必要なのか：</strong> <code>Webページからデータを抽出する</code>アクションをループの中で<strong>繰り返し使う</strong>ということは、<strong>抽出結果の変数が毎回新しいページのテーブルに塗り替えられていく</strong>ということです。前のページのデータはそのままだとどんどん消えてしまうので、抽出したデータを<strong>ストックしておく別の受け皿</strong>を用意しておく必要があります。
+                  <ol class="proc-list">
+                    <li>
+                      <figure class="proc-figure">
+                          <img src="assets/lessons/lesson-5_05f_create_datatable.png"
+                               alt="「新しいデータテーブルを作成」アクション設定画面（列名を Web 取得テーブルと同じになるように手入力で揃え、行は空のまま）"
+                               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                          <figure class="pad-image-placeholder" data-image-slot="lesson-5/05f_create_datatable" style="margin:0; display:none;">
+                            <span class="placeholder-icon">🆕</span>
+                            「新しいデータテーブルを作成」アクション設定画面（列名を Web 取得テーブルと同じになるように手入力で揃え、行は空のまま）<br>
+                            <code>data-image-slot="lesson-5/05f_create_datatable"</code>
+                          </figure>
+                        </figure>
+                      <div class="proc-content">
+                        <span class="proc-headline"><code>新しいデータテーブルを作成</code>（蓄積用の空テーブル）</span>
+                        <span style="font-size:14px; color:#374151;">列名は <strong>Web から取得するテーブルとまったく同じ</strong>になるように<strong>手入力で揃える</strong>。<strong>行はなにも入れない</strong>（あとから追記していく）。</span>
+                          <div style="margin:10px 0 0; padding:12px 16px; background:#f0fdf4; border-left:4px solid #00b274; border-radius:6px; font-size:15px; line-height:1.85;">
+                            <strong style="color:#065f46;">💡 なぜ「新しいデータテーブルを作成」が必要なのか：</strong> <code>Webページからデータを抽出する</code>アクションをループの中で<strong>繰り返し使う</strong>ということは、<strong>抽出結果の変数が毎回新しいページのテーブルに塗り替えられていく</strong>ということです。前のページのデータはそのままだとどんどん消えてしまうので、抽出したデータを<strong>ストックしておく別の受け皿</strong>を用意しておく必要があります。
+                          </div>
                       </div>
                     </li>
 
-                    <li><code>データテーブルから空の行を削除する</code>（蓄積テーブルを対象に指定）<br>
-                      <span style="font-size:14px; color:#374151;">PAD の仕様上、<code>新しいデータテーブルを作成</code>の直後は<strong>1 行目に必ず空白行が 1 行できてしまう</strong>ので、ここでその行を削除して整えておく。これをやっておかないと、後続の <code>FOR EACH</code> 処理で空白行が混ざって「氏名が空」のスタッフを処理しようとして落ちます。</span>
+                    <li>
+                      <figure class="proc-figure">
+                          <img src="assets/lessons/lesson-5_05g_delete_empty_rows.png"
+                               alt="「データテーブルから空の行を削除する」アクション設定画面（対象＝蓄積テーブル）"
+                               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                          <figure class="pad-image-placeholder" data-image-slot="lesson-5/05g_delete_empty_rows" style="margin:0; display:none;">
+                            <span class="placeholder-icon">🧹</span>
+                            「データテーブルから空の行を削除する」アクション設定画面（対象＝蓄積テーブル）<br>
+                            <code>data-image-slot="lesson-5/05g_delete_empty_rows"</code>
+                          </figure>
+                        </figure>
+                      <div class="proc-content">
+                        <span class="proc-headline"><code>データテーブルから空の行を削除する</code>（蓄積テーブルを対象に指定）</span>
+                        <span style="font-size:14px; color:#374151;">PAD の仕様上、<code>新しいデータテーブルを作成</code>の直後は<strong>1 行目に必ず空白行が 1 行できてしまう</strong>ので、ここでその行を削除して整えておく。これをやっておかないと、後続の <code>FOR EACH</code> 処理で空白行が混ざって「氏名が空」のスタッフを処理しようとして落ちます。</span>
+                      </div>
                     </li>
 
-                    <li><code>ラベル</code>（名前：<code>移動先</code>）を置く</li>
-                    <li><code>Webページからデータを抽出する</code>（<strong>「データの抽出元」＝「最初のみ」</strong>、<strong>「処理する Web ページの最大数」＝ <code>1</code></strong>。1 ページぶんだけ抽出するように設定）</li>
-                    <li><code>データテーブルをマージする</code>で、いま抽出したぶんを<strong>蓄積テーブルに追記</strong>
-                      <div style="display:grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap:16px; align-items:start; margin-top:10px;">
-                        <figure style="margin:0;">
-                          <figure class="pad-image-placeholder" data-image-slot="lesson-5/05e_merge_data_table" style="margin:0;">
+                    <li>
+                      <figure class="proc-figure">
+                          <img src="assets/lessons/lesson-5_05h_place_label.png"
+                               alt="「ラベル」アクション設定画面（名前＝移動先）"
+                               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                          <figure class="pad-image-placeholder" data-image-slot="lesson-5/05h_place_label" style="margin:0; display:none;">
+                            <span class="placeholder-icon">📍</span>
+                            「ラベル」アクション設定画面（名前＝移動先）<br>
+                            <code>data-image-slot="lesson-5/05h_place_label"</code>
+                          </figure>
+                        </figure>
+                      <div class="proc-content">
+                        <span class="proc-headline"><code>ラベル</code>（名前：<code>移動先</code>）を置く</span>
+                        <span style="font-size:14px; color:#374151;">ループの「戻ってくる目印」を置きます。名前は <code>移動先</code> など分かりやすいものに。後で <code>移動先に移動する</code> アクションがここに戻ってきます。</span>
+                      </div>
+                    </li>
+
+                    <li>
+                      <figure class="proc-figure">
+                          <img src="assets/lessons/lesson-5_05i_extract_first_only.png"
+                               alt="「Webページからデータを抽出する」アクション設定画面（データの抽出元＝最初のみ／処理する Web ページの最大数＝1）"
+                               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                          <figure class="pad-image-placeholder" data-image-slot="lesson-5/05i_extract_first_only" style="margin:0; display:none;">
+                            <span class="placeholder-icon">📥</span>
+                            「Webページからデータを抽出する」アクション設定画面（データの抽出元＝最初のみ／処理する Web ページの最大数＝1）<br>
+                            <code>data-image-slot="lesson-5/05i_extract_first_only"</code>
+                          </figure>
+                        </figure>
+                      <div class="proc-content">
+                        <span class="proc-headline"><code>Webページからデータを抽出する</code>（<strong>「データの抽出元」＝「最初のみ」</strong>、<strong>「処理する Web ページの最大数」＝ <code>1</code></strong>）</span>
+                        <span style="font-size:14px; color:#374151;">5-B-① と同じ要領で抽出設定を作りますが、ここでは <strong>「最初のみ」＋最大数 1</strong> で <strong>1 ページぶんだけ</strong>取得するように絞ります。ページめくりは PAD に任せず、後ろの If で自分で制御します。</span>
+                      </div>
+                    </li>
+                    <li>
+                      <figure class="proc-figure">
+                          <img src="assets/lessons/lesson-5_05e_merge_data_table.png"
+                               alt="「データテーブルをマージする」アクション設定画面（最初のデータテーブル＝蓄積テーブル／2 番目＝DataFromWebPage／マージモード＝行を末尾に追加する）"
+                               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                          <figure class="pad-image-placeholder" data-image-slot="lesson-5/05e_merge_data_table" style="margin:0; display:none;">
                             <span class="placeholder-icon">🔗</span>
                             「データテーブルをマージする」アクション設定画面（最初のデータテーブル＝蓄積テーブル／2 番目＝DataFromWebPage／マージモード＝行を末尾に追加する）<br>
                             <code>data-image-slot="lesson-5/05e_merge_data_table"</code>
                           </figure>
                         </figure>
-                        <div>
-                          <span style="font-size:14px; color:#374151;">設定画面で：</span>
+                      <div class="proc-content">
+                        <span class="proc-headline"><code>データテーブルをマージする</code>で、いま抽出したぶんを<strong>蓄積テーブルに追記</strong></span>
+                        <span style="font-size:14px; color:#374151;">設定画面で：</span>
                           <ul style="margin:4px 0 0 22px; font-size:14px;">
                             <li><strong>最初のデータテーブル</strong>：<code>%蓄積テーブル%</code>（手順 1 で作成したもの）</li>
                             <li><strong>2 番目のデータテーブル</strong>：<code>%DataFromWebPage%</code>（手順 4 でいま抽出したぶん）</li>
-                            <li><strong>マージモード</strong>：そのまま変更しなくて <strong>OK</strong>（デフォルトの「行を末尾に追加する」で意図どおりに動く）</li>
+                            <li><strong>マージモード</strong>：そのまま変更しなくて <strong>OK</strong></li>
                           </ul>
                           <span style="display:block; font-size:14px; color:#374151; margin-top:6px;">これで蓄積テーブルの末尾に、いま抽出した 1 ページぶんが<strong>追記</strong>されます。<strong>抽出の直後にマージする</strong>のが大事なポイント。次のページに送る前に必ず手元に取り込んでおかないと、変数が次のページのデータで塗り替えられて消えてしまいます。</span>
-                        </div>
                       </div>
                     </li>
 
-                    <li><code>Webページ上の要素の詳細を取得します</code>で<strong>「次へ」ボタンの <code>Disabled</code> 属性</strong>を読み取る
-                      <div style="display:grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap:16px; align-items:start; margin-top:10px;">
-                        <figure style="margin:0;">
+                    <li>
+                      <figure class="proc-figure" style="max-width:85%;">
                           <img src="assets/lessons/lesson-5_05b_get_details_disabled.png"
                                alt="「Webページ上の要素の詳細を取得します」アクション設定画面。UI 要素＝次へボタン、属性名＝Disabled、生成変数＝%ページャー要素% を指定している様子"
                                onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
@@ -401,41 +449,90 @@
                             <code>data-image-slot="lesson-5/05b_get_details_disabled"</code>
                           </figure>
                         </figure>
-                        <div>
-                          <span style="font-size:14px; color:#374151;">設定画面で：</span>
+                      <div class="proc-content">
+                        <span class="proc-headline"><code>Webページ上の要素の詳細を取得します</code>で<strong>「次へ」ボタンの <code>Disabled</code> 属性</strong>を読み取る</span>
+                        <span style="font-size:14px; color:#374151;">設定画面で：</span>
                           <ul style="margin:4px 0 0 22px; font-size:14px;">
                             <li><strong>UI 要素</strong>：UI 要素ピッカーで「次へ」ボタンを取得</li>
                             <li><strong>属性名</strong>：プルダウンから <code>Disabled</code> を選択（手入力ではなく選択肢から選べる）</li>
                             <li><strong>生成変数</strong>：<code>%ページャー要素%</code> など分かりやすい名前にリネーム</li>
                           </ul>
                           <span style="display:block; font-size:14px; color:#374151; margin-top:6px;">これで <code>%ページャー要素%</code> には、押せるなら <code>false</code>、押せないなら <code>true</code> が入ります。</span>
-                        </div>
                       </div>
                     </li>
 
-                    <li>条件 → <code>If</code> アクションを置く
-                      <div style="display:grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap:16px; align-items:start; margin-top:10px;">
-                        <figure style="margin:0;">
-                          <figure class="pad-image-placeholder" data-image-slot="lesson-5/05d_if_pager_condition" style="margin:0;">
+                    <li>
+                      <figure class="proc-figure">
+                          <img src="assets/lessons/lesson-5_05d_if_pager_condition.png"
+                               alt="「If」アクションで最初のオペランド＝%ページャー要素%、演算子＝と等しくない、2 番目のオペランド＝true を指定している画面"
+                               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                          <figure class="pad-image-placeholder" data-image-slot="lesson-5/05d_if_pager_condition" style="margin:0; display:none;">
                             <span class="placeholder-icon">🔀</span>
                             「If」アクションで最初のオペランド＝%ページャー要素%、演算子＝と等しくない、2 番目のオペランド＝true を指定している画面<br>
                             <code>data-image-slot="lesson-5/05d_if_pager_condition"</code>
                           </figure>
                         </figure>
-                        <div>
-                          <span style="font-size:14px; color:#374151;"><code>If</code> アクション設定画面で：</span>
+                      <div class="proc-content">
+                        <span class="proc-headline">条件 → <code>If</code> アクションを置く</span>
+                        <span style="font-size:14px; color:#374151;"><code>If</code> アクション設定画面で：</span>
                           <ul style="margin:4px 0 0 22px; font-size:14px;">
                             <li><strong>最初のオペランド</strong>：<code>%ページャー要素%</code></li>
                             <li><strong>演算子</strong>：<code>と等しくない (&lt;&gt;)</code></li>
-                            <li><strong>2 番目のオペランド</strong>：<code>true</code>（半角の文字列）</li>
+                            <li><strong>2 番目のオペランド</strong>：<code>true</code>（<strong style="color:#dc2626;">必ず半角で入力</strong> — 全角だと文字列が一致せず判定が効かない／ループが止まりません）</li>
                           </ul>
                           <span style="display:block; font-size:14px; color:#374151; margin-top:6px;">これで「<strong>次へボタンが <code>Disabled=true</code> ではない（＝まだ押せる）あいだだけ</strong>ループを続ける」という意味になります。</span>
-                        </div>
                       </div>
                     </li>
-                    <li><code>Webページのボタンを押します</code>（次へボタンを押す）</li>
-                    <li><code>移動先に移動する</code> ＝ 手順 3 の <code>ラベル</code> に戻る</li>
-                    <li><code>End</code>（If を閉じる）</li>
+                    <li>
+                      <figure class="proc-figure">
+                          <img src="assets/lessons/lesson-5_05j_press_next_button.png"
+                               alt="「Webページのボタンを押します」アクション設定画面（UI 要素＝次へボタン）"
+                               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                          <figure class="pad-image-placeholder" data-image-slot="lesson-5/05j_press_next_button" style="margin:0; display:none;">
+                            <span class="placeholder-icon">⏭️</span>
+                            「Webページのボタンを押します」アクション設定画面（UI 要素＝次へボタン）<br>
+                            <code>data-image-slot="lesson-5/05j_press_next_button"</code>
+                          </figure>
+                        </figure>
+                      <div class="proc-content">
+                        <span class="proc-headline"><code>Webページのボタンを押します</code>（次へボタンを押す）</span>
+                        <span style="font-size:14px; color:#374151;">UI 要素ピッカーで「次へ」ボタンを指定し、クリックさせます。これで次のページに進みます。</span>
+                      </div>
+                    </li>
+
+                    <li>
+                      <figure class="proc-figure">
+                          <img src="assets/lessons/lesson-5_05k_goto_label.png"
+                               alt="「移動先に移動する」アクション設定画面（移動先のラベル＝移動先）"
+                               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                          <figure class="pad-image-placeholder" data-image-slot="lesson-5/05k_goto_label" style="margin:0; display:none;">
+                            <span class="placeholder-icon">↩️</span>
+                            「移動先に移動する」アクション設定画面（移動先のラベル＝移動先）<br>
+                            <code>data-image-slot="lesson-5/05k_goto_label"</code>
+                          </figure>
+                        </figure>
+                      <div class="proc-content">
+                        <span class="proc-headline"><code>移動先に移動する</code> ＝ 手順 3 の <code>ラベル</code> に戻る</span>
+                        <span style="font-size:14px; color:#374151;">「移動先のラベル」プルダウンで手順 3 で置いた <code>移動先</code> を選択。実行時にここでループの先頭まで戻り、また 1 ページぶん抽出 → マージ → 終端判定…を繰り返します。</span>
+                      </div>
+                    </li>
+
+                    <li>
+                      <figure class="proc-figure">
+                          <img src="assets/lessons/lesson-5_05l_end_if.png"
+                               alt="手順 7 の If に対応する End アクションが配置されているフロー画面"
+                               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                          <figure class="pad-image-placeholder" data-image-slot="lesson-5/05l_end_if" style="margin:0; display:none;">
+                            <span class="placeholder-icon">🏁</span>
+                            手順 7 の If に対応する End アクションが配置されているフロー画面<br>
+                            <code>data-image-slot="lesson-5/05l_end_if"</code>
+                          </figure>
+                        </figure>
+                      <div class="proc-content">
+                        <span class="proc-headline"><code>End</code>（If を閉じる）</span>
+                        <span style="font-size:14px; color:#374151;">PAD では <code>If</code> を置くと自動で <code>End</code> がペアで生成されることが多いので、すでに置かれている場合はそのままで OK。<strong>次へボタンが押せなくなった瞬間</strong>、ここを抜けてフロー全体が終了します。</span>
+                      </div>
+                    </li>
                   </ol>
               </div>
 
