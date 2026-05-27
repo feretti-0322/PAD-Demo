@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>第0回 キックオフ | PAD練習サイト</title>
-  <link rel="stylesheet" href="css/style.css">
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>第0回 キックオフ | PAD練習サイト</title>
+<link href="css/style.css" rel="stylesheet"/>
+<style>
     .handson-callout { border:3px solid #dc2626; background:#fff1f2; border-radius:10px; padding:16px 20px; font-size:14px; line-height:1.9; color:#7f1d1d; margin:20px 0; box-shadow:0 4px 14px rgba(220,38,38,0.18); position:relative; }
     .handson-callout::before { content:'🎯 ハンズオン'; position:absolute; top:-12px; left:14px; background:#dc2626; color:#fff; font-size:12px; font-weight:800; padding:3px 12px; border-radius:999px; letter-spacing:0.05em; }
     .handson-callout strong { color:#b91c1c; }
@@ -23,182 +24,150 @@
   </style>
 </head>
 <body>
-  <div class="app-layout">
-    <div id="sidebarContainer"></div>
-    <div class="main-content">
-      <header class="topbar">
-        <div class="topbar-title">🚀 第0回 キックオフ</div>
-        <div class="topbar-user"><span>👤</span><span id="topbarUser">user</span></div>
-      </header>
-      <main class="page-content">
-
-        <section class="lesson-hero">
-          <div class="lesson-tag">LESSON 0 / キックオフ</div>
-          <h1>第0回 キックオフ 〜PADで何が変わるのか〜</h1>
-          <p>
-            本研修のゴール（プロフィールシート一括出力フロー）の完成イメージを<strong>動画レベル</strong>で焼き付け、<br>
+<div class="app-layout">
+<div id="sidebarContainer"></div>
+<div class="main-content">
+<header class="topbar">
+<div class="topbar-title">🚀 第0回 キックオフ</div>
+<div class="topbar-user"><span>👤</span><span id="topbarUser">user</span></div>
+</header>
+<main class="page-content">
+<section class="lesson-hero">
+<div class="lesson-tag">LESSON 0 / キックオフ</div>
+<h1>第0回 キックオフ 〜PADで何が変わるのか〜</h1>
+<p>
+            本研修のゴール（プロフィールシート一括出力フロー）の完成イメージを<strong>動画レベル</strong>で焼き付け、<br/>
             最終演習で何を作るかをイメージしてから第1回に進むための回です。あわせて、PAD のインストールとサインインまで完了させます。
           </p>
-          <div class="lesson-meta">
-            <span>🎯 ゴール：PAD インストール＋サインイン＋完成動画視聴</span>
-          </div>
-        </section>
-
-        <nav class="lesson-toc">
-          <h3>📑 目次</h3>
-          <ol>
-            <li><a href="#goal">🎯 到達目標</a></li>
-            <li><a href="#explain">📖 解説（PADとは／完成動画／研修ロードマップ）</a></li>
+<div class="lesson-meta">
+<span>🎯 ゴール：PAD インストール＋サインイン＋完成動画視聴</span>
+</div>
+</section>
+<nav class="lesson-toc">
+<h3>📑 目次</h3>
+<ol>
+            <li><a href="#sec-a">A. PAD（Power Automate for Desktop）とは</a></li>
+            <li><a href="#sec-b">B. 完成動画 〜プロフィールシート一括出力フロー〜</a></li>
+            <li><a href="#sec-c">C. 研修ロードマップ（全8回）</a></li>
             <li><a href="#install">⚙️ PAD のインストール〜サインイン</a></li>
-
             <li><a href="#handson">🛠️ ハンズオン課題</a></li>
             <li><a href="#faq">❓ よくある詰まりと FAQ</a></li>
           </ol>
-        </nav>
-
-        <section class="lesson-section" id="goal">
-          <h2 class="lesson-section-title"><span class="sec-icon">🎯</span>到達目標</h2>
-          <ul class="lesson-goal-list">
-            <li>本研修のゴール（最終演習フロー）の完成イメージを動画レベルで把握している</li>
-            <li>ホーム（PADとは／研修ロードマップ）を見て、全8回で何を学ぶかを理解している</li>
-            <li><strong>Power Automate for Desktop をインストールし、Microsoft 職場・学校アカウントでサインインできている</strong></li>
-          </ul>
-        </section>
-
-        <section class="lesson-section" id="explain">
-          <h2 class="lesson-section-title"><span class="sec-icon">📖</span>解説</h2>
-
-          <div class="card">
-            <div class="card-header"><h3>0-A. PAD（Power Automate for Desktop）とは</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <p>PAD は <strong>Microsoft が提供する RPA（業務自動化）ツール</strong>です。Windows 11 に標準搭載されており、追加費用なしで全社員が使えます。</p>
-              <p>「Excel を開いて、セルに値を書き込んで、保存する」「ブラウザを開いて、ログインして、検索結果をスクレイピングする」といった<strong>「決まった手順の繰り返し作業」</strong>を、人間の代わりに PAD が実行してくれます。</p>
-              <div class="point-block">
-                <strong>生成AI（ChatGPT 等）との違い：</strong> 生成AI は「指示の解釈」に揺れがあり毎回少しずつ違う結果を返します。PAD は<strong>「決めた手順通りに毎回 100% 同じ動作」</strong>を保証します。業務の本番運用では再現性が圧倒的に重要です。
+</nav>
+<section class="lesson-section" id="sec-a"><div class="card">
+<div class="card-header"><h3>A. PAD（Power Automate for Desktop）とは</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<p>PAD は <strong>Microsoft が提供する RPA（業務自動化）ツール</strong>です。Windows 11 に標準搭載されており、追加費用なしで全社員が使えます。</p>
+<p>「Excel を開いて、セルに値を書き込んで、保存する」「ブラウザを開いて、ログインして、検索結果をスクレイピングする」といった<strong>「決まった手順の繰り返し作業」</strong>を、人間の代わりに PAD が実行してくれます。</p>
+<div class="point-block">
+<strong>生成AI（ChatGPT 等）との違い：</strong> 生成AI は「指示の解釈」に揺れがあり毎回少しずつ違う結果を返します。PAD は<strong>「決めた手順通りに毎回 100% 同じ動作」</strong>を保証します。業務の本番運用では再現性が圧倒的に重要です。
               </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header"><h3>0-B. 完成動画 〜プロフィールシート一括出力フロー〜</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <p>第7回（総合演習）で受講者全員が組み上げるフローの完成動画です。<br>
+</div>
+</div></section>
+<section class="lesson-section" id="sec-b"><div class="card">
+<div class="card-header"><h3>B. 完成動画 〜プロフィールシート一括出力フロー〜</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<p>第7回（総合演習）で受講者全員が組み上げるフローの完成動画です。<br/>
               ブラウザ自動操作 → スタッフ情報を取得 → Excel に出力までを一貫して行います。</p>
-              <figure class="lesson-figure">
-                <video src="assets/lessons/lesson-0_01_final_flow_demo.mp4" controls playsinline preload="metadata"></video>
-                <figcaption>最終演習フローの完成動画（ブラウザ起動 → ログイン → 一覧取得 → 詳細スクレイピング → Excel 一括出力）</figcaption>
-              </figure>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header"><h3>0-C. 研修ロードマップ（全8回）</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <p>サイドバー上部の「<strong>🏠 ホーム（PADとは／ロードマップ）</strong>」を開くと、全8回のロードマップが表示されます。各回の四角をクリックすると対応する lesson ページに遷移できます。</p>
-              <ul style="margin:8px 0 0 20px;">
-                <li><strong>第0回</strong> キックオフ（今ここ）</li>
-                <li><strong>第1回</strong> 環境セットアップ（PAD導入 / WebDriver）</li>
-                <li><strong>第2回</strong> 変数を完全理解</li>
-                <li><strong>第3回</strong> Excel自動化</li>
-                <li><strong>第4回</strong> ブラウザ自動化①（ログイン / クリック）</li>
-                <li><strong>第5回</strong> ブラウザ自動化②（スクレイピング / URL直）</li>
-                <li><strong>第6回</strong> 制御構造（ループ / 分岐 / 例外 / サブフロー）</li>
-                <li><strong>第7回</strong> 総合演習（プロフィール一括出力）</li>
-              </ul>
-            </div>
-          </div>
-
-        </section>
-
-        <section class="lesson-section" id="install">
-          <h2 class="lesson-section-title"><span class="sec-icon">⚙️</span>PAD のインストール〜サインイン</h2>
-
-          <div class="card">
-            <div class="card-header"><h3>0-D. Power Automate for Desktop を起動する</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <p>
-                <strong>Windows 11 には Power Automate for Desktop が標準搭載されています。</strong><br>
+<figure class="lesson-figure">
+<video controls="" playsinline="" preload="metadata" src="assets/lessons/lesson-0_01_final_flow_demo.mp4"></video>
+<figcaption>最終演習フローの完成動画（ブラウザ起動 → ログイン → 一覧取得 → 詳細スクレイピング → Excel 一括出力）</figcaption>
+</figure>
+</div>
+</div></section>
+<section class="lesson-section" id="sec-c"><div class="card">
+<div class="card-header"><h3>C. 研修ロードマップ（全8回）</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<p>サイドバー上部の「<strong>🏠 ホーム（PADとは／ロードマップ）</strong>」を開くと、全8回のロードマップが表示されます。各回の四角をクリックすると対応する lesson ページに遷移できます。</p>
+<ul style="margin:8px 0 0 20px;">
+<li><strong>第0回</strong> キックオフ（今ここ）</li>
+<li><strong>第1回</strong> 環境セットアップ（PAD導入 / WebDriver）</li>
+<li><strong>第2回</strong> 変数を完全理解</li>
+<li><strong>第3回</strong> Excel自動化</li>
+<li><strong>第4回</strong> ブラウザ自動化①（ログイン / クリック）</li>
+<li><strong>第5回</strong> ブラウザ自動化②（スクレイピング / URL直）</li>
+<li><strong>第6回</strong> 制御構造（ループ / 分岐 / 例外 / サブフロー）</li>
+<li><strong>第7回</strong> 総合演習（プロフィール一括出力）</li>
+</ul>
+</div>
+</div></section>
+<section class="lesson-section" id="install">
+<h2 class="lesson-section-title"><span class="sec-icon">⚙️</span>PAD のインストール〜サインイン</h2>
+<div class="card">
+<div class="card-header"><h3>0-D. Power Automate for Desktop を起動する</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<p>
+<strong>Windows 11 には Power Automate for Desktop が標準搭載されています。</strong><br/>
                 まずはスタートメニューから起動して、アプリケーションが存在するかを確認しましょう。
               </p>
-
-              <div class="step-split">
-                <figure class="step-figure">
-                  <img src="assets/lessons/lesson-0_05_start_menu_search.png" alt="スタートメニューで「Power Automate」を検索している様子">
-                  <figcaption>スタートメニューで「Power Automate」を検索している様子</figcaption>
-                </figure>
-                <div class="step-text">
-                  <ol class="instruction-list" style="margin:0 0 0 20px;">
-                    <li>スタートメニュー（左下の Windows ロゴ）をクリックする</li>
-                    <li>検索バーに「<strong>Power Automate</strong>」と入力して検索する</li>
-                    <li>「<strong>Power Automate</strong>」（Microsoft Corporation 製）が表示されたら、それをクリックして起動する</li>
-                  </ol>
-                </div>
-              </div>
-
-              <div class="point-block">
-                💡 <strong>アプリが見つからない場合</strong><br>
+<div class="step-split">
+<figure class="step-figure">
+<img alt="スタートメニューで「Power Automate」を検索している様子" src="assets/lessons/lesson-0_05_start_menu_search.png"/>
+<figcaption>スタートメニューで「Power Automate」を検索している様子</figcaption>
+</figure>
+<div class="step-text">
+<ol class="instruction-list" style="margin:0 0 0 20px;">
+<li>スタートメニュー（左下の Windows ロゴ）をクリックする</li>
+<li>検索バーに「<strong>Power Automate</strong>」と入力して検索する</li>
+<li>「<strong>Power Automate</strong>」（Microsoft Corporation 製）が表示されたら、それをクリックして起動する</li>
+</ol>
+</div>
+</div>
+<div class="point-block">
+                💡 <strong>アプリが見つからない場合</strong><br/>
                 Microsoft Store を開き「Power Automate」で検索 →「Power Automate」（Microsoft Corporation 製）の「インストール」をクリックしてください。
               </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header"><h3>0-E. Microsoft 職場・学校アカウントでサインインする</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <p>PAD 起動後、Microsoft アカウントでのサインインが求められます。<strong>個人の Microsoft アカウントではなく、会社のメールアドレス</strong>（職場・学校アカウント）でサインインしてください。</p>
-
-              <ol class="instruction-list">
-                <li>サインイン画面で会社のメールアドレスを入力</li>
-                <li>パスワードを入力してサインインを完了する</li>
-                <li>初回起動時は使用許諾やテレメトリの確認画面が出ることがある（既定のままで OK）</li>
-              </ol>
-
-              <div class="point-block">
-                <strong>📌 職場アカウントが手元にない場合：</strong> Windows の「設定 → アカウント → 職場または学校用アカウントの追加」から、会社のメールアドレス（name@company.com 形式）で登録してください。
+</div>
+</div>
+<div class="card">
+<div class="card-header"><h3>0-E. Microsoft 職場・学校アカウントでサインインする</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<p>PAD 起動後、Microsoft アカウントでのサインインが求められます。<strong>個人の Microsoft アカウントではなく、会社のメールアドレス</strong>（職場・学校アカウント）でサインインしてください。</p>
+<ol class="instruction-list">
+<li>サインイン画面で会社のメールアドレスを入力</li>
+<li>パスワードを入力してサインインを完了する</li>
+<li>初回起動時は使用許諾やテレメトリの確認画面が出ることがある（既定のままで OK）</li>
+</ol>
+<div class="point-block">
+<strong>📌 職場アカウントが手元にない場合：</strong> Windows の「設定 → アカウント → 職場または学校用アカウントの追加」から、会社のメールアドレス（name@company.com 形式）で登録してください。
               </div>
-            </div>
-          </div>
-
-        </section>
-
-        <section class="lesson-section" id="handson">
-          <h2 class="lesson-section-title"><span class="sec-icon">🛠️</span>ハンズオン課題</h2>
-          <div class="card">
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <div class="handson-callout">
+</div>
+</div>
+</section>
+<section class="lesson-section" id="handson">
+<h2 class="lesson-section-title"><span class="sec-icon">🛠️</span>ハンズオン課題</h2>
+<div class="card">
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<div class="handson-callout">
                 🛠️ <strong>ハンズオン課題①：</strong>スタートメニューから <strong>Power Automate</strong> を起動し、<strong>Microsoft 職場・学校アカウント</strong>でサインインを完了させましょう。PAD コンソール（フロー一覧画面）が表示されれば成功です。
               </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="lesson-section" id="faq">
-          <h2 class="lesson-section-title"><span class="sec-icon">❓</span>よくある詰まりと FAQ</h2>
-          <div class="lesson-faq">
-            <div class="q">Q1. スタートメニューで検索しても「Power Automate」が出てこない</div>
-            <div class="a">Microsoft Store を開き「Power Automate」で検索 →「Power Automate」（Microsoft Corporation 製）の「インストール」をクリックしてください。</div>
-          </div>
-          <div class="lesson-faq">
-            <div class="q">Q2. サインイン時に「このアカウントは使用できません」と出る</div>
-            <div class="a">個人 Microsoft アカウントを使っている可能性があります。会社支給のメール（職場・学校アカウント）でサインインし直してください。</div>
-          </div>
-        </section>
-
-        <nav class="lesson-nav">
-          <a href="pad-overview.html" class="prev">🏠 ホームに戻る</a>
-          <a href="lesson-1.html" class="next">第1回 環境セットアップ</a>
-        </nav>
-
-      </main>
-      <footer class="app-footer">© 2025 PAD練習サイト</footer>
-    </div>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/env.js"></script>
-  <script src="js/supabase-client.js"></script>
-  <script src="js/auth.js"></script>
-  <script src="js/common.js?v=6"></script>
-  <script>bootstrapPage('lesson-0');</script>
+</div>
+</div>
+</section>
+<section class="lesson-section" id="faq">
+<h2 class="lesson-section-title"><span class="sec-icon">❓</span>よくある詰まりと FAQ</h2>
+<div class="lesson-faq">
+<div class="q">Q1. スタートメニューで検索しても「Power Automate」が出てこない</div>
+<div class="a">Microsoft Store を開き「Power Automate」で検索 →「Power Automate」（Microsoft Corporation 製）の「インストール」をクリックしてください。</div>
+</div>
+<div class="lesson-faq">
+<div class="q">Q2. サインイン時に「このアカウントは使用できません」と出る</div>
+<div class="a">個人 Microsoft アカウントを使っている可能性があります。会社支給のメール（職場・学校アカウント）でサインインし直してください。</div>
+</div>
+</section>
+<nav class="lesson-nav">
+<a class="prev" href="pad-overview.html">🏠 ホームに戻る</a>
+<a class="next" href="lesson-1.html">第1回 環境セットアップ</a>
+</nav>
+</main>
+<footer class="app-footer">© 2025 PAD練習サイト</footer>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/env.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/common.js?v=6"></script>
+<script>bootstrapPage('lesson-0');</script>
 </body>
 </html>

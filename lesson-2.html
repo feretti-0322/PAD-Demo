@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>第2回 変数を完全理解 | PAD練習サイト</title>
-  <link rel="stylesheet" href="css/style.css">
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>第2回 変数を完全理解 | PAD練習サイト</title>
+<link href="css/style.css" rel="stylesheet"/>
+<style>
     .magic-box { background: #0d9488; border-radius: 12px; width: 120px; height: 90px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; font-weight: 700; box-shadow: 0 4px 16px rgba(13,148,136,0.3); }
     .magic-box .box-label { font-size: 11px; background: rgba(255,255,255,0.25); border-radius: 4px; padding: 2px 8px; margin-bottom: 6px; }
     .magic-box .box-value { font-size: 14px; }
@@ -45,12 +46,12 @@
     .type-grid figure img { max-width: 100%; height: auto; border: 1px solid #d8dee9; border-radius: 8px; display: block; }
     .type-grid figure figcaption { font-size: 12px; color: #64748b; margin-top: 6px; text-align: center; }
     @media (max-width: 860px) { .type-grid { grid-template-columns: 1fr; } }
-    /* リスト型・データテーブル型 — 左右2カラム配置 */
-    .type-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 14px 0; }
+    /* リスト型・データテーブル型 — 左右2カラム配置（画像の高さを揃える） */
+    .type-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 14px 0; align-items: start; }
     .type-pair figure { margin: 0; display: flex; flex-direction: column; align-items: center; }
-    .type-pair figure img { max-width: 100%; height: auto; border: 1px solid #d8dee9; border-radius: 8px; display: block; }
+    .type-pair figure img { width: 100%; height: 320px; object-fit: contain; background: #fff; border: 1px solid #d8dee9; border-radius: 8px; display: block; }
     .type-pair figure figcaption { font-size: 12px; color: #64748b; margin-top: 6px; text-align: center; }
-    @media (max-width: 860px) { .type-pair { grid-template-columns: 1fr; } }
+    @media (max-width: 860px) { .type-pair { grid-template-columns: 1fr; } .type-pair figure img { height: 260px; } }
     /* 「複数値の集合」型（リスト・データテーブル）の行ハイライト */
     .name-table tr.type-row-collection td { background: #fff7ed !important; border-left: 4px solid #f97316; }
     .name-table tr.type-row-collection td:first-child strong { color: #c2410c; }
@@ -73,363 +74,316 @@
   </style>
 </head>
 <body>
-  <div class="app-layout">
-    <div id="sidebarContainer"></div>
-    <div class="main-content">
-      <header class="topbar">
-        <div class="topbar-title">🔤 第2回 変数を完全理解</div>
-        <div class="topbar-user"><span>👤</span><span id="topbarUser">user</span></div>
-      </header>
-      <main class="page-content">
-
-        <section class="lesson-hero">
-          <div class="lesson-tag">LESSON 2 / 変数を完全理解</div>
-          <h1>第2回 変数を完全理解 〜箱・データテーブル・選択ダイアログ〜</h1>
-          <p>
-            以降の全回の土台となる<strong>「変数」「データテーブル」「ユーザー入力ダイアログ」</strong>を、PC スキルゼロでも腹落ちさせる回です。<br>
+<div class="app-layout">
+<div id="sidebarContainer"></div>
+<div class="main-content">
+<header class="topbar">
+<div class="topbar-title">🔤 第2回 変数を完全理解</div>
+<div class="topbar-user"><span>👤</span><span id="topbarUser">user</span></div>
+</header>
+<main class="page-content">
+<section class="lesson-hero">
+<div class="lesson-tag">LESSON 2 / 変数を完全理解</div>
+<h1>第2回 変数を完全理解 〜箱・データテーブル・選択ダイアログ〜</h1>
+<p>
+            以降の全回の土台となる<strong>「変数」「データテーブル」「ユーザー入力ダイアログ」</strong>を、PC スキルゼロでも腹落ちさせる回です。<br/>
             最終演習 Main で使う「データテーブル直書き → 列リスト化 → 選択ダイアログ」のパターンをここで完成させます。
           </p>
-          <div class="lesson-meta">
-            <span>🪜 前提：第1回（環境セットアップ）完了</span>
-            <span>🎯 ゴール：部署×役職マスターから選択肢を出すミニフロー完成</span>
-          </div>
-        </section>
-
-        <nav class="lesson-toc">
-          <h3>📑 目次</h3>
-          <ol>
-            <li><a href="#goal">🎯 到達目標</a></li>
+<div class="lesson-meta">
+<span>🪜 前提：第1回（環境セットアップ）完了</span>
+<span>🎯 ゴール：部署×役職マスターから選択肢を出すミニフロー完成</span>
+</div>
+</section>
+<nav class="lesson-toc">
+<h3>📑 目次</h3>
+<ol>
             <li><a href="#prep">🪜 事前準備</a></li>
-            <li><a href="#explain">📖 解説（変数／データテーブル／ダイアログ）</a></li>
+            <li class="toc-group">📘 A. 変数の基本</li>
+            <li class="toc-sub"><a href="#sec-a-1">A-1. 変数 ＝ データを入れておく「箱」</a></li>
+            <li class="toc-sub"><a href="#sec-a-2">A-2. なぜ変数を使うの？</a></li>
+            <li class="toc-sub"><a href="#sec-a-3">A-3. 変数には「わかりやすい名前」をつけよう</a></li>
+            <li class="toc-sub"><a href="#sec-a-4">A-4. 変数の「型（データ型）」の種類を知ろう</a></li>
+            <li class="toc-group">📘 B. リストとデータテーブル</li>
+            <li class="toc-sub"><a href="#sec-b-1">B-1. リスト型 と データテーブル型 〜複数の値を一括で扱う変数〜</a></li>
+            <li class="toc-sub"><a href="#sec-b-2">B-2. DataTable の値を取り出す（インタラクティブデモ）</a></li>
+            <li><a href="#sec-c">C. 直書きデータテーブル ＋ 列リスト化 ＋ 選択ダイアログ（最終演習 Main の縮小版）</a></li>
             <li><a href="#answer">✅ 解答例 / 完成フローテキスト</a></li>
             <li><a href="#faq">❓ よくある詰まりと FAQ</a></li>
           </ol>
-        </nav>
-
-        <section class="lesson-section" id="goal">
-          <h2 class="lesson-section-title"><span class="sec-icon">🎯</span>到達目標</h2>
-          <ul class="lesson-goal-list">
-            <li>変数を作成・代入・参照できる</li>
-            <li>文字列・数値・日付・データテーブルの違いを説明できる</li>
-            <li><code>新しいデータテーブルを作成</code> でヘッダ付きのデータテーブルを直書きで作成できる</li>
-            <li><code>データテーブル列をリストに取得</code> でデータテーブルの1列をリストに変換できる</li>
-            <li><code>リストから選択ダイアログを表示</code> でユーザーに選択肢を提示し、選ばれた値を変数に格納できる</li>
-          </ul>
-        </section>
-
-        <section class="lesson-section" id="prep">
-          <h2 class="lesson-section-title"><span class="sec-icon">🪜</span>事前準備</h2>
-          <div class="card">
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <ul style="margin:0 0 0 20px;">
-                <li><a href="lesson-1.html" style="color:#2c7be5;">第1回 環境セットアップ</a> が完了している</li>
-                <li>PAD のフロー編集画面で「新規フロー作成」ができる</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        <section class="lesson-section" id="explain">
-          <h2 class="lesson-section-title"><span class="sec-icon">📖</span>解説</h2>
-
-          <!-- ===== 2-A-①: 変数 = 箱 ===== -->
-          <div class="card">
-            <div class="card-header"><h3>2-A-①. 変数 ＝ データを入れておく「箱」</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <p>変数は、数字や文字などのデータを一時的に保存しておく場所です。箱に名前をつけて、中に好きなデータを入れておけます。</p>
-              <div style="display:flex; gap:20px; align-items:center; justify-content:center; flex-wrap:wrap; padding:12px 0;">
-                <div class="magic-box"><div class="box-label">担当者名</div><div class="box-value">田中さん</div></div>
-                <div class="magic-box" style="background:#1d4ed8;"><div class="box-label">注文数</div><div class="box-value" style="font-size:20px;">50</div></div>
-                <div class="magic-box" style="background:#7c3aed;"><div class="box-label">完了フラグ</div><div class="box-value">True</div></div>
-              </div>
-              <div class="point-block">
-                箱には<strong>数字・文字・Yes/No（True/False）</strong>などいろんな種類のデータを入れられます。<br>
+</nav>
+<section class="lesson-section" id="prep">
+<h2 class="lesson-section-title"><span class="sec-icon">🪜</span>事前準備</h2>
+<div class="card">
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<ul style="margin:0 0 0 20px;">
+<li><a href="lesson-1.html" style="color:#2c7be5;">第1回 環境セットアップ</a> が完了している</li>
+<li>PAD のフロー編集画面で「新規フロー作成」ができる</li>
+</ul>
+</div>
+</div>
+</section>
+<div class="lesson-group-header"><span class="lesson-group-label">GROUP A</span><h2>A. 変数の基本</h2><span class="lesson-group-desc">変数とは何か／なぜ使うのか／命名／データ型を一気に押さえる</span></div><section class="lesson-section" id="sec-a-1"><div class="card">
+<div class="card-header"><h3>A-1. 変数 ＝ データを入れておく「箱」</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<p>変数は、数字や文字などのデータを一時的に保存しておく場所です。箱に名前をつけて、中に好きなデータを入れておけます。</p>
+<div style="display:flex; gap:20px; align-items:center; justify-content:center; flex-wrap:wrap; padding:12px 0;">
+<div class="magic-box"><div class="box-label">担当者名</div><div class="box-value">田中さん</div></div>
+<div class="magic-box" style="background:#1d4ed8;"><div class="box-label">注文数</div><div class="box-value" style="font-size:20px;">50</div></div>
+<div class="magic-box" style="background:#7c3aed;"><div class="box-label">完了フラグ</div><div class="box-value">True</div></div>
+</div>
+<div class="point-block">
+                箱には<strong>数字・文字・Yes/No（True/False）</strong>などいろんな種類のデータを入れられます。<br/>
                 PAD では <code style="background:#f0f5ff;border:1px solid #c3d9ff;border-radius:3px;padding:1px 7px;font-family:monospace;color:#1d4ed8;">%変数名%</code> と書くことで、箱の中身をプログラムの中で使えます。
               </div>
-              <figure class="figure-center" style="display:flex; flex-direction:column; align-items:center; margin:14px 0;">
-                <img src="assets/lessons/lesson-2_01_variables_pane.png" alt="PAD のフロー編集画面：アクションの詳細画面下に生成された変数が表示されている様子" style="max-width:70%; height:auto; border:1px solid #d8dee9; border-radius:8px; display:block;">
-                <figcaption style="font-size:12px; color:#64748b; margin-top:6px; text-align:center;">PAD のフロー編集画面：アクションの詳細画面下に生成された変数が表示されている様子</figcaption>
-              </figure>
-            </div>
-          </div>
-
-          <!-- ===== 2-A-②: なぜ変数を使う？ ===== -->
-          <div class="card">
-            <div class="card-header"><h3>2-A-②. なぜ変数を使うの？</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <div class="compare-grid">
-                <div class="compare-box bad">
-                  <h4>😰 変数を使わないと…</h4>
-                  <p>担当者が変わるたびにプログラム内の「田中さん」を<strong>全部探して書き直す</strong>必要があります。書き忘れるとバグの原因に！</p>
-                  <div class="code-block">メール送信("田中さんへ")
+<figure class="figure-center" style="display:flex; flex-direction:column; align-items:center; margin:14px 0;">
+<img alt="PAD のフロー編集画面：アクションの詳細画面下に生成された変数が表示されている様子" src="assets/lessons/lesson-2_01_variables_pane.png" style="max-width:70%; height:auto; border:1px solid #d8dee9; border-radius:8px; display:block;"/>
+<figcaption style="font-size:12px; color:#64748b; margin-top:6px; text-align:center;">PAD のフロー編集画面：アクションの詳細画面下に生成された変数が表示されている様子</figcaption>
+</figure>
+</div>
+</div></section>
+<section class="lesson-section" id="sec-a-2"><div class="card">
+<div class="card-header"><h3>A-2. なぜ変数を使うの？</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<div class="compare-grid">
+<div class="compare-box bad">
+<h4>😰 変数を使わないと…</h4>
+<p>担当者が変わるたびにプログラム内の「田中さん」を<strong>全部探して書き直す</strong>必要があります。書き忘れるとバグの原因に！</p>
+<div class="code-block">メール送信("田中さんへ")
 レポート作成("田中さん担当")
 通知送信("田中さん確認済")</div>
-                </div>
-                <div class="compare-box good">
-                  <h4>😊 変数を使うと！</h4>
-                  <p>「担当者名」という箱に名前を入れておけば、<strong>箱の中身を1か所変えるだけ</strong>でプログラム全体に反映されます。</p>
-                  <div class="code-block">担当者名 = "田中さん"
+</div>
+<div class="compare-box good">
+<h4>😊 変数を使うと！</h4>
+<p>「担当者名」という箱に名前を入れておけば、<strong>箱の中身を1か所変えるだけ</strong>でプログラム全体に反映されます。</p>
+<div class="code-block">担当者名 = "田中さん"
 ↓
 メール送信(%担当者名%へ)
 レポート作成(%担当者名%担当)
 通知送信(%担当者名%確認済)</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- ===== 2-A-③: 名前のつけ方 ===== -->
-          <div class="card">
-            <div class="card-header"><h3>2-A-③. 変数には「わかりやすい名前」をつけよう</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <table class="name-table">
-                <thead><tr><th>何を入れる箱？</th><th>NG な名前</th><th>OK な名前</th></tr></thead>
-                <tbody>
-                  <tr><td>社員の名前</td><td><span class="badge-bad">NG</span><code>a</code> / <code>data1</code></td><td><span class="badge-good">OK</span><code>社員名</code> / <code>EmployeeName</code></td></tr>
-                  <tr><td>今月の売上合計</td><td><span class="badge-bad">NG</span><code>x</code> / <code>num</code></td><td><span class="badge-good">OK</span><code>今月売上合計</code> / <code>TotalSales</code></td></tr>
-                  <tr><td>処理が終わったかどうか</td><td><span class="badge-bad">NG</span><code>flag</code> / <code>b</code></td><td><span class="badge-good">OK</span><code>処理完了フラグ</code> / <code>IsDone</code></td></tr>
-                </tbody>
-              </table>
-              <div class="point-block">
+</div>
+</div>
+</div>
+</div></section>
+<section class="lesson-section" id="sec-a-3"><div class="card">
+<div class="card-header"><h3>A-3. 変数には「わかりやすい名前」をつけよう</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<table class="name-table">
+<thead><tr><th>何を入れる箱？</th><th>NG な名前</th><th>OK な名前</th></tr></thead>
+<tbody>
+<tr><td>社員の名前</td><td><span class="badge-bad">NG</span><code>a</code> / <code>data1</code></td><td><span class="badge-good">OK</span><code>社員名</code> / <code>EmployeeName</code></td></tr>
+<tr><td>今月の売上合計</td><td><span class="badge-bad">NG</span><code>x</code> / <code>num</code></td><td><span class="badge-good">OK</span><code>今月売上合計</code> / <code>TotalSales</code></td></tr>
+<tr><td>処理が終わったかどうか</td><td><span class="badge-bad">NG</span><code>flag</code> / <code>b</code></td><td><span class="badge-good">OK</span><code>処理完了フラグ</code> / <code>IsDone</code></td></tr>
+</tbody>
+</table>
+<div class="point-block">
                 変数名は<strong>「日本語でも OK」</strong>です。業務系の人には日本語名のほうが直感的で誤読が減ります。
               </div>
-
-              <div class="handson-callout">
+<div class="handson-callout">
                 🛠️ <strong>ハンズオン課題①：</strong>以下の流れで、現在の日時を取得して表示するフローを作ってみましょう。
                 <ul style="margin:8px 0 0 20px;">
-                  <li>「現在の日時を取得」アクションで日時を取得（生成される変数名は分かりやすく <code>現在時刻</code> に変更する）</li>
-                  <li>「メッセージを表示する」で <strong>「現在の日時は %現在時刻% です」</strong> と表示させる</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <!-- ===== 2-A-④: 変数の型（データ型）の種類 ===== -->
-          <div class="card">
-            <div class="card-header"><h3>2-A-④. 変数の「型（データ型）」の種類を知ろう</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <p>変数の「箱」には、入れられる値の種類＝<strong>データ型</strong>があります。PAD では型を自分で宣言する必要はなく、<strong>代入した値から自動的に型が決まる</strong>仕組みです。</p>
-
-              <table class="name-table">
-                <thead>
-                  <tr><th>型</th><th>何が入る？</th><th>例</th></tr>
-                </thead>
-                <tbody>
-                  <tr><td><strong>テキスト値<br>(Text)</strong></td><td>文字列。氏名・メッセージ・ファイル名など、文字なら何でも。</td><td><code>"山田 太郎"</code> / <code>"こんにちは"</code></td></tr>
-                  <tr><td><strong>数値<br>(Number)</strong></td><td>整数・小数。四則演算（+ − × ÷）ができる。</td><td><code>100</code> / <code>3.14</code></td></tr>
-                  <tr><td><strong>日時<br>(DateTime)</strong></td><td>日付＋時刻。「現在の日時を取得」アクションで生成される。フォーマット変換で文字列化できる。</td><td><code>2026/05/20 14:30:00</code></td></tr>
-                  <tr class="type-row-collection"><td><strong>リスト<br>(List)</strong></td><td>同じ種類の値を一列に並べたもの。<span class="collection-tag">複数値の集合</span></td><td><code>['営業部','総務部','開発部']</code></td></tr>
-                  <tr class="type-row-collection"><td><strong>データテーブル<br>(DataTable)</strong></td><td>行×列の表形式データ。Excel やスクレイピング結果の格納先。次セクション 2-B で詳しく扱う。<span class="collection-tag">複数値の集合</span></td><td>スタッフ一覧の表など</td></tr>
-                </tbody>
-              </table>
-
-              <p style="margin-top:18px;">「テキスト値」「数値」「日時」の3つの型が PAD の変数ペインでどう見えるかは、下のスクリーンショットで確認できます。</p>
-
-              <div class="type-grid">
-                <figure>
-                  <img src="assets/lessons/lesson-2_type_text.png" alt="テキスト値型の変数の例">
-                  <figcaption>テキスト値（Text）— 文字列が格納された変数</figcaption>
-                </figure>
-                <figure>
-                  <img src="assets/lessons/lesson-2_type_number.png" alt="数値型の変数の例">
-                  <figcaption>数値（Number）— 整数・小数が格納された変数</figcaption>
-                </figure>
-                <figure>
-                  <img src="assets/lessons/lesson-2_type_datetime.png" alt="日時型の変数の例">
-                  <figcaption>日時（DateTime）— 日付＋時刻が格納された変数</figcaption>
-                </figure>
-              </div>
-              <p style="font-size:12px; color:#64748b; margin-top:6px;">
+<li>「現在の日時を取得」アクションで日時を取得（生成される変数名は分かりやすく <code>現在時刻</code> に変更する）</li>
+<li>「メッセージを表示する」で <strong>「現在の日時は %現在時刻% です」</strong> と表示させる</li>
+</ul>
+</div>
+</div>
+</div></section>
+<section class="lesson-section" id="sec-a-4"><div class="card">
+<div class="card-header"><h3>A-4. 変数の「型（データ型）」の種類を知ろう</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<p>変数の「箱」には、入れられる値の種類＝<strong>データ型</strong>があります。PAD では型を自分で宣言する必要はなく、<strong>代入した値から自動的に型が決まる</strong>仕組みです。</p>
+<table class="name-table">
+<thead>
+<tr><th>型</th><th>何が入る？</th><th>例</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>テキスト値<br/>(Text)</strong></td><td>文字列。氏名・メッセージ・ファイル名など、文字なら何でも。</td><td><code>"山田 太郎"</code> / <code>"こんにちは"</code></td></tr>
+<tr><td><strong>数値<br/>(Number)</strong></td><td>整数・小数。四則演算（+ − × ÷）ができる。</td><td><code>100</code> / <code>3.14</code></td></tr>
+<tr><td><strong>日時<br/>(DateTime)</strong></td><td>日付＋時刻。「現在の日時を取得」アクションで生成される。フォーマット変換で文字列化できる。</td><td><code>2026/05/20 14:30:00</code></td></tr>
+<tr class="type-row-collection"><td><strong>リスト<br/>(List)</strong></td><td>同じ種類の値を一列に並べたもの。<span class="collection-tag">複数値の集合</span></td><td><code>['営業部','総務部','開発部']</code></td></tr>
+<tr class="type-row-collection"><td><strong>データテーブル<br/>(DataTable)</strong></td><td>行×列の表形式データ。Excel やスクレイピング結果の格納先。次セクション 2-B で詳しく扱う。<span class="collection-tag">複数値の集合</span></td><td>スタッフ一覧の表など</td></tr>
+</tbody>
+</table>
+<p style="margin-top:18px;">「テキスト値」「数値」「日時」の3つの型が PAD の変数ペインでどう見えるかは、下のスクリーンショットで確認できます。</p>
+<div class="type-grid">
+<figure>
+<img alt="テキスト値型の変数の例" src="assets/lessons/lesson-2_type_text.png"/>
+<figcaption>テキスト値（Text）— 文字列が格納された変数</figcaption>
+</figure>
+<figure>
+<img alt="数値型の変数の例" src="assets/lessons/lesson-2_type_number.png"/>
+<figcaption>数値（Number）— 整数・小数が格納された変数</figcaption>
+</figure>
+<figure>
+<img alt="日時型の変数の例" src="assets/lessons/lesson-2_type_datetime.png"/>
+<figcaption>日時（DateTime）— 日付＋時刻が格納された変数</figcaption>
+</figure>
+</div>
+<p style="font-size:12px; color:#64748b; margin-top:6px;">
                 ※ <strong>リスト</strong>型と<strong>データテーブル</strong>型（複数値の集合）は、次の <strong>2-B-①</strong> セクションで詳しく扱います。
               </p>
-
-              <p style="font-size:12px; color:#64748b; margin-top:10px;">
-                📚 公式リファレンス：<a href="https://learn.microsoft.com/ja-jp/power-automate/desktop-flows/variable-data-types" target="_blank" rel="noopener" style="color:#2c7be5;">Power Automate Desktop の変数データ型一覧（Microsoft Learn）</a>
-              </p>
-            </div>
-          </div>
-
-          <!-- ===== 2-B-①: データテーブル ===== -->
-          <div class="card">
-            <div class="card-header"><h3>2-B-①. リスト型 と データテーブル型 〜複数の値を一括で扱う変数〜</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <p>値が2つ以上ある場合は、<strong>リスト型</strong>または<strong>データテーブル型</strong>の変数に格納されます。スクレイピング結果や Excel から表全体を抽出したときも、これらの型に入ります。行と列を持つ表形式のデータを、PAD の中で自在に操作できます。</p>
-              <div class="point-block">
+<p style="font-size:12px; color:#64748b; margin-top:10px;">
+                📚 公式リファレンス：<a href="https://learn.microsoft.com/ja-jp/power-automate/desktop-flows/variable-data-types" rel="noopener" style="color:#2c7be5;" target="_blank">Power Automate Desktop の変数データ型一覧（Microsoft Learn）</a>
+</p>
+</div>
+</div></section>
+<div class="lesson-group-header"><span class="lesson-group-label">GROUP B</span><h2>B. リストとデータテーブル</h2><span class="lesson-group-desc">複数の値を一括で扱う変数の仕組みと取り出し方</span></div><section class="lesson-section" id="sec-b-1"><div class="card">
+<div class="card-header"><h3>B-1. リスト型 と データテーブル型 〜複数の値を一括で扱う変数〜</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<p>値が2つ以上ある場合は、<strong>リスト型</strong>または<strong>データテーブル型</strong>の変数に格納されます。スクレイピング結果や Excel から表全体を抽出したときも、これらの型に入ります。行と列を持つ表形式のデータを、PAD の中で自在に操作できます。</p>
+<div class="point-block">
                 💡 <strong>リスト型とデータテーブル型のちがい：</strong>
-                <strong>リスト型は1列だけ</strong>の集合（例：部署名だけを並べたもの）、<strong>データテーブル型は2列以上</strong>を持つ表（例：ID・氏名・部署・役職… が並んだスタッフ一覧）です。「列が1本ならリスト／複数列ならデータテーブル」とイメージしてください。
+<strong>リスト型は1列だけ</strong>の集合（例：部署名だけを並べたもの）、<strong>データテーブル型は2列以上</strong>を持つ表（例：ID・氏名・部署・役職… が並んだスタッフ一覧）です。「列が1本ならリスト／複数列ならデータテーブル」とイメージしてください。
               </div>
-              <ul style="margin:8px 0 0 20px;">
-                <li><strong>作成・読み込み</strong>：スクレイピング結果の格納／Excel ワークシートからの読み込み／<strong>「新しいデータテーブルを作成」アクションで手書きで直接作成することも可能</strong></li>
-                <li><strong>行の追加</strong>：「データテーブルに行を挿入」アクションで1行ずつ追加</li>
-                <li><strong>フィルタ・検索</strong>：「フィルターデータテーブル」で条件に合う行だけ抽出</li>
-                <li><strong>書き出し</strong>：「Excel ワークシートに書き込む」で DataTable をシートに反映</li>
-                <li><strong>列の取り出し</strong>：「データテーブル列をリストに取得」アクションで<strong>特定の1列をリストとして取り出す</strong>（例：「部署」列だけをリスト化して選択ダイアログに渡す）</li>
-              </ul>
-              <div class="type-pair">
-                <figure>
-                  <img src="assets/lessons/lesson-2_type_list.png" alt="リスト型の変数の例">
-                  <figcaption>リスト（List）— 1列だけの値の集合（例：部署名の一覧）</figcaption>
-                </figure>
-                <figure>
-                  <img src="assets/lessons/lesson-2_type_datatable.png" alt="データテーブル型の変数の例">
-                  <figcaption>データテーブル（DataTable）— 2列以上を持つ表形式データ（例：スタッフ一覧）</figcaption>
-                </figure>
-              </div>
-            </div>
-          </div>
-
-          <!-- ===== 2-B-②: DataTable の値取り出し（インタラクティブビューア復活） ===== -->
-          <div class="card">
-            <div class="card-header"><h3>2-B-②. DataTable の値を取り出す（インタラクティブデモ）</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <p>DataTable の特定の値を取り出すには、変数名の後ろに <code>[]</code> を使って「行番号」と「列番号 or 列名」を指定します。DataTable の添字は<strong> 0 から数え始める</strong>ことに注意してください。</p>
-              <p>例えば、下の表のように変数名 <code style="background:#1e293b; color:#facc15; padding:2px 8px; border-radius:4px; font-weight:700;">スタッフリスト</code> というデータテーブルにスタッフ情報が格納されているとします。この中で <strong>田中 一郎さん</strong> を抜き出したい場合、<code>%スタッフリスト[2][1]%</code> または <code>%スタッフリスト[2]['氏名']%</code> と記載します。</p>
-              <div class="point-block">
+<ul style="margin:8px 0 0 20px;">
+<li><strong>作成・読み込み</strong>：スクレイピング結果の格納／Excel ワークシートからの読み込み／<strong>「新しいデータテーブルを作成」アクションで手書きで直接作成することも可能</strong></li>
+<li><strong>行の追加</strong>：「データテーブルに行を挿入」アクションで1行ずつ追加</li>
+<li><strong>フィルタ・検索</strong>：「フィルターデータテーブル」で条件に合う行だけ抽出</li>
+<li><strong>書き出し</strong>：「Excel ワークシートに書き込む」で DataTable をシートに反映</li>
+<li><strong>列の取り出し</strong>：「データテーブル列をリストに取得」アクションで<strong>特定の1列をリストとして取り出す</strong>（例：「部署」列だけをリスト化して選択ダイアログに渡す）</li>
+</ul>
+<div class="type-pair">
+<figure>
+<img alt="リスト型の変数の例" src="assets/lessons/lesson-2_type_list.png"/>
+<figcaption>リスト（List）— 1列だけの値の集合（例：部署名の一覧）</figcaption>
+</figure>
+<figure>
+<img alt="データテーブル型の変数の例" src="assets/lessons/lesson-2_type_datatable.png"/>
+<figcaption>データテーブル（DataTable）— 2列以上を持つ表形式データ（例：スタッフ一覧）</figcaption>
+</figure>
+</div>
+</div>
+</div></section>
+<section class="lesson-section" id="sec-b-2"><div class="card">
+<div class="card-header"><h3>B-2. DataTable の値を取り出す（インタラクティブデモ）</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<p>DataTable の特定の値を取り出すには、変数名の後ろに <code>[]</code> を使って「行番号」と「列番号 or 列名」を指定します。DataTable の添字は<strong> 0 から数え始める</strong>ことに注意してください。</p>
+<p>例えば、下の表のように変数名 <code style="background:#1e293b; color:#facc15; padding:2px 8px; border-radius:4px; font-weight:700;">スタッフリスト</code> というデータテーブルにスタッフ情報が格納されているとします。この中で <strong>田中 一郎さん</strong> を抜き出したい場合、<code>%スタッフリスト[2][1]%</code> または <code>%スタッフリスト[2]['氏名']%</code> と記載します。</p>
+<div class="point-block">
                 列名を使った指定（<code>%現在の行['氏名']%</code>）は、列の順番が変わってもフローが壊れません。インデックスだけ（<code>%現在の行[0]%</code>）はシンプルですが、サイト改修に弱いので注意。
               </div>
-
-              <p style="margin-top:18px;">
-                <strong>表のセルをクリック</strong>すると、PAD でその値を取り出すときの書き方が表示されます。
+<p style="margin-top:18px;">
+<strong>表のセルをクリック</strong>すると、PAD でその値を取り出すときの書き方が表示されます。
               </p>
-              <table class="dt-table" id="dtTable">
-                <thead>
-                  <tr class="dt-col-index">
-                    <th class="dt-aux-head"></th>
-                    <th class="dt-aux">0</th>
-                    <th class="dt-aux">1</th>
-                    <th class="dt-aux">2</th>
-                    <th class="dt-aux">3</th>
-                    <th class="dt-aux">4</th>
-                  </tr>
-                  <tr>
-                    <th class="dt-aux-head"></th>
-                    <th>ID</th>
-                    <th>氏名</th>
-                    <th>部署</th>
-                    <th>役職</th>
-                    <th>入社日</th>
-                  </tr>
-                </thead>
-                <tbody id="dtBody"></tbody>
-              </table>
-              <p style="font-size:12px; color:#64748b; margin-top:4px;">※ 一番左の数字列・一番上の数字行は「何行目／何列目か」を見るための補助表示です（DataTable 本体には含まれません）。実際のデータは <strong>ID 列〜入社日 列</strong> の範囲です。</p>
-
-              <div class="handson-callout">
+<table class="dt-table" id="dtTable">
+<thead>
+<tr class="dt-col-index">
+<th class="dt-aux-head"></th>
+<th class="dt-aux">0</th>
+<th class="dt-aux">1</th>
+<th class="dt-aux">2</th>
+<th class="dt-aux">3</th>
+<th class="dt-aux">4</th>
+</tr>
+<tr>
+<th class="dt-aux-head"></th>
+<th>ID</th>
+<th>氏名</th>
+<th>部署</th>
+<th>役職</th>
+<th>入社日</th>
+</tr>
+</thead>
+<tbody id="dtBody"></tbody>
+</table>
+<p style="font-size:12px; color:#64748b; margin-top:4px;">※ 一番左の数字列・一番上の数字行は「何行目／何列目か」を見るための補助表示です（DataTable 本体には含まれません）。実際のデータは <strong>ID 列〜入社日 列</strong> の範囲です。</p>
+<div class="handson-callout">
                 🛠️ <strong>ハンズオン課題②：</strong>上のビューアで「3行目の部署」のセルをクリックして、PAD での書き方を確認してみましょう。
               </div>
-            </div>
-          </div>
-
-          <!-- ===== 2-C: 選択ダイアログ ===== -->
-          <div class="card">
-            <div class="card-header"><h3>2-C. 直書きデータテーブル ＋ 列リスト化 ＋ 選択ダイアログ（最終演習 Main の縮小版）</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <p>最終演習の Main では、「部署 × 役職」マスターをフローに直書きし、列を取り出してユーザーに選ばせる仕組みを作ります。下記の手順で順番に作っていきましょう。</p>
-
-              <!-- 手順1：新しいデータテーブルを作成 -->
-              <div class="step-split">
-                <figure class="step-figure">
-                  <img src="assets/lessons/lesson-2_03_create_datatable_action.png" alt="「新しいデータテーブルを作成」アクション設定画面（部署×役職マスターを直書きしている様子）">
-                  <figcaption>「新しいデータテーブルを作成」アクション設定画面（部署×役職マスターを直書きしている様子）</figcaption>
-                </figure>
-                <div class="step-text">
-                  <h4 style="margin:0 0 8px;"><span class="step-num">1</span>新しいデータテーブルを作成</h4>
-                  <p>アクションペインから <strong>「変数 → 新しいデータテーブルを作成」</strong> をワークスペースにドラッグ。設定画面で、下の表のとおり <strong>ヘッダ「部署」「役職」</strong> を持つデータテーブルを直書きで作成してください。</p>
-                  <table class="sample-dt-table">
-                    <thead>
-                      <tr><th>部署</th><th>役職</th></tr>
-                    </thead>
-                    <tbody>
-                      <tr><td>営業部</td><td>部長</td></tr>
-                      <tr><td>開発部</td><td>課長</td></tr>
-                      <tr><td>管理部</td><td>主任</td></tr>
-                      <tr><td>総務部</td><td>一般</td></tr>
-                      <tr><td>すべての部署</td><td>すべての役職</td></tr>
-                    </tbody>
-                  </table>
-                  <div class="point-block" style="margin-top:10px; font-size:13px;">
+</div>
+</div></section>
+<section class="lesson-section" id="sec-c"><div class="card">
+<div class="card-header"><h3>C. 直書きデータテーブル ＋ 列リスト化 ＋ 選択ダイアログ（最終演習 Main の縮小版）</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<p>最終演習の Main では、「部署 × 役職」マスターをフローに直書きし、列を取り出してユーザーに選ばせる仕組みを作ります。下記の手順で順番に作っていきましょう。</p>
+<!-- 手順1：新しいデータテーブルを作成 -->
+<div class="step-split">
+<figure class="step-figure">
+<img alt="「新しいデータテーブルを作成」アクション設定画面（部署×役職マスターを直書きしている様子）" src="assets/lessons/lesson-2_03_create_datatable_action.png"/>
+<figcaption>「新しいデータテーブルを作成」アクション設定画面（部署×役職マスターを直書きしている様子）</figcaption>
+</figure>
+<div class="step-text">
+<h4 style="margin:0 0 8px;"><span class="step-num">1</span>新しいデータテーブルを作成</h4>
+<p>アクションペインから <strong>「変数 → 新しいデータテーブルを作成」</strong> をワークスペースにドラッグ。設定画面で、下の表のとおり <strong>ヘッダ「部署」「役職」</strong> を持つデータテーブルを直書きで作成してください。</p>
+<table class="sample-dt-table">
+<thead>
+<tr><th>部署</th><th>役職</th></tr>
+</thead>
+<tbody>
+<tr><td>営業部</td><td>部長</td></tr>
+<tr><td>開発部</td><td>課長</td></tr>
+<tr><td>管理部</td><td>主任</td></tr>
+<tr><td>総務部</td><td>一般</td></tr>
+<tr><td>すべての部署</td><td>すべての役職</td></tr>
+</tbody>
+</table>
+<div class="point-block" style="margin-top:10px; font-size:13px;">
                     💡 <strong>列・行の追加方法：</strong> 設定画面の <strong>右上の「＋」</strong> をクリックすると<strong>列が追加</strong>され、<strong>左下の「＋」</strong>をクリックすると<strong>行が追加</strong>されます。
                   </div>
-                  <p>生成される変数名は <code>%部署役職マスター%</code> などに変更しておくと、後の参照で迷いません。</p>
-                </div>
-              </div>
-
-              <!-- 手順2：データテーブル列をリストに取得 -->
-              <div class="step-split">
-                <figure class="step-figure">
-                  <img src="assets/lessons/lesson-2_05_retrieve_column_to_list.png" alt="「データテーブル列をリストに取得」アクション設定画面（「部署」列を取り出している様子）">
-                  <figcaption>「データテーブル列をリストに取得」アクション設定画面（「部署」列を取り出している様子）</figcaption>
-                </figure>
-                <div class="step-text">
-                  <h4 style="margin:0 0 8px;"><span class="step-num">2</span>データテーブル列をリストに取得</h4>
-                  <p>アクション <strong>「変数 → データテーブル列をリストに取得」</strong> で、手順1で作ったデータテーブルから <strong>「部署」列だけ</strong> を取り出してリスト化します。<br>
+<p>生成される変数名は <code>%部署役職マスター%</code> などに変更しておくと、後の参照で迷いません。</p>
+</div>
+</div>
+<!-- 手順2：データテーブル列をリストに取得 -->
+<div class="step-split">
+<figure class="step-figure">
+<img alt="「データテーブル列をリストに取得」アクション設定画面（「部署」列を取り出している様子）" src="assets/lessons/lesson-2_05_retrieve_column_to_list.png"/>
+<figcaption>「データテーブル列をリストに取得」アクション設定画面（「部署」列を取り出している様子）</figcaption>
+</figure>
+<div class="step-text">
+<h4 style="margin:0 0 8px;"><span class="step-num">2</span>データテーブル列をリストに取得</h4>
+<p>アクション <strong>「変数 → データテーブル列をリストに取得」</strong> で、手順1で作ったデータテーブルから <strong>「部署」列だけ</strong> を取り出してリスト化します。<br/>
                   出力変数は <code>%部署リスト%</code> のように、リストであることが分かる名前にしておきます。</p>
-                </div>
-              </div>
-
-              <!-- 手順3：リストから選択ダイアログを表示 -->
-              <div class="step-split">
-                <figure class="step-figure">
-                  <img src="assets/lessons/lesson-2_04_select_from_list_dialog.png" alt="実行時に表示される選択ダイアログ（部署リストから選ぶ画面）">
-                  <figcaption>「リストから選択ダイアログを表示」アクション設定画面・実行時の選択ダイアログ</figcaption>
-                </figure>
-                <div class="step-text">
-                  <h4 style="margin:0 0 8px;"><span class="step-num">3</span>リストから選択ダイアログを表示</h4>
-                  <p>アクション <strong>「メッセージボックス → リストから選択ダイアログを表示」</strong> に <code>%部署リスト%</code> を渡すと、実行時にユーザーへ部署選択ダイアログが表示されます。<br>
+</div>
+</div>
+<!-- 手順3：リストから選択ダイアログを表示 -->
+<div class="step-split">
+<figure class="step-figure">
+<img alt="実行時に表示される選択ダイアログ（部署リストから選ぶ画面）" src="assets/lessons/lesson-2_04_select_from_list_dialog.png"/>
+<figcaption>「リストから選択ダイアログを表示」アクション設定画面・実行時の選択ダイアログ</figcaption>
+</figure>
+<div class="step-text">
+<h4 style="margin:0 0 8px;"><span class="step-num">3</span>リストから選択ダイアログを表示</h4>
+<p>アクション <strong>「メッセージボックス → リストから選択ダイアログを表示」</strong> に <code>%部署リスト%</code> を渡すと、実行時にユーザーへ部署選択ダイアログが表示されます。<br/>
                   選ばれた値は <code>%選択部署%</code> に格納され、後続アクションで自由に使えます。同じ流れで「役職」も選ばせて <code>%選択役職%</code> に格納しましょう。</p>
-                </div>
-              </div>
-
-              <div class="handson-callout">
+</div>
+</div>
+<div class="handson-callout">
                 🛠️ <strong>ハンズオン課題③：</strong>「部署×役職」マスターを直書きデータテーブルで作成 → 部署列をリスト化 → 選択ダイアログで選ばせる → 同じく役職も選ばせる → 選択結果を「メッセージを表示する」で表示するフローを実装してみましょう。
               </div>
-
-              <div class="handson-callout">
-                🛠️ <strong>ハンズオン課題④（最終課題）：</strong>派遣スタッフ名（変数）＋部署（変数）＋入社日（変数）を組み合わせて<strong>プロフィール文を生成</strong>するフローを作ってみましょう。<br>
-                例：「<code>%スタッフ名%</code> さんは <code>%部署%</code> に <code>%入社日%</code> 入社」というメッセージを表示。
-              </div>
-            </div>
-          </div>
-
-        </section>
-
-        <section class="lesson-section" id="answer">
-          <h2 class="lesson-section-title"><span class="sec-icon">✅</span>解答例 / 完成フローテキスト</h2>
-          <div class="card">
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <p>本回のハンズオン課題の完成フローテキストをダウンロードして、PAD 編集画面に貼り付けてください。</p>
-              <a href="answers/lesson-2.txt" class="answer-download" download>
-                <span class="icon">⬇️</span>
+</div>
+</div></section>
+<section class="lesson-section" id="answer">
+<h2 class="lesson-section-title"><span class="sec-icon">✅</span>解答例 / 完成フローテキスト</h2>
+<div class="card">
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<p>本回のハンズオン課題の完成フローテキストをダウンロードして、PAD 編集画面に貼り付けてください。</p>
+<a class="answer-download" download="" href="answers/lesson-2.txt">
+<span class="icon">⬇️</span>
                 lesson-2.txt をダウンロード
               </a>
-            </div>
-          </div>
-        </section>
-
-        <section class="lesson-section" id="faq">
-          <h2 class="lesson-section-title"><span class="sec-icon">❓</span>よくある詰まりと FAQ</h2>
-          <div class="lesson-faq">
-            <div class="q">Q1. 変数名に日本語を入れたら動かない</div>
-            <div class="a">PAD は変数名に日本語 OK ですが、参照時は <code>%変数名%</code> のように半角 % で囲む必要があります。全角 ％ になっていないか確認してください。</div>
-          </div>
-        </section>
-
-        <nav class="lesson-nav">
-          <a href="lesson-1.html" class="prev">第1回 環境セットアップ</a>
-          <a href="lesson-3.html" class="next">第3回 Excel自動化</a>
-        </nav>
-
-      </main>
-      <footer class="app-footer">© 2025 PAD練習サイト</footer>
-    </div>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/env.js"></script>
-  <script src="js/supabase-client.js"></script>
-  <script src="js/auth.js"></script>
-  <script src="js/common.js?v=6"></script>
-  <script>
+</div>
+</div>
+</section>
+<section class="lesson-section" id="faq">
+<h2 class="lesson-section-title"><span class="sec-icon">❓</span>よくある詰まりと FAQ</h2>
+<div class="lesson-faq">
+<div class="q">Q1. 変数名に日本語を入れたら動かない</div>
+<div class="a">PAD は変数名に日本語 OK ですが、参照時は <code>%変数名%</code> のように半角 % で囲む必要があります。全角 ％ になっていないか確認してください。</div>
+</div>
+</section>
+<nav class="lesson-nav">
+<a class="prev" href="lesson-1.html">第1回 環境セットアップ</a>
+<a class="next" href="lesson-3.html">第3回 Excel自動化</a>
+</nav>
+</main>
+<footer class="app-footer">© 2025 PAD練習サイト</footer>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/env.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/common.js?v=6"></script>
+<script>
     bootstrapPage('lesson-2');
 
     // データテーブルビューア（旧 pad-datatable.html から正本移植）

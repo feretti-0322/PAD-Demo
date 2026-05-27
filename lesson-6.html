@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>第6回 制御構造 | PAD練習サイト</title>
-  <link rel="stylesheet" href="css/style.css">
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>第6回 制御構造 | PAD練習サイト</title>
+<link href="css/style.css" rel="stylesheet"/>
+<style>
     .compare-table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 10px; }
     .compare-table th, .compare-table td { border: 1px solid #e0e6ed; padding: 12px 14px; text-align: left; vertical-align: top; line-height: 1.7; }
     .compare-table th { background: #1a3a5c; color: #fff; }
@@ -79,357 +80,319 @@
   </style>
 </head>
 <body>
-  <div class="app-layout">
-    <div id="sidebarContainer"></div>
-    <div class="main-content">
-      <header class="topbar">
-        <div class="topbar-title">🔁 第6回 制御構造（ループ／分岐／例外／サブフロー）</div>
-        <div class="topbar-user"><span>👤</span><span id="topbarUser">user</span></div>
-      </header>
-      <main class="page-content">
-
-        <section class="lesson-hero">
-          <div class="lesson-tag">LESSON 6 / 制御構造</div>
-          <h1>第6回 制御構造 〜FOR EACH / IF / BLOCK ERROR / サブフロー〜</h1>
-          <p>
+<div class="app-layout">
+<div id="sidebarContainer"></div>
+<div class="main-content">
+<header class="topbar">
+<div class="topbar-title">🔁 第6回 制御構造（ループ／分岐／例外／サブフロー）</div>
+<div class="topbar-user"><span>👤</span><span id="topbarUser">user</span></div>
+</header>
+<main class="page-content">
+<section class="lesson-hero">
+<div class="lesson-tag">LESSON 6 / 制御構造</div>
+<h1>第6回 制御構造 〜FOR EACH / IF / BLOCK ERROR / サブフロー〜</h1>
+<p>
             最終演習で必要となる<strong>4要素</strong>を一気に押さえる回です：①FOR EACH ②条件分岐 ③BLOCK/ON BLOCK ERROR＋エラーログ追記 ④サブフロー分割。
           </p>
-          <div class="lesson-meta">
-            <span>🪜 前提：第5回（スクレイピング）完了</span>
-            <span>🎯 ゴール：Main＋3サブフロー構造の骨格が組める</span>
-          </div>
-        </section>
-
-        <nav class="lesson-toc">
-          <h3>📑 目次</h3>
-          <ol>
-            <li><a href="#goal">🎯 到達目標</a></li>
+<div class="lesson-meta">
+<span>🪜 前提：第5回（スクレイピング）完了</span>
+<span>🎯 ゴール：Main＋3サブフロー構造の骨格が組める</span>
+</div>
+</section>
+<nav class="lesson-toc">
+<h3>📑 目次</h3>
+<ol>
             <li><a href="#prep">🪜 事前準備</a></li>
-            <li><a href="#explain">📖 解説（ループ／IF／エラー／サブフロー）</a></li>
+            <li class="toc-group">📘 A. ループ（FOR / FOR EACH）</li>
+            <li class="toc-sub"><a href="#sec-a-1">A-1. FOR と FOR EACH の違い</a></li>
+            <li class="toc-sub"><a href="#sec-a-2">A-2. FOR EACHとデータテーブルの組み合わせ</a></li>
+            <li class="toc-group">📘 B. 条件分岐（IF / Switch）</li>
+            <li class="toc-sub"><a href="#sec-b-1">B-1. IF / ELSE IF / ELSE の基本構文</a></li>
+            <li class="toc-sub"><a href="#sec-b-2">B-2. インタラクティブデモ：スタッフ振り分けシミュレーター（IF）</a></li>
+            <li class="toc-sub"><a href="#sec-b-3">B-3. Switch の使いどころ（インタラクティブデモ付き）</a></li>
+            <li class="toc-group">📘 C. エラー処理（BLOCK ERROR ＋ ログ追記）</li>
+            <li class="toc-sub"><a href="#sec-c-1">C-1. エラー（例外処理）の基本</a></li>
+            <li class="toc-sub"><a href="#sec-c-2">C-2. 「全体中断 vs 個別スキップ」の使い分け（最重要）</a></li>
+            <li class="toc-sub"><a href="#sec-c-3">C-3. インタラクティブデモ：エラー動作シミュレーター</a></li>
+            <li class="toc-sub"><a href="#sec-c-4">C-4. エラーログの記録（テキストをファイルに書き込む・追記モード）</a></li>
+            <li class="toc-group">📘 D. サブフロー</li>
+            <li class="toc-sub"><a href="#sec-d-1">D-1. サブフロー 〜「使い回せる処理のかたまり」〜</a></li>
+            <li class="toc-sub"><a href="#sec-d-2">D-2. インタラクティブデモ：サブフローで処理を整理しよう</a></li>
             <li><a href="#answer">✅ 解答例 / 完成フローテキスト</a></li>
             <li><a href="#faq">❓ よくある詰まりと FAQ</a></li>
           </ol>
-        </nav>
-
-        <section class="lesson-section" id="goal">
-          <h2 class="lesson-section-title"><span class="sec-icon">🎯</span>到達目標</h2>
-          <ul class="lesson-goal-list">
-            <li><code>For each</code> でデータテーブルを順次処理できる</li>
-            <li><code>If</code> で条件分岐を作れる</li>
-            <li><code>ブロックエラー発生時</code> で局所例外時の挙動を制御できる</li>
-            <li>ブロックエラー発生時から別サブフローを呼び出してエラー処理を一元化できる</li>
-            <li><code>最後のエラーを取得</code> で例外メッセージを取得し、<code>テキストをファイルに書き込む</code> で UTF-8・追記モード・改行付きでログに書き出せる</li>
-            <li>「全体中断するエラー」と「個別スキップするエラー」を使い分けられる</li>
-            <li>処理を機能単位でサブフロー化できる（Main / ブラウザ操作 / スタッフ詳細スクレイピング / エラー）</li>
-          </ul>
-        </section>
-
-        <section class="lesson-section" id="prep">
-          <h2 class="lesson-section-title"><span class="sec-icon">🪜</span>事前準備</h2>
-          <div class="card"><div class="card-body" style="font-size:14px; line-height:1.9;">
-            <ul style="margin:0 0 0 20px;">
-              <li><a href="lesson-5.html" style="color:#2c7be5;">第5回</a> のスクレイピングフローが手元にある</li>
-              <li>第4回のログインフローが手元にある</li>
-            </ul>
-          </div></div>
-        </section>
-
-        <section class="lesson-section" id="explain">
-          <h2 class="lesson-section-title"><span class="sec-icon">📖</span>解説</h2>
-
-          <!-- ===== 6-A: ループ ===== -->
-          <div class="card">
-            <div class="card-header"><h3>6-A-①. FOR と FOR EACH の違い</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <table class="compare-table">
-                <thead><tr><th>アクション</th><th>使いどころ</th><th>例</th></tr></thead>
-                <tbody>
-                  <tr><td><strong>Loop（FOR）</strong></td><td>回数を指定して繰り返す</td><td>「メッセージを10回表示する」</td></tr>
-                  <tr><td><strong>For each（FOR EACH）</strong></td><td>リストやデータテーブルの中身を1件ずつ処理する</td><td>「スタッフ一覧の全員に対してプロフィールシートを作る」</td></tr>
-                </tbody>
-              </table>
-              <div class="point-block">
-                <strong>覚え方：</strong> 数えるのが「回数」なら <strong>Loop</strong>、数えるのが「件数」なら <strong>For each</strong>。実務では <strong>FOR EACH</strong> が圧倒的に多く、「データテーブルを1件ずつ処理する」場面がほぼすべてを占めます。
+</nav>
+<section class="lesson-section" id="prep">
+<h2 class="lesson-section-title"><span class="sec-icon">🪜</span>事前準備</h2>
+<div class="card"><div class="card-body" style="font-size:14px; line-height:1.9;">
+<ul style="margin:0 0 0 20px;">
+<li><a href="lesson-5.html" style="color:#2c7be5;">第5回</a> のスクレイピングフローが手元にある</li>
+<li>第4回のログインフローが手元にある</li>
+</ul>
+</div></div>
+</section>
+<div class="lesson-group-header"><span class="lesson-group-label">GROUP A</span><h2>A. ループ（FOR / FOR EACH）</h2><span class="lesson-group-desc">繰り返し処理の基本とデータテーブルとの組み合わせ</span></div><section class="lesson-section" id="sec-a-1"><div class="card">
+<div class="card-header"><h3>A-1. FOR と FOR EACH の違い</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<table class="compare-table">
+<thead><tr><th>アクション</th><th>使いどころ</th><th>例</th></tr></thead>
+<tbody>
+<tr><td><strong>Loop（FOR）</strong></td><td>回数を指定して繰り返す</td><td>「メッセージを10回表示する」</td></tr>
+<tr><td><strong>For each（FOR EACH）</strong></td><td>リストやデータテーブルの中身を1件ずつ処理する</td><td>「スタッフ一覧の全員に対してプロフィールシートを作る」</td></tr>
+</tbody>
+</table>
+<div class="point-block">
+<strong>覚え方：</strong> 数えるのが「回数」なら <strong>Loop</strong>、数えるのが「件数」なら <strong>For each</strong>。実務では <strong>FOR EACH</strong> が圧倒的に多く、「データテーブルを1件ずつ処理する」場面がほぼすべてを占めます。
               </div>
-              <figure class="pad-image-placeholder" data-image-slot="lesson-6/01_foreach_block">
-                <span class="placeholder-icon">🖼️</span>
-                FOR EACH ブロック内に処理を配置している画面<br>
-                <code>data-image-slot="lesson-6/01_foreach_block"</code>
-              </figure>
-            </div>
-          </div>
-
-          <!-- 6-A-②: FOR EACH + DataTable -->
-          <div class="card">
-            <div class="card-header"><h3>6-A-②. FOR EACHとデータテーブルの組み合わせ</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <p>スクレイピングで取得したスタッフ一覧（DataTable）を1行ずつ処理する典型パターンです。▼ FOR EACH が DataTable を上から1行ずつ処理する様子を確認してみましょう。</p>
-              <div class="demo-controls" style="margin-top:8px;">
-                <button class="btn btn-primary" id="btnForEachStart">▶ FOR EACH スタート</button>
-                <button class="btn btn-outline" id="btnForEachReset">🔄 リセット</button>
-              </div>
-              <table class="fe-table">
-                <thead>
-                  <tr><th>ID</th><th>氏名</th><th>部署</th><th style="width:130px;">状態</th></tr>
-                </thead>
-                <tbody id="feBody"></tbody>
-              </table>
-
-              <div class="handson-callout">
+<figure class="pad-image-placeholder" data-image-slot="lesson-6/01_foreach_block">
+<span class="placeholder-icon">🖼️</span>
+                FOR EACH ブロック内に処理を配置している画面<br/>
+<code>data-image-slot="lesson-6/01_foreach_block"</code>
+</figure>
+</div>
+</div></section>
+<section class="lesson-section" id="sec-a-2"><div class="card">
+<div class="card-header"><h3>A-2. FOR EACHとデータテーブルの組み合わせ</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<p>スクレイピングで取得したスタッフ一覧（DataTable）を1行ずつ処理する典型パターンです。▼ FOR EACH が DataTable を上から1行ずつ処理する様子を確認してみましょう。</p>
+<div class="demo-controls" style="margin-top:8px;">
+<button class="btn btn-primary" id="btnForEachStart">▶ FOR EACH スタート</button>
+<button class="btn btn-outline" id="btnForEachReset">🔄 リセット</button>
+</div>
+<table class="fe-table">
+<thead>
+<tr><th>ID</th><th>氏名</th><th>部署</th><th style="width:130px;">状態</th></tr>
+</thead>
+<tbody id="feBody"></tbody>
+</table>
+<div class="handson-callout">
                 🛠️ <strong>ハンズオン課題①：</strong>派遣スタッフ10名分のデータテーブルで FOR EACH を回し、全員に「処理完了」のメッセージを表示するフローを作ってみましょう。
               </div>
-            </div>
-          </div>
-
-          <!-- ===== 6-B: 条件分岐（IF） ===== -->
-          <div class="card">
-            <div class="card-header"><h3>6-B-①. IF / ELSE IF / ELSE の基本構文</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <div class="code-block">IF 勤続年数 &gt;= 10 THEN
+</div>
+</div></section>
+<div class="lesson-group-header"><span class="lesson-group-label">GROUP B</span><h2>B. 条件分岐（IF / Switch）</h2><span class="lesson-group-desc">If / ElseIf / Else の使い方と Switch の使いどころ</span></div><section class="lesson-section" id="sec-b-1"><div class="card">
+<div class="card-header"><h3>B-1. IF / ELSE IF / ELSE の基本構文</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<div class="code-block">IF 勤続年数 &gt;= 10 THEN
     ベテランリストに追加
 ELSE IF 勤続年数 &gt;= 5 THEN
     中堅リストに追加
 ELSE
     新人リストに追加
 END</div>
-              <div class="point-block">
+<div class="point-block">
                 PAD では「If」「Else if」「Else」の3アクションを組み合わせて使います。演算子は <code>=</code> <code>&gt;</code> <code>&lt;</code> <code>&gt;=</code> <code>&lt;=</code> <code>&lt;&gt;</code> から選ぶだけの GUI 操作。
               </div>
-            </div>
-          </div>
-
-          <!-- 6-B-②: IFシミュレーター -->
-          <div class="card">
-            <div class="card-header"><h3>6-B-②. インタラクティブデモ：スタッフ振り分けシミュレーター（IF）</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <p>入社日を入力して「判定する」を押すと、勤続年数に応じてベテラン／中堅／新人のいずれかに振り分けられます。</p>
-              <table class="threshold-table">
-                <thead><tr><th>区分</th><th>条件</th></tr></thead>
-                <tbody>
-                  <tr><td><span class="badge veteran" style="font-size:12px;">ベテラン</span></td><td>勤続年数が <strong>10年以上</strong></td></tr>
-                  <tr><td><span class="badge mid" style="font-size:12px;">中堅</span></td><td>勤続年数が <strong>5年以上10年未満</strong></td></tr>
-                  <tr><td><span class="badge new" style="font-size:12px;">新人</span></td><td>勤続年数が <strong>5年未満</strong></td></tr>
-                </tbody>
-              </table>
-              <div class="sim-grid">
-                <div class="sim-input">
-                  <label for="joinDate">入社日</label>
-                  <input type="date" id="joinDate" value="2015-04-01">
-                  <button class="btn btn-primary" id="btnJudge" style="margin-top:12px;">判定する</button>
-                </div>
-                <div class="sim-result" id="simResult">
-                  <div style="color:#888; font-size:13px;">入社日を選んで「判定する」を押してください</div>
-                </div>
-              </div>
-
-              <div class="handson-callout">
+</div>
+</div></section>
+<section class="lesson-section" id="sec-b-2"><div class="card">
+<div class="card-header"><h3>B-2. インタラクティブデモ：スタッフ振り分けシミュレーター（IF）</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<p>入社日を入力して「判定する」を押すと、勤続年数に応じてベテラン／中堅／新人のいずれかに振り分けられます。</p>
+<table class="threshold-table">
+<thead><tr><th>区分</th><th>条件</th></tr></thead>
+<tbody>
+<tr><td><span class="badge veteran" style="font-size:12px;">ベテラン</span></td><td>勤続年数が <strong>10年以上</strong></td></tr>
+<tr><td><span class="badge mid" style="font-size:12px;">中堅</span></td><td>勤続年数が <strong>5年以上10年未満</strong></td></tr>
+<tr><td><span class="badge new" style="font-size:12px;">新人</span></td><td>勤続年数が <strong>5年未満</strong></td></tr>
+</tbody>
+</table>
+<div class="sim-grid">
+<div class="sim-input">
+<label for="joinDate">入社日</label>
+<input id="joinDate" type="date" value="2015-04-01"/>
+<button class="btn btn-primary" id="btnJudge" style="margin-top:12px;">判定する</button>
+</div>
+<div class="sim-result" id="simResult">
+<div style="color:#888; font-size:13px;">入社日を選んで「判定する」を押してください</div>
+</div>
+</div>
+<div class="handson-callout">
                 🛠️ <strong>ハンズオン課題②：</strong>入社年数が10年以上のスタッフだけ Excel に記録する IF 分岐フローを作ってみましょう。
               </div>
-            </div>
-          </div>
-
-          <!-- 6-B-③: Switch -->
-          <div class="card">
-            <div class="card-header"><h3>6-B-③. Switch の使いどころ（インタラクティブデモ付き）</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <p>比較する値が1つの変数で、取りうるパターンが複数ある場合は <strong>Switch</strong> を使うとスッキリ書けます。ただし PAD の Switch は<strong>完全一致のみ対応</strong>のため、「以上・以下」のような範囲比較は IF を使ってください。</p>
-              <p>部署を選ぶと、Switch のどの CASE に一致するかがコード上でハイライトされます。</p>
-              <div class="switch-sim-grid">
-                <div class="switch-code">
-                  <span class="line">SWITCH 部署</span>
-                  <span class="case-line" id="case-営業部">    CASE "営業部":</span>
-                  <span class="action-line" id="action-営業部">        営業部用の処理</span>
-                  <span class="case-line" id="case-総務部">    CASE "総務部":</span>
-                  <span class="action-line" id="action-総務部">        総務部用の処理</span>
-                  <span class="case-line" id="case-開発部">    CASE "開発部":</span>
-                  <span class="action-line" id="action-開発部">        開発部用の処理</span>
-                  <span class="case-line" id="case-管理部">    CASE "管理部":</span>
-                  <span class="action-line" id="action-管理部">        管理部用の処理</span>
-                  <span class="default-line" id="case-default">    DEFAULT:</span>
-                  <span class="action-line" id="action-default">        その他の処理</span>
-                  <span class="line">END</span>
-                </div>
-                <div class="switch-input">
-                  <label for="switchDept">部署を選択</label>
-                  <select id="switchDept">
-                    <option value="">（未選択）</option>
-                    <option value="営業部">営業部</option>
-                    <option value="総務部">総務部</option>
-                    <option value="開発部">開発部</option>
-                    <option value="管理部">管理部</option>
-                    <option value="その他">その他（DEFAULT）</option>
-                  </select>
-                  <div class="switch-result" id="switchResult" style="margin-top:14px;">
-                    <div style="color:#888; font-size:13px;">部署を選択してください</div>
-                  </div>
-                </div>
+</div>
+</div></section>
+<section class="lesson-section" id="sec-b-3"><div class="card">
+<div class="card-header"><h3>B-3. Switch の使いどころ（インタラクティブデモ付き）</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<p>比較する値が1つの変数で、取りうるパターンが複数ある場合は <strong>Switch</strong> を使うとスッキリ書けます。ただし PAD の Switch は<strong>完全一致のみ対応</strong>のため、「以上・以下」のような範囲比較は IF を使ってください。</p>
+<p>部署を選ぶと、Switch のどの CASE に一致するかがコード上でハイライトされます。</p>
+<div class="switch-sim-grid">
+<div class="switch-code">
+<span class="line">SWITCH 部署</span>
+<span class="case-line" id="case-営業部">    CASE "営業部":</span>
+<span class="action-line" id="action-営業部">        営業部用の処理</span>
+<span class="case-line" id="case-総務部">    CASE "総務部":</span>
+<span class="action-line" id="action-総務部">        総務部用の処理</span>
+<span class="case-line" id="case-開発部">    CASE "開発部":</span>
+<span class="action-line" id="action-開発部">        開発部用の処理</span>
+<span class="case-line" id="case-管理部">    CASE "管理部":</span>
+<span class="action-line" id="action-管理部">        管理部用の処理</span>
+<span class="default-line" id="case-default">    DEFAULT:</span>
+<span class="action-line" id="action-default">        その他の処理</span>
+<span class="line">END</span>
+</div>
+<div class="switch-input">
+<label for="switchDept">部署を選択</label>
+<select id="switchDept">
+<option value="">（未選択）</option>
+<option value="営業部">営業部</option>
+<option value="総務部">総務部</option>
+<option value="開発部">開発部</option>
+<option value="管理部">管理部</option>
+<option value="その他">その他（DEFAULT）</option>
+</select>
+<div class="switch-result" id="switchResult" style="margin-top:14px;">
+<div style="color:#888; font-size:13px;">部署を選択してください</div>
+</div>
+</div>
+</div>
+</div>
+</div></section>
+<div class="lesson-group-header"><span class="lesson-group-label">GROUP C</span><h2>C. エラー処理（BLOCK ERROR ＋ ログ追記）</h2><span class="lesson-group-desc">例外をどう扱うか、個別スキップ vs 全体中断、ログ書き出し</span></div><section class="lesson-section" id="sec-c-1"><div class="card">
+<div class="card-header"><h3>C-1. エラー（例外処理）の基本</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<p>PAD では、エラーが発生したときの<strong>エラー発生時の挙動</strong>をあらかじめ設定しておけます。設定方法は2つ：</p>
+<ul style="margin:0 0 0 20px;">
+<li><strong>各アクション個別に設定</strong>：アクションを<strong>ダブルクリック</strong> →「エラー発生時」</li>
+<li><strong>「ブロックエラー発生時」</strong>：FOR EACH ループなど複数アクションをまとめて管理（おすすめ）</li>
+</ul>
+<p style="margin-top:10px;">どちらでも、発生時の挙動を以下から選びます：</p>
+<ul style="margin:0 0 0 20px;">
+<li><strong>新しいルールを追加 → サブフローへ</strong>：エラー時に独自のリカバリ処理を呼び出す</li>
+<li><strong>フローを停止</strong>：そこで全体中断（既定）</li>
+<li><strong>次の繰り返しに移動</strong>：ループ内で個別スキップ</li>
+<li><strong>ブロックの末尾へ</strong>：エラーをなかったことにして続行</li>
+</ul>
+</div>
+</div></section>
+<section class="lesson-section" id="sec-c-2"><div class="card">
+<div class="card-header"><h3>C-2. 「全体中断 vs 個別スキップ」の使い分け（最重要）</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<table class="compare-table">
+<thead><tr><th>場面</th><th>設定</th><th>理由</th></tr></thead>
+<tbody>
+<tr><td>ログインに失敗した場合</td><td class="stop">フロー全体を中断</td><td>ログインできなければ以降の全処理が無意味になるため</td></tr>
+<tr><td>700名処理中に1名だけページが取れなかった</td><td class="skip">次の繰り返しに移る</td><td>残り699名分の処理を続けるべき。その1名はログに記録</td></tr>
+</tbody>
+</table>
+<div class="point-block">
+<strong>設計判断のキモ：</strong>「このエラーが起きたら、続けても意味があるか？」を毎回問う。意味があれば<strong>個別スキップ</strong>、意味がなければ<strong>全体中断</strong>。
               </div>
-            </div>
-          </div>
-
-          <!-- ===== 6-C: エラー処理 ===== -->
-          <div class="card">
-            <div class="card-header"><h3>6-C-①. エラー（例外処理）の基本</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <p>PAD では、エラーが発生したときの<strong>エラー発生時の挙動</strong>をあらかじめ設定しておけます。設定方法は2つ：</p>
-              <ul style="margin:0 0 0 20px;">
-                <li><strong>各アクション個別に設定</strong>：アクションを<strong>ダブルクリック</strong> →「エラー発生時」</li>
-                <li><strong>「ブロックエラー発生時」</strong>：FOR EACH ループなど複数アクションをまとめて管理（おすすめ）</li>
-              </ul>
-              <p style="margin-top:10px;">どちらでも、発生時の挙動を以下から選びます：</p>
-              <ul style="margin:0 0 0 20px;">
-                <li><strong>新しいルールを追加 → サブフローへ</strong>：エラー時に独自のリカバリ処理を呼び出す</li>
-                <li><strong>フローを停止</strong>：そこで全体中断（既定）</li>
-                <li><strong>次の繰り返しに移動</strong>：ループ内で個別スキップ</li>
-                <li><strong>ブロックの末尾へ</strong>：エラーをなかったことにして続行</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header"><h3>6-C-②. 「全体中断 vs 個別スキップ」の使い分け（最重要）</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <table class="compare-table">
-                <thead><tr><th>場面</th><th>設定</th><th>理由</th></tr></thead>
-                <tbody>
-                  <tr><td>ログインに失敗した場合</td><td class="stop">フロー全体を中断</td><td>ログインできなければ以降の全処理が無意味になるため</td></tr>
-                  <tr><td>700名処理中に1名だけページが取れなかった</td><td class="skip">次の繰り返しに移る</td><td>残り699名分の処理を続けるべき。その1名はログに記録</td></tr>
-                </tbody>
-              </table>
-              <div class="point-block">
-                <strong>設計判断のキモ：</strong>「このエラーが起きたら、続けても意味があるか？」を毎回問う。意味があれば<strong>個別スキップ</strong>、意味がなければ<strong>全体中断</strong>。
-              </div>
-            </div>
-          </div>
-
-          <!-- 6-C-③: エラーシミュレーター -->
-          <div class="card">
-            <div class="card-header"><h3>6-C-③. インタラクティブデモ：エラー動作シミュレーター</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <p>5名分のスタッフを処理します。<strong>3件目（ST003）は必ずエラーを起こす</strong>設定です。「全体中断モード」と「個別スキップモード」で結果がどう変わるか見てみましょう。</p>
-              <div class="demo-controls">
-                <button class="btn btn-danger" id="btnStop">⛔ 全体中断モード</button>
-                <button class="btn btn-success" id="btnSkip">⏭️ 個別スキップモード</button>
-                <button class="btn btn-outline" id="btnClear">🔄 ログクリア</button>
-              </div>
-              <div class="sim-log" id="simLog">
-                <div style="color:#888;">モードを選んで実行してください</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 6-C-④: ログ記録 -->
-          <div class="card">
-            <div class="card-header"><h3>6-C-④. エラーログの記録（テキストをファイルに書き込む・追記モード）</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <p>スキップしたスタッフの ID や発生時刻をテキストファイルに追記しておくと、後から「何件成功・何件失敗」が一目でわかります。<strong>エラー処理専用のサブフローを用意</strong>しておき、ブロックエラー発生時にそのサブフローを呼び出すのが定番です。</p>
-              <ol class="instruction-list">
-                <li><strong>エラーログ書き込み用のサブフロー</strong>を作成（名前は「エラー」がおすすめ）</li>
-                <li><strong>ブロックエラー発生時 で「新しいルールを追加 → サブフローへ」</strong>を選択。あわせて「次の繰り返しに移動」も設定</li>
-                <li>サブフロー内で <strong>現在の日時を取得 → 最後のエラーを取得 → テキストをファイルに書き込む</strong> を実行</li>
-                <li>「ファイルが存在する場合」の挙動を必ず <strong>「内容を追加する」</strong> に設定（上書きにすると前のログが消える）</li>
-              </ol>
-              <figure class="pad-image-placeholder" data-image-slot="lesson-6/03_block_on_error_setting">
-                <span class="placeholder-icon">🖼️</span>
-                ブロックエラー発生時の「新しいルールを追加 → サブフローへ」設定画面<br>
-                <code>data-image-slot="lesson-6/03_block_on_error_setting"</code>
-              </figure>
-
-              <div class="handson-callout">
+</div>
+</div></section>
+<section class="lesson-section" id="sec-c-3"><div class="card">
+<div class="card-header"><h3>C-3. インタラクティブデモ：エラー動作シミュレーター</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<p>5名分のスタッフを処理します。<strong>3件目（ST003）は必ずエラーを起こす</strong>設定です。「全体中断モード」と「個別スキップモード」で結果がどう変わるか見てみましょう。</p>
+<div class="demo-controls">
+<button class="btn btn-danger" id="btnStop">⛔ 全体中断モード</button>
+<button class="btn btn-success" id="btnSkip">⏭️ 個別スキップモード</button>
+<button class="btn btn-outline" id="btnClear">🔄 ログクリア</button>
+</div>
+<div class="sim-log" id="simLog">
+<div style="color:#888;">モードを選んで実行してください</div>
+</div>
+</div>
+</div></section>
+<section class="lesson-section" id="sec-c-4"><div class="card">
+<div class="card-header"><h3>C-4. エラーログの記録（テキストをファイルに書き込む・追記モード）</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<p>スキップしたスタッフの ID や発生時刻をテキストファイルに追記しておくと、後から「何件成功・何件失敗」が一目でわかります。<strong>エラー処理専用のサブフローを用意</strong>しておき、ブロックエラー発生時にそのサブフローを呼び出すのが定番です。</p>
+<ol class="instruction-list">
+<li><strong>エラーログ書き込み用のサブフロー</strong>を作成（名前は「エラー」がおすすめ）</li>
+<li><strong>ブロックエラー発生時 で「新しいルールを追加 → サブフローへ」</strong>を選択。あわせて「次の繰り返しに移動」も設定</li>
+<li>サブフロー内で <strong>現在の日時を取得 → 最後のエラーを取得 → テキストをファイルに書き込む</strong> を実行</li>
+<li>「ファイルが存在する場合」の挙動を必ず <strong>「内容を追加する」</strong> に設定（上書きにすると前のログが消える）</li>
+</ol>
+<figure class="pad-image-placeholder" data-image-slot="lesson-6/03_block_on_error_setting">
+<span class="placeholder-icon">🖼️</span>
+                ブロックエラー発生時の「新しいルールを追加 → サブフローへ」設定画面<br/>
+<code>data-image-slot="lesson-6/03_block_on_error_setting"</code>
+</figure>
+<div class="handson-callout">
                 🛠️ <strong>ハンズオン課題③：</strong>「エラー」サブフローを作り、現在の日時取得 → 最後のエラーを取得 → テキストをファイルに書き込む（UTF-8・追記・改行）で <code>エラー.txt</code> に1行追記するフローを実装してみましょう。
               </div>
-            </div>
-          </div>
-
-          <!-- ===== 6-D: サブフロー ===== -->
-          <div class="card">
-            <div class="card-header"><h3>6-D-①. サブフロー 〜「使い回せる処理のかたまり」〜</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <table class="compare-table">
-                <thead><tr><th>比較軸</th><th>サブフローなし</th><th>サブフローあり</th></tr></thead>
-                <tbody>
-                  <tr><td class="col-label">メインフローの行数</td><td class="bad">長くなる</td><td class="good">コンパクトに収まる</td></tr>
-                  <tr><td class="col-label">処理の見通し</td><td class="bad">何をしているか分かりにくい</td><td class="good">「ログイン → 取得 → 出力」と一目でわかる</td></tr>
-                  <tr><td class="col-label">修正コスト</td><td class="bad">ログイン処理を3か所直す必要がある</td><td class="good">サブフロー1か所を直すだけ</td></tr>
-                  <tr><td class="col-label">再利用</td><td class="bad">コピー&amp;ペーストで増殖する</td><td class="good">呼び出すだけ</td></tr>
-                </tbody>
-              </table>
-              <p style="margin-top:14px;">最終演習では<strong>4本のサブフロー構成</strong>に分割します：</p>
-              <ul style="margin:8px 0 0 20px;">
-                <li><strong>Main</strong>：日時計算・出力フォルダ作成・部署×役職選択ダイアログ・サブフロー呼び出し</li>
-                <li><strong>ブラウザ操作</strong>：ChromeDriver 起動・ログイン</li>
-                <li><strong>スタッフ詳細スクレイピング</strong>：一覧抽出（ページング）→ FOR EACH → 詳細取得 → Excel 出力</li>
-                <li><strong>エラー</strong>：BLOCK エラー発生時に呼ばれる。エラーログを追記</li>
-              </ul>
-              <figure class="pad-image-placeholder" data-image-slot="lesson-6/04_subflow_tabs">
-                <span class="placeholder-icon">🖼️</span>
-                PAD のサブフロータブ：Main／ブラウザ操作／スタッフ詳細スクレイピング／エラー の4本が並んでいる画面<br>
-                <code>data-image-slot="lesson-6/04_subflow_tabs"</code>
-              </figure>
-            </div>
-          </div>
-
-          <!-- 6-D-②: サブフローデモ -->
-          <div class="card">
-            <div class="card-header"><h3>6-D-②. インタラクティブデモ：サブフローで処理を整理しよう</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <p>メインフローの「ベタ書き版」と「サブフロー版」を並べて、見通しの違いを体感してみましょう。</p>
-              <div class="demo-controls">
-                <button class="btn btn-primary" id="btnRunSub">▶ サブフロー版を実行</button>
-                <button class="btn btn-outline" id="btnResetSub">🔄 リセット</button>
-              </div>
-              <div class="demo-grid">
-                <div class="demo-panel">
-                  <div class="demo-label">❌ ベタ書き版（サブフローなし）</div>
-                  <div id="rawList"></div>
-                </div>
-                <div class="demo-panel">
-                  <div class="demo-label">✅ サブフロー版</div>
-                  <div id="subList"></div>
-                </div>
-              </div>
-
-              <div class="handson-callout">
+</div>
+</div></section>
+<div class="lesson-group-header"><span class="lesson-group-label">GROUP D</span><h2>D. サブフロー</h2><span class="lesson-group-desc">処理を機能単位で切り出して Main＋サブフローの 4 本構成にする</span></div><section class="lesson-section" id="sec-d-1"><div class="card">
+<div class="card-header"><h3>D-1. サブフロー 〜「使い回せる処理のかたまり」〜</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<table class="compare-table">
+<thead><tr><th>比較軸</th><th>サブフローなし</th><th>サブフローあり</th></tr></thead>
+<tbody>
+<tr><td class="col-label">メインフローの行数</td><td class="bad">長くなる</td><td class="good">コンパクトに収まる</td></tr>
+<tr><td class="col-label">処理の見通し</td><td class="bad">何をしているか分かりにくい</td><td class="good">「ログイン → 取得 → 出力」と一目でわかる</td></tr>
+<tr><td class="col-label">修正コスト</td><td class="bad">ログイン処理を3か所直す必要がある</td><td class="good">サブフロー1か所を直すだけ</td></tr>
+<tr><td class="col-label">再利用</td><td class="bad">コピー&amp;ペーストで増殖する</td><td class="good">呼び出すだけ</td></tr>
+</tbody>
+</table>
+<p style="margin-top:14px;">最終演習では<strong>4本のサブフロー構成</strong>に分割します：</p>
+<ul style="margin:8px 0 0 20px;">
+<li><strong>Main</strong>：日時計算・出力フォルダ作成・部署×役職選択ダイアログ・サブフロー呼び出し</li>
+<li><strong>ブラウザ操作</strong>：ChromeDriver 起動・ログイン</li>
+<li><strong>スタッフ詳細スクレイピング</strong>：一覧抽出（ページング）→ FOR EACH → 詳細取得 → Excel 出力</li>
+<li><strong>エラー</strong>：BLOCK エラー発生時に呼ばれる。エラーログを追記</li>
+</ul>
+<figure class="pad-image-placeholder" data-image-slot="lesson-6/04_subflow_tabs">
+<span class="placeholder-icon">🖼️</span>
+                PAD のサブフロータブ：Main／ブラウザ操作／スタッフ詳細スクレイピング／エラー の4本が並んでいる画面<br/>
+<code>data-image-slot="lesson-6/04_subflow_tabs"</code>
+</figure>
+</div>
+</div></section>
+<section class="lesson-section" id="sec-d-2"><div class="card">
+<div class="card-header"><h3>D-2. インタラクティブデモ：サブフローで処理を整理しよう</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<p>メインフローの「ベタ書き版」と「サブフロー版」を並べて、見通しの違いを体感してみましょう。</p>
+<div class="demo-controls">
+<button class="btn btn-primary" id="btnRunSub">▶ サブフロー版を実行</button>
+<button class="btn btn-outline" id="btnResetSub">🔄 リセット</button>
+</div>
+<div class="demo-grid">
+<div class="demo-panel">
+<div class="demo-label">❌ ベタ書き版（サブフローなし）</div>
+<div id="rawList"></div>
+</div>
+<div class="demo-panel">
+<div class="demo-label">✅ サブフロー版</div>
+<div id="subList"></div>
+</div>
+</div>
+<div class="handson-callout">
                 🛠️ <strong>ハンズオン課題④：</strong>「ログイン処理」「スタッフ情報スクレイピング処理」「エラー処理」をそれぞれ独立サブフローに切り出してみましょう。
               </div>
-            </div>
-          </div>
-
-        </section>
-
-        <section class="lesson-section" id="answer">
-          <h2 class="lesson-section-title"><span class="sec-icon">✅</span>解答例 / 完成フローテキスト</h2>
-          <div class="card"><div class="card-body" style="font-size:14px; line-height:1.9;">
-            <p>本回のハンズオン課題の完成フローテキストをダウンロードして、PAD 編集画面に貼り付けてください。</p>
-            <a href="answers/lesson-6.txt" class="answer-download" download>
-              <span class="icon">⬇️</span>
+</div>
+</div></section>
+<section class="lesson-section" id="answer">
+<h2 class="lesson-section-title"><span class="sec-icon">✅</span>解答例 / 完成フローテキスト</h2>
+<div class="card"><div class="card-body" style="font-size:14px; line-height:1.9;">
+<p>本回のハンズオン課題の完成フローテキストをダウンロードして、PAD 編集画面に貼り付けてください。</p>
+<a class="answer-download" download="" href="answers/lesson-6.txt">
+<span class="icon">⬇️</span>
               lesson-6.txt をダウンロード
             </a>
-          </div></div>
-        </section>
-
-        <section class="lesson-section" id="faq">
-          <h2 class="lesson-section-title"><span class="sec-icon">❓</span>よくある詰まりと FAQ</h2>
-          <div class="lesson-faq"><div class="q">Q1. ブロックエラー発生時でサブフローを呼んだ後にループが止まる</div><div class="a">エラー発生時の動作を「<strong>次の繰り返しに移動</strong>」に設定し忘れているのが原因。</div></div>
-          <div class="lesson-faq"><div class="q">Q2. エラー.txt が毎回上書きされてしまう</div><div class="a">テキストをファイルに書き込む の「ファイルが存在する場合」を<strong>「内容を追加する」</strong>に変更してください。</div></div>
-        </section>
-
-        <nav class="lesson-nav">
-          <a href="lesson-5.html" class="prev">第5回 ブラウザ自動化②</a>
-          <a href="lesson-7.html" class="next">第7回 総合演習</a>
-        </nav>
-
-      </main>
-      <footer class="app-footer">© 2025 PAD練習サイト</footer>
-    </div>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/env.js"></script>
-  <script src="js/supabase-client.js"></script>
-  <script src="js/auth.js"></script>
-  <script src="js/common.js?v=6"></script>
-  <script>
+</div></div>
+</section>
+<section class="lesson-section" id="faq">
+<h2 class="lesson-section-title"><span class="sec-icon">❓</span>よくある詰まりと FAQ</h2>
+<div class="lesson-faq"><div class="q">Q1. ブロックエラー発生時でサブフローを呼んだ後にループが止まる</div><div class="a">エラー発生時の動作を「<strong>次の繰り返しに移動</strong>」に設定し忘れているのが原因。</div></div>
+<div class="lesson-faq"><div class="q">Q2. エラー.txt が毎回上書きされてしまう</div><div class="a">テキストをファイルに書き込む の「ファイルが存在する場合」を<strong>「内容を追加する」</strong>に変更してください。</div></div>
+</section>
+<nav class="lesson-nav">
+<a class="prev" href="lesson-5.html">第5回 ブラウザ自動化②</a>
+<a class="next" href="lesson-7.html">第7回 総合演習</a>
+</nav>
+</main>
+<footer class="app-footer">© 2025 PAD練習サイト</footer>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/env.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/common.js?v=6"></script>
+<script>
     bootstrapPage('lesson-6');
 
     function initInteractives() {

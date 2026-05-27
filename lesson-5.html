@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>第5回 ブラウザ自動化② | PAD練習サイト</title>
-  <link rel="stylesheet" href="css/style.css">
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>第5回 ブラウザ自動化② | PAD練習サイト</title>
+<link href="css/style.css" rel="stylesheet"/>
+<style>
     .pattern-list { list-style: none; padding: 0; margin: 12px 0; }
     .pattern-list li { background: #f9fafb; border: 1px solid #e0e6ed; border-radius: 6px; padding: 12px 16px; margin-bottom: 8px; font-size: 14px; line-height: 1.7; }
     .pattern-list code { background: #1e293b; color: #7dd3fc; padding: 2px 8px; border-radius: 4px; font-size: 13px; margin-right: 8px; }
@@ -48,631 +49,536 @@
   </style>
 </head>
 <body>
-  <div class="app-layout">
-    <div id="sidebarContainer"></div>
-    <div class="main-content">
-      <header class="topbar">
-        <div class="topbar-title">🕷️ 第5回 ブラウザ自動化②（スクレイピング / URL直）</div>
-        <div class="topbar-user"><span>👤</span><span id="topbarUser">user</span></div>
-      </header>
-      <main class="page-content">
-
-        <section class="lesson-hero">
-          <div class="lesson-tag">LESSON 5 / ブラウザ自動化②</div>
-          <h1>第5回 ブラウザ自動化② 〜スクレイピング・URL直接ナビ〜</h1>
-          <p>
-            Web 上の情報を自動取得してデータテーブルに格納する力を身につける、<strong>カリキュラム最大の山場</strong>です。<br>
-            <code>&lt;object&gt;</code> 埋め込み UI への対処として URL 直アクセスを習得します。
+<div class="app-layout">
+<div id="sidebarContainer"></div>
+<div class="main-content">
+<header class="topbar">
+<div class="topbar-title">🕷️ 第5回 ブラウザ自動化②（スクレイピング / URL直）</div>
+<div class="topbar-user"><span>👤</span><span id="topbarUser">user</span></div>
+</header>
+<main class="page-content">
+<section class="lesson-hero">
+<div class="lesson-tag">LESSON 5 / ブラウザ自動化②</div>
+<h1>第5回 ブラウザ自動化② 〜スクレイピング・URL直接ナビ〜</h1>
+<p>
+            Web 上の情報を自動取得してデータテーブルに格納する力を身につける、<strong>カリキュラム最大の山場</strong>です。<br/>
+<code>&lt;object&gt;</code> 埋め込み UI への対処として URL 直アクセスを習得します。
           </p>
-          <div class="lesson-meta">
-            <span>🪜 前提：第4回（ログイン）完了</span>
-            <span>🎯 ゴール：staff-list を絞り込み URL で開き全件取得</span>
-          </div>
-        </section>
-
-        <nav class="lesson-toc">
-          <h3>📑 目次</h3>
-          <ol>
-            <li><a href="#goal">🎯 到達目標</a></li>
+<div class="lesson-meta">
+<span>🪜 前提：第4回（ログイン）完了</span>
+<span>🎯 ゴール：staff-list を絞り込み URL で開き全件取得</span>
+</div>
+</section>
+<nav class="lesson-toc">
+<h3>📑 目次</h3>
+<ol>
             <li><a href="#prep">🪜 事前準備</a></li>
-            <li><a href="#explain">📖 解説（抽出／object回避／URLパラメータ）</a></li>
+            <li><a href="#sec-a">A. データ抽出の基本手順</a></li>
+            <li class="toc-group">📘 B. ページネーション（複数ページの走破）</li>
+            <li class="toc-sub"><a href="#sec-b-1">B-1. ページネーション（基本編）〜「ページャーとして設定」〜</a></li>
+            <li class="toc-sub"><a href="#sec-b-2">B-2. ページネーション（応用編）〜ラベル ＋ 移動先に移動する で全走破〜</a></li>
+            <li class="toc-group">📘 C. &lt;object&gt; 回避 ＆ URL 直アクセス</li>
+            <li class="toc-sub"><a href="#sec-c-1">C-1. &lt;object&gt; / &lt;iframe&gt; 埋め込み UI の限界（必読）</a></li>
+            <li class="toc-sub"><a href="#sec-c-2">C-2. 解決策 〜埋め込みページの URL を特定して直接ナビゲート〜</a></li>
+            <li class="toc-sub"><a href="#sec-c-3">C-3. URL パラメータを動的に組み立てる</a></li>
             <li><a href="#answer">✅ 解答例 / 完成フローテキスト</a></li>
             <li><a href="#faq">❓ よくある詰まりと FAQ</a></li>
           </ol>
-        </nav>
-
-        <section class="lesson-section" id="goal">
-          <h2 class="lesson-section-title"><span class="sec-icon">🎯</span>到達目標</h2>
-          <ul class="lesson-goal-list">
-            <li>「Webページからデータを抽出する」アクションでテーブルを抽出できる</li>
-            <li>取得した DataTable を Excel に転記できる</li>
-            <li><code>%変数%</code> で URL パラメータを動的に組み立て、目的の状態のページに直接遷移できる（例：<code>staff-list.html?dept=%選択部署%&amp;role=%選択役職%</code>）</li>
-            <li><code>&lt;object&gt;</code> 埋め込みで UI 要素が取得できない場面を正しく診断できる</li>
-            <li>ページネーション（複数ページの走破）の基本を知る</li>
-          </ul>
-        </section>
-
-        <section class="lesson-section" id="prep">
-          <h2 class="lesson-section-title"><span class="sec-icon">🪜</span>事前準備</h2>
-          <div class="card"><div class="card-body" style="font-size:14px; line-height:1.9;">
-            <ul style="margin:0 0 0 20px;">
-              <li><a href="lesson-4.html" style="color:#2c7be5;">第4回</a> のログインフローが手元にある</li>
-              <li>デモサイトの <a href="staff-list.html" style="color:#2c7be5;">staff-list.html</a>／<a href="staff-search-popup.html" style="color:#2c7be5;">staff-search-popup.html</a> を開けることを確認</li>
-            </ul>
-          </div></div>
-        </section>
-
-        <section class="lesson-section" id="explain">
-          <h2 class="lesson-section-title"><span class="sec-icon">📖</span>解説</h2>
-
-          <!-- ===== 5-A: スクレイピング基本 ===== -->
-          <div class="card">
-            <div class="card-header"><h3>5-A. データ抽出の基本手順</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-
-              <!-- 5-A-①：スタッフ一覧ページを開く（画像なし） -->
-              <div style="margin:4px 0 18px; padding:14px 18px; background:#f8fafc; border-left:4px solid #2c7be5; border-radius:6px; font-size:16px; line-height:1.9;">
-                <strong>① 第4回のログインフローの続きに、スタッフ一覧ページを開く処理を追加する</strong><br>
+</nav>
+<section class="lesson-section" id="prep">
+<h2 class="lesson-section-title"><span class="sec-icon">🪜</span>事前準備</h2>
+<div class="card"><div class="card-body" style="font-size:14px; line-height:1.9;">
+<ul style="margin:0 0 0 20px;">
+<li><a href="lesson-4.html" style="color:#2c7be5;">第4回</a> のログインフローが手元にある</li>
+<li>デモサイトの <a href="staff-list.html" style="color:#2c7be5;">staff-list.html</a>／<a href="staff-search-popup.html" style="color:#2c7be5;">staff-search-popup.html</a> を開けることを確認</li>
+</ul>
+</div></div>
+</section>
+<section class="lesson-section" id="sec-a"><div class="card">
+<div class="card-header"><h3>A. データ抽出の基本手順</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<!-- 5-A-①：スタッフ一覧ページを開く（画像なし） -->
+<div style="margin:4px 0 18px; padding:14px 18px; background:#f8fafc; border-left:4px solid #2c7be5; border-radius:6px; font-size:16px; line-height:1.9;">
+<strong>① 第4回のログインフローの続きに、スタッフ一覧ページを開く処理を追加する</strong><br/>
                 開き方は次のどちらでも OK：
                 <ul style="margin:8px 0 0 22px; line-height:1.8;">
-                  <li><strong>(A) UI 要素ピッカーで「スタッフ一覧」サイドバーボタンを取得 → 「Web ページのリンクをクリック」</strong>でナビゲートする</li>
-                  <li><strong>(B) 「Web ページに移動する」アクションで <code>staff-list.html</code> の URL を直接指定</strong>して飛ぶ</li>
-                </ul>
-              </div>
-
-              <!-- 5-A-②：抽出アクションの追加 -->
-              <div class="step-split">
-                <figure class="step-figure">
-                  <img src="assets/lessons/lesson-5_01_add_extract_action.png"
-                       alt="アクションペインから「ブラウザー自動化 ＞ Web データ抽出 ＞ Web ページからデータを抽出する」を配置している画面"
-                       onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                  <figure class="pad-image-placeholder" data-image-slot="lesson-5/01_add_extract_action" style="display:none;">
-                    <span class="placeholder-icon">🖼️</span>
-                    アクションペインから「ブラウザー自動化 ＞ Web データ抽出 ＞ Web ページからデータを抽出する」を配置している画面<br>
-                    <code>data-image-slot="lesson-5/01_add_extract_action"</code>
-                  </figure>
-                </figure>
-                <div class="step-text">
-                  <strong>② 抽出アクションを配置する</strong><br>
-                  アクションペインで「<strong>ブラウザー自動化 ＞ Web データ抽出 ＞ Web ページからデータを抽出する</strong>」を選び、フロー上にドラッグ＆ドロップします。<br>
-                  検索ボックスに <code>抽出</code> と入力すると一発で出てきます。<br>
-                  <em style="color:#64748b;">※ このアクションは、いま PAD が制御している Chrome（4-A で WebDriver 起動したもの）に対して動きます。別タブや別 Chrome は対象外。</em>
-                </div>
-              </div>
-
-              <!-- 5-A-③：ライブ Web ヘルパーで右クリック -->
-              <div class="step-split">
-                <figure class="step-figure">
-                  <img src="assets/lessons/lesson-5_02_live_web_helper_rightclick.png"
-                       alt="ライブ Web ヘルパー起動中、取得したいテーブル上で右クリックし「HTML テーブル全体を抽出する／要素の値を抽出」のコンテキストメニューが表示されている画面"
-                       onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                  <figure class="pad-image-placeholder" data-image-slot="lesson-5/02_live_web_helper_rightclick" style="display:none;">
-                    <span class="placeholder-icon">🖼️</span>
-                    ライブ Web ヘルパー起動中、取得したいテーブル上で右クリックし「HTML テーブル全体を抽出する／要素の値を抽出」のコンテキストメニューが表示されている画面<br>
-                    <code>data-image-slot="lesson-5/02_live_web_helper_rightclick"</code>
-                  </figure>
-                </figure>
-                <div class="step-text">
-                  <strong>③ ライブ Web ヘルパーで取得したい部分を右クリック</strong><br>
-                  ② のアクションを配置すると、<strong>ライブ Web ヘルパー</strong>が自動で立ち上がります。マウスを画面上で動かすと、要素ごとに枠線が出ます。<br>
+<li><strong>(A) UI 要素ピッカーで「スタッフ一覧」サイドバーボタンを取得 → 「Web ページのリンクをクリック」</strong>でナビゲートする</li>
+<li><strong>(B) 「Web ページに移動する」アクションで <code>staff-list.html</code> の URL を直接指定</strong>して飛ぶ</li>
+</ul>
+</div>
+<!-- 5-A-②：抽出アクションの追加 -->
+<div class="step-split">
+<figure class="step-figure">
+<img alt="アクションペインから「ブラウザー自動化 ＞ Web データ抽出 ＞ Web ページからデータを抽出する」を配置している画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_01_add_extract_action.png"/>
+<figure class="pad-image-placeholder" data-image-slot="lesson-5/01_add_extract_action" style="display:none;">
+<span class="placeholder-icon">🖼️</span>
+                    アクションペインから「ブラウザー自動化 ＞ Web データ抽出 ＞ Web ページからデータを抽出する」を配置している画面<br/>
+<code>data-image-slot="lesson-5/01_add_extract_action"</code>
+</figure>
+</figure>
+<div class="step-text">
+<strong>② 抽出アクションを配置する</strong><br/>
+                  アクションペインで「<strong>ブラウザー自動化 ＞ Web データ抽出 ＞ Web ページからデータを抽出する</strong>」を選び、フロー上にドラッグ＆ドロップします。<br/>
+                  検索ボックスに <code>抽出</code> と入力すると一発で出てきます。<br/>
+<em style="color:#64748b;">※ このアクションは、いま PAD が制御している Chrome（4-A で WebDriver 起動したもの）に対して動きます。別タブや別 Chrome は対象外。</em>
+</div>
+</div>
+<!-- 5-A-③：ライブ Web ヘルパーで右クリック -->
+<div class="step-split">
+<figure class="step-figure">
+<img alt="ライブ Web ヘルパー起動中、取得したいテーブル上で右クリックし「HTML テーブル全体を抽出する／要素の値を抽出」のコンテキストメニューが表示されている画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_02_live_web_helper_rightclick.png"/>
+<figure class="pad-image-placeholder" data-image-slot="lesson-5/02_live_web_helper_rightclick" style="display:none;">
+<span class="placeholder-icon">🖼️</span>
+                    ライブ Web ヘルパー起動中、取得したいテーブル上で右クリックし「HTML テーブル全体を抽出する／要素の値を抽出」のコンテキストメニューが表示されている画面<br/>
+<code>data-image-slot="lesson-5/02_live_web_helper_rightclick"</code>
+</figure>
+</figure>
+<div class="step-text">
+<strong>③ ライブ Web ヘルパーで取得したい部分を右クリック</strong><br/>
+                  ② のアクションを配置すると、<strong>ライブ Web ヘルパー</strong>が自動で立ち上がります。マウスを画面上で動かすと、要素ごとに枠線が出ます。<br/>
                   取得したいテーブル（例：スタッフ一覧の表）の上で<strong>右クリック</strong>し、出てきたメニューから次のどちらかを選びます：
                   <ul style="margin:6px 0 0 22px;">
-                    <li><strong>「要素の値を抽出」</strong>… 会社名や金額など、<strong>一つの値だけ</strong>取得したいとき</li>
-                    <li><strong>「HTMLテーブル全体を抽出する」</strong>… サイト内の表を<strong>まるごと</strong>取得したいとき</li>
-                  </ul>
-                </div>
-              </div>
-
-              <!-- 5-A-④：変数に格納される / リネーム -->
-              <div class="step-split">
-                <figure class="step-figure">
-                  <img src="assets/lessons/lesson-5_03_extracted_variable.png"
-                       alt="画面右の「変数」ペインに DataFromWebPage（データテーブル型）が登録され、右クリック→名前の変更で StaffList にリネームしている画面"
-                       onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                  <figure class="pad-image-placeholder" data-image-slot="lesson-5/03_extracted_variable" style="display:none;">
-                    <span class="placeholder-icon">📋</span>
-                    画面右の「変数」ペインに <code>DataFromWebPage</code>（データテーブル型）が登録され、右クリック→名前の変更で <code>StaffList</code> にリネームしている画面<br>
-                    <code>data-image-slot="lesson-5/03_extracted_variable"</code>
-                  </figure>
-                </figure>
-                <div class="step-text">
-                  <strong>④ 取得結果は変数に格納される（既定名：<code>DataFromWebPage</code>）</strong><br>
+<li><strong>「要素の値を抽出」</strong>… 会社名や金額など、<strong>一つの値だけ</strong>取得したいとき</li>
+<li><strong>「HTMLテーブル全体を抽出する」</strong>… サイト内の表を<strong>まるごと</strong>取得したいとき</li>
+</ul>
+</div>
+</div>
+<!-- 5-A-④：変数に格納される / リネーム -->
+<div class="step-split">
+<figure class="step-figure">
+<img alt="画面右の「変数」ペインに DataFromWebPage（データテーブル型）が登録され、右クリック→名前の変更で StaffList にリネームしている画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_03_extracted_variable.png"/>
+<figure class="pad-image-placeholder" data-image-slot="lesson-5/03_extracted_variable" style="display:none;">
+<span class="placeholder-icon">📋</span>
+                    画面右の「変数」ペインに <code>DataFromWebPage</code>（データテーブル型）が登録され、右クリック→名前の変更で <code>StaffList</code> にリネームしている画面<br/>
+<code>data-image-slot="lesson-5/03_extracted_variable"</code>
+</figure>
+</figure>
+<div class="step-text">
+<strong>④ 取得結果は変数に格納される（既定名：<code>DataFromWebPage</code>）</strong><br/>
                   ライブ Web ヘルパーを「完了」で閉じると、抽出結果は自動で変数に格納されます。<strong>「HTML テーブル全体を抽出する」</strong>を選んだ場合は<strong>データテーブル型</strong>の変数に入ります（Excel の表のように行×列で持っているイメージ）。
                   <div class="point-block" style="margin-top:10px;">
-                    <strong>💡 変数名はリネームしておく：</strong> 既定の <code>DataFromWebPage</code> のままだと、複数の抽出を組み合わせたときに「どれがどれだか分からない」事故が起きます。右側の「変数」ペインで右クリック →「名前の変更」で <code>StaffList</code> など<strong>内容がわかる名前</strong>に変えておくのがおすすめです。
+<strong>💡 変数名はリネームしておく：</strong> 既定の <code>DataFromWebPage</code> のままだと、複数の抽出を組み合わせたときに「どれがどれだか分からない」事故が起きます。右側の「変数」ペインで右クリック →「名前の変更」で <code>StaffList</code> など<strong>内容がわかる名前</strong>に変えておくのがおすすめです。
                   </div>
-                </div>
-              </div>
-
-              <div class="handson-callout">
+</div>
+</div>
+<div class="handson-callout">
                 🛠️ <strong>ハンズオン課題①：</strong><a href="sales-list.html" style="color:#2c7be5;">sales-list.html</a> から売上データ全件をスクレイピングして DataTable に取り込み、Excel に書き出すフローを作ってみましょう。
               </div>
-            </div>
-          </div>
-
-          <!-- ===== 5-B-①: 標準ページャー ===== -->
-          <div class="card">
-            <div class="card-header"><h3>5-B-①. ページネーション（基本編）〜「ページャーとして設定」〜</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <p>1 ページだけでなく、「次へ」「&gt;」などのページネーションが付いているサイトから<strong>全ページ分のデータをまとめて取得したい</strong>とき、最初に試すのは PAD 標準の機能です。</p>
-
-              <!-- ① ページャーを設定 -->
-              <div class="step-split">
-                <figure class="step-figure">
-                  <img src="assets/lessons/lesson-5_04a_set_as_pager.png"
-                       alt="ライブ Web ヘルパー上で「次へ」ボタンを右クリックし「要素をページャーとして設定」を選んでいる画面"
-                       onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                  <figure class="pad-image-placeholder" data-image-slot="lesson-5/04a_set_as_pager" style="display:none;">
-                    <span class="placeholder-icon">🖼️</span>
-                    ライブ Web ヘルパー上で「次へ」ボタンを右クリックし「要素をページャーとして設定」を選んでいる画面<br>
-                    <code>data-image-slot="lesson-5/04a_set_as_pager"</code>
-                  </figure>
-                </figure>
-                <div class="step-text">
-                  <strong>① ページャーボタンを設定する</strong><br>
-                  「Web ページからデータを抽出する」アクションで通常どおりライブ Web ヘルパーを起動し、5-A の③と同じ手順でテーブルを取得します。<br>
+</div>
+</div></section>
+<div class="lesson-group-header"><span class="lesson-group-label">GROUP B</span><h2>B. ページネーション（複数ページの走破）</h2><span class="lesson-group-desc">標準ページャー設定 と、止まらないとき用の「ラベル ＋ 移動先」パターン</span></div><section class="lesson-section" id="sec-b-1"><div class="card">
+<div class="card-header"><h3>B-1. ページネーション（基本編）〜「ページャーとして設定」〜</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<p>1 ページだけでなく、「次へ」「&gt;」などのページネーションが付いているサイトから<strong>全ページ分のデータをまとめて取得したい</strong>とき、最初に試すのは PAD 標準の機能です。</p>
+<!-- ① ページャーを設定 -->
+<div class="step-split">
+<figure class="step-figure">
+<img alt="ライブ Web ヘルパー上で「次へ」ボタンを右クリックし「要素をページャーとして設定」を選んでいる画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_04a_set_as_pager.png"/>
+<figure class="pad-image-placeholder" data-image-slot="lesson-5/04a_set_as_pager" style="display:none;">
+<span class="placeholder-icon">🖼️</span>
+                    ライブ Web ヘルパー上で「次へ」ボタンを右クリックし「要素をページャーとして設定」を選んでいる画面<br/>
+<code>data-image-slot="lesson-5/04a_set_as_pager"</code>
+</figure>
+</figure>
+<div class="step-text">
+<strong>① ページャーボタンを設定する</strong><br/>
+                  「Web ページからデータを抽出する」アクションで通常どおりライブ Web ヘルパーを起動し、5-A の③と同じ手順でテーブルを取得します。<br/>
                   そのままライブ Web ヘルパー上で「<strong>次へ</strong>」などのページャーボタンを<strong>右クリック</strong>し、出てきたメニューから「<strong>要素をページャーとして設定</strong>」を選択。
                 </div>
-              </div>
-
-              <!-- ② 実際に次ページに進んで点線確認 -->
-              <div class="step-split">
-                <figure class="step-figure">
-                  <img src="assets/lessons/lesson-5_04b_dotted_line_ok.png"
-                       alt="次のページに進んだあと、テーブルの周りに点線が表示されていて、抽出対象として認識されている画面"
-                       onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                  <figure class="pad-image-placeholder" data-image-slot="lesson-5/04b_dotted_line_ok" style="display:none;">
-                    <span class="placeholder-icon">✅</span>
-                    次のページに進んだあと、テーブルの周りに点線が表示されていて、抽出対象として認識されている画面<br>
-                    <code>data-image-slot="lesson-5/04b_dotted_line_ok"</code>
-                  </figure>
-                </figure>
-                <div class="step-text">
-                  <strong>② 実際に次のページに進んで、テーブルが認識されているか確かめる</strong><br>
+</div>
+<!-- ② 実際に次ページに進んで点線確認 -->
+<div class="step-split">
+<figure class="step-figure">
+<img alt="次のページに進んだあと、テーブルの周りに点線が表示されていて、抽出対象として認識されている画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_04b_dotted_line_ok.png"/>
+<figure class="pad-image-placeholder" data-image-slot="lesson-5/04b_dotted_line_ok" style="display:none;">
+<span class="placeholder-icon">✅</span>
+                    次のページに進んだあと、テーブルの周りに点線が表示されていて、抽出対象として認識されている画面<br/>
+<code>data-image-slot="lesson-5/04b_dotted_line_ok"</code>
+</figure>
+</figure>
+<div class="step-text">
+<strong>② 実際に次のページに進んで、テーブルが認識されているか確かめる</strong><br/>
                   ページャー設定の直後は必ず確認します。ブラウザ側で実際に「次へ」を押して<strong>次のページに進んでみる</strong>。
                   <div class="point-block" style="margin-top:10px;">
-                    <strong>👀 チェックポイント：</strong>次のページのテーブルの周りに <strong>点線（破線）の枠</strong> が表示されていれば、PAD が「ここも同じ取得先」と認識してくれています。このまま <strong>④ のデータ抽出元設定</strong>に進んで OK。
+<strong>👀 チェックポイント：</strong>次のページのテーブルの周りに <strong>点線（破線）の枠</strong> が表示されていれば、PAD が「ここも同じ取得先」と認識してくれています。このまま <strong>④ のデータ抽出元設定</strong>に進んで OK。
                   </div>
-                </div>
-              </div>
-
-              <!-- ③ 点線が出ないときの対処（画像なし・全幅で詳述） -->
-              <div style="margin:14px 0; padding:16px 20px; background:#fff7ed; border-left:4px solid #f59e0b; border-radius:6px; font-size:16px; line-height:1.9;">
-                <strong>③ 点線が出ていなかったら、次のページでも同じ取得設定をやり直す</strong><br>
+</div>
+</div>
+<!-- ③ 点線が出ないときの対処（画像なし・全幅で詳述） -->
+<div style="margin:14px 0; padding:16px 20px; background:#fff7ed; border-left:4px solid #f59e0b; border-radius:6px; font-size:16px; line-height:1.9;">
+<strong>③ 点線が出ていなかったら、次のページでも同じ取得設定をやり直す</strong><br/>
                 HTML 構造が 1 ページ目と微妙に違うサイトでは、PAD が「これは別物」と判断して点線が出ないことがあります。その場合：
                 <ol style="margin:6px 0 0 22px;">
-                  <li>次のページのテーブル上で<strong>右クリック</strong></li>
-                  <li>「<strong>HTML テーブル全体を抽出する</strong>」をもう一度選び直す</li>
-                  <li>点線が表示されたら、その後ろのページも同様に確認していく（点線が出ない都度やり直す）</li>
-                </ol>
-                <p style="margin:8px 0 0;">これで「<strong>このテーブルとあのテーブルは同じ取得対象だよ</strong>」と PAD に教え込んでいきます。</p>
-              </div>
-
-              <!-- ④ データの抽出元プルダウン -->
-              <div class="step-split">
-                <figure class="step-figure">
-                  <img src="assets/lessons/lesson-5_04d_extract_source_dropdown.png"
-                       alt="アクション設定の「データの抽出元」プルダウンと「処理する Web ページの最大数」入力欄が表示されている画面"
-                       onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                  <figure class="pad-image-placeholder" data-image-slot="lesson-5/04d_extract_source_dropdown" style="display:none;">
-                    <span class="placeholder-icon">🖼️</span>
-                    アクション設定の「データの抽出元」プルダウンと「処理する Web ページの最大数」入力欄が表示されている画面<br>
-                    <code>data-image-slot="lesson-5/04d_extract_source_dropdown"</code>
-                  </figure>
-                </figure>
-                <div class="step-text">
-                  <strong>④ アクション設定に戻り、「データの抽出元」プルダウンで動作を選ぶ</strong>
-                  <ul style="margin:6px 0 0 22px;">
-                    <li><strong>「すべて使用できます」</strong>を選ぶ → PAD が<strong>最後のページまで自動でページ送り</strong>してすべて取得</li>
-                    <li><strong>「最初のみ」</strong>を選ぶ → 下に <strong>「処理する Web ページの最大数」</strong> 入力欄が出てくるので、走破したいページ数（例：<code>10</code>）を入力</li>
-                  </ul>
-                  <p style="margin-top:10px;">これで、PAD が自動で「次へ」を押しながらページを送り、抽出結果を <strong>1 つのデータテーブル</strong>にまとめてくれます。</p>
-                </div>
-              </div>
-
-              <!-- 強調アラート -->
-              <div class="alert-strong">
-                <span class="alert-title">😱 サイトによっては、最後のページまで行ってもループが止まらない</span>
-                「次へ」ボタンが最終ページでも HTML 上は<strong>存在し続ける</strong>サイトが業務系には多くあります。<br>
-                すると PAD が「まだ次のページがある」と誤判定してしまい、<strong>最終ページの後で空ループに突入</strong>し、フローがいつまでも終わらない／タイムアウトでエラー、という事故が起きます。<br>
-                <span style="display:inline-block; margin-top:8px; padding:6px 12px; background:#dc2626; color:#fff; border-radius:6px; font-weight:700;">👉 そんなときは次の 5-B-②（応用編：ラベル＋移動先）で対処します</span>
-              </div>
-
-              <div class="handson-callout">
+<li>次のページのテーブル上で<strong>右クリック</strong></li>
+<li>「<strong>HTML テーブル全体を抽出する</strong>」をもう一度選び直す</li>
+<li>点線が表示されたら、その後ろのページも同様に確認していく（点線が出ない都度やり直す）</li>
+</ol>
+<p style="margin:8px 0 0;">これで「<strong>このテーブルとあのテーブルは同じ取得対象だよ</strong>」と PAD に教え込んでいきます。</p>
+</div>
+<!-- ④ データの抽出元プルダウン -->
+<div class="step-split">
+<figure class="step-figure">
+<img alt="アクション設定の「データの抽出元」プルダウンと「処理する Web ページの最大数」入力欄が表示されている画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_04d_extract_source_dropdown.png"/>
+<figure class="pad-image-placeholder" data-image-slot="lesson-5/04d_extract_source_dropdown" style="display:none;">
+<span class="placeholder-icon">🖼️</span>
+                    アクション設定の「データの抽出元」プルダウンと「処理する Web ページの最大数」入力欄が表示されている画面<br/>
+<code>data-image-slot="lesson-5/04d_extract_source_dropdown"</code>
+</figure>
+</figure>
+<div class="step-text">
+<strong>④ アクション設定に戻り、「データの抽出元」プルダウンで動作を選ぶ</strong>
+<ul style="margin:6px 0 0 22px;">
+<li><strong>「すべて使用できます」</strong>を選ぶ → PAD が<strong>最後のページまで自動でページ送り</strong>してすべて取得</li>
+<li><strong>「最初のみ」</strong>を選ぶ → 下に <strong>「処理する Web ページの最大数」</strong> 入力欄が出てくるので、走破したいページ数（例：<code>10</code>）を入力</li>
+</ul>
+<p style="margin-top:10px;">これで、PAD が自動で「次へ」を押しながらページを送り、抽出結果を <strong>1 つのデータテーブル</strong>にまとめてくれます。</p>
+</div>
+</div>
+<!-- 強調アラート -->
+<div class="alert-strong">
+<span class="alert-title">😱 サイトによっては、最後のページまで行ってもループが止まらない</span>
+                「次へ」ボタンが最終ページでも HTML 上は<strong>存在し続ける</strong>サイトが業務系には多くあります。<br/>
+                すると PAD が「まだ次のページがある」と誤判定してしまい、<strong>最終ページの後で空ループに突入</strong>し、フローがいつまでも終わらない／タイムアウトでエラー、という事故が起きます。<br/>
+<span style="display:inline-block; margin-top:8px; padding:6px 12px; background:#dc2626; color:#fff; border-radius:6px; font-weight:700;">👉 そんなときは次の 5-B-②（応用編：ラベル＋移動先）で対処します</span>
+</div>
+<div class="handson-callout">
                 🛠️ <strong>ハンズオン課題②：</strong><a href="customer.html" style="color:#2c7be5;">customer.html</a> の得意先一覧から、まずは <strong>「データの抽出元＝最初のみ」＋「処理する Web ページの最大数＝<code>1</code>」</strong> で<strong>最初の 1 ページだけ</strong>取得してみましょう。
               </div>
-            </div>
-          </div>
-
-          <!-- ===== 5-B-②: ラベル＋移動先（応用） ===== -->
-          <div class="card">
-            <div class="card-header"><h3>5-B-②. ページネーション（応用編）〜ラベル ＋ 移動先に移動する で全走破〜</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <p>5-B-① の標準ページャーで止まらない問題に直面したら、ここで紹介する <strong>ラベル ＋ 移動先に移動する</strong> パターンに切り替えます。終端判定を自分で握れるので、どんなサイトでも確実に止められます。</p>
-
-              <p style="margin-top:10px;">ページネーションは本来「<strong>次へボタンが押せる間は繰り返す</strong>」というループ。これを PAD のアクションで明示的に書く、というのが発想です。</p>
-
-              <p style="margin-top:10px;">紙の地図でイメージすると：</p>
-              <ul style="margin:0 0 14px 22px;">
-                <li><strong>ラベル</strong> ＝ 戻ってくるための「目印」を置く</li>
-                <li><strong>移動先に移動する</strong> ＝ その目印に戻る</li>
-                <li>戻る前に <strong>If 条件 Then</strong> で「次へボタンがまだ押せるか？」を判定 → 押せる間だけ目印に戻る</li>
-              </ul>
-              <!-- 「属性」って何？の簡易解説 -->
-              <div style="margin:18px 0; padding:16px 20px; background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; font-size:16px; line-height:1.9;">
-                <strong style="display:block; color:#1e3a8a; font-size:16px; margin-bottom:6px;">📚 「属性」って何？</strong>
-                Web ページの部品（ボタン・入力欄・テーブル など）は、HTML というルールで書かれています。<br>
+</div>
+</div></section>
+<section class="lesson-section" id="sec-b-2"><div class="card">
+<div class="card-header"><h3>B-2. ページネーション（応用編）〜ラベル ＋ 移動先に移動する で全走破〜</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<p>5-B-① の標準ページャーで止まらない問題に直面したら、ここで紹介する <strong>ラベル ＋ 移動先に移動する</strong> パターンに切り替えます。終端判定を自分で握れるので、どんなサイトでも確実に止められます。</p>
+<p style="margin-top:10px;">ページネーションは本来「<strong>次へボタンが押せる間は繰り返す</strong>」というループ。これを PAD のアクションで明示的に書く、というのが発想です。</p>
+<p style="margin-top:10px;">紙の地図でイメージすると：</p>
+<ul style="margin:0 0 14px 22px;">
+<li><strong>ラベル</strong> ＝ 戻ってくるための「目印」を置く</li>
+<li><strong>移動先に移動する</strong> ＝ その目印に戻る</li>
+<li>戻る前に <strong>If 条件 Then</strong> で「次へボタンがまだ押せるか？」を判定 → 押せる間だけ目印に戻る</li>
+</ul>
+<!-- 「属性」って何？の簡易解説 -->
+<div style="margin:18px 0; padding:16px 20px; background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; font-size:16px; line-height:1.9;">
+<strong style="display:block; color:#1e3a8a; font-size:16px; margin-bottom:6px;">📚 「属性」って何？</strong>
+                Web ページの部品（ボタン・入力欄・テーブル など）は、HTML というルールで書かれています。<br/>
                 その部品には<strong>「属性（attribute）」</strong>と呼ばれる<strong>付箋のようなメモ</strong>がいくつも付いていて、たとえば次へボタンには：
                 <ul style="margin:6px 0 0 22px;">
-                  <li><code>type="button"</code>（→ これはボタン）</li>
-                  <li><code>id="nextBtn"</code>（→ 名前は nextBtn）</li>
-                  <li><code>disabled="true"</code>（→ いま<strong>押せない状態</strong>）</li>
-                </ul>
+<li><code>type="button"</code>（→ これはボタン）</li>
+<li><code>id="nextBtn"</code>（→ 名前は nextBtn）</li>
+<li><code>disabled="true"</code>（→ いま<strong>押せない状態</strong>）</li>
+</ul>
                 というメモが付いています。
                 <p style="margin:10px 0 0;">この <code>disabled</code> という付箋は、最終ページに到達してボタンが押せなくなると <strong><code>true</code></strong> に変わります。この属性を PAD で取得すれば「ループ終了の合図」が分かる、というわけです。</p>
-              </div>
-
-              <p>終端判定のキモは「<strong>次へボタンの <code>Disabled</code> 属性</strong>を取得して、<code>true</code> になったらループ終了」というロジックです。属性を読み取るには <code>Webページ上の要素の詳細を取得します</code> アクションを使います。</p>
-
-              <!-- 🧭 これから組むフローの構成 — 画像左 + 文字右 -->
-              <div class="step-split" style="margin-top:18px;">
-                <figure class="step-figure">
-                  <img src="assets/lessons/lesson-5_05c_label_goto_full_flow.png"
-                       alt="ラベル ＋ 移動先に移動する でページング走破している PAD フローの全体図"
-                       onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                  <figure class="pad-image-placeholder" data-image-slot="lesson-5/05c_label_goto_full_flow" style="display:none;">
-                    <span class="placeholder-icon">🖼️</span>
-                    ラベル ＋ 移動先に移動する でページング走破している PAD フローの全体図<br>
-                    <code>data-image-slot="lesson-5/05c_label_goto_full_flow"</code>
-                  </figure>
-                </figure>
-                <div class="step-text" style="background:#f8fafc; border-left:4px solid #2c7be5; border-radius:6px; padding:14px 18px;">
-                  <strong style="color:#1e3a8a; font-size:16px;">🧭 これから組むフローの構成（ざっくり）</strong>
-                  <p style="margin:8px 0 0;">以下のループを組みます：</p>
-                  <ol style="margin:6px 0 0 22px; padding:0;">
-                    <li><strong>空の蓄積テーブル</strong>を用意</li>
-                    <li><strong>ラベル（目印）</strong>を置く</li>
-                    <li><strong>1 ページぶん抽出 → 蓄積テーブルに追記</strong></li>
-                    <li><strong>「次へ」ボタンの状態を読み取る</strong></li>
-                    <li><strong>If でまだ押せるか判定 → 押せるなら次へを押してラベルに戻る</strong></li>
-                  </ol>
-                  <p style="margin:8px 0 0;">押せなくなった瞬間に If を抜けて全体終了、という流れです。</p>
-                </div>
-              </div>
-
-              <!-- 組み立て順（孤立ブロック） -->
-              <div style="margin:28px 0 18px; padding:22px 26px; background:#fff; border:2px solid #2c7be5; border-radius:12px; box-shadow:0 4px 14px rgba(44,123,229,0.12);">
-                <h4 style="margin:0 0 12px; color:#1e3a8a; font-size:18px; border-bottom:2px dashed #bfdbfe; padding-bottom:8px;">📋 組み立て順（蓄積データテーブル方式）— 全 10 アクション</h4>
-
-                  <ol class="proc-list">
-                    <li>
-                      <figure class="proc-figure">
-                          <img src="assets/lessons/lesson-5_05f_create_datatable.png"
-                               alt="「新しいデータテーブルを作成」アクション設定画面（列名を Web 取得テーブルと同じになるように手入力で揃え、行は空のまま）"
-                               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                          <figure class="pad-image-placeholder" data-image-slot="lesson-5/05f_create_datatable" style="margin:0; display:none;">
-                            <span class="placeholder-icon">🆕</span>
-                            「新しいデータテーブルを作成」アクション設定画面（列名を Web 取得テーブルと同じになるように手入力で揃え、行は空のまま）<br>
-                            <code>data-image-slot="lesson-5/05f_create_datatable"</code>
-                          </figure>
-                        </figure>
-                      <div class="proc-content">
-                        <span class="proc-headline"><code>新しいデータテーブルを作成</code>（蓄積用の空テーブル）</span>
-                        <span style="font-size:14px; color:#374151;">列名は <strong>Web から取得するテーブルとまったく同じ</strong>になるように<strong>手入力で揃える</strong>。<strong>行はなにも入れない</strong>（あとから追記していく）。</span>
-                          <div style="margin:10px 0 0; padding:12px 16px; background:#f0fdf4; border-left:4px solid #00b274; border-radius:6px; font-size:15px; line-height:1.85;">
-                            <strong style="color:#065f46;">💡 なぜ「新しいデータテーブルを作成」が必要なのか：</strong> <code>Webページからデータを抽出する</code>アクションをループの中で<strong>繰り返し使う</strong>ということは、<strong>抽出結果の変数が毎回新しいページのテーブルに塗り替えられていく</strong>ということです。前のページのデータはそのままだとどんどん消えてしまうので、抽出したデータを<strong>ストックしておく別の受け皿</strong>を用意しておく必要があります。
+</div>
+<p>終端判定のキモは「<strong>次へボタンの <code>Disabled</code> 属性</strong>を取得して、<code>true</code> になったらループ終了」というロジックです。属性を読み取るには <code>Webページ上の要素の詳細を取得します</code> アクションを使います。</p>
+<!-- 🧭 これから組むフローの構成 — 画像左 + 文字右 -->
+<div class="step-split" style="margin-top:18px;">
+<figure class="step-figure">
+<img alt="ラベル ＋ 移動先に移動する でページング走破している PAD フローの全体図" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_05c_label_goto_full_flow.png"/>
+<figure class="pad-image-placeholder" data-image-slot="lesson-5/05c_label_goto_full_flow" style="display:none;">
+<span class="placeholder-icon">🖼️</span>
+                    ラベル ＋ 移動先に移動する でページング走破している PAD フローの全体図<br/>
+<code>data-image-slot="lesson-5/05c_label_goto_full_flow"</code>
+</figure>
+</figure>
+<div class="step-text" style="background:#f8fafc; border-left:4px solid #2c7be5; border-radius:6px; padding:14px 18px;">
+<strong style="color:#1e3a8a; font-size:16px;">🧭 これから組むフローの構成（ざっくり）</strong>
+<p style="margin:8px 0 0;">以下のループを組みます：</p>
+<ol style="margin:6px 0 0 22px; padding:0;">
+<li><strong>空の蓄積テーブル</strong>を用意</li>
+<li><strong>ラベル（目印）</strong>を置く</li>
+<li><strong>1 ページぶん抽出 → 蓄積テーブルに追記</strong></li>
+<li><strong>「次へ」ボタンの状態を読み取る</strong></li>
+<li><strong>If でまだ押せるか判定 → 押せるなら次へを押してラベルに戻る</strong></li>
+</ol>
+<p style="margin:8px 0 0;">押せなくなった瞬間に If を抜けて全体終了、という流れです。</p>
+</div>
+</div>
+<!-- 組み立て順（孤立ブロック） -->
+<div style="margin:28px 0 18px; padding:22px 26px; background:#fff; border:2px solid #2c7be5; border-radius:12px; box-shadow:0 4px 14px rgba(44,123,229,0.12);">
+<h4 style="margin:0 0 12px; color:#1e3a8a; font-size:18px; border-bottom:2px dashed #bfdbfe; padding-bottom:8px;">📋 組み立て順（蓄積データテーブル方式）— 全 10 アクション</h4>
+<ol class="proc-list">
+<li>
+<figure class="proc-figure">
+<img alt="「新しいデータテーブルを作成」アクション設定画面（列名を Web 取得テーブルと同じになるように手入力で揃え、行は空のまま）" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_05f_create_datatable.png"/>
+<figure class="pad-image-placeholder" data-image-slot="lesson-5/05f_create_datatable" style="margin:0; display:none;">
+<span class="placeholder-icon">🆕</span>
+                            「新しいデータテーブルを作成」アクション設定画面（列名を Web 取得テーブルと同じになるように手入力で揃え、行は空のまま）<br/>
+<code>data-image-slot="lesson-5/05f_create_datatable"</code>
+</figure>
+</figure>
+<div class="proc-content">
+<span class="proc-headline"><code>新しいデータテーブルを作成</code>（蓄積用の空テーブル）</span>
+<span style="font-size:14px; color:#374151;">列名は <strong>Web から取得するテーブルとまったく同じ</strong>になるように<strong>手入力で揃える</strong>。<strong>行はなにも入れない</strong>（あとから追記していく）。</span>
+<div style="margin:10px 0 0; padding:12px 16px; background:#f0fdf4; border-left:4px solid #00b274; border-radius:6px; font-size:15px; line-height:1.85;">
+<strong style="color:#065f46;">💡 なぜ「新しいデータテーブルを作成」が必要なのか：</strong> <code>Webページからデータを抽出する</code>アクションをループの中で<strong>繰り返し使う</strong>ということは、<strong>抽出結果の変数が毎回新しいページのテーブルに塗り替えられていく</strong>ということです。前のページのデータはそのままだとどんどん消えてしまうので、抽出したデータを<strong>ストックしておく別の受け皿</strong>を用意しておく必要があります。
                           </div>
-                      </div>
-                    </li>
-
-                    <li>
-                      <figure class="proc-figure">
-                          <img src="assets/lessons/lesson-5_05g_delete_empty_rows.png"
-                               alt="「データテーブルから空の行を削除する」アクション設定画面（対象＝蓄積テーブル）"
-                               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                          <figure class="pad-image-placeholder" data-image-slot="lesson-5/05g_delete_empty_rows" style="margin:0; display:none;">
-                            <span class="placeholder-icon">🧹</span>
-                            「データテーブルから空の行を削除する」アクション設定画面（対象＝蓄積テーブル）<br>
-                            <code>data-image-slot="lesson-5/05g_delete_empty_rows"</code>
-                          </figure>
-                        </figure>
-                      <div class="proc-content">
-                        <span class="proc-headline"><code>データテーブルから空の行を削除する</code>（蓄積テーブルを対象に指定）</span>
-                        <span style="font-size:14px; color:#374151;">PAD の仕様上、<code>新しいデータテーブルを作成</code>の直後は<strong>1 行目に必ず空白行が 1 行できてしまう</strong>ので、ここでその行を削除して整えておく。これをやっておかないと、後続の <code>FOR EACH</code> 処理で空白行が混ざって「氏名が空」のスタッフを処理しようとして落ちます。</span>
-                      </div>
-                    </li>
-
-                    <li>
-                      <figure class="proc-figure">
-                          <img src="assets/lessons/lesson-5_05h_place_label.png"
-                               alt="「ラベル」アクション設定画面（名前＝移動先）"
-                               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                          <figure class="pad-image-placeholder" data-image-slot="lesson-5/05h_place_label" style="margin:0; display:none;">
-                            <span class="placeholder-icon">📍</span>
-                            「ラベル」アクション設定画面（名前＝移動先）<br>
-                            <code>data-image-slot="lesson-5/05h_place_label"</code>
-                          </figure>
-                        </figure>
-                      <div class="proc-content">
-                        <span class="proc-headline"><code>ラベル</code>（名前：<code>移動先</code>）を置く</span>
-                        <span style="font-size:14px; color:#374151;">ループの「戻ってくる目印」を置きます。名前は <code>移動先</code> など分かりやすいものに。後で <code>移動先に移動する</code> アクションがここに戻ってきます。</span>
-                      </div>
-                    </li>
-
-                    <li>
-                      <figure class="proc-figure">
-                          <img src="assets/lessons/lesson-5_05i_extract_first_only.png"
-                               alt="「Webページからデータを抽出する」アクション設定画面（データの抽出元＝最初のみ／処理する Web ページの最大数＝1）"
-                               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                          <figure class="pad-image-placeholder" data-image-slot="lesson-5/05i_extract_first_only" style="margin:0; display:none;">
-                            <span class="placeholder-icon">📥</span>
-                            「Webページからデータを抽出する」アクション設定画面（データの抽出元＝最初のみ／処理する Web ページの最大数＝1）<br>
-                            <code>data-image-slot="lesson-5/05i_extract_first_only"</code>
-                          </figure>
-                        </figure>
-                      <div class="proc-content">
-                        <span class="proc-headline"><code>Webページからデータを抽出する</code>（<strong>「データの抽出元」＝「最初のみ」</strong>、<strong>「処理する Web ページの最大数」＝ <code>1</code></strong>）</span>
-                        <span style="font-size:14px; color:#374151;">5-B-① と同じ要領で抽出設定を作りますが、ここでは <strong>「最初のみ」＋最大数 1</strong> で <strong>1 ページぶんだけ</strong>取得するように絞ります。ページめくりは PAD に任せず、後ろの If で自分で制御します。</span>
-                      </div>
-                    </li>
-                    <li>
-                      <figure class="proc-figure">
-                          <img src="assets/lessons/lesson-5_05e_merge_data_table.png"
-                               alt="「データテーブルをマージする」アクション設定画面（最初のデータテーブル＝蓄積テーブル／2 番目＝DataFromWebPage／マージモード＝行を末尾に追加する）"
-                               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                          <figure class="pad-image-placeholder" data-image-slot="lesson-5/05e_merge_data_table" style="margin:0; display:none;">
-                            <span class="placeholder-icon">🔗</span>
-                            「データテーブルをマージする」アクション設定画面（最初のデータテーブル＝蓄積テーブル／2 番目＝DataFromWebPage／マージモード＝行を末尾に追加する）<br>
-                            <code>data-image-slot="lesson-5/05e_merge_data_table"</code>
-                          </figure>
-                        </figure>
-                      <div class="proc-content">
-                        <span class="proc-headline"><code>データテーブルをマージする</code>で、いま抽出したぶんを<strong>蓄積テーブルに追記</strong></span>
-                        <span style="font-size:14px; color:#374151;">設定画面で：</span>
-                          <ul style="margin:4px 0 0 22px; font-size:14px;">
-                            <li><strong>最初のデータテーブル</strong>：<code>%蓄積テーブル%</code>（手順 1 で作成したもの）</li>
-                            <li><strong>2 番目のデータテーブル</strong>：<code>%DataFromWebPage%</code>（手順 4 でいま抽出したぶん）</li>
-                            <li><strong>マージモード</strong>：そのまま変更しなくて <strong>OK</strong></li>
-                          </ul>
-                          <span style="display:block; font-size:14px; color:#374151; margin-top:6px;">これで蓄積テーブルの末尾に、いま抽出した 1 ページぶんが<strong>追記</strong>されます。<strong>抽出の直後にマージする</strong>のが大事なポイント。次のページに送る前に必ず手元に取り込んでおかないと、変数が次のページのデータで塗り替えられて消えてしまいます。</span>
-                      </div>
-                    </li>
-
-                    <li>
-                      <figure class="proc-figure" style="max-width:85%;">
-                          <img src="assets/lessons/lesson-5_05b_get_details_disabled.png"
-                               alt="「Webページ上の要素の詳細を取得します」アクション設定画面。UI 要素＝次へボタン、属性名＝Disabled、生成変数＝%ページャー要素% を指定している様子"
-                               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                          <figure class="pad-image-placeholder" data-image-slot="lesson-5/05b_get_details_disabled" style="margin:0; display:none;">
-                            <span class="placeholder-icon">🔍</span>
-                            「Webページ上の要素の詳細を取得します」アクション設定画面（UI 要素＝次へボタン／属性名＝Disabled／生成変数＝%ページャー要素%）<br>
-                            <code>data-image-slot="lesson-5/05b_get_details_disabled"</code>
-                          </figure>
-                        </figure>
-                      <div class="proc-content">
-                        <span class="proc-headline"><code>Webページ上の要素の詳細を取得します</code>で<strong>「次へ」ボタンの <code>Disabled</code> 属性</strong>を読み取る</span>
-                        <span style="font-size:14px; color:#374151;">設定画面で：</span>
-                          <ul style="margin:4px 0 0 22px; font-size:14px;">
-                            <li><strong>UI 要素</strong>：UI 要素ピッカーで「次へ」ボタンを取得</li>
-                            <li><strong>属性名</strong>：プルダウンから <code>Disabled</code> を選択（手入力ではなく選択肢から選べる）</li>
-                            <li><strong>生成変数</strong>：<code>%ページャー要素%</code> など分かりやすい名前にリネーム</li>
-                          </ul>
-                          <span style="display:block; font-size:14px; color:#374151; margin-top:6px;">これで <code>%ページャー要素%</code> には、押せるなら <code>false</code>、押せないなら <code>true</code> が入ります。</span>
-                      </div>
-                    </li>
-
-                    <li>
-                      <figure class="proc-figure">
-                          <img src="assets/lessons/lesson-5_05d_if_pager_condition.png"
-                               alt="「If」アクションで最初のオペランド＝%ページャー要素%、演算子＝と等しくない、2 番目のオペランド＝true を指定している画面"
-                               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                          <figure class="pad-image-placeholder" data-image-slot="lesson-5/05d_if_pager_condition" style="margin:0; display:none;">
-                            <span class="placeholder-icon">🔀</span>
-                            「If」アクションで最初のオペランド＝%ページャー要素%、演算子＝と等しくない、2 番目のオペランド＝true を指定している画面<br>
-                            <code>data-image-slot="lesson-5/05d_if_pager_condition"</code>
-                          </figure>
-                        </figure>
-                      <div class="proc-content">
-                        <span class="proc-headline">条件 → <code>If</code> アクションを置く</span>
-                        <span style="font-size:14px; color:#374151;"><code>If</code> アクション設定画面で：</span>
-                          <ul style="margin:4px 0 0 22px; font-size:14px;">
-                            <li><strong>最初のオペランド</strong>：<code>%ページャー要素%</code></li>
-                            <li><strong>演算子</strong>：<code>と等しくない (&lt;&gt;)</code></li>
-                            <li><strong>2 番目のオペランド</strong>：<code>true</code>（<strong style="color:#dc2626;">必ず半角で入力</strong> — 全角だと文字列が一致せず判定が効かない／ループが止まりません）</li>
-                          </ul>
-                          <span style="display:block; font-size:14px; color:#374151; margin-top:6px;">これで「<strong>次へボタンが <code>Disabled=true</code> ではない（＝まだ押せる）あいだだけ</strong>ループを続ける」という意味になります。</span>
-                      </div>
-                    </li>
-                    <li>
-                      <figure class="proc-figure">
-                          <img src="assets/lessons/lesson-5_05j_press_next_button.png"
-                               alt="「Webページのボタンを押します」アクション設定画面（UI 要素＝次へボタン）"
-                               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                          <figure class="pad-image-placeholder" data-image-slot="lesson-5/05j_press_next_button" style="margin:0; display:none;">
-                            <span class="placeholder-icon">⏭️</span>
-                            「Webページのボタンを押します」アクション設定画面（UI 要素＝次へボタン）<br>
-                            <code>data-image-slot="lesson-5/05j_press_next_button"</code>
-                          </figure>
-                        </figure>
-                      <div class="proc-content">
-                        <span class="proc-headline"><code>Webページのボタンを押します</code>（次へボタンを押す）</span>
-                        <span style="font-size:14px; color:#374151;">UI 要素ピッカーで「次へ」ボタンを指定し、クリックさせます。これで次のページに進みます。</span>
-                      </div>
-                    </li>
-
-                    <li>
-                      <figure class="proc-figure">
-                          <img src="assets/lessons/lesson-5_05k_goto_label.png"
-                               alt="「移動先に移動する」アクション設定画面（移動先のラベル＝移動先）"
-                               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                          <figure class="pad-image-placeholder" data-image-slot="lesson-5/05k_goto_label" style="margin:0; display:none;">
-                            <span class="placeholder-icon">↩️</span>
-                            「移動先に移動する」アクション設定画面（移動先のラベル＝移動先）<br>
-                            <code>data-image-slot="lesson-5/05k_goto_label"</code>
-                          </figure>
-                        </figure>
-                      <div class="proc-content">
-                        <span class="proc-headline"><code>移動先に移動する</code> ＝ 手順 3 の <code>ラベル</code> に戻る</span>
-                        <span style="font-size:14px; color:#374151;">「移動先のラベル」プルダウンで手順 3 で置いた <code>移動先</code> を選択。実行時にここでループの先頭まで戻り、また 1 ページぶん抽出 → マージ → 終端判定…を繰り返します。</span>
-                      </div>
-                    </li>
-
-                    <li>
-                      <figure class="proc-figure">
-                          <img src="assets/lessons/lesson-5_05l_end_if.png"
-                               alt="手順 7 の If に対応する End アクションが配置されているフロー画面"
-                               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                          <figure class="pad-image-placeholder" data-image-slot="lesson-5/05l_end_if" style="margin:0; display:none;">
-                            <span class="placeholder-icon">🏁</span>
-                            手順 7 の If に対応する End アクションが配置されているフロー画面<br>
-                            <code>data-image-slot="lesson-5/05l_end_if"</code>
-                          </figure>
-                        </figure>
-                      <div class="proc-content">
-                        <span class="proc-headline"><code>End</code>（If を閉じる）</span>
-                        <span style="font-size:14px; color:#374151;">PAD では <code>If</code> を置くと自動で <code>End</code> がペアで生成されることが多いので、すでに置かれている場合はそのままで OK。<strong>次へボタンが押せなくなった瞬間</strong>、ここを抜けてフロー全体が終了します。</span>
-                      </div>
-                    </li>
-                  </ol>
+</div>
+</li>
+<li>
+<figure class="proc-figure">
+<img alt="「データテーブルから空の行を削除する」アクション設定画面（対象＝蓄積テーブル）" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_05g_delete_empty_rows.png"/>
+<figure class="pad-image-placeholder" data-image-slot="lesson-5/05g_delete_empty_rows" style="margin:0; display:none;">
+<span class="placeholder-icon">🧹</span>
+                            「データテーブルから空の行を削除する」アクション設定画面（対象＝蓄積テーブル）<br/>
+<code>data-image-slot="lesson-5/05g_delete_empty_rows"</code>
+</figure>
+</figure>
+<div class="proc-content">
+<span class="proc-headline"><code>データテーブルから空の行を削除する</code>（蓄積テーブルを対象に指定）</span>
+<span style="font-size:14px; color:#374151;">PAD の仕様上、<code>新しいデータテーブルを作成</code>の直後は<strong>1 行目に必ず空白行が 1 行できてしまう</strong>ので、ここでその行を削除して整えておく。これをやっておかないと、後続の <code>FOR EACH</code> 処理で空白行が混ざって「氏名が空」のスタッフを処理しようとして落ちます。</span>
+</div>
+</li>
+<li>
+<figure class="proc-figure">
+<img alt="「ラベル」アクション設定画面（名前＝移動先）" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_05h_place_label.png"/>
+<figure class="pad-image-placeholder" data-image-slot="lesson-5/05h_place_label" style="margin:0; display:none;">
+<span class="placeholder-icon">📍</span>
+                            「ラベル」アクション設定画面（名前＝移動先）<br/>
+<code>data-image-slot="lesson-5/05h_place_label"</code>
+</figure>
+</figure>
+<div class="proc-content">
+<span class="proc-headline"><code>ラベル</code>（名前：<code>移動先</code>）を置く</span>
+<span style="font-size:14px; color:#374151;">ループの「戻ってくる目印」を置きます。名前は <code>移動先</code> など分かりやすいものに。後で <code>移動先に移動する</code> アクションがここに戻ってきます。</span>
+</div>
+</li>
+<li>
+<figure class="proc-figure">
+<img alt="「Webページからデータを抽出する」アクション設定画面（データの抽出元＝最初のみ／処理する Web ページの最大数＝1）" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_05i_extract_first_only.png"/>
+<figure class="pad-image-placeholder" data-image-slot="lesson-5/05i_extract_first_only" style="margin:0; display:none;">
+<span class="placeholder-icon">📥</span>
+                            「Webページからデータを抽出する」アクション設定画面（データの抽出元＝最初のみ／処理する Web ページの最大数＝1）<br/>
+<code>data-image-slot="lesson-5/05i_extract_first_only"</code>
+</figure>
+</figure>
+<div class="proc-content">
+<span class="proc-headline"><code>Webページからデータを抽出する</code>（<strong>「データの抽出元」＝「最初のみ」</strong>、<strong>「処理する Web ページの最大数」＝ <code>1</code></strong>）</span>
+<span style="font-size:14px; color:#374151;">5-B-① と同じ要領で抽出設定を作りますが、ここでは <strong>「最初のみ」＋最大数 1</strong> で <strong>1 ページぶんだけ</strong>取得するように絞ります。ページめくりは PAD に任せず、後ろの If で自分で制御します。</span>
+</div>
+</li>
+<li>
+<figure class="proc-figure">
+<img alt="「データテーブルをマージする」アクション設定画面（最初のデータテーブル＝蓄積テーブル／2 番目＝DataFromWebPage／マージモード＝行を末尾に追加する）" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_05e_merge_data_table.png"/>
+<figure class="pad-image-placeholder" data-image-slot="lesson-5/05e_merge_data_table" style="margin:0; display:none;">
+<span class="placeholder-icon">🔗</span>
+                            「データテーブルをマージする」アクション設定画面（最初のデータテーブル＝蓄積テーブル／2 番目＝DataFromWebPage／マージモード＝行を末尾に追加する）<br/>
+<code>data-image-slot="lesson-5/05e_merge_data_table"</code>
+</figure>
+</figure>
+<div class="proc-content">
+<span class="proc-headline"><code>データテーブルをマージする</code>で、いま抽出したぶんを<strong>蓄積テーブルに追記</strong></span>
+<span style="font-size:14px; color:#374151;">設定画面で：</span>
+<ul style="margin:4px 0 0 22px; font-size:14px;">
+<li><strong>最初のデータテーブル</strong>：<code>%蓄積テーブル%</code>（手順 1 で作成したもの）</li>
+<li><strong>2 番目のデータテーブル</strong>：<code>%DataFromWebPage%</code>（手順 4 でいま抽出したぶん）</li>
+<li><strong>マージモード</strong>：そのまま変更しなくて <strong>OK</strong></li>
+</ul>
+<span style="display:block; font-size:14px; color:#374151; margin-top:6px;">これで蓄積テーブルの末尾に、いま抽出した 1 ページぶんが<strong>追記</strong>されます。<strong>抽出の直後にマージする</strong>のが大事なポイント。次のページに送る前に必ず手元に取り込んでおかないと、変数が次のページのデータで塗り替えられて消えてしまいます。</span>
+</div>
+</li>
+<li>
+<figure class="proc-figure" style="max-width:85%;">
+<img alt="「Webページ上の要素の詳細を取得します」アクション設定画面。UI 要素＝次へボタン、属性名＝Disabled、生成変数＝%ページャー要素% を指定している様子" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_05b_get_details_disabled.png"/>
+<figure class="pad-image-placeholder" data-image-slot="lesson-5/05b_get_details_disabled" style="margin:0; display:none;">
+<span class="placeholder-icon">🔍</span>
+                            「Webページ上の要素の詳細を取得します」アクション設定画面（UI 要素＝次へボタン／属性名＝Disabled／生成変数＝%ページャー要素%）<br/>
+<code>data-image-slot="lesson-5/05b_get_details_disabled"</code>
+</figure>
+</figure>
+<div class="proc-content">
+<span class="proc-headline"><code>Webページ上の要素の詳細を取得します</code>で<strong>「次へ」ボタンの <code>Disabled</code> 属性</strong>を読み取る</span>
+<span style="font-size:14px; color:#374151;">設定画面で：</span>
+<ul style="margin:4px 0 0 22px; font-size:14px;">
+<li><strong>UI 要素</strong>：UI 要素ピッカーで「次へ」ボタンを取得</li>
+<li><strong>属性名</strong>：プルダウンから <code>Disabled</code> を選択（手入力ではなく選択肢から選べる）</li>
+<li><strong>生成変数</strong>：<code>%ページャー要素%</code> など分かりやすい名前にリネーム</li>
+</ul>
+<span style="display:block; font-size:14px; color:#374151; margin-top:6px;">これで <code>%ページャー要素%</code> には、押せるなら <code>false</code>、押せないなら <code>true</code> が入ります。</span>
+</div>
+</li>
+<li>
+<figure class="proc-figure">
+<img alt="「If」アクションで最初のオペランド＝%ページャー要素%、演算子＝と等しくない、2 番目のオペランド＝true を指定している画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_05d_if_pager_condition.png"/>
+<figure class="pad-image-placeholder" data-image-slot="lesson-5/05d_if_pager_condition" style="margin:0; display:none;">
+<span class="placeholder-icon">🔀</span>
+                            「If」アクションで最初のオペランド＝%ページャー要素%、演算子＝と等しくない、2 番目のオペランド＝true を指定している画面<br/>
+<code>data-image-slot="lesson-5/05d_if_pager_condition"</code>
+</figure>
+</figure>
+<div class="proc-content">
+<span class="proc-headline">条件 → <code>If</code> アクションを置く</span>
+<span style="font-size:14px; color:#374151;"><code>If</code> アクション設定画面で：</span>
+<ul style="margin:4px 0 0 22px; font-size:14px;">
+<li><strong>最初のオペランド</strong>：<code>%ページャー要素%</code></li>
+<li><strong>演算子</strong>：<code>と等しくない (&lt;&gt;)</code></li>
+<li><strong>2 番目のオペランド</strong>：<code>true</code>（<strong style="color:#dc2626;">必ず半角で入力</strong> — 全角だと文字列が一致せず判定が効かない／ループが止まりません）</li>
+</ul>
+<span style="display:block; font-size:14px; color:#374151; margin-top:6px;">これで「<strong>次へボタンが <code>Disabled=true</code> ではない（＝まだ押せる）あいだだけ</strong>ループを続ける」という意味になります。</span>
+</div>
+</li>
+<li>
+<figure class="proc-figure">
+<img alt="「Webページのボタンを押します」アクション設定画面（UI 要素＝次へボタン）" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_05j_press_next_button.png"/>
+<figure class="pad-image-placeholder" data-image-slot="lesson-5/05j_press_next_button" style="margin:0; display:none;">
+<span class="placeholder-icon">⏭️</span>
+                            「Webページのボタンを押します」アクション設定画面（UI 要素＝次へボタン）<br/>
+<code>data-image-slot="lesson-5/05j_press_next_button"</code>
+</figure>
+</figure>
+<div class="proc-content">
+<span class="proc-headline"><code>Webページのボタンを押します</code>（次へボタンを押す）</span>
+<span style="font-size:14px; color:#374151;">UI 要素ピッカーで「次へ」ボタンを指定し、クリックさせます。これで次のページに進みます。</span>
+</div>
+</li>
+<li>
+<figure class="proc-figure">
+<img alt="「移動先に移動する」アクション設定画面（移動先のラベル＝移動先）" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_05k_goto_label.png"/>
+<figure class="pad-image-placeholder" data-image-slot="lesson-5/05k_goto_label" style="margin:0; display:none;">
+<span class="placeholder-icon">↩️</span>
+                            「移動先に移動する」アクション設定画面（移動先のラベル＝移動先）<br/>
+<code>data-image-slot="lesson-5/05k_goto_label"</code>
+</figure>
+</figure>
+<div class="proc-content">
+<span class="proc-headline"><code>移動先に移動する</code> ＝ 手順 3 の <code>ラベル</code> に戻る</span>
+<span style="font-size:14px; color:#374151;">「移動先のラベル」プルダウンで手順 3 で置いた <code>移動先</code> を選択。実行時にここでループの先頭まで戻り、また 1 ページぶん抽出 → マージ → 終端判定…を繰り返します。</span>
+</div>
+</li>
+<li>
+<figure class="proc-figure">
+<img alt="手順 7 の If に対応する End アクションが配置されているフロー画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_05l_end_if.png"/>
+<figure class="pad-image-placeholder" data-image-slot="lesson-5/05l_end_if" style="margin:0; display:none;">
+<span class="placeholder-icon">🏁</span>
+                            手順 7 の If に対応する End アクションが配置されているフロー画面<br/>
+<code>data-image-slot="lesson-5/05l_end_if"</code>
+</figure>
+</figure>
+<div class="proc-content">
+<span class="proc-headline"><code>End</code>（If を閉じる）</span>
+<span style="font-size:14px; color:#374151;">PAD では <code>If</code> を置くと自動で <code>End</code> がペアで生成されることが多いので、すでに置かれている場合はそのままで OK。<strong>次へボタンが押せなくなった瞬間</strong>、ここを抜けてフロー全体が終了します。</span>
+</div>
+</li>
+</ol>
+</div>
+<div class="point-block" style="margin-top:14px;">
+<strong>📌 なぜ「データの抽出元＝最初のみ」かつ「最大数＝1」にするのか：</strong> 「すべて使用できます」や大きな最大数を指定すると、ページ送りを抽出アクション側に任せることになり、5-B-① で見た<strong>止まらない問題</strong>がそのまま再発します。<strong>1 ページぶんだけ抽出 → 終端を自分で判定 → 押せるなら次へ → ラベルに戻る</strong>、と「外側のループ」を自前で持つことで、止まらない問題から完全に解放されます。
               </div>
-
-              <div class="point-block" style="margin-top:14px;">
-                <strong>📌 なぜ「データの抽出元＝最初のみ」かつ「最大数＝1」にするのか：</strong> 「すべて使用できます」や大きな最大数を指定すると、ページ送りを抽出アクション側に任せることになり、5-B-① で見た<strong>止まらない問題</strong>がそのまま再発します。<strong>1 ページぶんだけ抽出 → 終端を自分で判定 → 押せるなら次へ → ラベルに戻る</strong>、と「外側のループ」を自前で持つことで、止まらない問題から完全に解放されます。
-              </div>
-
-              <div class="handson-callout">
+<div class="handson-callout">
                 🛠️ <strong>ハンズオン課題②（応用）：</strong>5-B-① のフローを、<strong>ラベル ＋ 移動先に移動する</strong> 構造に書き換えてみましょう。最終ページまで進んだら自動で停止し、蓄積データテーブルに全行が入っていれば成功です。
               </div>
-            </div>
-          </div>
-
-          <!-- ===== 5-C: object 回避 ===== -->
-          <div class="card">
-            <div class="card-header"><h3>5-C-①. <code>&lt;object&gt;</code> / <code>&lt;iframe&gt;</code> 埋め込み UI の限界（必読）</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <div class="danger-block">
+</div>
+</div></section>
+<div class="lesson-group-header"><span class="lesson-group-label">GROUP C</span><h2>C. &lt;object&gt; 回避 ＆ URL 直アクセス</h2><span class="lesson-group-desc">ポップアップ内 UI が取れないときの URL パラメータ動的組み立て</span></div><section class="lesson-section" id="sec-c-1"><div class="card">
+<div class="card-header"><h3>C-1. &lt;object&gt; / &lt;iframe&gt; 埋め込み UI の限界（必読）</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<div class="danger-block">
                 見た目はポップアップウィンドウなのに、その中身がこっそり「別のページ」を読み込んでいる作りになっているサイトがあります。こういう UI で PAD の「UI 要素の追加」を使おうとしても、ポップアップの外側の枠しか認識されず、中の入力欄やボタンは取得できません。
               </div>
-              <div class="point-block">
+<div class="point-block">
                 このデモサイトでも、左サイドバーの「スタッフ検索」や「スタッフ追加」を開いて PAD の UI 要素ピッカーを使おうとすると、ポップアップ内に赤い枠が表示されません。これがまさにそのパターンです。
               </div>
-
-              <div class="handson-callout">
+<div class="handson-callout">
                 🛠️ <strong>ハンズオン課題③：</strong><a href="staff-search-popup.html" style="color:#2c7be5;">staff-search-popup.html</a> に PAD の要素取得をかけ、「中の入力欄が取れない」現象を実際に体験してみましょう。
               </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header"><h3>5-C-②. 解決策 〜埋め込みページの URL を特定して直接ナビゲート〜</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <p>ポップアップ内を操作する代わりに、<strong>その中身として読み込まれているページの URL そのもの</strong>へ PAD から直接ナビゲートします。URL さえわかれば操作の再現は完了です。</p>
-              <ol class="instruction-list">
-                <li><strong>F12</strong> を押して開発者ツールを開く</li>
-                <li>開発者ツールを開いた状態でポップアップを開くメニューをクリック</li>
-                <li><strong>Elements</strong> タブを開くと、一番下に新しい文字列（ポップアップの HTML ソース）が追加される</li>
-                <li>その文字列をダブルクリックすると、読み込まれているページのフル URL が確認できる</li>
-              </ol>
-              <div class="success-block">
+</div>
+</div></section>
+<section class="lesson-section" id="sec-c-2"><div class="card">
+<div class="card-header"><h3>C-2. 解決策 〜埋め込みページの URL を特定して直接ナビゲート〜</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<p>ポップアップ内を操作する代わりに、<strong>その中身として読み込まれているページの URL そのもの</strong>へ PAD から直接ナビゲートします。URL さえわかれば操作の再現は完了です。</p>
+<ol class="instruction-list">
+<li><strong>F12</strong> を押して開発者ツールを開く</li>
+<li>開発者ツールを開いた状態でポップアップを開くメニューをクリック</li>
+<li><strong>Elements</strong> タブを開くと、一番下に新しい文字列（ポップアップの HTML ソース）が追加される</li>
+<li>その文字列をダブルクリックすると、読み込まれているページのフル URL が確認できる</li>
+</ol>
+<div class="success-block">
                 使うアクション：<strong>「Web ページに移動する」</strong>。確認した URL をそのまま指定するだけで、ポップアップを開かずに同じ画面にジャンプできます。
               </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header"><h3>5-C-③. URL パラメータを動的に組み立てる</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <p>業務サイトでは検索結果ページの URL にパラメータが付いていることが多く、入力フォームを操作する代わりに URL を組み立てて直接遷移する手法も使えます。</p>
-
-              <p style="margin-top:12px;">たとえば「営業部の主任だけを表示する」のような絞り込みが、URL の末尾に <code>?dept=営業部&amp;role=主任</code> を足すだけで実現できているサイトでは、フォームに値を入れて検索ボタンを押す代わりに、PAD で URL を組み立てて「Web ページに移動する」アクション 1 つで同じ結果が得られます。</p>
-
-              <div class="code-block">// ポップアップを操作する代わりに：
+</div>
+</div></section>
+<section class="lesson-section" id="sec-c-3"><div class="card">
+<div class="card-header"><h3>C-3. URL パラメータを動的に組み立てる</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<p>業務サイトでは検索結果ページの URL にパラメータが付いていることが多く、入力フォームを操作する代わりに URL を組み立てて直接遷移する手法も使えます。</p>
+<p style="margin-top:12px;">たとえば「営業部の主任だけを表示する」のような絞り込みが、URL の末尾に <code>?dept=営業部&amp;role=主任</code> を足すだけで実現できているサイトでは、フォームに値を入れて検索ボタンを押す代わりに、PAD で URL を組み立てて「Web ページに移動する」アクション 1 つで同じ結果が得られます。</p>
+<div class="code-block">// ポップアップを操作する代わりに：
 dept = "営業部"
 role = "主任"
-url = "staff-list.html?dept=" + dept + "&role=" + role
+url = "staff-list.html?dept=" + dept + "&amp;role=" + role
 → Web ページに移動する: %url%
-  （= staff-list.html?dept=営業部&role=主任 に直接ナビゲート）</div>
-
-              <p style="margin-top:14px;">業務サイトでよく見かける URL パラメータのパターン：</p>
-              <ul class="pattern-list">
-                <li><code>?page=2</code> ページ番号の指定</li>
-                <li><code>?search=山田</code> 検索キーワード</li>
-                <li><code>?dept=営業部&amp;role=主任</code> 複数条件（<code>&amp;</code> で連結）</li>
-                <li><code>?id=ST001</code> 特定レコードの直接参照</li>
-              </ul>
-
-              <!-- 文脈：実際にデモサイトで挙動を体感 -->
-              <h4 style="margin:24px 0 8px; color:#1f2937; font-size:17px;">🧪 実際にデモサイトで体感してみる</h4>
-              <p>このサイトの <code>staff-list.html</code> も <code>?dept=...&amp;role=...</code> 形式の URL パラメータで絞り込みできるようになっています。下のシミュレーターで部署・役職を選ぶと、組み立てられた URL がリアルタイムに表示されます。<strong>「このURLを開く」</strong>を押すと、ポップアップ検索フォームを使わずに同じ絞り込み結果のページに飛べることが体感できます。</p>
-
-              <div class="sim-row">
-                <div>
-                  <label for="simDept">部署</label>
-                  <select id="simDept">
-                    <option value="">（指定なし）</option>
-                    <option value="営業部">営業部</option>
-                    <option value="総務部">総務部</option>
-                    <option value="開発部">開発部</option>
-                    <option value="管理部">管理部</option>
-                  </select>
-                </div>
-                <div>
-                  <label for="simRole">役職</label>
-                  <select id="simRole">
-                    <option value="">（指定なし）</option>
-                    <option value="部長">部長</option>
-                    <option value="課長">課長</option>
-                    <option value="主任">主任</option>
-                    <option value="一般">一般</option>
-                  </select>
-                </div>
-              </div>
-              <div class="url-output" id="urlOut">staff-list.html</div>
-              <div style="margin-top:14px;">
-                <button class="btn btn-primary" id="btnGo">🚀 このURLを開く</button>
-                <span style="font-size:12px; color:#888; margin-left:10px;">※ 実際に staff-list.html に遷移します</span>
-              </div>
-
-              <div class="handson-callout">
+  （= staff-list.html?dept=営業部&amp;role=主任 に直接ナビゲート）</div>
+<p style="margin-top:14px;">業務サイトでよく見かける URL パラメータのパターン：</p>
+<ul class="pattern-list">
+<li><code>?page=2</code> ページ番号の指定</li>
+<li><code>?search=山田</code> 検索キーワード</li>
+<li><code>?dept=営業部&amp;role=主任</code> 複数条件（<code>&amp;</code> で連結）</li>
+<li><code>?id=ST001</code> 特定レコードの直接参照</li>
+</ul>
+<!-- 文脈：実際にデモサイトで挙動を体感 -->
+<h4 style="margin:24px 0 8px; color:#1f2937; font-size:17px;">🧪 実際にデモサイトで体感してみる</h4>
+<p>このサイトの <code>staff-list.html</code> も <code>?dept=...&amp;role=...</code> 形式の URL パラメータで絞り込みできるようになっています。下のシミュレーターで部署・役職を選ぶと、組み立てられた URL がリアルタイムに表示されます。<strong>「このURLを開く」</strong>を押すと、ポップアップ検索フォームを使わずに同じ絞り込み結果のページに飛べることが体感できます。</p>
+<div class="sim-row">
+<div>
+<label for="simDept">部署</label>
+<select id="simDept">
+<option value="">（指定なし）</option>
+<option value="営業部">営業部</option>
+<option value="総務部">総務部</option>
+<option value="開発部">開発部</option>
+<option value="管理部">管理部</option>
+</select>
+</div>
+<div>
+<label for="simRole">役職</label>
+<select id="simRole">
+<option value="">（指定なし）</option>
+<option value="部長">部長</option>
+<option value="課長">課長</option>
+<option value="主任">主任</option>
+<option value="一般">一般</option>
+</select>
+</div>
+</div>
+<div class="url-output" id="urlOut">staff-list.html</div>
+<div style="margin-top:14px;">
+<button class="btn btn-primary" id="btnGo">🚀 このURLを開く</button>
+<span style="font-size:12px; color:#888; margin-left:10px;">※ 実際に staff-list.html に遷移します</span>
+</div>
+<div class="handson-callout">
                 🛠️ <strong>ハンズオン課題④：</strong>上のシミュレーターで部署・役職を選び、生成された URL を確認。同じパターンを PAD の「Web ページに移動する」アクションに組み込んで、絞り込み結果ページに直接ナビゲートするフローを作ってみましょう。
               </div>
-            </div>
-          </div>
-
-        </section>
-
-        <section class="lesson-section" id="answer">
-          <h2 class="lesson-section-title"><span class="sec-icon">✅</span>解答例 / 完成フローテキスト</h2>
-          <div class="card"><div class="card-body" style="font-size:14px; line-height:1.9;">
-            <p>本回のハンズオン課題の完成フローテキストをダウンロードして、PAD 編集画面に貼り付けてください。</p>
-            <a href="answers/lesson-5.txt" class="answer-download" download>
-              <span class="icon">⬇️</span>
+</div>
+</div></section>
+<section class="lesson-section" id="answer">
+<h2 class="lesson-section-title"><span class="sec-icon">✅</span>解答例 / 完成フローテキスト</h2>
+<div class="card"><div class="card-body" style="font-size:14px; line-height:1.9;">
+<p>本回のハンズオン課題の完成フローテキストをダウンロードして、PAD 編集画面に貼り付けてください。</p>
+<a class="answer-download" download="" href="answers/lesson-5.txt">
+<span class="icon">⬇️</span>
               lesson-5.txt をダウンロード
             </a>
-          </div></div>
-        </section>
-
-        <section class="lesson-section" id="faq">
-          <h2 class="lesson-section-title"><span class="sec-icon">❓</span>よくある詰まりと FAQ</h2>
-          <div class="lesson-faq"><div class="q">Q1. ポップアップ内の要素がいくら待っても取れない</div><div class="a"><code>&lt;object&gt;</code>/<code>&lt;iframe&gt;</code> 埋め込みの可能性大。F12 で確認し、URL 直接ナビゲートに切り替える。</div></div>
-        </section>
-
-        <nav class="lesson-nav">
-          <a href="lesson-4.html" class="prev">第4回 ブラウザ自動化①</a>
-          <a href="lesson-6.html" class="next">第6回 制御構造</a>
-        </nav>
-
-      </main>
-      <footer class="app-footer">© 2025 PAD練習サイト</footer>
-    </div>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/env.js"></script>
-  <script src="js/supabase-client.js"></script>
-  <script src="js/auth.js"></script>
-  <script src="js/common.js?v=6"></script>
-  <script>
+</div></div>
+</section>
+<section class="lesson-section" id="faq">
+<h2 class="lesson-section-title"><span class="sec-icon">❓</span>よくある詰まりと FAQ</h2>
+<div class="lesson-faq"><div class="q">Q1. ポップアップ内の要素がいくら待っても取れない</div><div class="a"><code>&lt;object&gt;</code>/<code>&lt;iframe&gt;</code> 埋め込みの可能性大。F12 で確認し、URL 直接ナビゲートに切り替える。</div></div>
+</section>
+<nav class="lesson-nav">
+<a class="prev" href="lesson-4.html">第4回 ブラウザ自動化①</a>
+<a class="next" href="lesson-6.html">第6回 制御構造</a>
+</nav>
+</main>
+<footer class="app-footer">© 2025 PAD練習サイト</footer>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/env.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/common.js?v=6"></script>
+<script>
     bootstrapPage('lesson-5');
 
     // URL組み立てシミュレーター（旧 pad-url-navigate.html から正本移植）

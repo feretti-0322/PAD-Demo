@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>第3回 Excel自動化 | PAD練習サイト</title>
-  <link rel="stylesheet" href="css/style.css">
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>第3回 Excel自動化 | PAD練習サイト</title>
+<link href="css/style.css" rel="stylesheet"/>
+<style>
     .handson-callout { border:3px solid #dc2626; background:#fff1f2; border-radius:10px; padding:16px 20px; font-size:14px; line-height:1.9; color:#7f1d1d; margin:20px 0; box-shadow:0 4px 14px rgba(220,38,38,0.18); position:relative; }
     .handson-callout::before { content:'🎯 ハンズオン'; position:absolute; top:-12px; left:14px; background:#dc2626; color:#fff; font-size:12px; font-weight:800; padding:3px 12px; border-radius:999px; letter-spacing:0.05em; }
     .handson-callout strong { color:#b91c1c; }
@@ -22,240 +23,195 @@
   </style>
 </head>
 <body>
-  <div class="app-layout">
-    <div id="sidebarContainer"></div>
-    <div class="main-content">
-      <header class="topbar">
-        <div class="topbar-title">📊 第3回 Excel自動化</div>
-        <div class="topbar-user"><span>👤</span><span id="topbarUser">user</span></div>
-      </header>
-      <main class="page-content">
-
-        <section class="lesson-hero">
-          <div class="lesson-tag">LESSON 3 / Excel自動化</div>
-          <h1>第3回 Excel自動化 〜テンプレ運用 / マクロ / 日時 / ファイル操作〜</h1>
-          <p>
-            日々の Excel 手作業を自動化できるようになる回です。<br>
+<div class="app-layout">
+<div id="sidebarContainer"></div>
+<div class="main-content">
+<header class="topbar">
+<div class="topbar-title">📊 第3回 Excel自動化</div>
+<div class="topbar-user"><span>👤</span><span id="topbarUser">user</span></div>
+</header>
+<main class="page-content">
+<section class="lesson-hero">
+<div class="lesson-tag">LESSON 3 / Excel自動化</div>
+<h1>第3回 Excel自動化 〜テンプレ運用 / マクロ / 日時 / ファイル操作〜</h1>
+<p>
+            日々の Excel 手作業を自動化できるようになる回です。<br/>
             最終演習の<strong>「出力先フォルダの動的生成 → Excel への書き込み → マクロ呼び出し → 別名保存」</strong>までを、この回でひとまとめに習得します。
           </p>
-          <div class="lesson-meta">
-            <span>🪜 前提：第2回（変数）完了／テンプレ Excel 入手済み</span>
-            <span>🎯 ゴール：日時フォルダ作成＋テンプレ複製＋マクロ実行のミニフロー完成</span>
-          </div>
-        </section>
-
-        <nav class="lesson-toc">
-          <h3>📑 目次</h3>
-          <ol>
-            <li><a href="#goal">🎯 到達目標</a></li>
+<div class="lesson-meta">
+<span>🪜 前提：第2回（変数）完了／テンプレ Excel 入手済み</span>
+<span>🎯 ゴール：日時フォルダ作成＋テンプレ複製＋マクロ実行のミニフロー完成</span>
+</div>
+</section>
+<nav class="lesson-toc">
+<h3>📑 目次</h3>
+<ol>
             <li><a href="#prep">🪜 事前準備</a></li>
-            <li><a href="#explain">📖 解説（Excel操作／DateTime／ファイル操作）</a></li>
+            <li><a href="#sec-a">A. Excel 自動化の基本3アクション</a></li>
+            <li><a href="#sec-b">B. マクロを呼び出す（Excel マクロの実行）</a></li>
+            <li><a href="#sec-c">C. 日時整形（現在の日時 ＋ 日時をテキストに変換）</a></li>
+            <li><a href="#sec-d">D. フォルダの作成</a></li>
             <li><a href="#answer">✅ 解答例 / 完成フローテキスト</a></li>
             <li><a href="#faq">❓ よくある詰まりと FAQ</a></li>
           </ol>
-        </nav>
-
-        <section class="lesson-section" id="goal">
-          <h2 class="lesson-section-title"><span class="sec-icon">🎯</span>到達目標</h2>
-          <ul class="lesson-goal-list">
-            <li>Excel を起動し、特定シートを選択し、セルに書き込み、保存できる</li>
-            <li>既存マクロを呼び出せる（<code>Excel マクロの実行</code>）</li>
-            <li>ファイルパスを変数化して、同じフローを複数の Excel で使い回せる</li>
-            <li><code>現在の日時を取得</code> ＋ <code>日時をテキストに変換</code> で <code>yyyyMMdd_HHmmss</code> 形式の文字列を作れる</li>
-            <li><code>フォルダーの作成</code> で実行ごとに日時名サブフォルダを作成できる</li>
-          </ul>
-        </section>
-
-        <section class="lesson-section" id="prep">
-          <h2 class="lesson-section-title"><span class="sec-icon">🪜</span>事前準備</h2>
-          <div class="card">
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <ul style="margin:0 0 0 20px;">
-                <li><a href="lesson-2.html" style="color:#2c7be5;">第2回 変数を完全理解</a> が完了している</li>
-                <li>テンプレートファイル <code>スタッフ情報_テンプレート.xlsm</code> が手元にある</li>
-                <li>Excel が起動できる状態</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        <section class="lesson-section" id="explain">
-          <h2 class="lesson-section-title"><span class="sec-icon">📖</span>解説</h2>
-
-          <div class="card">
-            <div class="card-header"><h3>3-A. Excel 自動化の基本3アクション</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <p>Excel の自動化は、以下の<strong>3つのアクションを順番に並べる</strong>だけで成立します。最終演習でも、この3アクションが土台になります。</p>
-
-              <div class="img-text-row">
-                <img src="assets/lessons/lesson-3_01_excel_launch.png" alt="「Excel の起動」アクション設定画面">
-                <div class="text-col">
-                  <h4>① Excel の起動</h4>
-                  <p>テンプレ Excel（<code>スタッフ情報_テンプレート.xlsm</code>）を開きます。「ドキュメントパス」に開きたいファイルのフルパスを指定するだけで、Excel が立ち上がります。</p>
-                  <p>生成された <code>%ExcelInstance%</code> 変数を、以降のアクションで使い回します。</p>
-                </div>
-              </div>
-
-              <div class="img-text-row">
-                <img src="assets/lessons/lesson-3_02_excel_write.png" alt="「Excel ワークシートに書き込む」アクション設定画面（セル B3）">
-                <div class="text-col">
-                  <h4>② Excel ワークシートに書き込む</h4>
-                  <p>指定したセルに値を書き込みます。本研修では書き込み先を<strong>セル <code>B3</code> に統一</strong>します。</p>
-                  <p>セル指定は「列 <code>B</code>＋行 <code>3</code>」のように分けて入力します。書き込む値は固定文字列でも変数でも OK。</p>
-                </div>
-              </div>
-
-              <div class="img-text-row">
-                <img src="assets/lessons/lesson-3_03_excel_close.png" alt="「Excel を閉じる」アクション設定画面（名前を付けてドキュメントを保存）">
-                <div class="text-col">
-                  <h4>③ Excel を閉じる（保存して閉じる）</h4>
-                  <p>編集した Excel を保存して閉じます。「Excel を閉じる前」で「<strong>名前を付けてドキュメントを保存</strong>」を選び、保存先パスを指定すれば別名保存で完結します。</p>
-                  <p>マクロ有効ブックとして保存するため、拡張子は <code>.xlsm</code> を指定してください。</p>
-                </div>
-              </div>
-
-              <div class="handson-callout">
+</nav>
+<section class="lesson-section" id="prep">
+<h2 class="lesson-section-title"><span class="sec-icon">🪜</span>事前準備</h2>
+<div class="card">
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<ul style="margin:0 0 0 20px;">
+<li><a href="lesson-2.html" style="color:#2c7be5;">第2回 変数を完全理解</a> が完了している</li>
+<li>テンプレートファイル <code>スタッフ情報_テンプレート.xlsm</code> が手元にある</li>
+<li>Excel が起動できる状態</li>
+</ul>
+</div>
+</div>
+</section>
+<section class="lesson-section" id="sec-a"><div class="card">
+<div class="card-header"><h3>A. Excel 自動化の基本3アクション</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<p>Excel の自動化は、以下の<strong>3つのアクションを順番に並べる</strong>だけで成立します。最終演習でも、この3アクションが土台になります。</p>
+<div class="img-text-row">
+<img alt="「Excel の起動」アクション設定画面" src="assets/lessons/lesson-3_01_excel_launch.png"/>
+<div class="text-col">
+<h4>① Excel の起動</h4>
+<p>テンプレ Excel（<code>スタッフ情報_テンプレート.xlsm</code>）を開きます。「ドキュメントパス」に開きたいファイルのフルパスを指定するだけで、Excel が立ち上がります。</p>
+<p>生成された <code>%ExcelInstance%</code> 変数を、以降のアクションで使い回します。</p>
+</div>
+</div>
+<div class="img-text-row">
+<img alt="「Excel ワークシートに書き込む」アクション設定画面（セル B3）" src="assets/lessons/lesson-3_02_excel_write.png"/>
+<div class="text-col">
+<h4>② Excel ワークシートに書き込む</h4>
+<p>指定したセルに値を書き込みます。本研修では書き込み先を<strong>セル <code>B3</code> に統一</strong>します。</p>
+<p>セル指定は「列 <code>B</code>＋行 <code>3</code>」のように分けて入力します。書き込む値は固定文字列でも変数でも OK。</p>
+</div>
+</div>
+<div class="img-text-row">
+<img alt="「Excel を閉じる」アクション設定画面（名前を付けてドキュメントを保存）" src="assets/lessons/lesson-3_03_excel_close.png"/>
+<div class="text-col">
+<h4>③ Excel を閉じる（保存して閉じる）</h4>
+<p>編集した Excel を保存して閉じます。「Excel を閉じる前」で「<strong>名前を付けてドキュメントを保存</strong>」を選び、保存先パスを指定すれば別名保存で完結します。</p>
+<p>マクロ有効ブックとして保存するため、拡張子は <code>.xlsm</code> を指定してください。</p>
+</div>
+</div>
+<div class="handson-callout">
                 🛠️ <strong>ハンズオン課題①：</strong>テンプレ Excel（<code>スタッフ情報_テンプレート.xlsm</code>）を開き、<strong>B3 セル</strong>に「山田 太郎」と書き込んで別名保存するフローを作ってみましょう。
               </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header"><h3>3-B. マクロを呼び出す（Excel マクロの実行）</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <p>テンプレ Excel に組み込まれているマクロを PAD から呼び出せます。配布しているテンプレ <code>スタッフ情報_テンプレート.xlsm</code> には、<strong>あらかじめ「空白削除」というマクロを登録済み</strong>です。最終演習ではこのマクロを呼び出して、プロフィールシートの不要な空白行を一括除去します。</p>
-
-              <div class="img-text-row">
-                <img src="assets/lessons/lesson-3_04_run_macro.png" alt="「Excel マクロの実行」アクション設定画面（マクロ名「空白削除」を指定）">
-                <div class="text-col">
-                  <h4>Excel マクロの実行</h4>
-                  <p>「Excel インスタンス」に <code>%ExcelInstance%</code> を指定し、「マクロ」欄にマクロ名 <code>空白削除</code> を入力するだけで実行されます。</p>
-                  <div class="warning-block">
-                    <strong>⚠️ .xlsm（マクロ有効ブック）であること</strong>を必ず確認。.xlsx ではマクロが動きません。
+</div>
+</div></section>
+<section class="lesson-section" id="sec-b"><div class="card">
+<div class="card-header"><h3>B. マクロを呼び出す（Excel マクロの実行）</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<p>テンプレ Excel に組み込まれているマクロを PAD から呼び出せます。配布しているテンプレ <code>スタッフ情報_テンプレート.xlsm</code> には、<strong>あらかじめ「空白削除」というマクロを登録済み</strong>です。最終演習ではこのマクロを呼び出して、プロフィールシートの不要な空白行を一括除去します。</p>
+<div class="img-text-row">
+<img alt="「Excel マクロの実行」アクション設定画面（マクロ名「空白削除」を指定）" src="assets/lessons/lesson-3_04_run_macro.png"/>
+<div class="text-col">
+<h4>Excel マクロの実行</h4>
+<p>「Excel インスタンス」に <code>%ExcelInstance%</code> を指定し、「マクロ」欄にマクロ名 <code>空白削除</code> を入力するだけで実行されます。</p>
+<div class="warning-block">
+<strong>⚠️ .xlsm（マクロ有効ブック）であること</strong>を必ず確認。.xlsx ではマクロが動きません。
                   </div>
-                </div>
-              </div>
-
-              <div class="handson-callout">
-                🛠️ <strong>ハンズオン課題②：</strong>課題①のフローに「空白削除」マクロを実行するアクションを追加してみましょう。<br>
+</div>
+</div>
+<div class="handson-callout">
+                🛠️ <strong>ハンズオン課題②：</strong>課題①のフローに「空白削除」マクロを実行するアクションを追加してみましょう。<br/>
                 ※ <strong>「Excel を閉じる」アクションの直前</strong>に差し込んでください（閉じた後では実行できません）。
               </div>
-            </div>
-          </div>
-
-          <div class="bridge-block" style="margin:24px 0; padding:16px 20px; background:#f0f7ff; border-left:4px solid #2c7be5; border-radius:6px; font-size:14px; line-height:1.9; color:#1e3a5f;">
-            🚀 ここまでで「Excel を開いて書き込んで保存する」一連の流れができました。<br>
-            次は<strong>「実行するたびに現在日時の名前のフォルダを自動で作成し、そこに Excel を保存させる」</strong>仕組みを作っていきます。<br>
-            そのために、まずは<strong>現在日時を文字列として取り出す方法</strong>を覚えましょう。
-          </div>
-
-          <div class="card">
-            <div class="card-header"><h3>3-C. 日時整形（現在の日時 ＋ 日時をテキストに変換）</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <p>「日時フォルダを作る」「ファイル名に日時を入れる」ためには、現在日時を取得して文字列に整形する必要があります。<strong>下記の 2 つのアクションをこの順番で並べる</strong>と完成します。</p>
-
-              <div class="point-block" style="margin:10px 0 16px;">
-                <strong>📌 ポイント：1 アクション目で作った変数を、2 アクション目の入力にそのまま渡す</strong><br>
+</div>
+</div></section>
+<section class="lesson-section" id="sec-c"><div class="card">
+<div class="card-header"><h3>C. 日時整形（現在の日時 ＋ 日時をテキストに変換）</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<p>「日時フォルダを作る」「ファイル名に日時を入れる」ためには、現在日時を取得して文字列に整形する必要があります。<strong>下記の 2 つのアクションをこの順番で並べる</strong>と完成します。</p>
+<div class="point-block" style="margin:10px 0 16px;">
+<strong>📌 ポイント：1 アクション目で作った変数を、2 アクション目の入力にそのまま渡す</strong><br/>
                 ① <strong>現在の日時を取得</strong> アクションが生成する変数（例：<code>%現在の日時%</code>）を、② <strong>日時をテキストに変換</strong> の「変換するテキスト」欄に指定します。<strong>必ず 2 アクションがセットで必要</strong>です。
               </div>
-
-              <!-- ① 現在の日時を取得 -->
-              <div class="img-text-row">
-                <img src="assets/lessons/lesson-3_05a_get_current_datetime.png"
-                     alt="「現在の日時を取得」アクション設定画面（生成変数=現在の日時）">
-                <div class="text-col">
-                  <h4>① 現在の日時を取得</h4>
-                  <p>「取得」＝<strong>現在の日時</strong>、「タイムゾーン」＝<strong>システム タイム ゾーン</strong> のままで OK。</p>
-                  <p>このアクションが実行されると、現在時刻が <strong>DateTime 型の変数</strong>として生成されます。<br>生成変数名はデフォルトで <code>%CurrentDateTime%</code> ですが、ここでは分かりやすく <code>%現在の日時%</code> にリネームしておきます。</p>
-                </div>
+<!-- ① 現在の日時を取得 -->
+<div class="img-text-row">
+<img alt="「現在の日時を取得」アクション設定画面（生成変数=現在の日時）" src="assets/lessons/lesson-3_05a_get_current_datetime.png"/>
+<div class="text-col">
+<h4>① 現在の日時を取得</h4>
+<p>「取得」＝<strong>現在の日時</strong>、「タイムゾーン」＝<strong>システム タイム ゾーン</strong> のままで OK。</p>
+<p>このアクションが実行されると、現在時刻が <strong>DateTime 型の変数</strong>として生成されます。<br/>生成変数名はデフォルトで <code>%CurrentDateTime%</code> ですが、ここでは分かりやすく <code>%現在の日時%</code> にリネームしておきます。</p>
+</div>
+</div>
+<!-- ② 日時をテキストに変換 -->
+<div class="img-text-row">
+<img alt="「日時をテキストに変換」アクションでカスタム書式 yyyyMMdd_HHmmss を指定している画面" src="assets/lessons/lesson-3_05_datetime_to_text.png"/>
+<div class="text-col">
+<h4>② 日時をテキストに変換</h4>
+<p>「変換するテキスト」欄には、<strong>① で作った変数 <code>%現在の日時%</code></strong> を指定します（<code>%CurrentDateTime%</code> をそのまま打ち込むのではなく、変数選択ボタンから ① の生成変数を選ぶこと）。</p>
+<p>「使用する形式」を「<strong>カスタム</strong>」に切り替え、カスタム形式欄に <code>yyyyMMdd_HHmmss</code> を入力。</p>
+<p>結果：<code>20260518_143025</code> のような秒単位までユニークな文字列が、生成変数 <code>%現在の日時_テキスト値%</code> に格納され、フォルダ名やファイル名にそのまま使えます。</p>
+</div>
+</div>
+<div class="warning-block" style="margin-top:14px;">
+<strong>⚠️ よくあるミス：</strong> ② の「変換するテキスト」欄に <code>%CurrentDateTime%</code> という<strong>文字列をそのまま打ち込んでしまう</strong>と、変数として認識されずエラーになります。必ず <strong>{x}</strong> アイコン（変数の選択）から ① の生成変数をクリックして挿入してください。
               </div>
-
-              <!-- ② 日時をテキストに変換 -->
-              <div class="img-text-row">
-                <img src="assets/lessons/lesson-3_05_datetime_to_text.png" alt="「日時をテキストに変換」アクションでカスタム書式 yyyyMMdd_HHmmss を指定している画面">
-                <div class="text-col">
-                  <h4>② 日時をテキストに変換</h4>
-                  <p>「変換するテキスト」欄には、<strong>① で作った変数 <code>%現在の日時%</code></strong> を指定します（<code>%CurrentDateTime%</code> をそのまま打ち込むのではなく、変数選択ボタンから ① の生成変数を選ぶこと）。</p>
-                  <p>「使用する形式」を「<strong>カスタム</strong>」に切り替え、カスタム形式欄に <code>yyyyMMdd_HHmmss</code> を入力。</p>
-                  <p>結果：<code>20260518_143025</code> のような秒単位までユニークな文字列が、生成変数 <code>%現在の日時_テキスト値%</code> に格納され、フォルダ名やファイル名にそのまま使えます。</p>
-                </div>
-              </div>
-
-              <div class="warning-block" style="margin-top:14px;">
-                <strong>⚠️ よくあるミス：</strong> ② の「変換するテキスト」欄に <code>%CurrentDateTime%</code> という<strong>文字列をそのまま打ち込んでしまう</strong>と、変数として認識されずエラーになります。必ず <strong>{x}</strong> アイコン（変数の選択）から ① の生成変数をクリックして挿入してください。
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header"><h3>3-D. フォルダの作成</h3></div>
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <p>実行ごとに「日時名のフォルダ」を作成すれば、同じフローを何度回しても出力先がかぶりません。最終演習でも、指定フォルダ内に <code>yyyyMMdd_HHmmss</code> の名前のフォルダを作って、その中に個別 Excel を吐き出します。</p>
-
-              <div class="img-text-row">
-                <img src="assets/lessons/lesson-3_06_folder_create.png" alt="「フォルダーの作成」アクション設定画面">
-                <div class="text-col">
-                  <h4>フォルダーの作成</h4>
-                  <p>「フォルダーのパス」に作成先（任意の指定フォルダ）を指定し、「新しいフォルダー名」に <code>%現在の日時_テキスト値%</code> を指定するだけで、実行ごとに日時名フォルダが自動生成されます。</p>
-                  <p>生成された <code>%出力フォルダ%</code> を、以降のファイル保存先パスとして使い回します。</p>
-                </div>
-              </div>
-
-              <div class="handson-callout">
-                🛠️ <strong>ハンズオン課題③：</strong>課題②で作ったフローの先頭に「<strong>現在の日時を取得</strong> → <strong>日時をテキストに変換</strong>（<code>yyyyMMdd_HHmmss</code>） → <strong>フォルダーの作成</strong>（新しいフォルダー名＝<code>%現在の日時_テキスト値%</code>、生成変数名＝<code>%出力フォルダ%</code>）」を追加し、<br>
-                さらに「Excel を閉じる」アクションの<strong>保存先パスを下記の文字列に書き換えてみましょう</strong>（👇 ボタンを押すとそのままコピーできます）。<br>
-                <span class="copy-snippet"><code id="copyPath">%出力フォルダ%\山田太郎.xlsm</code><button type="button" onclick="(function(b){var t=document.getElementById('copyPath').innerText;navigator.clipboard.writeText(t).then(function(){var o=b.innerText;b.innerText='✓ コピー済';b.classList.add('copied');setTimeout(function(){b.innerText=o;b.classList.remove('copied');},1500);});})(this)">📋 コピー</button></span><br>
+</div>
+</div></section>
+<section class="lesson-section" id="sec-d"><div class="card">
+<div class="card-header"><h3>D. フォルダの作成</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<p>実行ごとに「日時名のフォルダ」を作成すれば、同じフローを何度回しても出力先がかぶりません。最終演習でも、指定フォルダ内に <code>yyyyMMdd_HHmmss</code> の名前のフォルダを作って、その中に個別 Excel を吐き出します。</p>
+<div class="img-text-row">
+<img alt="「フォルダーの作成」アクション設定画面" src="assets/lessons/lesson-3_06_folder_create.png"/>
+<div class="text-col">
+<h4>フォルダーの作成</h4>
+<p>「フォルダーのパス」に作成先（任意の指定フォルダ）を指定し、「新しいフォルダー名」に <code>%現在の日時_テキスト値%</code> を指定するだけで、実行ごとに日時名フォルダが自動生成されます。</p>
+<p>生成された <code>%出力フォルダ%</code> を、以降のファイル保存先パスとして使い回します。</p>
+</div>
+</div>
+<div class="handson-callout">
+                🛠️ <strong>ハンズオン課題③：</strong>課題②で作ったフローの先頭に「<strong>現在の日時を取得</strong> → <strong>日時をテキストに変換</strong>（<code>yyyyMMdd_HHmmss</code>） → <strong>フォルダーの作成</strong>（新しいフォルダー名＝<code>%現在の日時_テキスト値%</code>、生成変数名＝<code>%出力フォルダ%</code>）」を追加し、<br/>
+                さらに「Excel を閉じる」アクションの<strong>保存先パスを下記の文字列に書き換えてみましょう</strong>（👇 ボタンを押すとそのままコピーできます）。<br/>
+<span class="copy-snippet"><code id="copyPath">%出力フォルダ%\山田太郎.xlsm</code><button onclick="(function(b){var t=document.getElementById('copyPath').innerText;navigator.clipboard.writeText(t).then(function(){var o=b.innerText;b.innerText='✓ コピー済';b.classList.add('copied');setTimeout(function(){b.innerText=o;b.classList.remove('copied');},1500);});})(this)" type="button">📋 コピー</button></span><br/>
                 実行するたびに、指定フォルダ内に日時名のフォルダが新しく作られ、その中に Excel が保存されれば成功です。
               </div>
-            </div>
-          </div>
-
-        </section>
-
-        <section class="lesson-section" id="answer">
-          <h2 class="lesson-section-title"><span class="sec-icon">✅</span>解答例 / 完成フローテキスト</h2>
-          <div class="card">
-            <div class="card-body" style="font-size:14px; line-height:1.9;">
-              <p>本回のハンズオン課題の完成フローテキストをダウンロードして、PAD 編集画面に貼り付けてください。</p>
-              <a href="answers/lesson-3.txt" class="answer-download" download>
-                <span class="icon">⬇️</span>
+</div>
+</div></section>
+<section class="lesson-section" id="answer">
+<h2 class="lesson-section-title"><span class="sec-icon">✅</span>解答例 / 完成フローテキスト</h2>
+<div class="card">
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<p>本回のハンズオン課題の完成フローテキストをダウンロードして、PAD 編集画面に貼り付けてください。</p>
+<a class="answer-download" download="" href="answers/lesson-3.txt">
+<span class="icon">⬇️</span>
                 lesson-3.txt をダウンロード
               </a>
-            </div>
-          </div>
-        </section>
-
-        <section class="lesson-section" id="faq">
-          <h2 class="lesson-section-title"><span class="sec-icon">❓</span>よくある詰まりと FAQ</h2>
-          <div class="lesson-faq">
-            <div class="q">Q1. マクロを実行しても何も起こらない</div>
-            <div class="a">ファイル拡張子が <code>.xlsm</code> であること、マクロ名が完全一致していること、Excel の「マクロを有効にする」が許可されていることを確認してください。</div>
-          </div>
-          <div class="lesson-faq">
-            <div class="q">Q2. 日時フォーマットが思ったとおりにならない</div>
-            <div class="a">月は <code>MM</code>、分は <code>mm</code>（小文字）です。秒は <code>ss</code>。<code>yyyyMMdd_HHmmss</code> が標準形。</div>
-          </div>
-          <div class="lesson-faq">
-            <div class="q">Q3. 「フォルダーの作成」で『同名のフォルダーが既に存在します』エラー</div>
-            <div class="a">フォルダ名に <code>%現在の日時_テキスト値%</code>（秒単位まで含む）を使えば、実行ごとに必ず別名になるので自然に解決します。</div>
-          </div>
-        </section>
-
-        <nav class="lesson-nav">
-          <a href="lesson-2.html" class="prev">第2回 変数を完全理解</a>
-          <a href="lesson-4.html" class="next">第4回 ブラウザ自動化①</a>
-        </nav>
-
-      </main>
-      <footer class="app-footer">© 2025 PAD練習サイト</footer>
-    </div>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/env.js"></script>
-  <script src="js/supabase-client.js"></script>
-  <script src="js/auth.js"></script>
-  <script src="js/common.js?v=6"></script>
-  <script>bootstrapPage('lesson-3');</script>
+</div>
+</div>
+</section>
+<section class="lesson-section" id="faq">
+<h2 class="lesson-section-title"><span class="sec-icon">❓</span>よくある詰まりと FAQ</h2>
+<div class="lesson-faq">
+<div class="q">Q1. マクロを実行しても何も起こらない</div>
+<div class="a">ファイル拡張子が <code>.xlsm</code> であること、マクロ名が完全一致していること、Excel の「マクロを有効にする」が許可されていることを確認してください。</div>
+</div>
+<div class="lesson-faq">
+<div class="q">Q2. 日時フォーマットが思ったとおりにならない</div>
+<div class="a">月は <code>MM</code>、分は <code>mm</code>（小文字）です。秒は <code>ss</code>。<code>yyyyMMdd_HHmmss</code> が標準形。</div>
+</div>
+<div class="lesson-faq">
+<div class="q">Q3. 「フォルダーの作成」で『同名のフォルダーが既に存在します』エラー</div>
+<div class="a">フォルダ名に <code>%現在の日時_テキスト値%</code>（秒単位まで含む）を使えば、実行ごとに必ず別名になるので自然に解決します。</div>
+</div>
+</section>
+<nav class="lesson-nav">
+<a class="prev" href="lesson-2.html">第2回 変数を完全理解</a>
+<a class="next" href="lesson-4.html">第4回 ブラウザ自動化①</a>
+</nav>
+</main>
+<footer class="app-footer">© 2025 PAD練習サイト</footer>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/env.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/common.js?v=6"></script>
+<script>bootstrapPage('lesson-3');</script>
 </body>
 </html>
