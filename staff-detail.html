@@ -4,6 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>スタッフ詳細 | PAD練習サイト</title>
+  <!-- ▼ 研修のエラー処理演習用：以下のIDは詳細ページを意図的に「無効」にしている。
+       ページ読み込みの最初に alert() を出すことで、PAD（WebDriver）で開くと
+       「予期しないアラート」によりナビゲーションがエラー扱いになり、
+       ブロックエラー発生時 → エラー処理サブフローが発動する。
+       （第6回 C-4／ハンズオン課題③で使用：ST012 = 松本 理恵／開発部） -->
+  <script>
+    (function () {
+      var disabledIds = ['ST012'];
+      var id = new URLSearchParams(location.search).get('id');
+      if (disabledIds.indexOf(id) !== -1) {
+        alert('このスタッフの詳細ページは現在ご利用いただけません（研修用に無効化しています）。');
+      }
+    })();
+  </script>
   <link rel="stylesheet" href="css/style.css">
   <style>
     .detail-hero {
