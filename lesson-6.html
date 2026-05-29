@@ -117,8 +117,7 @@
             <li class="toc-sub"><a href="#sec-c-4">C-4. エラーログの記録（テキストをファイルに書き込む・追記モード）</a></li>
             <li class="toc-group">📘 D. サブフロー</li>
             <li class="toc-sub"><a href="#sec-d-1">D-1. サブフロー 〜「使い回せる処理のかたまり」〜</a></li>
-            <li class="toc-sub"><a href="#sec-d-2">D-2. インタラクティブデモ：サブフローで処理を整理しよう</a></li>
-            <li><a href="#answer">✅ 解答例 / 完成フローテキスト</a></li>
+                        <li><a href="#answer">✅ 解答例 / 完成フローテキスト</a></li>
             <li><a href="#faq">❓ よくある詰まりと FAQ</a></li>
           </ol>
 </nav>
@@ -509,7 +508,7 @@
                 <ol style="margin:10px 0 0 20px; line-height:1.9;">
 <li>課題②のフローの IF 条件を <strong>「営業部」→「開発部」</strong>に変える</li>
 <li>「Web ページに移動する」の<strong>すぐ下（同じ If の中）</strong>に、<strong>「要素取得」アクションを1つ追加</strong>する（例：「Web ページからデータを抽出する」や「Web ページ上の要素の詳細を取得する」で、氏名などスタッフ情報の要素を取得）。</li>
-<li>実行する。開発部には<strong>詳細ページが開けないスタッフ（松本 理恵さん）</strong>がいて、そのページには取得対象の要素が無いため<strong>「要素取得」がエラー</strong>になります。</li>
+<li>実行する。開発部には<strong>詳細ページが「スタッフが見つかりません」になるスタッフ（松本 理恵さん）</strong>がいて、そのページには取得対象の要素が無いため<strong>「要素取得」がエラー</strong>になります。</li>
 <li>このとき<strong>「エラー処理」サブフローが発動し、<code>エラーログ.txt</code> に1行追記されるか</strong>を確認。エラーが出ても処理が止まらず、次のスタッフに進めば成功です。</li>
 </ol>
               </div>
@@ -518,6 +517,8 @@
 <div class="lesson-group-header"><span class="lesson-group-label">GROUP D</span><h2>D. サブフロー</h2><span class="lesson-group-desc">処理を機能単位で切り出して Main＋サブフローの 4 本構成にする</span></div><section class="lesson-section" id="sec-d-1"><div class="card">
 <div class="card-header"><h3>D-1. サブフロー 〜「使い回せる処理のかたまり」〜</h3></div>
 <div class="card-body" style="font-size:14px; line-height:1.9;">
+<p><strong>サブフロー</strong>とは、いくつかのアクションを<strong>1つのまとまり（部品）にして名前を付けたもの</strong>です。料理でいう「下ごしらえ済みの常備菜」のようなイメージで、<strong>使いたいときに名前を呼ぶだけ</strong>で、その中の処理がまとめて実行されます。</p>
+<p style="margin-top:10px;">長いフローを1本にベタ書きすると、何をしているか分かりにくく、同じ処理を何度も書くハメになります。<strong>「ログイン」「スタッフ情報の取得」「エラー処理」</strong>のように<strong>役割ごとにサブフローへ切り出す</strong>と、Main フローは<strong>「サブフローを順番に呼ぶだけ」</strong>のスッキリした形になり、見通しと修正のしやすさが一気に上がります。</p>
 <table class="compare-table">
 <thead><tr><th>比較軸</th><th>サブフローなし</th><th>サブフローあり</th></tr></thead>
 <tbody>
@@ -527,40 +528,20 @@
 <tr><td class="col-label">再利用</td><td class="bad">コピー&amp;ペーストで増殖する</td><td class="good">呼び出すだけ</td></tr>
 </tbody>
 </table>
-<p style="margin-top:14px;">最終演習では<strong>4本のサブフロー構成</strong>に分割します：</p>
-<ul style="margin:8px 0 0 20px;">
-<li><strong>Main</strong>：日時計算・出力フォルダ作成・部署×役職選択ダイアログ・サブフロー呼び出し</li>
-<li><strong>ブラウザ操作</strong>：ChromeDriver 起動・ログイン</li>
-<li><strong>スタッフ詳細スクレイピング</strong>：一覧抽出（ページング）→ For each → 詳細取得 → Excel 出力</li>
-<li><strong>エラー</strong>：BLOCK エラー発生時に呼ばれる。エラーログを追記</li>
-</ul>
-<figure class="pad-image-placeholder" data-image-slot="lesson-6/04_subflow_tabs">
-<span class="placeholder-icon">🖼️</span>
-                PAD のサブフロータブ：Main／ブラウザ操作／スタッフ詳細スクレイピング／エラー の4本が並んでいる画面<br/>
-<code>data-image-slot="lesson-6/04_subflow_tabs"</code>
+<p style="margin-top:14px;">たとえば今回の演習で組んだフローも、<strong>役割ごとに複数のサブフローへ分けて</strong>整理できます。下の画面は <strong>「ログイン処理」「データ抽出」「スタッフ詳細ページ表示」「エラー処理」</strong> の4本のサブフローが並んでいる例です。</p>
+<figure class="figure-center">
+<img src="assets/lessons/lesson-6_04_subflow_tabs.png" alt="PAD のサブフロー一覧：ログイン処理／データ抽出／スタッフ詳細ページ表示／エラー処理 の4本が並んでいる画面" />
+<figcaption>PAD のサブフロー一覧：ログイン処理／データ抽出／スタッフ詳細ページ表示／エラー処理 の4本に分けた例</figcaption>
 </figure>
-</div>
-</div></section>
-<section class="lesson-section" id="sec-d-2"><div class="card">
-<div class="card-header"><h3>D-2. インタラクティブデモ：サブフローで処理を整理しよう</h3></div>
-<div class="card-body" style="font-size:14px; line-height:1.9;">
-<p>メインフローの「ベタ書き版」と「サブフロー版」を並べて、見通しの違いを体感してみましょう。</p>
-<div class="demo-controls">
-<button class="btn btn-primary" id="btnRunSub">▶ サブフロー版を実行</button>
-<button class="btn btn-outline" id="btnResetSub">🔄 リセット</button>
-</div>
-<div class="demo-grid">
-<div class="demo-panel">
-<div class="demo-label">❌ ベタ書き版（サブフローなし）</div>
-<div id="rawList"></div>
-</div>
-<div class="demo-panel">
-<div class="demo-label">✅ サブフロー版</div>
-<div id="subList"></div>
-</div>
-</div>
 <div class="handson-callout">
-                🛠️ <strong>ハンズオン課題④：</strong>「ログイン処理」「スタッフ情報スクレイピング処理」「エラー処理」をそれぞれ独立サブフローに切り出してみましょう。
+                🛠️ <strong>ハンズオン課題④：</strong>ここまでで作った今回のフローを、上の例のように<strong>役割ごとのサブフローに分けて</strong>整理してみましょう。1本にベタ書きされている処理を、次の4つのサブフローに切り出します。
+                <ul style="margin:10px 0 0 20px; line-height:1.9;">
+<li><strong>ログイン処理</strong>：Chrome 起動 → メール・パスワード入力 → ログインボタン</li>
+<li><strong>データ抽出</strong>：一覧ページのスクレイピング（ページング走破）</li>
+<li><strong>スタッフ詳細ページ表示</strong>：For each → 詳細ページに移動 → 要素取得</li>
+<li><strong>エラー処理</strong>：C-4 で作った、エラーログを追記するサブフロー</li>
+</ul>
+<span style="display:block; margin-top:8px;">Main フローは、これらの<strong>サブフローを順番に呼び出すだけ</strong>のスッキリした形になればOKです。</span>
               </div>
 </div>
 </div></section>
@@ -716,54 +697,6 @@
       btnStop.onclick = () => runSim('stop');
       btnSkip.onclick = () => runSim('skip');
       btnClear.onclick = () => { log.innerHTML = '<div style="color:#888;">モードを選んで実行してください</div>'; };
-
-      // ===== サブフローデモ =====
-      const rawItems = [
-        { text: '1. Chromeを起動する',                               dup: false },
-        { text: '2. URLを開く（index.html）',                        dup: false },
-        { text: '3. IDを入力する',                                   dup: false },
-        { text: '4. PWを入力する',                                   dup: false },
-        { text: '5. ログインボタンをクリックする',                   dup: false },
-        { text: '6. staff-list.html を開く',                         dup: false },
-        { text: '7. テーブルをスクレイピングする',                   dup: false },
-        { text: '8. staff-detail.html?id=... を開く',                dup: false },
-        { text: '9. IDを入力する　← 3の繰り返し',                   dup: true  },
-        { text: '10. PWを入力する　← 4の繰り返し',                  dup: true  },
-        { text: '11. ログインボタンをクリックする　← 5の繰り返し',  dup: true  },
-        { text: '12. …（以下ベタ書き続く）',                        dup: true  },
-      ];
-      const subItems = [
-        { text: '1. 🔧「ログイン処理」を実行',           sub: true  },
-        { text: '2. 一覧テーブルをスクレイピングする',    sub: false },
-        { text: '3. 🔧「ログイン処理」を実行（再利用）', sub: true  },
-      ];
-      const rawList = document.getElementById('rawList');
-      const subList = document.getElementById('subList');
-      const btnRunSub = document.getElementById('btnRunSub');
-      const btnResetSub = document.getElementById('btnResetSub');
-      rawItems.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'demo-item show' + (item.dup ? ' dup' : '');
-        div.textContent = item.text;
-        rawList.appendChild(div);
-      });
-      btnRunSub.onclick = async () => {
-        btnRunSub.disabled = true;
-        subList.innerHTML = '';
-        for (const item of subItems) {
-          const div = document.createElement('div');
-          div.className = 'demo-item' + (item.sub ? ' sub' : '');
-          div.textContent = item.text;
-          subList.appendChild(div);
-          requestAnimationFrame(() => div.classList.add('show'));
-          await new Promise(r => setTimeout(r, 600));
-        }
-        btnRunSub.disabled = false;
-      };
-      btnResetSub.onclick = () => {
-        subList.innerHTML = '';
-        btnRunSub.disabled = false;
-      };
     }
     if (typeof STAFF_DATA !== 'undefined') initInteractives();
     else setTimeout(initInteractives, 300);
