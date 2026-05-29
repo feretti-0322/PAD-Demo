@@ -4,22 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>スタッフ詳細 | PAD練習サイト</title>
-  <!-- ▼ 研修のエラー処理演習用：以下のIDは詳細ページを意図的に「無効」にしている。
-       読み込みをわざと完了させない（無限ループ）ことで、PAD（WebDriver）の
-       「Webページに移動する」がページ読み込み完了を待ち続けてタイムアウト→エラーになり、
-       ブロックエラー発生時 → エラー処理サブフローが発動する。
-       alert は出さないので、次のスタッフのナビゲーションはブロックされない。
-       （第6回 C-4／ハンズオン課題③で使用：ST012 = 松本 理恵／開発部） -->
-  <script>
-    (function () {
-      var disabledIds = ['ST012'];
-      var id = new URLSearchParams(location.search).get('id');
-      if (disabledIds.indexOf(id) !== -1) {
-        // ページの読み込みをわざと完了させない（PAD 側でタイムアウトさせるため）
-        while (true) { /* intentionally never finishes loading */ }
-      }
-    })();
-  </script>
   <link rel="stylesheet" href="css/style.css">
   <style>
     .detail-hero {
