@@ -107,8 +107,8 @@
             <li class="toc-sub"><a href="#sec-a-1">A-1. Loop と For each の違い</a></li>
             <li class="toc-sub"><a href="#sec-a-2">A-2. For eachとデータテーブルの組み合わせ</a></li>
             <li class="toc-group">📘 B. 条件分岐（IF / Switch）</li>
-            <li class="toc-sub"><a href="#sec-b-1">B-1. IF / ELSE IF / ELSE の基本構文</a></li>
-            <li class="toc-sub"><a href="#sec-b-2">B-2. インタラクティブデモ：スタッフ振り分けシミュレーター（IF）</a></li>
+            <li class="toc-sub"><a href="#sec-b-1">B-1. 条件分岐とは？</a></li>
+            <li class="toc-sub"><a href="#sec-b-2">B-2. IF の使いどころ</a></li>
             <li class="toc-sub"><a href="#sec-b-3">B-3. Switch の使いどころ（インタラクティブデモ付き）</a></li>
             <li class="toc-group">📘 C. エラー処理（BLOCK ERROR ＋ ログ追記）</li>
             <li class="toc-sub"><a href="#sec-c-1">C-1. エラー（例外処理）の基本</a></li>
@@ -131,7 +131,13 @@
 </ul>
 </div></div>
 </section>
-<div class="lesson-group-header"><span class="lesson-group-label">GROUP A</span><h2>A. ループ処理</h2><span class="lesson-group-desc">繰り返し処理の基本とデータテーブルとの組み合わせ</span></div><section class="lesson-section" id="sec-a-1"><div class="card">
+<div class="lesson-group-header"><span class="lesson-group-label">GROUP A</span><h2>A. ループ処理</h2><span class="lesson-group-desc">繰り返し処理の基本とデータテーブルとの組み合わせ</span></div><section class="lesson-section" id="sec-a-intro"><div class="card">
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<p><strong>ループ処理</strong>とは、<strong>同じ作業を何度も繰り返す</strong>仕組みのことです。たとえば「スタッフ100名分のプロフィールシートを1枚ずつ作る」という作業を、人が手で100回繰り返す代わりに、PAD が<strong>同じ手順を自動でぐるぐる繰り返してくれます</strong>。自動化が最も効果を発揮する場面のひとつです。</p>
+<p>PAD のループには大きく分けて2種類あり、<strong>「決めた回数だけ繰り返す」</strong>タイプと、<strong>「リストや表の中身を1件ずつ処理する」</strong>タイプがあります。まずはこの2つの違いから押さえていきましょう。</p>
+</div>
+</div></section>
+<section class="lesson-section" id="sec-a-1"><div class="card">
 <div class="card-header"><h3>A-1. Loop と For each の違い</h3></div>
 <div class="card-body" style="font-size:14px; line-height:1.9;">
 <table class="compare-table">
@@ -144,11 +150,6 @@
 <div class="point-block">
 <strong>覚え方：</strong> 数えるのが「回数」なら <strong>Loop</strong>、数えるのが「件数」なら <strong>For each</strong>。実務では <strong>For each</strong> が圧倒的に多く、「データテーブルを1件ずつ処理する」場面がほぼすべてを占めます。
               </div>
-<figure class="pad-image-placeholder" data-image-slot="lesson-6/01_foreach_block">
-<span class="placeholder-icon">🖼️</span>
-                For each ブロック内に処理を配置している画面<br/>
-<code>data-image-slot="lesson-6/01_foreach_block"</code>
-</figure>
 </div>
 </div></section>
 <section class="lesson-section" id="sec-a-2"><div class="card">
@@ -173,117 +174,143 @@
               <ol class="proc-list">
                 <li>
                   <figure class="proc-figure">
-                    <figure class="pad-image-placeholder" data-image-slot="lesson-6/01_foreach_setup">
-                      <span class="placeholder-icon">🔁</span>
-                      「For each」アクション設定画面（反復処理を行う値＝%蓄積テーブル%／保存先＝%CurrentItem%）<br>
-                      <code>data-image-slot="lesson-6/01_foreach_setup"</code>
-                    </figure>
+                    <img src="assets/lessons/lesson-6_01_foreach_setup.png" alt="「For each」アクション設定画面（反復処理を行う値＝%蓄積テーブル%／保存先＝%処理中スタッフ%）" />
+                    <figcaption>「For each」アクション設定画面（反復処理を行う値＝%蓄積テーブル%／保存先＝%処理中スタッフ%）</figcaption>
                   </figure>
                   <div class="proc-content">
                     <span class="proc-headline">For each アクションを置く</span>
                     アクションペインの「ループ」カテゴリから「<code>For each</code>」を配置し、設定画面で：
                     <ul style="margin:6px 0 0 22px;">
                       <li><strong>反復処理を行う値</strong>：第5回で作った <code>%蓄積テーブル%</code> を指定</li>
-                      <li><strong>保存先</strong>：<code>%CurrentItem%</code>（1 行ずつここに入ってきます）</li>
+                      <li><strong>保存先</strong>：<code>%処理中スタッフ%</code>（1 行ずつここに入ってきます）</li>
                     </ul>
-                    <span style="display:block; margin-top:6px; color:#374151;">これでデータテーブルの上から 1 行ずつ <code>%CurrentItem%</code> に入って、ループの中身が繰り返し実行されます。</span>
+                    <span style="display:block; margin-top:6px; color:#374151;">これでデータテーブルの上から 1 行ずつ <code>%処理中スタッフ%</code> に入って、ループの中身が繰り返し実行されます。</span>
                   </div>
                 </li>
 
                 <li>
                   <figure class="proc-figure">
-                    <figure class="pad-image-placeholder" data-image-slot="lesson-6/02_currentitem_id">
-                      <span class="placeholder-icon">🆔</span>
-                      %CurrentItem% から ID 列だけを取り出す指定（例：<code>%CurrentItem['ID']%</code> または <code>%CurrentItem[0]%</code>）<br>
-                      <code>data-image-slot="lesson-6/02_currentitem_id"</code>
-                    </figure>
+                    <img src="assets/lessons/lesson-6_03_webpage_navigate.png" alt="「Web ページに移動する」アクション設定画面（URL＝https://feretti0322.github.io/PAD-Demo/staff-detail.html?id=%処理中スタッフ['id']%）" />
+                    <figcaption>「Web ページに移動する」アクション設定画面（URL に <code>%処理中スタッフ['id']%</code> を埋め込んでいる様子）</figcaption>
                   </figure>
                   <div class="proc-content">
-                    <span class="proc-headline">現在の行から ID 列を取り出す</span>
-                    <code>%CurrentItem%</code> は 1 行ぶんのデータです。その中から <strong>「ID」列</strong>（例：<code>ST001</code>）だけを取り出すには、<strong>列名で指定</strong>します。
-                    <ul style="margin:6px 0 0 22px;">
-                      <li>列名が <code>ID</code> なら → <code>%CurrentItem['ID']%</code></li>
-                      <li>列番号で指定するなら → <code>%CurrentItem[0]%</code>（先頭列の場合）</li>
-                    </ul>
-                    <span style="display:block; margin-top:6px; color:#374151;">第5回 A-④ で取得した <code>%蓄積テーブル%</code> の列名を見て、ID 列の名前に合わせてください。</span>
-                  </div>
-                </li>
-
-                <li>
-                  <figure class="proc-figure">
-                    <figure class="pad-image-placeholder" data-image-slot="lesson-6/03_webpage_navigate">
-                      <span class="placeholder-icon">🌐</span>
-                      「Web ページに移動する」アクション設定画面（URL＝<code>https://feretti0322.github.io/PAD-Demo/staff-detail.html?id=%CurrentItem['ID']%</code>）<br>
-                      <code>data-image-slot="lesson-6/03_webpage_navigate"</code>
-                    </figure>
-                  </figure>
-                  <div class="proc-content">
-                    <span class="proc-headline">「Web ページに移動する」を For each の中に置く</span>
-                    For each のループの内側に、「<strong>Web ページに移動する</strong>」アクションを追加し、URL 欄に下記の文字列を入力します：
-                    <div class="code-block" style="margin-top:8px;">https://feretti0322.github.io/PAD-Demo/staff-detail.html?id=%CurrentItem['ID']%</div>
+                    <span class="proc-headline">「Web ページに移動する」を For each の中に置き、ID を URL に埋め込む</span>
+                    <code>%処理中スタッフ%</code> は 1 行ぶんのデータです。その中から <strong>「id」列</strong>（例：<code>ST001</code>）だけを取り出すには <strong>列名で指定</strong>します（蓄積テーブルの列名は小文字の <code>id</code> なので → <code>%処理中スタッフ['id']%</code>）。<br>
+                    For each のループの内側に「<strong>Web ページに移動する</strong>」アクションを追加し、URL 欄に下記を入力します：
+                    <div class="code-block" style="margin-top:8px;">https://feretti0322.github.io/PAD-Demo/staff-detail.html?id=%処理中スタッフ['id']%</div>
                     <span style="display:block; margin-top:6px; color:#374151;">固定部分の URL に、<strong>For each で取り出した ID 変数</strong>を埋め込むかたちです。実行すると、ループの周回ごとに <code>?id=ST001</code> → <code>?id=ST002</code> → … と URL が動的に変わって、各スタッフの詳細ページが次々と開きます。</span>
                   </div>
                 </li>
 
-                <li>
-                  <figure class="proc-figure">
-                    <figure class="pad-image-placeholder" data-image-slot="lesson-6/04_run_check">
-                      <span class="placeholder-icon">▶️</span>
-                      実行ボタンを押し、ブラウザで詳細ページが次々と切り替わっていく様子<br>
-                      <code>data-image-slot="lesson-6/04_run_check"</code>
-                    </figure>
-                  </figure>
+                <li class="no-image">
                   <div class="proc-content">
                     <span class="proc-headline">実行して確認</span>
                     フローを実行（▷）すると、4-A で立ち上げた Chrome の中で <strong>staff-detail.html?id=…</strong> が周回ごとに切り替わり、全スタッフの詳細ページを順番に開いていけば成功です。
-                    <div class="point-block" style="margin-top:10px;">
-                      <strong>💡 速すぎて中身が見えない場合：</strong> 「Web ページに移動する」の後に「<strong>待機</strong>」アクションを置いて 2 秒待つようにすると、ループの動きが目で追えるようになります。
-                    </div>
                   </div>
                 </li>
               </ol>
 </div>
 </div></section>
 <div class="lesson-group-header"><span class="lesson-group-label">GROUP B</span><h2>B. 条件分岐（IF / Switch）</h2><span class="lesson-group-desc">If / ElseIf / Else の使い方と Switch の使いどころ</span></div><section class="lesson-section" id="sec-b-1"><div class="card">
-<div class="card-header"><h3>B-1. IF / ELSE IF / ELSE の基本構文</h3></div>
+<div class="card-header"><h3>B-1. 条件分岐とは？</h3></div>
 <div class="card-body" style="font-size:14px; line-height:1.9;">
-<div class="code-block">IF 勤続年数 &gt;= 10 THEN
-    ベテランリストに追加
-ELSE IF 勤続年数 &gt;= 5 THEN
-    中堅リストに追加
-ELSE
-    新人リストに追加
-END</div>
+<p><strong>条件分岐</strong>とは、<strong>「ある条件を満たすかどうか」で、その後の処理を変える</strong>仕組みのことです。人が仕事をするときも、わたしたちは無意識に条件で動きを変えています。</p>
+<ul style="margin:8px 0 0 20px;">
+<li>「在庫が<strong>あれば</strong>出荷する、<strong>なければ</strong>取り寄せる」</li>
+<li>「勤続10年<strong>以上なら</strong>ベテラン名簿に入れる、<strong>そうでなければ</strong>入れない」</li>
+<li>「営業部の人<strong>だけ</strong>この資料を作る」</li>
+</ul>
+<p style="margin-top:14px;">この「〇〇だったら△△する」という判断を、PAD にそのまま指示できるのが条件分岐アクションです。代表的なものが <strong>IF</strong>（イフ）で、もうひとつ <strong>Switch</strong>（スイッチ）というアクションもあります。まずは一番よく使う <strong>IF</strong> から見ていきましょう。</p>
 <div class="point-block">
-                PAD では「If」「Else if」「Else」の3アクションを組み合わせて使います。演算子は <code>=</code> <code>&gt;</code> <code>&lt;</code> <code>&gt;=</code> <code>&lt;=</code> <code>&lt;&gt;</code> から選ぶだけの GUI 操作。
+                条件分岐を使うと、フローが<strong>「状況に応じて自分で進む道を選ぶ」</strong>ようになります。ループ（GROUP A）と組み合わせると、「全員をぐるぐる処理しながら、条件に合う人だけ別の作業をする」といった実務的な自動化ができるようになります。
               </div>
 </div>
 </div></section>
 <section class="lesson-section" id="sec-b-2"><div class="card">
-<div class="card-header"><h3>B-2. インタラクティブデモ：スタッフ振り分けシミュレーター（IF）</h3></div>
+<div class="card-header"><h3>B-2. IF の使いどころ</h3></div>
 <div class="card-body" style="font-size:14px; line-height:1.9;">
-<p>入社日を入力して「判定する」を押すと、勤続年数に応じてベテラン／中堅／新人のいずれかに振り分けられます。</p>
-<table class="threshold-table">
-<thead><tr><th>区分</th><th>条件</th></tr></thead>
+<p>IF でまず覚えてほしいのは、<strong>分かれ道は「2つ」しかない</strong>ということです。条件に対して、答えは <strong>「そうなのか（YES）」</strong> か <strong>「そうじゃないのか（NO）」</strong> の二択。この2つのどちらかに必ず入ります。</p>
+<div class="code-block">IF 部署 = "営業部" THEN
+    ← 「そうなのか（YES）」のときに実行する処理
+ELSE
+    ← 「そうじゃないのか（NO）」のときに実行する処理
+END</div>
+<p style="margin-top:14px;">上のコードに出てくる英単語は、それぞれ次の意味です。難しく考えず、日本語に置き換えて読んでみてください。</p>
+<table class="name-table">
+<thead>
+<tr><th>キーワード</th><th>意味</th><th>読み下し</th></tr>
+</thead>
 <tbody>
-<tr><td><span class="badge veteran" style="font-size:12px;">ベテラン</span></td><td>勤続年数が <strong>10年以上</strong></td></tr>
-<tr><td><span class="badge mid" style="font-size:12px;">中堅</span></td><td>勤続年数が <strong>5年以上10年未満</strong></td></tr>
-<tr><td><span class="badge new" style="font-size:12px;">新人</span></td><td>勤続年数が <strong>5年未満</strong></td></tr>
+<tr><td><code>IF</code></td><td>もし〜なら</td><td>「もし 部署が営業部 だったら」</td></tr>
+<tr><td><code>THEN</code></td><td>そのとき（YES の処理）</td><td>「そのとき、これをやる」</td></tr>
+<tr><td><code>ELSE</code></td><td><strong>そうでなければ</strong>（NO の処理）</td><td>「営業部じゃなかったら、こっちをやる」</td></tr>
+<tr><td><code>END</code></td><td>分岐の終わり</td><td>「ここで分岐はおしまい」</td></tr>
 </tbody>
 </table>
-<div class="sim-grid">
-<div class="sim-input">
-<label for="joinDate">入社日</label>
-<input id="joinDate" type="date" value="2015-04-01"/>
-<button class="btn btn-primary" id="btnJudge" style="margin-top:12px;">判定する</button>
-</div>
-<div class="sim-result" id="simResult">
-<div style="color:#888; font-size:13px;">入社日を選んで「判定する」を押してください</div>
-</div>
-</div>
-<div class="handson-callout">
-                🛠️ <strong>ハンズオン課題②：</strong>入社年数が10年以上のスタッフだけ Excel に記録する IF 分岐フローを作ってみましょう。
+<div class="point-block">
+<strong><code>ELSE</code> とは？</strong> 「<strong>そうでなければ</strong>」という意味で、<strong>条件を満たさなかった（NO）ときの処理</strong>を書く場所です。PAD では「If」「Else」「End」の3つのアクションを組み合わせて、この YES / NO の分かれ道を作ります。<br/>
+                なお、<strong>NO のときは何もしない</strong>のであれば <code>ELSE</code> は省略してよく、その場合は <code>IF 〜 THEN 〜 END</code> だけのシンプルな形になります（このあとのハンズオン課題②がこの形です）。
               </div>
+<p style="margin-top:14px;">条件は必ず <strong>「成り立つ / 成り立たない」の YES・NO で答えられる形</strong>にします。<code>営業部かどうか</code>・<code>10年以上かどうか</code>・<code>空っぽかどうか</code> のように、〇か×かで判定できるものを書くのがコツです。</p>
+<p style="margin-top:10px;">条件で使う<strong>演算子</strong>（<code>=</code> 等しい／<code>&lt;&gt;</code> 等しくない／<code>&gt;</code> <code>&lt;</code> <code>&gt;=</code> <code>&lt;=</code> など）は、設定画面の<strong>プルダウンリストから選びます</strong>。たとえば「営業部<strong>かどうか</strong>」を判定するなら、最初のオペランドに <code>%処理中スタッフ['部署']%</code>、演算子は <code>と等しい (=)</code>、2 番目のオペランドに <code>営業部</code> を指定します。</p>
+<div class="handson-callout">
+                🛠️ <strong>ハンズオン課題②：</strong>ハンズオン課題①で組んだフローに <strong>IF を1つ足して</strong>、<strong>営業部のスタッフだけ</strong>詳細ページに飛ぶように改造してみましょう。
+              </div>
+<ol class="proc-list">
+<li class="no-image">
+<div class="proc-content">
+<span class="proc-headline">課題①のフローを開く</span>
+                    ハンズオン課題①で作った、<strong>For each の中に「Web ページに移動する」が入っている</strong>フローをそのまま使います。いまは <strong>全スタッフ</strong>の詳細ページに飛ぶ状態です。これを「営業部だけ」に絞り込みます。
+                  </div>
+</li>
+<li>
+<figure class="proc-figure">
+<img src="assets/lessons/lesson-6_05_if_setup.png" alt="「If」アクション設定画面（最初のオペランド＝%処理中スタッフ['部署']%／演算子＝と等しい (=)／2 番目のオペランド＝営業部）と、演算子プルダウンリスト" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+<figure class="pad-image-placeholder" data-image-slot="lesson-6/05_if_setup" style="display:none;">
+<span class="placeholder-icon">🔀</span>
+                        「If」アクション設定画面（最初のオペランド＝%処理中スタッフ['部署']%／演算子プルダウン＝と等しい (=)／2 番目のオペランド＝営業部）<br/>
+<code>data-image-slot="lesson-6/05_if_setup"</code>
+</figure>
+</figure>
+<div class="proc-content">
+<span class="proc-headline">For each の中に「If」アクションを置く</span>
+                    アクションペインの「条件」カテゴリから「<code>If</code>」を、<strong>For each の内側・「Web ページに移動する」の<u>すぐ上</u></strong>にドラッグして配置します。設定画面で次のように指定します：
+                    <ul style="margin:6px 0 0 22px;">
+<li><strong>最初のオペランド</strong>：<code>%処理中スタッフ['部署']%</code></li>
+<li><strong>演算子</strong>：<code>と等しい (=)</code></li>
+<li><strong>2 番目のオペランド</strong>：<code>営業部</code></li>
+</ul>
+<div class="warning-block" style="margin-top:10px;">
+<strong>⚠️ 列名に注意：</strong> id が小文字だったように、抽出後の蓄積テーブルの列名は<strong>実物を確認</strong>してください。部署の列名が <code>部署</code> でなければ、その名前に合わせます（列番号 <code>%処理中スタッフ[2]%</code> で指定しても OK）。
+                    </div>
+</div>
+</li>
+<li>
+<figure class="proc-figure">
+<img src="assets/lessons/lesson-6_06_move_into_if.png" alt="For each の内側で、If と End の間に「Web ページに移動する」が入っているフロー画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+<figure class="pad-image-placeholder" data-image-slot="lesson-6/06_move_into_if" style="display:none;">
+<span class="placeholder-icon">🪆</span>
+                        If と End の間に「Web ページに移動する」が入れ子になっているフロー画面<br/>
+<code>data-image-slot="lesson-6/06_move_into_if"</code>
+</figure>
+</figure>
+<div class="proc-content">
+<span class="proc-headline">「Web ページに移動する」を If と End の間に入れる</span>
+                    課題①で作った「<strong>Web ページに移動する</strong>」を、<strong>「If」と「End」で挟まれた内側</strong>に移動させます。これで <strong>部署が営業部のとき（YES）だけ</strong>詳細ページに飛び、それ以外（NO）は<strong>何もせず次のスタッフへ</strong>進むようになります。
+                    <div class="code-block" style="margin-top:8px;">For each 処理中スタッフ in 蓄積テーブル
+    If %処理中スタッフ['部署']% = 営業部 then
+        Web ページに移動する（staff-detail.html?id=%処理中スタッフ['id']%）
+    End
+End</div>
+</div>
+</li>
+<li class="no-image">
+<div class="proc-content">
+<span class="proc-headline">実行して確認</span>
+                    フローを実行（▷）すると、ループは全員を回りますが、<strong>詳細ページが開くのは営業部のスタッフのときだけ</strong>になっていれば成功です。営業部以外のときは <code>If</code> の中をスキップして、そのまま次の人に進みます。
+                  </div>
+</li>
+</ol>
 </div>
 </div></section>
 <section class="lesson-section" id="sec-b-3"><div class="card">
@@ -502,27 +529,6 @@ END</div>
       };
       btnForEachReset.onclick = renderFeTable;
       renderFeTable();
-
-      // ===== IF シミュレーター =====
-      document.getElementById('btnJudge').onclick = () => {
-        const v = document.getElementById('joinDate').value;
-        const result = document.getElementById('simResult');
-        if (!v) { result.innerHTML = '<div style="color:#e63757;">入社日を選んでください</div>'; return; }
-        const join = new Date(v);
-        const now = new Date('2026-05-18');
-        let years = now.getFullYear() - join.getFullYear();
-        const m = now.getMonth() - join.getMonth();
-        if (m < 0 || (m === 0 && now.getDate() < join.getDate())) years--;
-        let badge, label;
-        if (years >= 10)     { badge = 'veteran'; label = 'ベテラン（10年以上）'; }
-        else if (years >= 5) { badge = 'mid';     label = '中堅（5年以上）'; }
-        else                 { badge = 'new';     label = '新人（5年未満）'; }
-        result.innerHTML = `
-          <div class="sim-years">${years} 年</div>
-          <div style="font-size:13px; color:#666; margin-bottom:10px;">→ 判定結果</div>
-          <span class="badge ${badge}">${label}</span>
-        `;
-      };
 
       // ===== Switch シミュレーター =====
       const CASES = ['営業部', '総務部', '開発部', '管理部'];

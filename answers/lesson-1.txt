@@ -1,1 +1,3 @@
-// lesson-1 の解答フローを後ほどここに格納
+Display.ShowMessageDialog.ShowMessage Title: $'''課題''' Message: $'''こんにちは''' Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: True ButtonPressed=> ButtonPressed
+WebAutomation.LaunchChrome.LaunchChromeWithDriver Url: $'''https://feretti0322.github.io/PAD-Demo/''' WindowState: WebAutomation.BrowserWindowState.Maximized ClearCookies: True WaitForPageToLoadTimeout: 60 Timeout: 60 PiPUserDataFolderMode: WebAutomation.PiPUserDataFolderModeEnum.AutomaticProfile TargetDesktop: $'''{\"DisplayName\":\"ローカル コンピューター\",\"Route\":{\"ServerType\":\"Local\",\"ServerAddress\":\"\"},\"DesktopType\":\"local\"}''' BrowserInstance=> Browser
+

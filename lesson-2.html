@@ -179,12 +179,39 @@
                 変数名は<strong>「日本語でも OK」</strong>です。業務系の人には日本語名のほうが直感的で誤読が減ります。
               </div>
 <div class="handson-callout">
-                🛠️ <strong>ハンズオン課題①：</strong>以下の流れで、現在の日時を取得して表示するフローを作ってみましょう。
-                <ul style="margin:8px 0 0 20px;">
-<li>「現在の日時を取得」アクションで日時を取得（生成される変数名は分かりやすく <code>現在時刻</code> に変更する）</li>
-<li>「メッセージを表示する」で <strong>「現在の日時は %現在時刻% です」</strong> と表示させる</li>
+                🛠️ <strong>ハンズオン課題①：</strong>以下の流れで、<strong>現在の日時を取得して表示するフロー</strong>を作ってみましょう。変数を「作る → 使う」の最小サイクルを体験するのが狙いです。
+              </div>
+<ol class="proc-list">
+<li>
+<figure class="proc-figure">
+<img alt="「現在の日時を取得」アクション設定画面（取得＝現在の日時／生成変数を 現在時刻 に変更）" src="assets/lessons/lesson-2_handson1_01_get_datetime.png"/>
+<figcaption>「現在の日時を取得」アクション設定画面（取得＝現在の日時／生成変数を <code>現在時刻</code> に変更）</figcaption>
+</figure>
+<div class="proc-content">
+<span class="proc-headline">「現在の日時を取得」で日時を変数に入れる</span>
+                    アクションペインの「日時」カテゴリから「<code>現在の日時を取得</code>」を配置します。実行すると、いま現在の日時が<strong>自動で変数に格納</strong>されます。
+                    <ul style="margin:6px 0 0 22px;">
+<li>生成される変数名は初期状態だと <code>CurrentDateTime</code> のような英語名です。分かりやすく <strong><code>現在時刻</code></strong> に変更しておきましょう（変数名は<strong>日本語でも OK</strong>）。</li>
 </ul>
 </div>
+</li>
+<li>
+<figure class="proc-figure">
+<img alt="「メッセージを表示する」アクション設定画面（表示するメッセージ＝現在の日時は %現在時刻% です）" src="assets/lessons/lesson-2_handson1_02_display_message.png"/>
+<figcaption>「メッセージを表示する」アクション設定画面（表示するメッセージ＝現在の日時は %現在時刻% です）</figcaption>
+</figure>
+<div class="proc-content">
+<span class="proc-headline">「メッセージを表示する」で変数の中身を出す</span>
+                    続けて「<code>メッセージを表示する</code>」アクションを置き、「表示するメッセージ」欄に <strong>「現在の日時は 〜 です」</strong> という文を入れます。途中に変数 <code>現在時刻</code> を埋め込むには、<strong>2 つのやり方</strong>があります。
+                    <ul style="margin:8px 0 0 22px;">
+<li><strong>① 変数選択アイコンから選ぶ（おすすめ）：</strong>テキスト入力欄をクリックすると、欄の右側に<strong>青い変数選択アイコン（&#123;x&#125;）</strong>が出てきます。これをクリックすると、これまでに生成した変数が<strong>一覧リスト</strong>で表示されるので、その中から <code>現在時刻</code> を選ぶだけで <code>%現在時刻%</code> が自動で挿入されます。</li>
+<li><strong>② 直接入力：</strong>変数名を覚えていれば、<code>%現在時刻%</code> とそのままキーボードで打ち込んでも OK です。</li>
+</ul>
+<div class="code-block" style="margin-top:8px;">現在の日時は %現在時刻% です</div>
+<span style="display:block; margin-top:6px; color:#374151;"><code>%現在時刻%</code> の部分が、ステップ 1 で取得した日時に<strong>置き換わって</strong>表示されます。これが「変数を使う（参照する）」ということです。</span>
+</div>
+</li>
+</ol>
 </div>
 </div></section>
 <section class="lesson-section" id="sec-a-4"><div class="card">

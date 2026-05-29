@@ -1,1 +1,9 @@
-// lesson-3 の解答フローを後ほどここに格納
+DateTime.GetCurrentDateTime.Local DateTimeFormat: DateTime.DateTimeFormat.DateAndTime CurrentDateTime=> 現在の日時
+Text.ConvertDateTimeToText.FromCustomDateTime DateTime: 現在の日時 CustomFormat: $'''yyyyMMdd_HHmmss''' Result=> 現在の日時_テキスト値
+System.GetEnvironmentVariable.GetEnvironmentVariable Name: $'''USERNAME''' Value=> USERNAME
+Folder.Create FolderPath: $'''C:\\Users\\%USERNAME%\\Desktop\\PAD研修''' FolderName: 現在の日時_テキスト値 Folder=> 出力フォルダ
+Excel.LaunchExcel.LaunchAndOpenUnderExistingProcess Path: $'''C:\\Users\\%USERNAME%\\Desktop\\PAD研修\\スタッフ情報_テンプレート.xlsm''' Visible: True ReadOnly: False UseMachineLocale: False Instance=> ExcelInstance
+Excel.WriteToExcel.WriteCell Instance: ExcelInstance Value: $'''山田　太郎''' Column: $'''B''' Row: 3
+Excel.RunMacro Instance: ExcelInstance Macro: $'''空白削除'''
+Excel.CloseExcel.CloseAndSaveAs Instance: ExcelInstance DocumentFormat: Excel.ExcelFormat.FromExtension DocumentPath: $'''%出力フォルダ%\\山田太郎.xlsm'''
+

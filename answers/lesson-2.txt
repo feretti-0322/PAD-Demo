@@ -1,1 +1,13 @@
-// lesson-2 の解答フローを後ほどここに格納
+**REGION ハンズオン課題1
+DateTime.GetCurrentDateTime.Local DateTimeFormat: DateTime.DateTimeFormat.DateAndTime CurrentDateTime=> 現在時刻
+Display.ShowMessageDialog.ShowMessage Title: $'''課題''' Message: $'''現在の時刻は%現在時刻%です。''' Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: False
+**ENDREGION
+**REGION ハンズオン課題3
+Variables.CreateNewDatatable InputTable: { ^['部署', '役職'], [$'''営業部''', $'''部長'''], [$'''開発部''', $'''課長'''], [$'''管理部''', $'''主任'''], [$'''総務部''', $'''一般'''], [$'''すべての部署''', $'''すべての役職'''] } DataTable=> 部署役職マスター
+Variables.RetrieveDataTableColumnIntoList DataTable: 部署役職マスター ColumnNameOrIndex: $'''部署''' ColumnAsList=> 部署リスト
+Display.SelectFromListDialog.SelectFromListOrInsertValue Title: $'''部署''' Message: $'''選択してください''' List: 部署リスト IsTopMost: True SelectedItem=> 選択部署
+Variables.RetrieveDataTableColumnIntoList DataTable: 部署役職マスター ColumnNameOrIndex: $'''役職''' ColumnAsList=> 役職リスト
+Display.SelectFromListDialog.SelectFromListOrInsertValue Title: $'''役職''' Message: $'''選択してください''' List: 役職リスト IsTopMost: True SelectedItem=> 選択役職
+Display.ShowMessageDialog.ShowMessage Title: $'''選択した部署と役職''' Message: $'''部署：%選択部署%
+役職：%選択役職%''' Icon: Display.Icon.None Buttons: Display.Buttons.OK DefaultButton: Display.DefaultButton.Button1 IsTopMost: True
+**ENDREGION
