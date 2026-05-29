@@ -8,17 +8,17 @@
 <link href="css/style.css?v=7" rel="stylesheet"/>
 <style>
     .handson-callout { border:3px solid #dc2626; background:#fff1f2; border-radius:10px; padding:16px 20px; font-size:14px; line-height:1.9; color:#7f1d1d; margin:20px 0; box-shadow:0 4px 14px rgba(220,38,38,0.18); position:relative; }
-    .handson-callout::before { content:'🎯 ハンズオン'; position:absolute; top:-12px; left:14px; background:#dc2626; color:#fff; font-size:12px; font-weight:800; padding:3px 12px; border-radius:999px; letter-spacing:0.05em; }
+    .handson-callout::before { content:'🎯 ハンズオン'; position:absolute; top:-12px; left:14px; background:#dc2626; color:#fff; font-size:14px; font-weight:800; padding:3px 12px; border-radius:999px; letter-spacing:0.05em; }
     .handson-callout strong { color:#b91c1c; }
     /* 中央配置（max-width 70%） */
     .figure-center { display:flex; flex-direction:column; align-items:center; margin:14px 0; }
     .figure-center img, .figure-center video { max-width:70%; height:auto; border:1px solid #d8dee9; border-radius:8px; display:block; }
-    .figure-center figcaption { font-size:12px; color:#64748b; margin-top:6px; text-align:center; }
+    .figure-center figcaption { font-size:14px; color:#64748b; margin-top:6px; text-align:center; }
     /* 画像左・文字右レイアウト */
     .step-split { display:grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap:20px; align-items:center; margin:14px 0; }
     .step-split .step-figure { margin:0; }
     .step-split .step-figure img { width:100%; height:auto; border:1px solid #d8dee9; border-radius:8px; display:block; }
-    .step-split .step-figure figcaption { font-size:12px; color:#64748b; margin-top:6px; text-align:center; }
+    .step-split .step-figure figcaption { font-size:14px; color:#64748b; margin-top:6px; text-align:center; }
     .step-split .step-text { font-size:14px; line-height:1.9; }
     @media (max-width: 860px) { .step-split { grid-template-columns: 1fr; } }
   </style>
@@ -120,17 +120,14 @@
 </div>
 </div>
 <div class="card">
-<div class="card-header"><h3>0-E. Microsoft 職場・学校アカウントでサインインする</h3></div>
+<div class="card-header"><h3>0-E. Microsoft アカウントでサインインする</h3></div>
 <div class="card-body" style="font-size:14px; line-height:1.9;">
-<p>PAD 起動後、Microsoft アカウントでのサインインが求められます。<strong>個人の Microsoft アカウントではなく、会社のメールアドレス</strong>（職場・学校アカウント）でサインインしてください。</p>
+<p>PAD 起動後、Microsoft アカウントでのサインインが求められます。画面の案内にしたがってサインインしてください。</p>
 <ol class="instruction-list">
-<li>サインイン画面で会社のメールアドレスを入力</li>
+<li>サインイン画面でメールアドレスを入力</li>
 <li>パスワードを入力してサインインを完了する</li>
 <li>初回起動時は使用許諾やテレメトリの確認画面が出ることがある（既定のままで OK）</li>
 </ol>
-<div class="point-block">
-<strong>📌 職場アカウントが手元にない場合：</strong> Windows の「設定 → アカウント → 職場または学校用アカウントの追加」から、会社のメールアドレス（name@company.com 形式）で登録してください。
-              </div>
 </div>
 </div>
 </section>
@@ -139,7 +136,7 @@
 <div class="card">
 <div class="card-body" style="font-size:14px; line-height:1.9;">
 <div class="handson-callout">
-                🛠️ <strong>ハンズオン課題①：</strong>スタートメニューから <strong>Power Automate</strong> を起動し、<strong>Microsoft 職場・学校アカウント</strong>でサインインを完了させましょう。PAD コンソール（フロー一覧画面）が表示されれば成功です。
+                🛠️ <strong>ハンズオン課題①：</strong>スタートメニューから <strong>Power Automate</strong> を起動し、<strong>Microsoft アカウント</strong>でサインインを完了させましょう。PAD コンソール（フロー一覧画面）が表示されれば成功です。
               </div>
 </div>
 </div>
@@ -149,10 +146,6 @@
 <div class="lesson-faq">
 <div class="q">Q1. スタートメニューで検索しても「Power Automate」が出てこない</div>
 <div class="a">Microsoft Store を開き「Power Automate」で検索 →「Power Automate」（Microsoft Corporation 製）の「インストール」をクリックしてください。</div>
-</div>
-<div class="lesson-faq">
-<div class="q">Q2. サインイン時に「このアカウントは使用できません」と出る</div>
-<div class="a">個人 Microsoft アカウントを使っている可能性があります。会社支給のメール（職場・学校アカウント）でサインインし直してください。</div>
 </div>
 </section>
 <nav class="lesson-nav">

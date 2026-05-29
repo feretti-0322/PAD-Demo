@@ -20,13 +20,13 @@
     .sim-row select { width: 100%; padding: 10px 12px; border: 1px solid #d0d7de; border-radius: 6px; font-size: 14px; background: #fff; }
     .url-output { background: #1e293b; color: #facc15; padding: 14px 16px; border-radius: 6px; font-family: monospace; font-size: 14px; word-break: break-all; margin-top: 14px; }
     .handson-callout { border:3px solid #dc2626; background:#fff1f2; border-radius:10px; padding:16px 20px; font-size:14px; line-height:1.9; color:#7f1d1d; margin:20px 0; box-shadow:0 4px 14px rgba(220,38,38,0.18); position:relative; }
-    .handson-callout::before { content:'🎯 ハンズオン'; position:absolute; top:-12px; left:14px; background:#dc2626; color:#fff; font-size:12px; font-weight:800; padding:3px 12px; border-radius:999px; letter-spacing:0.05em; }
+    .handson-callout::before { content:'🎯 ハンズオン'; position:absolute; top:-12px; left:14px; background:#dc2626; color:#fff; font-size:14px; font-weight:800; padding:3px 12px; border-radius:999px; letter-spacing:0.05em; }
     .handson-callout strong { color:#b91c1c; }
     /* 画像左・文字右レイアウト */
     .step-split { display:grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap:20px; align-items:flex-start; margin:14px 0; }
     .step-split .step-figure { margin:0; }
     .step-split .step-figure img { width:100%; height:auto; border:1px solid #d8dee9; border-radius:8px; display:block; }
-    .step-split .step-figure figcaption { font-size:12px; color:#64748b; margin-top:6px; text-align:center; }
+    .step-split .step-figure figcaption { font-size:14px; color:#64748b; margin-top:6px; text-align:center; }
     .step-split .step-figure .pad-image-placeholder { margin:0; }
     .step-split .step-text { font-size:16px; line-height:1.9; }
     .step-split .step-text > *:first-child { margin-top:0; }
@@ -488,11 +488,51 @@
 <div class="card-header"><h3>C-2. 解決策 〜埋め込みページの URL を特定して直接ナビゲート〜</h3></div>
 <div class="card-body" style="font-size:14px; line-height:1.9;">
 <p>ポップアップ内を操作する代わりに、<strong>その中身として読み込まれているページの URL そのもの</strong>へ PAD から直接ナビゲートします。URL さえわかれば操作の再現は完了です。</p>
-<ol class="instruction-list">
-<li><strong>F12</strong> を押して開発者ツールを開く</li>
-<li>開発者ツールを開いた状態でポップアップを開くメニューをクリック</li>
-<li><strong>Elements</strong> タブを開くと、一番下に新しい文字列（ポップアップの HTML ソース）が追加される</li>
-<li>その文字列をダブルクリックすると、読み込まれているページのフル URL が確認できる</li>
+<ol class="proc-list">
+<li>
+  <figure class="proc-figure">
+    <img alt="開発者ツール（DevTools）が開き、Elements タブが表示されている画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_c2_01_devtools_elements.png"/>
+    <figure class="pad-image-placeholder" data-image-slot="lesson-5/c2_01_devtools_elements" style="display:none;">
+      <span class="placeholder-icon">🖼️</span>
+      開発者ツール（DevTools）が開き、Elements タブが表示されている画面<br/>
+      <code>data-image-slot="lesson-5/c2_01_devtools_elements"</code>
+    </figure>
+  </figure>
+  <div class="proc-content">
+    <span class="proc-headline">開発者ツールを開いて Elements タブを表示する</span>
+    サイト上で、キーボードの <strong>F12</strong> を押すと開発者ツール（DevTools）が開きます。<br>
+    F12 が効かない場合は、<strong>サイト上で右クリック → 「検証」</strong>をクリックしても開けます。<br>
+    開いたら、上部にあるタブから <strong>Elements</strong>（要素）タブをクリックして開きます。ここに、いま表示されているページの HTML ソースが一覧表示されます。
+  </div>
+</li>
+<li>
+  <figure class="proc-figure">
+    <img alt="ポップアップを開くメニューをクリックした直後、Elements タブの一番下に新しい文字列（ポップアップの HTML ソース）が追加された画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_c2_03_new_source_added.png"/>
+    <figure class="pad-image-placeholder" data-image-slot="lesson-5/c2_03_new_source_added" style="display:none;">
+      <span class="placeholder-icon">🖼️</span>
+      ポップアップを開くメニューをクリックした直後、Elements タブの一番下に新しい文字列（ポップアップの HTML ソース）が追加された画面<br/>
+      <code>data-image-slot="lesson-5/c2_03_new_source_added"</code>
+    </figure>
+  </figure>
+  <div class="proc-content">
+    <span class="proc-headline">ポップアップを開くメニューをクリックする</span>
+    Elements タブを開いたまま、<strong>ポップアップを開くメニュー</strong>をクリックします。すると Elements タブの<strong>一番下に新しい文字列（ポップアップの HTML ソース）</strong>が追加されます。
+  </div>
+</li>
+<li>
+  <figure class="proc-figure">
+    <img alt="追加された文字列をダブルクリックすると、読み込まれているページのフル URL が表示されている画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_c2_04_double_click_url.png"/>
+    <figure class="pad-image-placeholder" data-image-slot="lesson-5/c2_04_double_click_url" style="display:none;">
+      <span class="placeholder-icon">🖼️</span>
+      追加された文字列をダブルクリックすると、読み込まれているページのフル URL が表示されている画面<br/>
+      <code>data-image-slot="lesson-5/c2_04_double_click_url"</code>
+    </figure>
+  </figure>
+  <div class="proc-content">
+    <span class="proc-headline">文字列をダブルクリックしてフル URL を確認する</span>
+    一番下に追加された<strong>文字列をダブルクリック</strong>すると、ポップアップの中身として読み込まれているページの<strong>フル URL</strong>が確認できます。この URL をコピーすれば準備完了です。
+  </div>
+</li>
 </ol>
 <div class="success-block">
                 使うアクション：<strong>「Web ページに移動する」</strong>。確認した URL をそのまま指定するだけで、ポップアップを開かずに同じ画面にジャンプできます。
@@ -545,7 +585,7 @@ url = "staff-list.html?dept=" + dept + "&amp;role=" + role
 <div class="url-output" id="urlOut">staff-list.html</div>
 <div style="margin-top:14px;">
 <button class="btn btn-primary" id="btnGo">🚀 このURLを開く</button>
-<span style="font-size:12px; color:#888; margin-left:10px;">※ 実際に staff-list.html に遷移します</span>
+<span style="font-size:14px; color:#888; margin-left:10px;">※ 実際に staff-list.html に遷移します</span>
 </div>
 <div class="handson-callout">
                 🛠️ <strong>ハンズオン課題④：</strong>上のシミュレーターで部署・役職を選び、生成された URL を確認。同じパターンを PAD の「Web ページに移動する」アクションに組み込んで、絞り込み結果ページに直接ナビゲートするフローを作ってみましょう。

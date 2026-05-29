@@ -25,7 +25,7 @@
     .demo-item.dup { background: #fef2f2; border-color: #fca5a5; color: #991b1b; }
     .demo-item.sub { background: #eff6ff; border-color: #93c5fd; color: #1d4ed8; font-weight: 700; }
     .demo-controls { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
-    .demo-time { font-size: 12px; color: #888; margin-top: 8px; }
+    .demo-time { font-size: 14px; color: #888; margin-top: 8px; }
 
     /* For each デモ */
     .fe-table { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 13px; }
@@ -60,7 +60,7 @@
     .switch-input label { display: block; font-size: 13px; color: #444; margin-bottom: 6px; }
     .switch-input select { width: 100%; padding: 10px 12px; border: 1px solid #d0d7de; border-radius: 6px; font-size: 14px; background: #fff; }
     .switch-result { background: #f9fafb; border: 2px solid #e0e6ed; border-radius: 8px; padding: 18px; margin-top: 14px; min-height: 60px; font-size: 14px; color: #333; line-height: 1.8; }
-    .switch-result .match-label { font-size: 12px; color: #888; margin-bottom: 6px; }
+    .switch-result .match-label { font-size: 14px; color: #888; margin-bottom: 6px; }
     .switch-result .match-case { font-weight: 700; color: #1a3a5c; font-size: 15px; }
     .switch-result .match-action { margin-top: 8px; background: #f0fdf4; border-left: 3px solid #00b274; padding: 8px 12px; border-radius: 0 6px 6px 0; font-size: 13px; color: #065f46; }
 
@@ -75,7 +75,7 @@
     .log-info { color: #555; }
 
     .handson-callout { border:3px solid #dc2626; background:#fff1f2; border-radius:10px; padding:16px 20px; font-size:14px; line-height:1.9; color:#7f1d1d; margin:20px 0; box-shadow:0 4px 14px rgba(220,38,38,0.18); position:relative; }
-    .handson-callout::before { content:'🎯 ハンズオン'; position:absolute; top:-12px; left:14px; background:#dc2626; color:#fff; font-size:12px; font-weight:800; padding:3px 12px; border-radius:999px; letter-spacing:0.05em; }
+    .handson-callout::before { content:'🎯 ハンズオン'; position:absolute; top:-12px; left:14px; background:#dc2626; color:#fff; font-size:14px; font-weight:800; padding:3px 12px; border-radius:999px; letter-spacing:0.05em; }
     .handson-callout strong { color:#b91c1c; }
   </style>
 </head>
@@ -230,12 +230,7 @@
 <div class="card-header"><h3>B-2. IF の使いどころ</h3></div>
 <div class="card-body" style="font-size:14px; line-height:1.9;">
 <p>IF でまず覚えてほしいのは、<strong>分かれ道は「2つ」しかない</strong>ということです。条件に対して、答えは <strong>「そうなのか（YES）」</strong> か <strong>「そうじゃないのか（NO）」</strong> の二択。この2つのどちらかに必ず入ります。</p>
-<div class="code-block">IF 部署 = "営業部" THEN
-    ← 「そうなのか（YES）」のときに実行する処理
-ELSE
-    ← 「そうじゃないのか（NO）」のときに実行する処理
-END</div>
-<p style="margin-top:14px;">上のコードに出てくる英単語は、それぞれ次の意味です。難しく考えず、日本語に置き換えて読んでみてください。</p>
+<p style="margin-top:14px;">IF を組むときには <code>IF</code> <code>THEN</code> <code>ELSE</code> <code>END</code> という英単語が出てきます。それぞれの意味は次のとおりです。難しく考えず、日本語に置き換えて読んでみてください。</p>
 <table class="name-table">
 <thead>
 <tr><th>キーワード</th><th>意味</th><th>読み下し</th></tr>
@@ -265,12 +260,7 @@ END</div>
 </li>
 <li>
 <figure class="proc-figure">
-<img src="assets/lessons/lesson-6_05_if_setup.png" alt="「If」アクション設定画面（最初のオペランド＝%処理中スタッフ['部署']%／演算子＝と等しい (=)／2 番目のオペランド＝営業部）と、演算子プルダウンリスト" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-<figure class="pad-image-placeholder" data-image-slot="lesson-6/05_if_setup" style="display:none;">
-<span class="placeholder-icon">🔀</span>
-                        「If」アクション設定画面（最初のオペランド＝%処理中スタッフ['部署']%／演算子プルダウン＝と等しい (=)／2 番目のオペランド＝営業部）<br/>
-<code>data-image-slot="lesson-6/05_if_setup"</code>
-</figure>
+<img src="assets/lessons/lesson-6_05_if_setup.png" alt="「If」アクション設定画面と演算子プルダウンリスト" />
 </figure>
 <div class="proc-content">
 <span class="proc-headline">For each の中に「If」アクションを置く</span>
@@ -287,21 +277,11 @@ END</div>
 </li>
 <li>
 <figure class="proc-figure">
-<img src="assets/lessons/lesson-6_06_move_into_if.png" alt="For each の内側で、If と End の間に「Web ページに移動する」が入っているフロー画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-<figure class="pad-image-placeholder" data-image-slot="lesson-6/06_move_into_if" style="display:none;">
-<span class="placeholder-icon">🪆</span>
-                        If と End の間に「Web ページに移動する」が入れ子になっているフロー画面<br/>
-<code>data-image-slot="lesson-6/06_move_into_if"</code>
-</figure>
+<img src="assets/lessons/lesson-6_06_move_into_if.png" alt="For each の内側で、If と End の間に「Web ページに移動する」が入っているフロー画面" />
 </figure>
 <div class="proc-content">
 <span class="proc-headline">「Web ページに移動する」を If と End の間に入れる</span>
                     課題①で作った「<strong>Web ページに移動する</strong>」を、<strong>「If」と「End」で挟まれた内側</strong>に移動させます。これで <strong>部署が営業部のとき（YES）だけ</strong>詳細ページに飛び、それ以外（NO）は<strong>何もせず次のスタッフへ</strong>進むようになります。
-                    <div class="code-block" style="margin-top:8px;">For each 処理中スタッフ in 蓄積テーブル
-    If %処理中スタッフ['部署']% = 営業部 then
-        Web ページに移動する（staff-detail.html?id=%処理中スタッフ['id']%）
-    End
-End</div>
 </div>
 </li>
 <li class="no-image">
@@ -316,8 +296,22 @@ End</div>
 <section class="lesson-section" id="sec-b-3"><div class="card">
 <div class="card-header"><h3>B-3. Switch の使いどころ（インタラクティブデモ付き）</h3></div>
 <div class="card-body" style="font-size:14px; line-height:1.9;">
-<p>比較する値が1つの変数で、取りうるパターンが複数ある場合は <strong>Switch</strong> を使うとスッキリ書けます。ただし PAD の Switch は<strong>完全一致のみ対応</strong>のため、「以上・以下」のような範囲比較は IF を使ってください。</p>
-<p>部署を選ぶと、Switch のどの CASE に一致するかがコード上でハイライトされます。</p>
+<p>IF が「YES / NO の二択」だったのに対して、<strong>Switch</strong> は <strong>1つの変数の中身を見て、いくつもの行き先に振り分ける</strong>仕組みです。「部署が営業部なら A、総務部なら B、開発部なら C…」のように、<strong>選択肢が3つ以上</strong>あるときに IF をいくつも重ねるよりスッキリ書けます。ただし PAD の Switch は<strong>完全一致のみ対応</strong>のため、「以上・以下」のような範囲比較は IF を使ってください。</p>
+<p style="margin-top:14px;">Switch は <code>Switch</code> <code>Case</code> <code>Default Case</code> という3つのアクションを組み合わせて作ります。それぞれの意味は次のとおりです。</p>
+<table class="name-table">
+<thead>
+<tr><th>アクション</th><th>意味</th><th>読み下し</th></tr>
+</thead>
+<tbody>
+<tr><td><code>Switch</code></td><td><strong>何を見て振り分けるか</strong>（対象の変数）を決める</td><td>「部署 を見て振り分けます」</td></tr>
+<tr><td><code>Case</code></td><td>「<strong>その値だったら</strong>」という<strong>行き先</strong>。値の数だけ並べる</td><td>「営業部 だったら、これをやる」</td></tr>
+<tr><td><code>Default Case</code></td><td><strong>どの Case にも当てはまらなかったとき</strong>の処理（IF の <code>ELSE</code> にあたる。省略可）</td><td>「どれでもなければ、これをやる」</td></tr>
+</tbody>
+</table>
+<div class="point-block">
+<strong>Case と Default Case の違い：</strong> <code>Case</code> は「特定の値に一致したとき」だけ実行されます。一致する <code>Case</code> がいくつあってもよく、値の種類だけ並べます。一方 <code>Default Case</code> は<strong>そのどれにも一致しなかったとき</strong>の受け皿で、IF でいう <code>ELSE</code> と同じ役割です。<strong>想定外の値が来たときの保険</strong>になるので、置いておくと安心です（不要なら省略も可）。
+              </div>
+<p style="margin-top:14px;">下のデモで、部署を選ぶと Switch のどの <code>Case</code> に一致するかがコード上でハイライトされます。実際の動きを確かめてみましょう。</p>
 <div class="switch-sim-grid">
 <div class="switch-code">
 <span class="line">SWITCH 部署</span>
@@ -400,19 +394,118 @@ End</div>
 <div class="card-header"><h3>C-4. エラーログの記録（テキストをファイルに書き込む・追記モード）</h3></div>
 <div class="card-body" style="font-size:14px; line-height:1.9;">
 <p>スキップしたスタッフの ID や発生時刻をテキストファイルに追記しておくと、後から「何件成功・何件失敗」が一目でわかります。<strong>エラー処理専用のサブフローを用意</strong>しておき、ブロックエラー発生時にそのサブフローを呼び出すのが定番です。</p>
-<ol class="instruction-list">
-<li><strong>エラーログ書き込み用のサブフロー</strong>を作成（名前は「エラー」がおすすめ）</li>
-<li><strong>ブロックエラー発生時 で「新しいルールを追加 → サブフローへ」</strong>を選択。あわせて「次の繰り返しに移動」も設定</li>
-<li>サブフロー内で <strong>現在の日時を取得 → 最後のエラーを取得 → テキストをファイルに書き込む</strong> を実行</li>
-<li>「ファイルが存在する場合」の挙動を必ず <strong>「内容を追加する」</strong> に設定（上書きにすると前のログが消える）</li>
-</ol>
-<figure class="pad-image-placeholder" data-image-slot="lesson-6/03_block_on_error_setting">
+<ol class="proc-list">
+<li>
+<figure class="proc-figure">
+<img src="assets/lessons/lesson-6_c4_00_create_txt.png" alt="エクスプローラー上で右クリック→新規作成→テキストドキュメントで「エラーログ.txt」を作成する画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+<figure class="pad-image-placeholder" data-image-slot="lesson-6/c4_00_create_txt" style="display:none;">
 <span class="placeholder-icon">🖼️</span>
-                ブロックエラー発生時の「新しいルールを追加 → サブフローへ」設定画面<br/>
-<code>data-image-slot="lesson-6/03_block_on_error_setting"</code>
+                        エクスプローラーで右クリック→新規作成→テキストドキュメントを作る画面<br/>
+<code>data-image-slot="lesson-6/c4_00_create_txt"</code>
 </figure>
+</figure>
+<div class="proc-content">
+<span class="proc-headline">書き込み先のテキストファイルを先に作っておく</span>
+                    まず、エラーを書き込む空のテキストファイルを用意します。<strong>エクスプローラー上で右クリック → 新規作成 → テキスト ドキュメント</strong>を選び、名前をわかりやすく <strong>「エラーログ」</strong>（<code>エラーログ.txt</code>）などに変えておきます。<br/>
+                    このファイルのパスを、後の「テキストをファイルに書き込む」アクションで指定します。
+                  </div>
+</li>
+<li>
+<figure class="proc-figure">
+<img src="assets/lessons/lesson-6_c4_01_create_subflow.png" alt="フローデザイナーの「サブフロー」から新しいサブフロー「エラー処理」を追加する画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+<figure class="pad-image-placeholder" data-image-slot="lesson-6/c4_01_create_subflow" style="display:none;">
+<span class="placeholder-icon">🖼️</span>
+                        「サブフロー」から新しいサブフロー「エラー処理」を追加する画面<br/>
+<code>data-image-slot="lesson-6/c4_01_create_subflow"</code>
+</figure>
+</figure>
+<div class="proc-content">
+<span class="proc-headline">エラーログ書き込み用のサブフローを作る</span>
+                    フローデザイナー上部の<strong>「サブフロー」</strong>から新しいサブフローを追加します。名前は <strong>「エラー処理」</strong>がおすすめです（後で呼び出すときに分かりやすい名前にしておきます）。
+                  </div>
+</li>
+<li>
+<figure class="proc-figure">
+<img src="assets/lessons/lesson-6_c4_03_get_datetime_error.png" alt="「現在の日時を取得」「最後のエラーを取得」アクションをサブフローに並べた画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+<figure class="pad-image-placeholder" data-image-slot="lesson-6/c4_03_get_datetime_error" style="display:none;">
+<span class="placeholder-icon">🖼️</span>
+                        「現在の日時を取得」「最後のエラーを取得」をサブフローに並べた画面<br/>
+<code>data-image-slot="lesson-6/c4_03_get_datetime_error"</code>
+</figure>
+</figure>
+<div class="proc-content">
+<span class="proc-headline">サブフロー内で「現在の日時を取得 → 最後のエラーを取得」</span>
+                    「エラー処理」サブフローの中に、次の2つのアクションを並べて、ログに使う値を変数に取っておきます。
+                    <ul style="margin:6px 0 0 22px;">
+<li><strong>現在の日時を取得</strong>（いつ失敗したか）→ 生成変数 <code style="background:#1e293b; color:#facc15; padding:2px 8px; border-radius:4px; font-weight:700;">現在時刻</code></li>
+<li><strong>最後のエラーを取得</strong>（何が起きたか）→ 生成変数 <code style="background:#1e293b; color:#facc15; padding:2px 8px; border-radius:4px; font-weight:700;">エラー詳細</code></li>
+</ul>
+</div>
+</li>
+<li>
+<figure class="proc-figure">
+<img src="assets/lessons/lesson-6_c4_04_append_mode.png" alt="「テキストをファイルに書き込む」アクションで、ファイルが存在する場合＝内容を追加する／エンコード＝UTF-8 を指定している画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+<figure class="pad-image-placeholder" data-image-slot="lesson-6/c4_04_append_mode" style="display:none;">
+<span class="placeholder-icon">🖼️</span>
+                        「ファイルが存在する場合＝内容を追加する」「エンコード＝UTF-8」を指定している画面<br/>
+<code>data-image-slot="lesson-6/c4_04_append_mode"</code>
+</figure>
+</figure>
+<div class="proc-content">
+<span class="proc-headline">「テキストをファイルに書き込む」を追記モードで設定する</span>
+                    続けて「<strong>テキストをファイルに書き込む</strong>」アクションを追加します。<strong>書き込み先のファイル</strong>には手順1で作った <code>エラーログ.txt</code> を指定し、<strong>書き込む内容</strong>には下記を入れます。
+                    <div style="margin-top:10px; border:2px solid #2c7be5; border-radius:8px; overflow:hidden;">
+<div style="background:#2c7be5; color:#fff; font-weight:700; padding:6px 12px;">📝 書き込む内容（ここをそのまま入力）</div>
+<div style="background:#1e293b; color:#facc15; font-family:'Consolas','Courier New',monospace; padding:12px 14px; word-break:break-all;">%現在時刻%_%処理中スタッフ['id']%_%エラー詳細%</div>
+</div>
+<span style="display:block; margin-top:6px; color:#374151;">「いつ・どのスタッフで・何のエラーが起きたか」が1行にまとまるので、後から原因をたどりやすくなります。</span>
+                    <div class="warning-block" style="margin-top:10px;">
+<strong>⚠️ 「内容を追加する」（追記モード）を必ず選ぶ：</strong> <strong>「ファイルが存在する場合」を必ず「内容を追加する」</strong>にします。<strong>上書き</strong>にすると前のログが毎回消えてしまうので注意。エンコードは <strong>UTF-8</strong>、改行を付けておくと1件1行で読みやすくなります。
+                    </div>
+</div>
+</li>
+<li class="no-image">
+<div class="proc-content">
+<span class="proc-headline">Main フローに戻り、For each の直前に「ブロックエラー発生時」を置く</span>
+                    ここからは <strong>Main フロー</strong>での作業です。アクションペインから「<strong>ブロックエラー発生時</strong>」を、<strong>For each の<u>すぐ上（直前）</u></strong>にドラッグして配置します。まずは空のブロックを置くだけで OK です。
+                  </div>
+</li>
+<li>
+<figure class="proc-figure">
+<img src="assets/lessons/lesson-6_c4_02_block_on_error.png" alt="ブロックエラー発生時の「新しいルールを追加 → サブフローへ」設定画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+<figure class="pad-image-placeholder" data-image-slot="lesson-6/c4_02_block_on_error" style="display:none;">
+<span class="placeholder-icon">🖼️</span>
+                        ブロックエラー発生時の「新しいルールを追加 → サブフローへ」設定画面<br/>
+<code>data-image-slot="lesson-6/c4_02_block_on_error"</code>
+</figure>
+</figure>
+<div class="proc-content">
+<span class="proc-headline">「ブロックエラー発生時」の中身を設定して、一旦保存する</span>
+                    置いた「ブロックエラー発生時」をダブルクリックして詳細を設定します。
+                    <ul style="margin:6px 0 0 22px;">
+<li><strong>新しいルールを追加 → サブフローへ</strong> を選び、先ほど作った「<strong>エラー処理</strong>」サブフローを指定</li>
+<li>あわせて <strong>「次の繰り返しに移動」</strong> も設定（エラーが出たスタッフはスキップして次の人へ進む）</li>
+</ul>
+<span style="display:block; margin-top:6px; color:#374151;">設定できたら、<strong>ここで一旦フローを保存</strong>しておきます。</span>
+</div>
+</li>
+<li>
+<figure class="proc-figure">
+<img src="assets/lessons/lesson-6_c4_05_foreach_into_block.png" alt="For each のかたまり全体を選択し、「ブロックエラー発生時」の中へドラッグして入れたフロー画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+<figure class="pad-image-placeholder" data-image-slot="lesson-6/c4_05_foreach_into_block" style="display:none;">
+<span class="placeholder-icon">🖼️</span>
+                        For each 全体を「ブロックエラー発生時」の中に入れたフロー画面<br/>
+<code>data-image-slot="lesson-6/c4_05_foreach_into_block"</code>
+</figure>
+</figure>
+<div class="proc-content">
+<span class="proc-headline">For each を「ブロックエラー発生時」の中にドラッグして入れる</span>
+                    最後に、<strong>For each のかたまり全体を選択</strong>します。先頭の行をクリックしたあと、<strong>Shift キーを押しながら最後の行をクリック</strong>すると、その間のアクションを<strong>まとめて複数選択</strong>できます。選択できたら、いま設定した<strong>「ブロックエラー発生時」の中（ブロックの内側）へドラッグして移動</strong>させます。これで「For each の処理中にエラーが出たら、エラー処理サブフローが呼ばれてログに記録 → 次のスタッフへ」という流れが完成します。
+                  </div>
+</li>
+</ol>
 <div class="handson-callout">
-                🛠️ <strong>ハンズオン課題③：</strong>「エラー」サブフローを作り、現在の日時取得 → 最後のエラーを取得 → テキストをファイルに書き込む（UTF-8・追記・改行）で <code>エラー.txt</code> に1行追記するフローを実装してみましょう。
+                🛠️ <strong>ハンズオン課題③：</strong>ハンズオン課題②までで組んだフローの IF 条件を <strong>「営業部」→「開発部」</strong>に変えて実行してみましょう。開発部には<strong>詳細ページが開けないスタッフ（松本 理恵さん）</strong>が含まれており、そのスタッフの処理でエラーが発生します。ここで<strong>「エラー処理」サブフローがちゃんと発動し、<code>エラーログ.txt</code> に1行追記されるか</strong>を確認してみましょう。エラーが出ても処理が止まらず、次のスタッフに進めば成功です。
               </div>
 </div>
 </div></section>

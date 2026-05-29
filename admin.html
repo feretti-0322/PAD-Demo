@@ -22,7 +22,7 @@
     .badge-progress {
       display: inline-flex; align-items: center; gap: 4px;
       background: #d1fae5; color: #065f46;
-      padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: 700;
+      padding: 3px 8px; border-radius: 12px; font-size: 14px; font-weight: 700;
     }
     .badge-progress button {
       background: none; border: none; color: #b91c1c; cursor: pointer;
@@ -30,7 +30,7 @@
     }
     .grant-btn {
       background: #2c7be5; color: #fff; border: none;
-      padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;
+      padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 14px;
     }
     .grant-btn:hover { background: #1a5dc0; }
 
@@ -172,7 +172,7 @@
                   ✓ 第${l.num}回
                   <button title="取り消す" onclick="revokeProgress('${u.id}', ${l.num})">×</button>
                 </span>
-              `).join('') || '<span style="color:#9ca3af; font-size:12px;">なし</span>';
+              `).join('') || '<span style="color:#9ca3af; font-size:14px;">なし</span>';
               return `
                 <tr>
                   <td>

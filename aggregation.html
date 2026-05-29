@@ -26,7 +26,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 11px;
+      font-size: 14px;
       font-weight: 700;
       flex-shrink: 0;
     }
@@ -64,15 +64,15 @@
           <div class="card-body" style="padding:16px 20px;">
             <div style="display:flex; align-items:flex-end; gap:12px; flex-wrap:wrap;">
               <div class="filter-group">
-                <label style="font-size:11px; font-weight:700; color:#888;">集計期間（From）</label>
+                <label style="font-size:14px; font-weight:700; color:#888;">集計期間（From）</label>
                 <input type="date" id="aggFrom" class="form-control">
               </div>
               <div class="filter-group">
-                <label style="font-size:11px; font-weight:700; color:#888;">集計期間（To）</label>
+                <label style="font-size:14px; font-weight:700; color:#888;">集計期間（To）</label>
                 <input type="date" id="aggTo" class="form-control">
               </div>
               <div class="filter-group">
-                <label style="font-size:11px; font-weight:700; color:#888;">業種</label>
+                <label style="font-size:14px; font-weight:700; color:#888;">業種</label>
                 <select id="aggIndustry" class="form-control">
                   <option value="">すべての業種</option>
                   <option value="製造業">製造業</option>
@@ -248,7 +248,7 @@
         indHtml += `
           <div class="rank-bar">
             <div class="rank-num rank-n" style="background:${color}; color:#fff;">${i+1}</div>
-            <div class="rank-label">${name}<br><span style="font-size:11px; color:#888; font-weight:400;">${data.cnt}件</span></div>
+            <div class="rank-label">${name}<br><span style="font-size:14px; color:#888; font-weight:400;">${data.cnt}件</span></div>
             <div class="rank-bar-bg"><div class="rank-bar-fill" style="width:${pct}%; background:${color}"></div></div>
             <div class="rank-value">${formatMoney(data.total)}</div>
           </div>`;

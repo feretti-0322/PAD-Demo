@@ -8,7 +8,7 @@
 <link href="css/style.css?v=7" rel="stylesheet"/>
 <style>
     .magic-box { background: #0d9488; border-radius: 12px; width: 120px; height: 90px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; font-weight: 700; box-shadow: 0 4px 16px rgba(13,148,136,0.3); }
-    .magic-box .box-label { font-size: 11px; background: rgba(255,255,255,0.25); border-radius: 4px; padding: 2px 8px; margin-bottom: 6px; }
+    .magic-box .box-label { font-size: 14px; background: rgba(255,255,255,0.25); border-radius: 4px; padding: 2px 8px; margin-bottom: 6px; }
     .magic-box .box-value { font-size: 14px; }
     .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
     .compare-box { border-radius: 10px; padding: 18px; }
@@ -25,44 +25,44 @@
     .name-table th { background: #1a3a5c; color: #fff; padding: 10px 14px; text-align: left; font-weight: 700; }
     .name-table td { padding: 10px 14px; border-bottom: 1px solid #e0e6ed; vertical-align: top; }
     .name-table tr:nth-child(even) td { background: #f8f9fc; }
-    .badge-good { background: #d1fae5; color: #065f46; font-size: 11px; font-weight: 700; border-radius: 4px; padding: 2px 7px; margin-right: 4px; }
-    .badge-bad  { background: #fee2e2; color: #991b1b; font-size: 11px; font-weight: 700; border-radius: 4px; padding: 2px 7px; margin-right: 4px; }
+    .badge-good { background: #d1fae5; color: #065f46; font-size: 14px; font-weight: 700; border-radius: 4px; padding: 2px 7px; margin-right: 4px; }
+    .badge-bad  { background: #fee2e2; color: #991b1b; font-size: 14px; font-weight: 700; border-radius: 4px; padding: 2px 7px; margin-right: 4px; }
     /* データテーブルビューア */
     .dt-table { width: 100%; border-collapse: collapse; font-size: 13px; }
     .dt-table th, .dt-table td { border: 1px solid #e0e6ed; padding: 8px 10px; text-align: left; }
     .dt-table th { background: #1a3a5c; color: #fff; font-weight: 600; }
-    .dt-table td.idx { background: #e2e8f0; color: #475569; font-weight: 700; text-align: center; width: 60px; border: 1px dashed #cbd5e1; border-right: 2px solid #94a3b8; font-size: 12px; }
+    .dt-table td.idx { background: #e2e8f0; color: #475569; font-weight: 700; text-align: center; width: 60px; border: 1px dashed #cbd5e1; border-right: 2px solid #94a3b8; font-size: 14px; }
     .dt-table tbody tr:hover { background: #f9fafb; }
     /* 列番号の補助ヘッダ行・補助セル（縦横で色を統一） */
-    .dt-table th.dt-aux { background: #e2e8f0; color: #475569; font-weight: 700; text-align: center; border: 1px dashed #cbd5e1; font-size: 12px; }
+    .dt-table th.dt-aux { background: #e2e8f0; color: #475569; font-weight: 700; text-align: center; border: 1px dashed #cbd5e1; font-size: 14px; }
     .dt-table th.dt-aux-head { background: #e2e8f0; border: 1px dashed #cbd5e1; border-right: 2px solid #94a3b8; }
     .dt-table tr.dt-col-index th { padding: 4px 10px; }
     .handson-callout { border:3px solid #dc2626; background:#fff1f2; border-radius:10px; padding:16px 20px; font-size:14px; line-height:1.9; color:#7f1d1d; margin:20px 0; box-shadow:0 4px 14px rgba(220,38,38,0.18); position:relative; }
-    .handson-callout::before { content:'🎯 ハンズオン'; position:absolute; top:-12px; left:14px; background:#dc2626; color:#fff; font-size:12px; font-weight:800; padding:3px 12px; border-radius:999px; letter-spacing:0.05em; }
+    .handson-callout::before { content:'🎯 ハンズオン'; position:absolute; top:-12px; left:14px; background:#dc2626; color:#fff; font-size:14px; font-weight:800; padding:3px 12px; border-radius:999px; letter-spacing:0.05em; }
     .handson-callout strong { color:#b91c1c; }
     /* 変数の型 — スカラー型3カラム配置（テキスト値／数値／日時） */
     .type-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin: 14px 0; }
     .type-grid figure { margin: 0; display: flex; flex-direction: column; align-items: center; }
     .type-grid figure img { max-width: 100%; height: auto; border: 1px solid #d8dee9; border-radius: 8px; display: block; }
-    .type-grid figure figcaption { font-size: 12px; color: #64748b; margin-top: 6px; text-align: center; }
+    .type-grid figure figcaption { font-size: 14px; color: #64748b; margin-top: 6px; text-align: center; }
     @media (max-width: 860px) { .type-grid { grid-template-columns: 1fr; } }
     /* リスト型・データテーブル型 — 左右2カラム配置（画像の高さを揃える） */
     .type-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 14px 0; align-items: start; }
     .type-pair figure { margin: 0; display: flex; flex-direction: column; align-items: center; }
     .type-pair figure img { width: 100%; height: 320px; object-fit: contain; background: #fff; border: 1px solid #d8dee9; border-radius: 8px; display: block; }
-    .type-pair figure figcaption { font-size: 12px; color: #64748b; margin-top: 6px; text-align: center; }
+    .type-pair figure figcaption { font-size: 14px; color: #64748b; margin-top: 6px; text-align: center; }
     @media (max-width: 860px) { .type-pair { grid-template-columns: 1fr; } .type-pair figure img { height: 260px; } }
     /* 「複数値の集合」型（リスト・データテーブル）の行ハイライト */
     .name-table tr.type-row-collection td { background: #fff7ed !important; border-left: 4px solid #f97316; }
     .name-table tr.type-row-collection td:first-child strong { color: #c2410c; }
-    .collection-tag { display: inline-block; margin-left: 8px; background: #f97316; color: #fff; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; vertical-align: middle; }
+    .collection-tag { display: inline-block; margin-left: 8px; background: #f97316; color: #fff; font-size: 14px; font-weight: 700; padding: 2px 8px; border-radius: 999px; vertical-align: middle; }
     /* 画像左・文字右レイアウト（手順ごとの図解） */
     .step-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: center; margin: 18px 0; }
     .step-split .step-figure { margin: 0; }
     .step-split .step-figure.pad-image-placeholder { background: #f8fafc; border: 2px dashed #94a3b8; border-radius: 10px; padding: 30px 16px; text-align: center; color: #475569; font-size: 13px; line-height: 1.7; }
     .step-split .step-figure.pad-image-placeholder .placeholder-icon { display: block; font-size: 40px; margin-bottom: 8px; }
     .step-split .step-figure img { width: 100%; height: auto; border: 1px solid #d8dee9; border-radius: 8px; display: block; }
-    .step-split .step-figure figcaption { font-size: 12px; color: #64748b; margin-top: 6px; text-align: center; }
+    .step-split .step-figure figcaption { font-size: 14px; color: #64748b; margin-top: 6px; text-align: center; }
     .step-split .step-text { font-size: 14px; line-height: 1.9; }
     .step-split .step-text .step-num { display: inline-block; background: #2c7be5; color: #fff; font-weight: 700; border-radius: 999px; width: 26px; height: 26px; line-height: 26px; text-align: center; font-size: 13px; margin-right: 8px; }
     /* 手順内に差し込むサンプルデータテーブル */
@@ -137,24 +137,25 @@
               </div>
 <figure class="figure-center" style="display:flex; flex-direction:column; align-items:center; margin:14px 0;">
 <img alt="PAD のフロー編集画面：アクションの詳細画面下に生成された変数が表示されている様子" src="assets/lessons/lesson-2_01_variables_pane.png" style="max-width:70%; height:auto; border:1px solid #d8dee9; border-radius:8px; display:block;"/>
-<figcaption style="font-size:12px; color:#64748b; margin-top:6px; text-align:center;">PAD のフロー編集画面：アクションの詳細画面下に生成された変数が表示されている様子</figcaption>
+<figcaption style="font-size:14px; color:#64748b; margin-top:6px; text-align:center;">PAD のフロー編集画面：アクションの詳細画面下に生成された変数が表示されている様子</figcaption>
 </figure>
 </div>
 </div></section>
 <section class="lesson-section" id="sec-a-2"><div class="card">
 <div class="card-header"><h3>A-2. なぜ変数を使うの？</h3></div>
 <div class="card-body" style="font-size:14px; line-height:1.9;">
+<p>「決まった値をそのまま書けばいいのでは？」と思うかもしれません。ところが<strong>同じ値を何度も使う</strong>フローや、<strong>毎回中身が変わる</strong>フローでは、変数を使わないとあっという間に作り直し・ミスの温床になります。まずは下の Before / After で違いを見てみましょう。</p>
 <div class="compare-grid">
 <div class="compare-box bad">
 <h4>😰 変数を使わないと…</h4>
-<p>担当者が変わるたびにプログラム内の「田中さん」を<strong>全部探して書き直す</strong>必要があります。書き忘れるとバグの原因に！</p>
+<p>担当者が変わるたびにフロー内の「田中さん」を<strong>全部探して書き直す</strong>必要があります。1か所でも書き忘れると、田中さん宛のはずが別の人の名前のまま…というバグの原因に！</p>
 <div class="code-block">メール送信("田中さんへ")
 レポート作成("田中さん担当")
 通知送信("田中さん確認済")</div>
 </div>
 <div class="compare-box good">
 <h4>😊 変数を使うと！</h4>
-<p>「担当者名」という箱に名前を入れておけば、<strong>箱の中身を1か所変えるだけ</strong>でプログラム全体に反映されます。</p>
+<p>「担当者名」という箱に名前を入れておけば、<strong>箱の中身を1か所変えるだけ</strong>でフロー全体に反映されます。書き換え漏れが構造的に起こりません。</p>
 <div class="code-block">担当者名 = "田中さん"
 ↓
 メール送信(%担当者名%へ)
@@ -162,6 +163,24 @@
 通知送信(%担当者名%確認済)</div>
 </div>
 </div>
+
+<h4 style="margin:22px 0 10px; color:#1a3a5c;">変数を使うと、こんな「うれしいこと」が起きます</h4>
+<div class="point-block" style="margin-top:0;">
+<strong>① 1か所変えれば全部変わる（修正がラク・ミスが減る）</strong><br/>
+                上の例のとおり、何十か所に散らばった値でも、変数の中身を1回書き換えるだけで全部に反映されます。「直し忘れ」という一番多いミスがなくなります。
+              </div>
+<div class="point-block" style="margin-top:10px;">
+<strong>② 同じフローを「使い回せる」</strong><br/>
+                担当者名・スタッフ名・部署などを変数にしておけば、<strong>1本のフローを全員ぶんに使い回せます</strong>。スタッフ700名のプロフィールシートを作るとき、名前を直書きしていたら700本フローが必要ですが、変数なら<strong>1本</strong>で済みます。
+              </div>
+<div class="point-block" style="margin-top:10px;">
+<strong>③ 「実行のたびに変わる値」を受け止められる</strong><br/>
+                現在日時・ユーザーが選んだ部署・Web から取ってきたスタッフ情報など、<strong>動かすまで中身が決まらない値</strong>は、そもそも直書きできません。こうした値は必ず変数に入れて扱います。次の A-④ で出てくる「ユーザーに選ばせる → 選ばれた値を変数に入れる」がまさにこれです。
+              </div>
+
+<div class="bridge-block" style="margin-top:16px; font-size:14px;">
+<strong>🎯 最終演習とのつながり：</strong> 第7回で組む最終フローは、<strong>選んだ部署・役職</strong>、<strong>取得した現在日時</strong>、<strong>スクレイピングしたスタッフ一覧</strong>を、すべて変数に入れて処理していきます。つまり<strong>変数を制することが、最終演習を完走する土台</strong>になります。この回でしっかり腹落ちさせておきましょう。
+              </div>
 </div>
 </div></section>
 <section class="lesson-section" id="sec-a-3"><div class="card">
@@ -245,10 +264,10 @@
 <figcaption>日時（DateTime）— 日付＋時刻が格納された変数</figcaption>
 </figure>
 </div>
-<p style="font-size:12px; color:#64748b; margin-top:6px;">
+<p style="font-size:14px; color:#64748b; margin-top:6px;">
                 ※ <strong>リスト</strong>型と<strong>データテーブル</strong>型（複数値の集合）は、次の <strong>2-B-①</strong> セクションで詳しく扱います。
               </p>
-<p style="font-size:12px; color:#64748b; margin-top:10px;">
+<p style="font-size:14px; color:#64748b; margin-top:10px;">
                 📚 公式リファレンス：<a href="https://learn.microsoft.com/ja-jp/power-automate/desktop-flows/variable-data-types" rel="noopener" style="color:#2c7be5;" target="_blank">Power Automate Desktop の変数データ型一覧（Microsoft Learn）</a>
 </p>
 </div>
@@ -312,7 +331,7 @@
 </thead>
 <tbody id="dtBody"></tbody>
 </table>
-<p style="font-size:12px; color:#64748b; margin-top:4px;">※ 一番左の数字列・一番上の数字行は「何行目／何列目か」を見るための補助表示です（DataTable 本体には含まれません）。実際のデータは <strong>ID 列〜入社日 列</strong> の範囲です。</p>
+<p style="font-size:14px; color:#64748b; margin-top:4px;">※ 一番左の数字列・一番上の数字行は「何行目／何列目か」を見るための補助表示です（DataTable 本体には含まれません）。実際のデータは <strong>ID 列〜入社日 列</strong> の範囲です。</p>
 <div class="handson-callout">
                 🛠️ <strong>ハンズオン課題②：</strong>上のビューアで「3行目の部署」のセルをクリックして、PAD での書き方を確認してみましょう。
               </div>

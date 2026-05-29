@@ -38,7 +38,7 @@
       opacity: 0.85;
     }
     .hero-info .staff-id {
-      font-size: 12px;
+      font-size: 14px;
       opacity: 0.65;
       margin-top: 4px;
       font-family: monospace;
@@ -63,7 +63,7 @@
     }
     .detail-item:last-child { border-bottom: none; }
     .detail-label {
-      font-size: 11px;
+      font-size: 14px;
       font-weight: 700;
       color: #888;
       text-transform: uppercase;
@@ -140,7 +140,10 @@
 
     // URLパラメータからIDを取得
     const urlId = new URLSearchParams(location.search).get('id');
-    const staff = STAFF_DATA.find(s => s.id === urlId);
+    // ▼ 研修のエラー処理演習用：以下のIDは詳細ページを意図的に無効化している
+    //   （第6回 C-4／ハンズオン課題③で、エラー処理サブフローの発動を体験するため）
+    const DISABLED_IDS = ['ST012']; // 松本 理恵（開発部）
+    const staff = DISABLED_IDS.includes(urlId) ? null : STAFF_DATA.find(s => s.id === urlId);
 
     const deptBadge = { '営業部': 'badge-info', '開発部': 'badge-success', '管理部': 'badge-warning', '総務部': 'badge-secondary' };
     const roleBadge = { '部長': 'badge-danger', '課長': 'badge-info', '主任': 'badge-success', '一般': 'badge-secondary' };

@@ -159,7 +159,7 @@ function renderSidebar(activePage, opts) {
       <div class="sidebar-footer">
         ログイン中: <strong>${userName}</strong>${isAdminFlag ? ' <span style="color:#ffd700;">👑</span>' : ''}
         <br>
-        <a href="javascript:void(0)" style="color: rgba(255,255,255,0.5); font-size:11px;" onclick="window.auth.signOut()">ログアウト</a>
+        <a href="javascript:void(0)" style="color: rgba(255,255,255,0.5); font-size:14px;" onclick="window.auth.signOut()">ログアウト</a>
       </div>
     </aside>
   `;
