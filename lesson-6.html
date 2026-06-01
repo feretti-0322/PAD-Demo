@@ -110,13 +110,14 @@
             <li class="toc-sub"><a href="#sec-b-1">B-1. 条件分岐とは？</a></li>
             <li class="toc-sub"><a href="#sec-b-2">B-2. IF の使いどころ</a></li>
             <li class="toc-sub"><a href="#sec-b-3">B-3. Switch の使いどころ（インタラクティブデモ付き）</a></li>
-            <li class="toc-group">📘 C. エラー処理（BLOCK ERROR ＋ ログ追記）</li>
-            <li class="toc-sub"><a href="#sec-c-1">C-1. エラー（例外処理）の基本</a></li>
-            <li class="toc-sub"><a href="#sec-c-2">C-2. 「全体中断 vs 個別スキップ」の使い分け（最重要）</a></li>
-            <li class="toc-sub"><a href="#sec-c-3">C-3. インタラクティブデモ：エラー動作シミュレーター</a></li>
-            <li class="toc-sub"><a href="#sec-c-4">C-4. エラーログの記録（テキストをファイルに書き込む・追記モード）</a></li>
-            <li class="toc-group">📘 D. サブフロー</li>
-            <li class="toc-sub"><a href="#sec-d-1">D-1. サブフロー 〜「使い回せる処理のかたまり」〜</a></li>
+            <li class="toc-group">📘 C. サブフロー</li>
+            <li class="toc-sub"><a href="#sec-c-1">C-1. サブフロー 〜「使い回せる処理のかたまり」〜</a></li>
+            <li class="toc-sub"><a href="#sec-c-2">C-2. サブフローの作り方と呼び出し方</a></li>
+            <li class="toc-group">📘 D. エラー処理（BLOCK ERROR ＋ ログ追記）</li>
+            <li class="toc-sub"><a href="#sec-d-1">D-1. エラー（例外処理）の基本</a></li>
+            <li class="toc-sub"><a href="#sec-d-2">D-2. 「全体中断 vs 個別スキップ」の使い分け（最重要）</a></li>
+            <li class="toc-sub"><a href="#sec-d-3">D-3. インタラクティブデモ：エラー動作シミュレーター</a></li>
+            <li class="toc-sub"><a href="#sec-d-4">D-4. エラーログの記録（テキストをファイルに書き込む・追記モード）</a></li>
                         <li><a href="#answer">✅ 解答例 / 完成フローテキスト</a></li>
             <li><a href="#faq">❓ よくある詰まりと FAQ</a></li>
           </ol>
@@ -343,8 +344,90 @@
 </div>
 </div>
 </div></section>
-<div class="lesson-group-header"><span class="lesson-group-label">GROUP C</span><h2>C. エラー処理（BLOCK ERROR ＋ ログ追記）</h2><span class="lesson-group-desc">例外をどう扱うか、個別スキップ vs 全体中断、ログ書き出し</span></div><section class="lesson-section" id="sec-c-1"><div class="card">
-<div class="card-header"><h3>C-1. エラー（例外処理）の基本</h3></div>
+<div class="lesson-group-header"><span class="lesson-group-label">GROUP C</span><h2>C. サブフロー</h2><span class="lesson-group-desc">処理を機能単位で切り出して Main＋サブフローの構成にする</span></div><section class="lesson-section" id="sec-c-1"><div class="card">
+<div class="card-header"><h3>C-1. サブフロー 〜「使い回せる処理のかたまり」〜</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<p><strong>サブフロー</strong>とは、いくつかのアクションを<strong>1つのまとまり（部品）にして名前を付けたもの</strong>です。料理でいう「下ごしらえ済みの常備菜」のようなイメージで、<strong>使いたいときに名前を呼ぶだけ</strong>で、その中の処理がまとめて実行されます。</p>
+<p style="margin-top:10px;">長いフローを1本にベタ書きすると、何をしているか分かりにくく、同じ処理を何度も書くハメになります。<strong>「ログイン」「スタッフ情報の取得」</strong>のように<strong>役割ごとにサブフローへ切り出す</strong>と、Main フローは<strong>「サブフローを順番に呼ぶだけ」</strong>のスッキリした形になり、見通しと修正のしやすさが一気に上がります。</p>
+<table class="compare-table">
+<thead><tr><th>比較軸</th><th>サブフローなし</th><th>サブフローあり</th></tr></thead>
+<tbody>
+<tr><td class="col-label">メインフローの行数</td><td class="bad">長くなる</td><td class="good">コンパクトに収まる</td></tr>
+<tr><td class="col-label">処理の見通し</td><td class="bad">何をしているか分かりにくい</td><td class="good">「ログイン → 取得 → 出力」と一目でわかる</td></tr>
+<tr><td class="col-label">修正コスト</td><td class="bad">ログイン処理を3か所直す必要がある</td><td class="good">サブフロー1か所を直すだけ</td></tr>
+<tr><td class="col-label">再利用</td><td class="bad">コピー&amp;ペーストで増殖する</td><td class="good">呼び出すだけ</td></tr>
+</tbody>
+</table>
+<p style="margin-top:14px;">たとえば今回の演習で組んだフローも、<strong>役割ごとに複数のサブフローへ分けて</strong>整理できます。下の画面は <strong>「ログイン処理」「データ抽出」「スタッフ詳細ページ表示」</strong> などのサブフローに分けた例です。</p>
+<figure class="figure-center">
+<img src="assets/lessons/lesson-6_04_subflow_tabs.png" alt="PAD のサブフロー一覧：ログイン処理／データ抽出／スタッフ詳細ページ表示／エラー処理 の4本が並んでいる画面" />
+<figcaption>PAD のサブフロー一覧：ログイン処理／データ抽出／スタッフ詳細ページ表示 などに分けた例</figcaption>
+</figure>
+<div class="handson-callout">
+                🛠️ <strong>ハンズオン課題④：</strong>ここまでで作った今回のフローを、上の例のように<strong>役割ごとのサブフローに分けて</strong>整理してみましょう。1本にベタ書きされている処理を、次の3つのサブフローに切り出します。
+                <ul style="margin:10px 0 0 20px; line-height:1.9;">
+<li><strong>ログイン処理</strong>：Chrome 起動 → メール・パスワード入力 → ログインボタン</li>
+<li><strong>データ抽出</strong>：一覧ページのスクレイピング（ページング走破）</li>
+<li><strong>スタッフ詳細ページ表示</strong>：For each → 詳細ページに移動 → 要素取得</li>
+</ul>
+<span style="display:block; margin-top:8px;">Main フローは、これらの<strong>サブフローを順番に呼び出すだけ</strong>のスッキリした形になればOKです。</span>
+              </div>
+</div>
+</div></section>
+<section class="lesson-section" id="sec-c-2"><div class="card">
+<div class="card-header"><h3>C-2. サブフローの作り方と呼び出し方</h3></div>
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<p>サブフローは「<strong>① 作る</strong> → <strong>② 中に処理を入れる</strong> → <strong>③ Main から呼び出す</strong>」の3ステップで使います。</p>
+<ol class="proc-list">
+<li>
+<figure class="proc-figure">
+<img src="assets/lessons/lesson-6_c2_01_create_subflow.png" alt="フローデザイナー上部の「サブフロー」から新しいサブフローを追加し、名前を付ける画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+<figure class="pad-image-placeholder" data-image-slot="lesson-6/c2_01_create_subflow" style="display:none;">
+<span class="placeholder-icon">🖼️</span>
+                        「サブフロー」から新しいサブフローを追加し、名前を付ける画面<br/>
+<code>data-image-slot="lesson-6/c2_01_create_subflow"</code>
+</figure>
+</figure>
+<div class="proc-content">
+<span class="proc-headline">サブフローを新しく作る</span>
+                    フローデザイナー上部の<strong>「サブフロー」→「サブフロー」</strong>をクリックし、新しいサブフローを追加します。<strong>役割が分かる名前</strong>（例：<code>ログイン処理</code>）を付けます。すると、Main とは別の<strong>専用タブ</strong>が1つ増えます。
+                  </div>
+</li>
+<li>
+<figure class="proc-figure">
+<img src="assets/lessons/lesson-6_c2_02_build_subflow.png" alt="作ったサブフローのタブを開き、その中にアクションを並べている画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+<figure class="pad-image-placeholder" data-image-slot="lesson-6/c2_02_build_subflow" style="display:none;">
+<span class="placeholder-icon">🖼️</span>
+                        サブフローのタブを開き、その中にアクションを並べている画面<br/>
+<code>data-image-slot="lesson-6/c2_02_build_subflow"</code>
+</figure>
+</figure>
+<div class="proc-content">
+<span class="proc-headline">サブフローの中に処理を入れる</span>
+                    追加したサブフローの<strong>タブを開き</strong>、その中に必要なアクションを並べます（例：「ログイン処理」なら Chrome 起動 → メール入力 → パスワード入力 → ログインボタン）。<br/>
+                    すでに Main フローにベタ書きしてある場合は、<strong>移したいアクションを Shift キーを押しながらクリック</strong>すると<strong>まとめて選択</strong>できます。あとは、<strong>コピー＆ペースト</strong>でサブフローに貼り付けてもいいですし、<strong>マウスでドラッグしてそのままサブフローの中へ移動</strong>させても OK です。
+                  </div>
+</li>
+<li>
+<figure class="proc-figure">
+<img src="assets/lessons/lesson-6_c2_03_call_subflow.png" alt="Main フローで「サブフローの実行」アクションを置き、呼び出すサブフローを指定している画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+<figure class="pad-image-placeholder" data-image-slot="lesson-6/c2_03_call_subflow" style="display:none;">
+<span class="placeholder-icon">🖼️</span>
+                        Main で「サブフローの実行」アクションを置き、呼び出すサブフローを指定している画面<br/>
+<code>data-image-slot="lesson-6/c2_03_call_subflow"</code>
+</figure>
+</figure>
+<div class="proc-content">
+<span class="proc-headline">Main から呼び出す</span>
+                    Main フローに戻り、アクションペインの「<strong>フロー コントロール</strong>」から「<strong>サブフローの実行</strong>」を置きます。設定画面で<strong>呼び出したいサブフロー</strong>（例：<code>ログイン処理</code>）を選ぶだけ。実行すると、その場でサブフローの中身がまとめて動きます。<br/>
+                    同じサブフローは<strong>何回でも呼び出せる</strong>ので、繰り返し使う処理ほどサブフロー化が効きます。
+                  </div>
+</li>
+</ol>
+</div>
+</div></section>
+<div class="lesson-group-header"><span class="lesson-group-label">GROUP D</span><h2>D. エラー処理（BLOCK ERROR ＋ ログ追記）</h2><span class="lesson-group-desc">例外をどう扱うか、個別スキップ vs 全体中断、ログ書き出し</span></div><section class="lesson-section" id="sec-d-1"><div class="card">
+<div class="card-header"><h3>D-1. エラー（例外処理）の基本</h3></div>
 <div class="card-body" style="font-size:14px; line-height:1.9;">
 <p>PAD では、エラーが発生したときの<strong>エラー発生時の挙動</strong>をあらかじめ設定しておけます。設定方法は2つ：</p>
 <ul style="margin:0 0 0 20px;">
@@ -360,8 +443,8 @@
 </ul>
 </div>
 </div></section>
-<section class="lesson-section" id="sec-c-2"><div class="card">
-<div class="card-header"><h3>C-2. 「全体中断 vs 個別スキップ」の使い分け（最重要）</h3></div>
+<section class="lesson-section" id="sec-d-2"><div class="card">
+<div class="card-header"><h3>D-2. 「全体中断 vs 個別スキップ」の使い分け（最重要）</h3></div>
 <div class="card-body" style="font-size:14px; line-height:1.9;">
 <table class="compare-table">
 <thead><tr><th>場面</th><th>設定</th><th>理由</th></tr></thead>
@@ -375,8 +458,8 @@
               </div>
 </div>
 </div></section>
-<section class="lesson-section" id="sec-c-3"><div class="card">
-<div class="card-header"><h3>C-3. インタラクティブデモ：エラー動作シミュレーター</h3></div>
+<section class="lesson-section" id="sec-d-3"><div class="card">
+<div class="card-header"><h3>D-3. インタラクティブデモ：エラー動作シミュレーター</h3></div>
 <div class="card-body" style="font-size:14px; line-height:1.9;">
 <p>5名分のスタッフを処理します。<strong>3件目（ST003）は必ずエラーを起こす</strong>設定です。「全体中断モード」と「個別スキップモード」で結果がどう変わるか見てみましょう。</p>
 <div class="demo-controls">
@@ -389,10 +472,10 @@
 </div>
 </div>
 </div></section>
-<section class="lesson-section" id="sec-c-4"><div class="card">
-<div class="card-header"><h3>C-4. エラーログの記録（テキストをファイルに書き込む・追記モード）</h3></div>
+<section class="lesson-section" id="sec-d-4"><div class="card">
+<div class="card-header"><h3>D-4. エラーログの記録（テキストをファイルに書き込む・追記モード）</h3></div>
 <div class="card-body" style="font-size:14px; line-height:1.9;">
-<p>スキップしたスタッフの ID や発生時刻をテキストファイルに追記しておくと、後から「何件成功・何件失敗」が一目でわかります。<strong>エラー処理専用のサブフローを用意</strong>しておき、ブロックエラー発生時にそのサブフローを呼び出すのが定番です。</p>
+<p>スキップしたスタッフの ID や発生時刻をテキストファイルに追記しておくと、後から「何件成功・何件失敗」が一目でわかります。<strong>エラー処理専用のサブフローを用意</strong>しておき（サブフローの作り方は <a href="#sec-c-2" style="color:#2c7be5;">C-2</a> を参照）、ブロックエラー発生時にそのサブフローを呼び出すのが定番です。</p>
 <ol class="proc-list">
 <li>
 <figure class="proc-figure">
@@ -420,7 +503,7 @@
 </figure>
 <div class="proc-content">
 <span class="proc-headline">エラーログ書き込み用のサブフローを作る</span>
-                    フローデザイナー上部の<strong>「サブフロー」</strong>から新しいサブフローを追加します。名前は <strong>「エラー処理」</strong>がおすすめです（後で呼び出すときに分かりやすい名前にしておきます）。
+                    <a href="#sec-c-2" style="color:#2c7be5;">C-2</a> で習った手順で、新しいサブフローを追加します。名前は <strong>「エラー処理」</strong>がおすすめです（後で呼び出すときに分かりやすい名前にしておきます）。
                   </div>
 </li>
 <li>
@@ -486,6 +569,9 @@
 <li>あわせて <strong>「次の繰り返しに移動」</strong> も設定（エラーが出たスタッフはスキップして次の人へ進む）</li>
 </ul>
 <span style="display:block; margin-top:6px; color:#374151;">設定できたら、<strong>ここで一旦フローを保存</strong>しておきます。</span>
+<div class="point-block" style="margin-top:10px;">
+                      これは <a href="#sec-c-2" style="color:#2c7be5;">C-2</a> で習った <strong>「サブフローの実行」と同じ“呼び出し”</strong>ですが、正常時ではなく<strong>エラーが起きたときに自動で呼ばれる</strong>点が違います。
+                    </div>
 </div>
 </li>
 <li>
@@ -511,37 +597,6 @@
 <li>実行する。開発部には<strong>詳細ページが「スタッフが見つかりません」になるスタッフ（松本 理恵さん）</strong>がいて、そのページには取得対象の要素が無いため<strong>「要素取得」がエラー</strong>になります。</li>
 <li>このとき<strong>「エラー処理」サブフローが発動し、<code>エラーログ.txt</code> に1行追記されるか</strong>を確認。エラーが出ても処理が止まらず、次のスタッフに進めば成功です。</li>
 </ol>
-              </div>
-</div>
-</div></section>
-<div class="lesson-group-header"><span class="lesson-group-label">GROUP D</span><h2>D. サブフロー</h2><span class="lesson-group-desc">処理を機能単位で切り出して Main＋サブフローの 4 本構成にする</span></div><section class="lesson-section" id="sec-d-1"><div class="card">
-<div class="card-header"><h3>D-1. サブフロー 〜「使い回せる処理のかたまり」〜</h3></div>
-<div class="card-body" style="font-size:14px; line-height:1.9;">
-<p><strong>サブフロー</strong>とは、いくつかのアクションを<strong>1つのまとまり（部品）にして名前を付けたもの</strong>です。料理でいう「下ごしらえ済みの常備菜」のようなイメージで、<strong>使いたいときに名前を呼ぶだけ</strong>で、その中の処理がまとめて実行されます。</p>
-<p style="margin-top:10px;">長いフローを1本にベタ書きすると、何をしているか分かりにくく、同じ処理を何度も書くハメになります。<strong>「ログイン」「スタッフ情報の取得」「エラー処理」</strong>のように<strong>役割ごとにサブフローへ切り出す</strong>と、Main フローは<strong>「サブフローを順番に呼ぶだけ」</strong>のスッキリした形になり、見通しと修正のしやすさが一気に上がります。</p>
-<table class="compare-table">
-<thead><tr><th>比較軸</th><th>サブフローなし</th><th>サブフローあり</th></tr></thead>
-<tbody>
-<tr><td class="col-label">メインフローの行数</td><td class="bad">長くなる</td><td class="good">コンパクトに収まる</td></tr>
-<tr><td class="col-label">処理の見通し</td><td class="bad">何をしているか分かりにくい</td><td class="good">「ログイン → 取得 → 出力」と一目でわかる</td></tr>
-<tr><td class="col-label">修正コスト</td><td class="bad">ログイン処理を3か所直す必要がある</td><td class="good">サブフロー1か所を直すだけ</td></tr>
-<tr><td class="col-label">再利用</td><td class="bad">コピー&amp;ペーストで増殖する</td><td class="good">呼び出すだけ</td></tr>
-</tbody>
-</table>
-<p style="margin-top:14px;">たとえば今回の演習で組んだフローも、<strong>役割ごとに複数のサブフローへ分けて</strong>整理できます。下の画面は <strong>「ログイン処理」「データ抽出」「スタッフ詳細ページ表示」「エラー処理」</strong> の4本のサブフローが並んでいる例です。</p>
-<figure class="figure-center">
-<img src="assets/lessons/lesson-6_04_subflow_tabs.png" alt="PAD のサブフロー一覧：ログイン処理／データ抽出／スタッフ詳細ページ表示／エラー処理 の4本が並んでいる画面" />
-<figcaption>PAD のサブフロー一覧：ログイン処理／データ抽出／スタッフ詳細ページ表示／エラー処理 の4本に分けた例</figcaption>
-</figure>
-<div class="handson-callout">
-                🛠️ <strong>ハンズオン課題④：</strong>ここまでで作った今回のフローを、上の例のように<strong>役割ごとのサブフローに分けて</strong>整理してみましょう。1本にベタ書きされている処理を、次の4つのサブフローに切り出します。
-                <ul style="margin:10px 0 0 20px; line-height:1.9;">
-<li><strong>ログイン処理</strong>：Chrome 起動 → メール・パスワード入力 → ログインボタン</li>
-<li><strong>データ抽出</strong>：一覧ページのスクレイピング（ページング走破）</li>
-<li><strong>スタッフ詳細ページ表示</strong>：For each → 詳細ページに移動 → 要素取得</li>
-<li><strong>エラー処理</strong>：C-4 で作った、エラーログを追記するサブフロー</li>
-</ul>
-<span style="display:block; margin-top:8px;">Main フローは、これらの<strong>サブフローを順番に呼び出すだけ</strong>のスッキリした形になればOKです。</span>
               </div>
 </div>
 </div></section>
