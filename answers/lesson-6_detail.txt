@@ -1,0 +1,12 @@
+BLOCK 
+ON BLOCK ERROR
+CALL エラー処理
+NEXT ACTION
+END
+    LOOP FOREACH 処理中スタッフ IN 蓄積データテーブル
+        IF 処理中スタッフ['部署'] = $'''開発部''' THEN
+            WebAutomation.GoToWebPage.GoToWebPage BrowserInstance: ブラウザ Url: $'''https://feretti0322.github.io/PAD-Demo/staff-detail.html?id=%処理中スタッフ['id']%''' WaitForPageToLoadTimeout: 5
+            WebAutomation.ExtractData.ExtractSingleValue BrowserInstance: ブラウザ ExtractionParameters: {[$'''html > body > div > div:eq(1) > main > div:eq(1) > div:eq(1) > div:eq(1) > div > div:eq(0) > span:eq(1)''', $'''Own Text''', $''''''] } TimeoutInSeconds: 60
+        END
+    END
+END
