@@ -133,7 +133,7 @@
 </div>
 <div class="point-block">
                 箱には<strong>数字・文字・Yes/No（True/False）</strong>などいろんな種類のデータを入れられます。<br/>
-                PAD では <code style="background:#f0f5ff;border:1px solid #c3d9ff;border-radius:3px;padding:1px 7px;font-family:monospace;color:#1d4ed8;">%変数名%</code> と書くことで、箱の中身をプログラムの中で使えます。
+                PAD では <code class="pad-var">%変数名%</code> と書くことで、箱の中身をプログラムの中で使えます。
               </div>
 <figure class="figure-center" style="display:flex; flex-direction:column; align-items:center; margin:14px 0;">
 <img alt="PAD のフロー編集画面：アクションの詳細画面下に生成された変数が表示されている様子" src="assets/lessons/lesson-2_01_variables_pane.png" style="max-width:70%; height:auto; border:1px solid #d8dee9; border-radius:8px; display:block;"/>
@@ -223,11 +223,11 @@
 <span class="proc-headline">「メッセージを表示する」で変数の中身を出す</span>
                     続けて「<code>メッセージを表示する</code>」アクションを置き、「表示するメッセージ」欄に <strong>「現在の日時は 〜 です」</strong> という文を入れます。途中に変数 <code>現在時刻</code> を埋め込むには、<strong>2 つのやり方</strong>があります。
                     <ul style="margin:8px 0 0 22px;">
-<li><strong>① 変数選択アイコンから選ぶ（おすすめ）：</strong>テキスト入力欄をクリックすると、欄の右側に<strong>青い変数選択アイコン（&#123;x&#125;）</strong>が出てきます。これをクリックすると、これまでに生成した変数が<strong>一覧リスト</strong>で表示されるので、その中から <code>現在時刻</code> を選ぶだけで <code>%現在時刻%</code> が自動で挿入されます。</li>
-<li><strong>② 直接入力：</strong>変数名を覚えていれば、<code>%現在時刻%</code> とそのままキーボードで打ち込んでも OK です。</li>
+<li><strong>① 変数選択アイコンから選ぶ（おすすめ）：</strong>テキスト入力欄をクリックすると、欄の右側に<strong>青い変数選択アイコン（&#123;x&#125;）</strong>が出てきます。これをクリックすると、これまでに生成した変数が<strong>一覧リスト</strong>で表示されるので、その中から <code>現在時刻</code> を選ぶだけで <code class="pad-var">%現在時刻%</code> が自動で挿入されます。</li>
+<li><strong>② 直接入力：</strong>変数名を覚えていれば、<code class="pad-var">%現在時刻%</code> とそのままキーボードで打ち込んでも OK です。</li>
 </ul>
 <div class="code-block" style="margin-top:8px;">現在の日時は %現在時刻% です</div>
-<span style="display:block; margin-top:6px; color:#374151;"><code>%現在時刻%</code> の部分が、ステップ 1 で取得した日時に<strong>置き換わって</strong>表示されます。これが「変数を使う（参照する）」ということです。</span>
+<span style="display:block; margin-top:6px; color:#374151;"><code class="pad-var">%現在時刻%</code> の部分が、ステップ 1 で取得した日時に<strong>置き換わって</strong>表示されます。これが「変数を使う（参照する）」ということです。</span>
 </div>
 </li>
 </ol>
@@ -303,9 +303,9 @@
 <div class="card-header"><h3>B-2. DataTable の値を取り出す（インタラクティブデモ）</h3></div>
 <div class="card-body" style="font-size:14px; line-height:1.9;">
 <p>DataTable の特定の値を取り出すには、変数名の後ろに <code>[]</code> を使って「行番号」と「列番号 or 列名」を指定します。DataTable の添字は<strong> 0 から数え始める</strong>ことに注意してください。</p>
-<p>例えば、下の表のように変数名 <code style="background:#1e293b; color:#facc15; padding:2px 8px; border-radius:4px; font-weight:700;">スタッフリスト</code> というデータテーブルにスタッフ情報が格納されているとします。この中で <strong>田中 一郎さん</strong> を抜き出したい場合、<code>%スタッフリスト[2][1]%</code> または <code>%スタッフリスト[2]['氏名']%</code> と記載します。</p>
+<p>例えば、下の表のように変数名 <code class="pad-varname">スタッフリスト</code> というデータテーブルにスタッフ情報が格納されているとします。この中で <strong>田中 一郎さん</strong> を抜き出したい場合、<code class="pad-var">%スタッフリスト[2][1]%</code> または <code class="pad-var">%スタッフリスト[2]['氏名']%</code> と記載します。</p>
 <div class="point-block">
-                列名を使った指定（<code>%現在の行['氏名']%</code>）は、列の順番が変わってもフローが壊れません。インデックスだけ（<code>%現在の行[0]%</code>）はシンプルですが、サイト改修に弱いので注意。
+                列名を使った指定（<code class="pad-var">%現在の行['氏名']%</code>）は、列の順番が変わってもフローが壊れません。インデックスだけ（<code class="pad-var">%現在の行[0]%</code>）はシンプルですが、サイト改修に弱いので注意。
               </div>
 <p style="margin-top:18px;">
 <strong>表のセルをクリック</strong>すると、PAD でその値を取り出すときの書き方が表示されます。
@@ -365,7 +365,7 @@
 <div class="point-block" style="margin-top:10px; font-size:13px;">
                     💡 <strong>列・行の追加方法：</strong> 設定画面の <strong>右上の「＋」</strong> をクリックすると<strong>列が追加</strong>され、<strong>左下の「＋」</strong>をクリックすると<strong>行が追加</strong>されます。
                   </div>
-<p>生成される変数名は <code style="background:#1e293b; color:#facc15; padding:2px 8px; border-radius:4px; font-weight:700;">部署役職マスター</code> などに変更しておくと、後の参照で迷いません。</p>
+<p>生成される変数名は <code class="pad-varname">部署役職マスター</code> などに変更しておくと、後の参照で迷いません。</p>
 </div>
 </div>
 <!-- 手順2：データテーブル列をリストに取得 -->
@@ -377,7 +377,7 @@
 <div class="step-text">
 <h4 style="margin:0 0 8px;"><span class="step-num">2</span>データテーブル列をリストに取得</h4>
 <p>アクション <strong>「変数 → データテーブル列をリストに取得」</strong> で、手順1で作ったデータテーブルから <strong>「部署」列だけ</strong> を取り出してリスト化します。<br/>
-                  出力変数は <code style="background:#1e293b; color:#facc15; padding:2px 8px; border-radius:4px; font-weight:700;">部署リスト</code> のように、リストであることが分かる名前にしておきます。</p>
+                  出力変数は <code class="pad-varname">部署リスト</code> のように、リストであることが分かる名前にしておきます。</p>
 </div>
 </div>
 <!-- 手順3：リストから選択ダイアログを表示 -->
@@ -388,8 +388,8 @@
 </figure>
 <div class="step-text">
 <h4 style="margin:0 0 8px;"><span class="step-num">3</span>リストから選択ダイアログを表示</h4>
-<p>アクション <strong>「メッセージボックス → リストから選択ダイアログを表示」</strong> に <code>%部署リスト%</code> を渡すと、実行時にユーザーへ部署選択ダイアログが表示されます。<br/>
-                  選ばれた値は <code>%選択部署%</code> に格納され、後続アクションで自由に使えます。同じ流れで「役職」も選ばせて <code>%選択役職%</code> に格納しましょう。</p>
+<p>アクション <strong>「メッセージボックス → リストから選択ダイアログを表示」</strong> に <code class="pad-var">%部署リスト%</code> を渡すと、実行時にユーザーへ部署選択ダイアログが表示されます。<br/>
+                  選ばれた値は <code class="pad-var">%選択部署%</code> に格納され、後続アクションで自由に使えます。同じ流れで「役職」も選ばせて <code class="pad-var">%選択役職%</code> に格納しましょう。</p>
 </div>
 </div>
 <div class="handson-callout">
@@ -413,7 +413,7 @@
 <h2 class="lesson-section-title"><span class="sec-icon">❓</span>よくある詰まりと FAQ</h2>
 <div class="lesson-faq">
 <div class="q">Q1. 変数名に日本語を入れたら動かない</div>
-<div class="a">PAD は変数名に日本語 OK ですが、参照時は <code>%変数名%</code> のように半角 % で囲む必要があります。全角 ％ になっていないか確認してください。</div>
+<div class="a">PAD は変数名に日本語 OK ですが、参照時は <code class="pad-var">%変数名%</code> のように半角 % で囲む必要があります。全角 ％ になっていないか確認してください。</div>
 </div>
 </section>
 <nav class="lesson-nav">

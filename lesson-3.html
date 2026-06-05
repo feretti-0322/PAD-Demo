@@ -76,7 +76,7 @@
 <div class="text-col">
 <h4>① Excel の起動</h4>
 <p>テンプレ Excel（<code>スタッフ情報_テンプレート.xlsm</code>）を開きます。「ドキュメントパス」に開きたいファイルのフルパスを指定するだけで、Excel が立ち上がります。</p>
-<p>生成された <code>%ExcelInstance%</code> 変数を、以降のアクションで使い回します。</p>
+<p>生成された <code class="pad-varname">ExcelInstance</code> 変数を、以降のアクションで使い回します。</p>
 </div>
 </div>
 <div class="img-text-row">
@@ -108,7 +108,7 @@
 <img alt="「Excel マクロの実行」アクション設定画面（マクロ名「空白削除」を指定）" src="assets/lessons/lesson-3_04_run_macro.png"/>
 <div class="text-col">
 <h4>Excel マクロの実行</h4>
-<p>「Excel インスタンス」に <code>%ExcelInstance%</code> を指定し、「マクロ」欄にマクロ名 <code>空白削除</code> を入力するだけで実行されます。</p>
+<p>「Excel インスタンス」に <code class="pad-var">%ExcelInstance%</code> を指定し、「マクロ」欄にマクロ名 <code>空白削除</code> を入力するだけで実行されます。</p>
 <div class="warning-block">
 <strong>⚠️ .xlsm（マクロ有効ブック）であること</strong>を必ず確認。.xlsx ではマクロが動きません。
                   </div>
@@ -126,7 +126,7 @@
 <p>「日時フォルダを作る」「ファイル名に日時を入れる」ためには、現在日時を取得して文字列に整形する必要があります。<strong>下記の 2 つのアクションをこの順番で並べる</strong>と完成します。</p>
 <div class="point-block" style="margin:10px 0 16px;">
 <strong>📌 ポイント：1 アクション目で作った変数を、2 アクション目の入力にそのまま渡す</strong><br/>
-                ① <strong>現在の日時を取得</strong> アクションが生成する変数（例：<code>%現在の日時%</code>）を、② <strong>日時をテキストに変換</strong> の「変換するテキスト」欄に指定します。<strong>必ず 2 アクションがセットで必要</strong>です。
+                ① <strong>現在の日時を取得</strong> アクションが生成する変数を、② <strong>日時をテキストに変換</strong> の「変換するテキスト」欄に指定します。<strong>必ず 2 アクションがセットで必要</strong>です。
               </div>
 <!-- ① 現在の日時を取得 -->
 <div class="img-text-row">
@@ -134,7 +134,7 @@
 <div class="text-col">
 <h4>① 現在の日時を取得</h4>
 <p>「取得」＝<strong>現在の日時</strong>、「タイムゾーン」＝<strong>システム タイム ゾーン</strong> のままで OK。</p>
-<p>このアクションが実行されると、現在時刻が <strong>DateTime 型の変数</strong>として生成されます。<br/>生成変数名はデフォルトで <code>%CurrentDateTime%</code> ですが、ここでは分かりやすく <code>%現在の日時%</code> にリネームしておきます。</p>
+<p>このアクションが実行されると、現在時刻が <strong>DateTime 型の変数</strong>として生成されます。<br/>生成変数名はデフォルトで <code class="pad-varname">CurrentDateTime</code> ですが、ここでは分かりやすく <code class="pad-varname">現在の日時</code> にリネームしておきます。</p>
 </div>
 </div>
 <!-- ② 日時をテキストに変換 -->
@@ -142,13 +142,13 @@
 <img alt="「日時をテキストに変換」アクションでカスタム書式 yyyyMMdd_HHmmss を指定している画面" src="assets/lessons/lesson-3_05_datetime_to_text.png"/>
 <div class="text-col">
 <h4>② 日時をテキストに変換</h4>
-<p>「変換するテキスト」欄には、<strong>① で作った変数 <code>%現在の日時%</code></strong> を指定します（<code>%CurrentDateTime%</code> をそのまま打ち込むのではなく、変数選択ボタンから ① の生成変数を選ぶこと）。</p>
+<p>「変換するテキスト」欄には、<strong>① で作った変数 <code class="pad-var">%現在の日時%</code></strong> を指定します（<code class="pad-var">%CurrentDateTime%</code> をそのまま打ち込むのではなく、変数選択ボタンから ① の生成変数を選ぶこと）。</p>
 <p>「使用する形式」を「<strong>カスタム</strong>」に切り替え、カスタム形式欄に <code>yyyyMMdd_HHmmss</code> を入力。</p>
-<p>結果：<code>20260518_143025</code> のような秒単位までユニークな文字列が、生成変数 <code>%現在の日時_テキスト値%</code> に格納され、フォルダ名やファイル名にそのまま使えます。</p>
+<p>結果：<code>20260518_143025</code> のような秒単位までユニークな文字列が、生成変数 <code class="pad-varname">現在の日時_テキスト値</code> に格納され、フォルダ名やファイル名にそのまま使えます。</p>
 </div>
 </div>
 <div class="warning-block" style="margin-top:14px;">
-<strong>⚠️ よくあるミス：</strong> ② の「変換するテキスト」欄に <code>%CurrentDateTime%</code> という<strong>文字列をそのまま打ち込んでしまう</strong>と、変数として認識されずエラーになります。必ず <strong>{x}</strong> アイコン（変数の選択）から ① の生成変数をクリックして挿入してください。
+<strong>⚠️ よくあるミス：</strong> ② の「変換するテキスト」欄に <code class="pad-var">%CurrentDateTime%</code> という<strong>文字列をそのまま打ち込んでしまう</strong>と、変数として認識されずエラーになります。必ず <strong>{x}</strong> アイコン（変数の選択）から ① の生成変数をクリックして挿入してください。
               </div>
 </div>
 </div></section>
@@ -160,12 +160,12 @@
 <img alt="「フォルダーの作成」アクション設定画面" src="assets/lessons/lesson-3_06_folder_create.png"/>
 <div class="text-col">
 <h4>フォルダーの作成</h4>
-<p>「フォルダーのパス」に作成先（任意の指定フォルダ）を指定し、「新しいフォルダー名」に <code>%現在の日時_テキスト値%</code> を指定するだけで、実行ごとに日時名フォルダが自動生成されます。</p>
-<p>生成された <code>%出力フォルダ%</code> を、以降のファイル保存先パスとして使い回します。</p>
+<p>「フォルダーのパス」に作成先（任意の指定フォルダ）を指定し、「新しいフォルダー名」に <code class="pad-var">%現在の日時_テキスト値%</code> を指定するだけで、実行ごとに日時名フォルダが自動生成されます。</p>
+<p>生成された <code class="pad-varname">出力フォルダ</code> を、以降のファイル保存先パスとして使い回します。</p>
 </div>
 </div>
 <div class="handson-callout">
-                🛠️ <strong>ハンズオン課題③：</strong>課題②で作ったフローの先頭に「<strong>現在の日時を取得</strong> → <strong>日時をテキストに変換</strong>（<code>yyyyMMdd_HHmmss</code>） → <strong>フォルダーの作成</strong>（新しいフォルダー名＝<code>%現在の日時_テキスト値%</code>、生成変数名＝<code>%出力フォルダ%</code>）」を追加し、<br/>
+                🛠️ <strong>ハンズオン課題③：</strong>課題②で作ったフローの先頭に「<strong>現在の日時を取得</strong> → <strong>日時をテキストに変換</strong>（<code>yyyyMMdd_HHmmss</code>） → <strong>フォルダーの作成</strong>（新しいフォルダー名＝<code class="pad-var">%現在の日時_テキスト値%</code>、生成変数名＝<code class="pad-varname">出力フォルダ</code>）」を追加し、<br/>
                 さらに「Excel を閉じる」アクションの<strong>保存先パスを下記の文字列に書き換えてみましょう</strong>（👇 ボタンを押すとそのままコピーできます）。<br/>
 <span class="copy-snippet"><code id="copyPath">%出力フォルダ%\山田太郎.xlsm</code><button onclick="(function(b){var t=document.getElementById('copyPath').innerText;navigator.clipboard.writeText(t).then(function(){var o=b.innerText;b.innerText='✓ コピー済';b.classList.add('copied');setTimeout(function(){b.innerText=o;b.classList.remove('copied');},1500);});})(this)" type="button">📋 コピー</button></span><br/>
                 実行するたびに、指定フォルダ内に日時名のフォルダが新しく作られ、その中に Excel が保存されれば成功です。
@@ -196,7 +196,7 @@
 </div>
 <div class="lesson-faq">
 <div class="q">Q3. 「フォルダーの作成」で『同名のフォルダーが既に存在します』エラー</div>
-<div class="a">フォルダ名に <code>%現在の日時_テキスト値%</code>（秒単位まで含む）を使えば、実行ごとに必ず別名になるので自然に解決します。</div>
+<div class="a">フォルダ名に <code class="pad-var">%現在の日時_テキスト値%</code>（秒単位まで含む）を使えば、実行ごとに必ず別名になるので自然に解決します。</div>
 </div>
 </section>
 <nav class="lesson-nav">

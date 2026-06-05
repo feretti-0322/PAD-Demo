@@ -371,8 +371,8 @@
 <span class="proc-headline"><code>データテーブルをマージする</code>で、いま抽出したぶんを<strong>蓄積テーブルに追記</strong></span>
 <span style="font-size:14px; color:#374151;">設定画面で：</span>
 <ul style="margin:4px 0 0 22px; font-size:14px;">
-<li><strong>最初のデータテーブル</strong>：<code>%蓄積テーブル%</code>（手順 1 で作成したもの）</li>
-<li><strong>2 番目のデータテーブル</strong>：<code>%DataFromWebPage%</code>（手順 4 でいま抽出したぶん）</li>
+<li><strong>最初のデータテーブル</strong>：<code class="pad-var">%蓄積テーブル%</code>（手順 1 で作成したもの）</li>
+<li><strong>2 番目のデータテーブル</strong>：<code class="pad-var">%DataFromWebPage%</code>（手順 4 でいま抽出したぶん）</li>
 <li><strong>マージモード</strong>：そのまま変更しなくて <strong>OK</strong></li>
 </ul>
 <span style="display:block; font-size:14px; color:#374151; margin-top:6px;">これで蓄積テーブルの末尾に、いま抽出した 1 ページぶんが<strong>追記</strong>されます。<strong>抽出の直後にマージする</strong>のが大事なポイント。次のページに送る前に必ず手元に取り込んでおかないと、変数が次のページのデータで塗り替えられて消えてしまいます。</span>
@@ -393,9 +393,9 @@
 <ul style="margin:4px 0 0 22px; font-size:14px;">
 <li><strong>UI 要素</strong>：UI 要素ピッカーで「次へ」ボタンを取得</li>
 <li><strong>属性名</strong>：プルダウンから <code>Disabled</code> を選択（手入力ではなく選択肢から選べる）</li>
-<li><strong>生成変数</strong>：<code>%ページャー要素%</code> など分かりやすい名前にリネーム</li>
+<li><strong>生成変数</strong>：<code class="pad-var">%ページャー要素%</code> など分かりやすい名前にリネーム</li>
 </ul>
-<span style="display:block; font-size:14px; color:#374151; margin-top:6px;">これで <code>%ページャー要素%</code> には、押せるなら <code>false</code>、押せないなら <code>true</code> が入ります。</span>
+<span style="display:block; font-size:14px; color:#374151; margin-top:6px;">これで <code class="pad-var">%ページャー要素%</code> には、押せるなら <code>false</code>、押せないなら <code>true</code> が入ります。</span>
 </div>
 </li>
 <li>
@@ -411,7 +411,7 @@
 <span class="proc-headline">条件 → <code>If</code> アクションを置く</span>
 <span style="font-size:14px; color:#374151;"><code>If</code> アクション設定画面で：</span>
 <ul style="margin:4px 0 0 22px; font-size:14px;">
-<li><strong>最初のオペランド</strong>：<code>%ページャー要素%</code></li>
+<li><strong>最初のオペランド</strong>：<code class="pad-var">%ページャー要素%</code></li>
 <li><strong>演算子</strong>：<code>と等しくない (&lt;&gt;)</code></li>
 <li><strong>2 番目のオペランド</strong>：<code>true</code>（<strong style="color:#dc2626;">必ず半角で入力</strong> — 全角だと文字列が一致せず判定が効かない／ループが止まりません）</li>
 </ul>

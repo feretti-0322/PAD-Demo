@@ -181,21 +181,21 @@
                     <span class="proc-headline">For each アクションを置く</span>
                     アクションペインの「ループ」カテゴリから「<code>For each</code>」を配置し、設定画面で：
                     <ul style="margin:6px 0 0 22px;">
-                      <li><strong>反復処理を行う値</strong>：第5回で作った <code>%蓄積テーブル%</code> を指定</li>
-                      <li><strong>保存先</strong>：<code>%処理中スタッフ%</code>（1 行ずつここに入ってきます）</li>
+                      <li><strong>反復処理を行う値</strong>：第5回で作った <code class="pad-var">%蓄積テーブル%</code> を指定</li>
+                      <li><strong>保存先</strong>：<code class="pad-var">%処理中スタッフ%</code>（1 行ずつここに入ってきます）</li>
                     </ul>
-                    <span style="display:block; margin-top:6px; color:#374151;">これでデータテーブルの上から 1 行ずつ <code>%処理中スタッフ%</code> に入って、ループの中身が繰り返し実行されます。</span>
+                    <span style="display:block; margin-top:6px; color:#374151;">これでデータテーブルの上から 1 行ずつ <code class="pad-var">%処理中スタッフ%</code> に入って、ループの中身が繰り返し実行されます。</span>
                   </div>
                 </li>
 
                 <li>
                   <figure class="proc-figure">
                     <img src="assets/lessons/lesson-6_03_webpage_navigate.png" alt="「Web ページに移動する」アクション設定画面（URL＝https://feretti0322.github.io/PAD-Demo/staff-detail.html?id=%処理中スタッフ['id']%）" />
-                    <figcaption>「Web ページに移動する」アクション設定画面（URL に <code>%処理中スタッフ['id']%</code> を埋め込んでいる様子）</figcaption>
+                    <figcaption>「Web ページに移動する」アクション設定画面（URL に <code class="pad-var">%処理中スタッフ['id']%</code> を埋め込んでいる様子）</figcaption>
                   </figure>
                   <div class="proc-content">
                     <span class="proc-headline">「Web ページに移動する」を For each の中に置き、ID を URL に埋め込む</span>
-                    <code>%処理中スタッフ%</code> は 1 行ぶんのデータです。その中から <strong>「id」列</strong>（例：<code>ST001</code>）だけを取り出すには <strong>列名で指定</strong>します（蓄積テーブルの列名は小文字の <code>id</code> なので → <code>%処理中スタッフ['id']%</code>）。<br>
+                    <code class="pad-var">%処理中スタッフ%</code> は 1 行ぶんのデータです。その中から <strong>「id」列</strong>（例：<code>ST001</code>）だけを取り出すには <strong>列名で指定</strong>します（蓄積テーブルの列名は小文字の <code>id</code> なので → <code class="pad-var">%処理中スタッフ['id']%</code>）。<br>
                     For each のループの内側に「<strong>Web ページに移動する</strong>」アクションを追加し、URL 欄に下記を入力します：
                     <div class="code-block" style="margin-top:8px;">https://feretti0322.github.io/PAD-Demo/staff-detail.html?id=%処理中スタッフ['id']%</div>
                     <span style="display:block; margin-top:6px; color:#374151;">固定部分の URL に、<strong>For each で取り出した ID 変数</strong>を埋め込むかたちです。実行すると、ループの周回ごとに <code>?id=ST001</code> → <code>?id=ST002</code> → … と URL が動的に変わって、各スタッフの詳細ページが次々と開きます。</span>
@@ -247,7 +247,7 @@
                 なお、<strong>NO のときは何もしない</strong>のであれば <code>ELSE</code> は省略してよく、その場合は <code>IF 〜 THEN 〜 END</code> だけのシンプルな形になります（このあとのハンズオン課題②がこの形です）。
               </div>
 <p style="margin-top:14px;">条件は必ず <strong>「成り立つ / 成り立たない」の YES・NO で答えられる形</strong>にします。<code>営業部かどうか</code>・<code>10年以上かどうか</code>・<code>空っぽかどうか</code> のように、〇か×かで判定できるものを書くのがコツです。</p>
-<p style="margin-top:10px;">条件で使う<strong>演算子</strong>（<code>=</code> 等しい／<code>&lt;&gt;</code> 等しくない／<code>&gt;</code> <code>&lt;</code> <code>&gt;=</code> <code>&lt;=</code> など）は、設定画面の<strong>プルダウンリストから選びます</strong>。たとえば「営業部<strong>かどうか</strong>」を判定するなら、最初のオペランドに <code>%処理中スタッフ['部署']%</code>、演算子は <code>と等しい (=)</code>、2 番目のオペランドに <code>営業部</code> を指定します。</p>
+<p style="margin-top:10px;">条件で使う<strong>演算子</strong>（<code>=</code> 等しい／<code>&lt;&gt;</code> 等しくない／<code>&gt;</code> <code>&lt;</code> <code>&gt;=</code> <code>&lt;=</code> など）は、設定画面の<strong>プルダウンリストから選びます</strong>。たとえば「営業部<strong>かどうか</strong>」を判定するなら、最初のオペランドに <code class="pad-var">%処理中スタッフ['部署']%</code>、演算子は <code>と等しい (=)</code>、2 番目のオペランドに <code>営業部</code> を指定します。</p>
 <div class="handson-callout">
                 🛠️ <strong>ハンズオン課題②：</strong>ハンズオン課題①で組んだフローに <strong>IF を1つ足して</strong>、<strong>営業部のスタッフだけ</strong>詳細ページに飛ぶように改造してみましょう。
               </div>
@@ -266,12 +266,12 @@
 <span class="proc-headline">For each の中に「If」アクションを置く</span>
                     アクションペインの「条件」カテゴリから「<code>If</code>」を、<strong>For each の内側・「Web ページに移動する」の<u>すぐ上</u></strong>にドラッグして配置します。設定画面で次のように指定します：
                     <ul style="margin:6px 0 0 22px;">
-<li><strong>最初のオペランド</strong>：<code>%処理中スタッフ['部署']%</code></li>
+<li><strong>最初のオペランド</strong>：<code class="pad-var">%処理中スタッフ['部署']%</code></li>
 <li><strong>演算子</strong>：<code>と等しい (=)</code></li>
 <li><strong>2 番目のオペランド</strong>：<code>営業部</code></li>
 </ul>
 <div class="warning-block" style="margin-top:10px;">
-<strong>⚠️ 列名に注意：</strong> id が小文字だったように、抽出後の蓄積テーブルの列名は<strong>実物を確認</strong>してください。部署の列名が <code>部署</code> でなければ、その名前に合わせます（列番号 <code>%処理中スタッフ[2]%</code> で指定しても OK）。
+<strong>⚠️ 列名に注意：</strong> id が小文字だったように、抽出後の蓄積テーブルの列名は<strong>実物を確認</strong>してください。部署の列名が <code>部署</code> でなければ、その名前に合わせます（列番号 <code class="pad-var">%処理中スタッフ[2]%</code> で指定しても OK）。
                     </div>
 </div>
 </li>
@@ -519,8 +519,8 @@
 <span class="proc-headline">サブフロー内で「現在の日時を取得 → 最後のエラーを取得」</span>
                     「エラー処理」サブフローの中に、次の2つのアクションを並べて、ログに使う値を変数に取っておきます。
                     <ul style="margin:6px 0 0 22px;">
-<li><strong>現在の日時を取得</strong>（いつ失敗したか）→ 生成変数 <code style="background:#1e293b; color:#facc15; padding:2px 8px; border-radius:4px; font-weight:700;">現在時刻</code></li>
-<li><strong>最後のエラーを取得</strong>（何が起きたか）→ 生成変数 <code style="background:#1e293b; color:#facc15; padding:2px 8px; border-radius:4px; font-weight:700;">エラー詳細</code></li>
+<li><strong>現在の日時を取得</strong>（いつ失敗したか）→ 生成変数 <code class="pad-varname">現在時刻</code></li>
+<li><strong>最後のエラーを取得</strong>（何が起きたか）→ 生成変数 <code class="pad-varname">エラー詳細</code></li>
 </ul>
 </div>
 </li>
@@ -542,7 +542,7 @@
 </div>
 <span style="display:block; margin-top:6px; color:#374151;">「いつ・どのスタッフで・何のエラーが起きたか」が1行にまとまるので、後から原因をたどりやすくなります。</span>
                     <div class="warning-block" style="margin-top:10px;">
-<strong>⚠️ 「内容を追加する」（追記モード）を必ず選ぶ：</strong> <strong>「ファイルが存在する場合」を必ず「内容を追加する」</strong>にします。<strong>上書き</strong>にすると前のログが毎回消えてしまうので注意。エンコードは <strong>UTF-8</strong>、改行を付けておくと1件1行で読みやすくなります。
+<strong>⚠️ 「内容を追加する」（追記モード）を必ず選ぶ：</strong> <strong>「ファイルが存在する場合」を必ず「内容を追加する」</strong>にします。<strong>上書き</strong>にすると前のログが毎回消えてしまうので注意。エンコードは <strong>UTF-8</strong>、<strong>「新しい行を追加する」のトグルをオンにする</strong>と1件1行で読みやすくなります。
                     </div>
 </div>
 </li>

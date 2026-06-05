@@ -247,9 +247,9 @@
   <div class="proc-content">
     <span class="proc-headline">Power Automate Desktop 用のフォルダを作成する</span>
     エクスプローラーを開き、アドレスバーに以下を貼り付けて Enter：
-    <div class="code-block" style="margin-top:6px;">%LOCALAPPDATA%\Microsoft\Power Automate Desktop</div>
+    <div style="margin:8px 0;"><span class="copy-snippet"><code id="codeLocalAppData">%LOCALAPPDATA%\Microsoft\Power Automate Desktop</code><button onclick="(function(b){var t=document.getElementById('codeLocalAppData').innerText;navigator.clipboard.writeText(t).then(function(){var o=b.innerText;b.innerText='✓ コピー済';b.classList.add('copied');setTimeout(function(){b.innerText=o;b.classList.remove('copied');},1500);});})(this)" type="button">📋 コピー</button></span></div>
     フォルダー内で右クリック →「新規作成」→「フォルダー」を選択。<br>
-    フォルダー名を <code>WebDrivers</code> にする（<strong>大文字・小文字を正確に</strong>）。
+    フォルダー名を <span class="copy-snippet" style="vertical-align:middle;"><code id="codeWebDrivers">WebDrivers</code><button onclick="(function(b){var t=document.getElementById('codeWebDrivers').innerText;navigator.clipboard.writeText(t).then(function(){var o=b.innerText;b.innerText='✓ コピー済';b.classList.add('copied');setTimeout(function(){b.innerText=o;b.classList.remove('copied');},1500);});})(this)" type="button">📋 コピー</button></span> にする（<strong>大文字・小文字を正確に</strong>）。
   </div>
 </li>
 <li>
@@ -313,7 +313,7 @@
 </div>
 <div class="lesson-faq">
 <div class="q">Q4. WebDrivers フォルダを作ったのに PAD が認識しない</div>
-<div class="a">フォルダ名のスペルを確認してください（<code>WebDrivers</code>、大文字小文字を含めて正確に）。配置先パスが <code>%LOCALAPPDATA%\Microsoft\Power Automate Desktop\WebDrivers\</code> であることを再確認。</div>
+<div class="a">フォルダ名のスペルを確認してください（<code>WebDrivers</code>、大文字小文字を含めて正確に）。配置先パスが <code class="pad-var">%LOCALAPPDATA%\Microsoft\Power Automate Desktop\WebDrivers\</code> であることを再確認。</div>
 </div>
 <div class="lesson-faq">
 <div class="q">Q5. 「操作方法」プルダウンに「Webdriver」が出てこない</div>
