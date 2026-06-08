@@ -1,1 +1,4 @@
-// lesson-7-Error の解答フローを後ほどここに格納
+DateTime.GetCurrentDateTime.Local DateTimeFormat: DateTime.DateTimeFormat.DateAndTime CurrentDateTime=> エラー時刻
+ERROR => LastError Reset: True
+File.WriteText File: $'''C:\\Users\\%USERNAME%\\Desktop\\PAD研修\\エラーログ.txt''' TextToWrite: $'''%エラー時刻% _%フォーイーチ_スタッフID%  _%LastError%''' AppendNewLine: True IfFileExists: File.IfFileExists.Append Encoding: File.FileEncoding.UTF8
+

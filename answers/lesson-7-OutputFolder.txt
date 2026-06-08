@@ -1,0 +1,10 @@
+DateTime.GetCurrentDateTime.Local DateTimeFormat: DateTime.DateTimeFormat.DateAndTime CurrentDateTime=> 現在の日時
+Text.ConvertDateTimeToText.FromCustomDateTime DateTime: 現在の日時 CustomFormat: $'''yyyyMMdd_HHmmss''' Result=> 現在の日時_テキスト値
+System.GetEnvironmentVariable.GetEnvironmentVariable Name: $'''USERNAME''' Value=> USERNAME
+Folder.Create FolderPath: $'''C:\\Users\\%USERNAME%\\Desktop\\PAD研修''' FolderName: 現在の日時_テキスト値 Folder=> 出力フォルダ
+Variables.CreateNewDatatable InputTable: { ^['部署', '役職'], [$'''営業部''', $'''部長'''], [$'''開発部''', $'''課長'''], [$'''管理部''', $'''主任'''], [$'''総務部''', $'''一般'''], [$'''すべての部署''', $'''すべての役職'''] } DataTable=> データテーブル_検索条件
+Variables.RetrieveDataTableColumnIntoList DataTable: データテーブル_検索条件 ColumnNameOrIndex: $'''部署''' ColumnAsList=> 部署リスト
+Display.SelectFromListDialog.SelectFromList Title: $'''部署''' Message: $'''選択してください''' List: 部署リスト IsTopMost: True AllowEmpty: False SelectedItem=> 選択部署
+Variables.RetrieveDataTableColumnIntoList DataTable: データテーブル_検索条件 ColumnNameOrIndex: $'''役職''' ColumnAsList=> 役職リスト
+Display.SelectFromListDialog.SelectFromList Title: $'''役職''' Message: $'''選択してください''' List: 役職リスト IsTopMost: True AllowEmpty: False SelectedItem=> 選択役職
+
