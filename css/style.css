@@ -70,7 +70,7 @@ a:hover {
 }
 
 .login-logo .subtitle {
-  font-size: 12px;
+  font-size: 14px;
   color: #888;
   margin-top: 4px;
 }
@@ -241,7 +241,7 @@ textarea.form-control {
 
 .btn-sm {
   padding: 5px 12px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .btn-lg {
@@ -286,7 +286,7 @@ textarea.form-control {
 }
 
 .sidebar-brand .brand-sub {
-  font-size: 11px;
+  font-size: 14px;
   color: rgba(255,255,255,0.6);
   margin-top: 2px;
 }
@@ -303,7 +303,7 @@ textarea.form-control {
 
 .nav-section {
   padding: 8px 20px 4px;
-  font-size: 10px;
+  font-size: 14px;
   font-weight: 700;
   color: rgba(255,255,255,0.4);
   text-transform: uppercase;
@@ -314,10 +314,10 @@ textarea.form-control {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 20px;
+  padding: 11px 20px;
   color: rgba(255,255,255,0.75);
   text-decoration: none;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 500;
   transition: background 0.2s, color 0.2s;
   cursor: pointer;
@@ -340,8 +340,8 @@ textarea.form-control {
 }
 
 .nav-item .nav-icon {
-  font-size: 16px;
-  width: 20px;
+  font-size: 18px;
+  width: 22px;
   text-align: center;
 }
 
@@ -375,7 +375,7 @@ textarea.form-control {
 
 .nav-collapse-btn .collapse-icon {
   display: inline-block;
-  font-size: 10px;
+  font-size: 14px;
   transition: transform 0.2s;
   width: 12px;
   text-align: center;
@@ -397,7 +397,7 @@ textarea.form-control {
 
 .nav-sub-item {
   padding: 8px 20px 8px 40px !important;
-  font-size: 12px !important;
+  font-size: 14px !important;
   color: rgba(255,255,255,0.6) !important;
 }
 
@@ -415,7 +415,7 @@ textarea.form-control {
 .sidebar-footer {
   padding: 16px 20px;
   border-top: 1px solid rgba(255,255,255,0.1);
-  font-size: 12px;
+  font-size: 14px;
   color: rgba(255,255,255,0.5);
 }
 
@@ -495,7 +495,7 @@ textarea.form-control {
 }
 
 .breadcrumb {
-  font-size: 12px;
+  font-size: 14px;
   color: #888;
   margin-top: 4px;
 }
@@ -548,7 +548,7 @@ textarea.form-control {
 }
 
 .kpi-card .kpi-label {
-  font-size: 12px;
+  font-size: 14px;
   color: #888;
   font-weight: 600;
   text-transform: uppercase;
@@ -569,7 +569,7 @@ textarea.form-control {
 }
 
 .kpi-card .kpi-change {
-  font-size: 12px;
+  font-size: 14px;
   margin-top: 8px;
   font-weight: 600;
 }
@@ -608,7 +608,7 @@ table {
 table th {
   background: #f4f6f9;
   color: #555;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -645,7 +645,7 @@ table tbody tr:last-child td {
   display: inline-block;
   padding: 3px 10px;
   border-radius: 20px;
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 700;
 }
 
@@ -668,7 +668,7 @@ table tbody tr:last-child td {
 }
 
 .page-info {
-  font-size: 12px;
+  font-size: 14px;
   color: #888;
   margin-right: auto;
   padding-left: 4px;
@@ -730,7 +730,7 @@ table tbody tr:last-child td {
 }
 
 .filter-group label {
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 700;
   color: #888;
   text-transform: uppercase;
@@ -823,7 +823,7 @@ table tbody tr:last-child td {
 .bar-light { background: #a8d4ff; }
 
 .bar-label {
-  font-size: 10px;
+  font-size: 14px;
   color: #888;
   position: absolute;
   bottom: 4px;
@@ -858,7 +858,7 @@ table tbody tr:last-child td {
   align-items: center;
   gap: 8px;
   margin-bottom: 8px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .legend-dot {
@@ -951,7 +951,7 @@ table tbody tr:last-child td {
 .app-footer {
   padding: 16px 24px;
   border-top: 1px solid #e0e6ed;
-  font-size: 12px;
+  font-size: 14px;
   color: #aaa;
   text-align: center;
   background: #fff;
@@ -998,9 +998,9 @@ table tbody tr:last-child td {
 }
 
 /* 進捗バッジ */
-.badge-done { background: #10b981; color: #fff; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
-.badge-todo { background: #e5e7eb; color: #6b7280; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
-.sidebar-badge { display: inline-block; background: #10b981; color: #fff; width: 16px; height: 16px; border-radius: 50%; font-size: 10px; line-height: 16px; text-align: center; margin-left: 6px; }
+.badge-done { background: #10b981; color: #fff; padding: 3px 10px; border-radius: 12px; font-size: 14px; font-weight: 700; }
+.badge-todo { background: #e5e7eb; color: #6b7280; padding: 3px 10px; border-radius: 12px; font-size: 14px; font-weight: 700; }
+.sidebar-badge { display: inline-block; background: #10b981; color: #fff; width: 20px; height: 20px; border-radius: 50%; font-size: 14px; line-height: 20px; text-align: center; margin-left: 6px; }
 .road-step.completed { background: #d1fae5; border-color: #10b981; }
 .road-step.completed .num { color: #065f46; }
 .road-step.current { background: #dbeafe; border-color: #2c7be5; box-shadow: 0 0 0 3px rgba(44,123,229,0.2); }
@@ -1020,7 +1020,7 @@ table tbody tr:last-child td {
   background: rgba(255,255,255,0.18);
   border-radius: 999px;
   padding: 4px 14px;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.05em;
   margin-bottom: 12px;
@@ -1150,7 +1150,7 @@ html { scroll-behavior: smooth; }
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 .pad-image figcaption {
-  font-size: 12px;
+  font-size: 14px;
   color: #64748b;
   margin-top: 8px;
   font-style: italic;
@@ -1172,7 +1172,7 @@ html { scroll-behavior: smooth; }
   color: #475569;
   padding: 2px 8px;
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .lesson-figure {
@@ -1199,7 +1199,7 @@ html { scroll-behavior: smooth; }
 }
 .lesson-figure figcaption {
   margin-top: 8px;
-  font-size: 12px;
+  font-size: 14px;
   color: #64748b;
 }
 
@@ -1335,3 +1335,41 @@ html { scroll-behavior: smooth; }
 .proc-list .proc-content .proc-headline { font-size: 16px; font-weight: 700; color: #1f2937; display: block; margin-bottom: 6px; }
 .proc-list .proc-content .proc-headline::before { content: counter(proc) ". "; color: #2c7be5; font-weight: 800; margin-right: 2px; }
 @media (max-width: 860px) { .proc-list > li { grid-template-columns: 1fr; } }
+
+/* PAD 変数名スタイル（変数名そのものを青背景・濃い文字で強調） */
+code.pad-varname {
+  background: #dbeafe;
+  color: #1e3a8a;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-family: Consolas, 'Courier New', monospace;
+}
+
+/* PAD 変数参照スタイル（%変数名% 形式） */
+code.pad-var {
+  background: #f0f5ff;
+  border: 1px solid #c3d9ff;
+  border-radius: 3px;
+  padding: 1px 7px;
+  font-family: Consolas, 'Courier New', monospace;
+  color: #1d4ed8;
+}
+
+/* コピーボタン付きスニペット（貼り付け用パス・文字列） */
+.copy-snippet {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #0f172a;
+  color: #fde68a;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 14px;
+  margin: 4px 0;
+}
+.copy-snippet code { background: transparent; border: none; padding: 0; color: inherit; font-family: inherit; font-size: inherit; }
+.copy-snippet button { background: #facc15; color: #0f172a; border: none; padding: 3px 10px; border-radius: 4px; font-size: 14px; font-weight: 700; cursor: pointer; }
+.copy-snippet button:hover { background: #fde047; }
+.copy-snippet button.copied { background: #34d399; color: #064e3b; }
