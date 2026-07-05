@@ -76,6 +76,86 @@
     .sample-dt-table td { padding: 6px 10px; border: 1px solid #e0e6ed; background: #fff; }
     .sample-dt-table tbody tr:nth-child(even) td { background: #f8f9fc; }
     @media (max-width: 860px) { .step-split { grid-template-columns: 1fr; } }
+
+    /* ===== A-1：変数の3ステップ図解 ===== */
+    .var-steps { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 10px; align-items: stretch; margin: 18px 0; }
+    .vs-step { background: var(--tint, #f8fafc); border: 1.5px solid var(--line, #e0e6ed); border-radius: 12px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+    .vs-no { width: 26px; height: 26px; border-radius: 50%; background: var(--brand, #2c7be5); color: #fff; font-weight: 800; font-size: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .vs-title { font-weight: 800; font-size: 14.5px; color: var(--ink, #1a3a5c); }
+    .vs-visual { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 6px 0; }
+    .vs-arrow { align-self: center; color: var(--brand, #2c7be5); font-size: 20px; font-weight: 800; }
+    .vs-desc { font-size: 14px; color: var(--muted, #555); line-height: 1.7; margin-top: auto; }
+    .vs-box { background: #0d9488; border-radius: 10px; min-width: 116px; padding: 10px 14px; text-align: center; color: #fff; font-weight: 700; box-shadow: 0 4px 12px rgba(13,148,136,0.3); }
+    .vs-box .vs-box-label { font-size: 14px; background: rgba(255,255,255,0.25); border-radius: 4px; padding: 1px 8px; display: inline-block; margin-bottom: 4px; }
+    .vs-box .vs-box-value { font-size: 16px; }
+    .vs-box.empty { background: #94a3b8; box-shadow: none; border: 2px dashed rgba(255,255,255,0.75); }
+    .vs-box.empty .vs-box-value { font-size: 14px; opacity: 0.85; }
+    .vs-in { font-size: 14px; color: var(--muted, #555); font-weight: 700; }
+    .vs-code { background: #1e293b; color: #7dd3fc; border-radius: 6px; padding: 8px 12px; font-family: Consolas, 'Courier New', monospace; font-size: 13px; line-height: 1.7; word-break: break-all; }
+    .vs-result { font-size: 14px; font-weight: 700; color: var(--done, #16a34a); }
+    @media (max-width: 860px) { .var-steps { grid-template-columns: 1fr; } .vs-arrow { transform: rotate(90deg); justify-self: center; } }
+
+    /* ===== A-1：箱の中身を入れ替えるデモ ===== */
+    .try-demo { border: 2px solid var(--brand, #2c7be5); border-radius: 12px; padding: 16px 18px; margin: 18px 0; background: var(--card-bg, #fff); }
+    .try-head { font-weight: 800; font-size: 15px; color: var(--ink, #1a3a5c); margin-bottom: 4px; }
+    .try-lead { font-size: 14px; color: var(--muted, #555); line-height: 1.8; margin: 0 0 12px; }
+    .try-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 18px; align-items: start; }
+    .try-label { display: block; font-size: 14px; font-weight: 700; color: var(--muted, #555); margin-bottom: 6px; }
+    .try-demo input[type=text] { width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1.5px solid var(--line-2, #d0d7de); border-radius: 8px; font-size: 15px; font-family: inherit; background: var(--card-bg, #fff); color: var(--ink, #333); margin-bottom: 10px; }
+    .try-demo input[type=text]:focus { outline: none; border-color: var(--brand, #2c7be5); }
+    .try-run { display: inline-flex; align-items: center; gap: 6px; background: var(--brand, #2c7be5); color: #fff; border: none; border-radius: 8px; padding: 10px 18px; font-size: 14px; font-weight: 800; font-family: inherit; cursor: pointer; margin-top: 10px; }
+    .try-run:hover { filter: brightness(1.1); }
+    .try-output { margin-top: 12px; border: 1.5px solid var(--line, #e0e6ed); border-radius: 10px; padding: 12px 14px; background: var(--tint, #f8fafc); }
+    .try-output-label { font-size: 14px; font-weight: 700; color: var(--muted, #555); }
+    .try-output-msg { font-size: 16px; font-weight: 800; color: var(--ink, #1a3a5c); background: var(--card-bg, #fff); border: 1px solid var(--line, #e0e6ed); border-radius: 8px; padding: 10px 14px; margin-top: 6px; }
+    .try-output-note { font-size: 14px; color: var(--muted, #555); margin-top: 8px; line-height: 1.7; }
+    .try-hint { margin-top: 12px; font-size: 14px; color: var(--muted, #555); background: var(--tint, #f8fafc); border-radius: 8px; padding: 10px 14px; line-height: 1.8; }
+    .pop-flash { animation: popFlash 0.6s ease; }
+    @keyframes popFlash { 0% { transform: scale(1.06); box-shadow: 0 0 0 4px rgba(52,211,153,0.6); } 100% { transform: scale(1); box-shadow: none; } }
+    @media (max-width: 860px) { .try-grid { grid-template-columns: 1fr; } }
+
+    /* ===== A-2：担当者交代シミュレーター ===== */
+    .swap-sim { border: 2px solid var(--brand, #2c7be5); border-radius: 12px; padding: 16px 18px; margin: 16px 0; background: var(--card-bg, #fff); }
+    .swap-ctrl { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin: 10px 0 14px; font-size: 15px; color: var(--ink, #1a3a5c); }
+    .swap-ctrl .try-run { margin-top: 0; }
+    .swap-ctrl strong { font-size: 17px; color: var(--brand, #2c7be5); }
+    .swap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+    .swap-panel { border-radius: 12px; padding: 14px 16px; border: 2px solid; background: var(--card-bg, #fff); }
+    .swap-panel.bad { border-color: #f87171; }
+    .swap-panel.good { border-color: #34d399; }
+    .swap-panel h4 { margin: 0 0 4px; font-size: 15px; font-weight: 800; }
+    .swap-panel.bad h4 { color: #dc2626; }
+    .swap-panel.good h4 { color: var(--done, #16a34a); }
+    .swap-note { font-size: 14px; color: var(--muted, #555); line-height: 1.7; margin-bottom: 10px; }
+    .swap-line { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; background: #1e293b; color: #e2e8f0; border-radius: 6px; padding: 7px 10px; font-family: Consolas, 'Courier New', monospace; font-size: 13px; margin: 6px 0; border: 2px solid transparent; transition: border-color 0.2s; }
+    .swap-line .sl-name { color: #fbbf24; font-weight: 700; }
+    .swap-line.stale { border-color: #ef4444; }
+    .swap-line.stale .sl-name { color: #fda4af; text-decoration: underline wavy #ef4444 1.5px; }
+    .swap-line .fix-btn { background: #ef4444; color: #fff; border: none; border-radius: 6px; padding: 3px 10px; font-size: 13px; font-weight: 700; font-family: inherit; cursor: pointer; margin-left: auto; }
+    .swap-line .fix-btn:hover { filter: brightness(1.1); }
+    .swap-line .swap-prev { color: #86efac; font-weight: 700; margin-left: auto; }
+    .swap-line.flash { animation: lineFlash 0.7s ease; }
+    @keyframes lineFlash { 0% { box-shadow: 0 0 0 3px rgba(52,211,153,0.7); } 100% { box-shadow: none; } }
+    .swap-box-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+    .swap-box-row .vs-box { min-width: 100px; padding: 8px 12px; }
+    .swap-box-row .swap-box-note { font-size: 14px; color: var(--muted, #555); line-height: 1.6; flex: 1; min-width: 120px; }
+    .swap-status { font-size: 14px; font-weight: 800; margin-top: 10px; line-height: 1.7; }
+    .swap-status.warn { color: #dc2626; }
+    .swap-status.ok { color: var(--done, #16a34a); }
+    .swap-count { font-size: 14px; color: var(--muted, #555); margin-top: 4px; }
+    .swap-count b { font-size: 17px; color: var(--ink, #1a3a5c); }
+    .swap-takeaway { margin-top: 14px; font-size: 14px; line-height: 1.9; background: var(--tint, #f8fafc); border-radius: 8px; padding: 12px 16px; color: var(--muted, #555); }
+    .swap-takeaway strong { color: var(--ink, #1a3a5c); }
+    @media (max-width: 860px) { .swap-grid { grid-template-columns: 1fr; } }
+
+    /* ===== A-2：実務での使いどころカード ===== */
+    .use-cases { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 12px 0 4px; }
+    .uc-card { border: 1.5px solid var(--line, #e0e6ed); border-radius: 12px; padding: 14px 16px; background: var(--tint, #f8fafc); display: flex; flex-direction: column; gap: 6px; }
+    .uc-icon { font-size: 26px; line-height: 1; }
+    .uc-title { font-weight: 800; font-size: 14.5px; color: var(--ink, #1a3a5c); line-height: 1.5; }
+    .uc-code { background: #1e293b; color: #7dd3fc; border-radius: 6px; padding: 6px 10px; font-family: Consolas, 'Courier New', monospace; font-size: 13px; line-height: 1.7; word-break: break-all; }
+    .uc-note { font-size: 14px; color: var(--muted, #555); line-height: 1.7; }
+    @media (max-width: 860px) { .use-cases { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -130,16 +210,70 @@
 <div class="lesson-group-header"><span class="lesson-group-label">GROUP A</span><h2>A. 変数の基本</h2><span class="lesson-group-desc">変数とは何か／なぜ使うのか／命名／データ型を一気に押さえる</span></div><section class="lesson-section" id="sec-a-1"><div class="card">
 <div class="card-header"><h3>A-1. 変数 ＝ データを入れておく「箱」</h3></div>
 <div class="card-body" style="font-size:14px; line-height:1.9;">
-<p>変数は、数字や文字などのデータを一時的に保存しておく場所です。箱に名前をつけて、中に好きなデータを入れておけます。</p>
-<div style="display:flex; gap:20px; align-items:center; justify-content:center; flex-wrap:wrap; padding:12px 0;">
-<div class="magic-box"><div class="box-label">担当者名</div><div class="box-value">田中さん</div></div>
-<div class="magic-box" style="background:#1d4ed8;"><div class="box-label">注文数</div><div class="box-value" style="font-size:20px;">50</div></div>
-<div class="magic-box" style="background:#7c3aed;"><div class="box-label">完了フラグ</div><div class="box-value">True</div></div>
+<p>変数は、数字や文字などのデータを一時的に保存しておく場所です。箱に名前をつけて、中に好きなデータを入れておけます。使い方は、たったこの<strong>3ステップ</strong>です。</p>
+<div class="var-steps">
+<div class="vs-step">
+<div class="vs-no">1</div>
+<div class="vs-title">箱を作って、名前をつける</div>
+<div class="vs-visual">
+<div class="vs-box empty"><div class="vs-box-label">担当者名</div><div class="vs-box-value">（まだ空っぽ）</div></div>
+</div>
+<div class="vs-desc">箱につけた名前が「<strong>変数名</strong>」です。何を入れる箱なのか分かる名前にします。</div>
+</div>
+<div class="vs-arrow">▶</div>
+<div class="vs-step">
+<div class="vs-no">2</div>
+<div class="vs-title">データを入れる（＝代入）</div>
+<div class="vs-visual">
+<div class="vs-in">「田中」を入れる ⬇</div>
+<div class="vs-box"><div class="vs-box-label">担当者名</div><div class="vs-box-value">田中</div></div>
+</div>
+<div class="vs-desc">箱に値をしまうことを「<strong>代入</strong>」と呼びます。中身は何度でも入れ替えられます。</div>
+</div>
+<div class="vs-arrow">▶</div>
+<div class="vs-step">
+<div class="vs-no">3</div>
+<div class="vs-title"><code class="pad-var">%箱の名前%</code> で取り出す</div>
+<div class="vs-visual">
+<div class="vs-code">メッセージを表示("%担当者名%さん")</div>
+<div class="vs-result">→ 「田中さん」と表示される！</div>
+</div>
+<div class="vs-desc">% で囲んで書いた場所に、実行時に<strong>箱の中身が流し込まれます</strong>。</div>
+</div>
+</div>
+<div class="try-demo" id="varBoxDemo">
+<div class="try-head">🧪 やってみよう：箱の中身を入れ替えると、結果はどうなる？</div>
+<p class="try-lead">左の箱に好きな名前を入れて、右のフローを実行してみてください。<strong>フロー側は1文字も書き換えません</strong>。</p>
+<div class="try-grid">
+<div class="try-left">
+<label class="try-label" for="vbInput">① 箱に入れる名前（自由に書き換えてOK）</label>
+<input id="vbInput" maxlength="12" type="text" value="田中"/>
+<div style="display:flex; justify-content:center;">
+<div class="vs-box"><div class="vs-box-label">担当者名</div><div class="vs-box-value" id="vbBoxValue">田中</div></div>
+</div>
+</div>
+<div class="try-right">
+<span class="try-label">② フロー（こちらはずっとこのまま）</span>
+<div class="vs-code">メッセージを表示("%担当者名%さん、お疲れさまです！")</div>
+<button class="try-run" id="vbRun" type="button">▶ フローを実行する</button>
+<div class="try-output" hidden="" id="vbOutput">
+<div class="try-output-label">実行結果（メッセージボックス）</div>
+<div class="try-output-msg" id="vbMsg"></div>
+<div class="try-output-note" id="vbNote"></div>
+</div>
+</div>
+</div>
+<div class="try-hint">💡 名前を「佐藤」に書き換えて、もう一度<strong>実行</strong>してみてください。<strong>フローは同じままなのに、結果だけが変わります</strong>。この「書き換えるのは箱の中身だけ」という感覚が、変数のいちばん大事なポイントです。</div>
 </div>
 <div class="point-block">
                 箱には<strong>数字・文字・Yes/No（True/False）</strong>などいろんな種類のデータを入れられます。<br/>
                 PAD では <code class="pad-var">%変数名%</code> と書くことで、箱の中身をプログラムの中で使えます。
               </div>
+<div style="display:flex; gap:20px; align-items:center; justify-content:center; flex-wrap:wrap; padding:12px 0;">
+<div class="magic-box"><div class="box-label">担当者名</div><div class="box-value">田中さん</div></div>
+<div class="magic-box" style="background:#1d4ed8;"><div class="box-label">注文数</div><div class="box-value" style="font-size:20px;">50</div></div>
+<div class="magic-box" style="background:#7c3aed;"><div class="box-label">完了フラグ</div><div class="box-value">True</div></div>
+</div>
 <figure class="figure-center" style="display:flex; flex-direction:column; align-items:center; margin:14px 0;">
 <img alt="PAD のフロー編集画面：アクションの詳細画面下に生成された変数が表示されている様子" src="assets/lessons/lesson-2_01_variables_pane.png" style="max-width:70%; height:auto; border:1px solid #d8dee9; border-radius:8px; display:block;"/>
 <figcaption style="font-size:14px; color:#64748b; margin-top:6px; text-align:center;">PAD のフロー編集画面：アクションの詳細画面下に生成された変数が表示されている様子</figcaption>
@@ -149,24 +283,37 @@
 <section class="lesson-section" id="sec-a-2"><div class="card">
 <div class="card-header"><h3>A-2. なぜ変数を使うの？</h3></div>
 <div class="card-body" style="font-size:14px; line-height:1.9;">
-<p>「決まった値をそのまま書けばいいのでは？」と思うかもしれません。ところが<strong>同じ値を何度も使う</strong>フローや、<strong>毎回中身が変わる</strong>フローでは、変数を使わないとあっという間に作り直し・ミスの温床になります。まずは下の Before / After で違いを見てみましょう。</p>
-<div class="compare-grid">
-<div class="compare-box bad">
-<h4>😰 変数を使わないと…</h4>
-<p>担当者が変わるたびにフロー内の「田中さん」を<strong>全部探して書き直す</strong>必要があります。1か所でも書き忘れると、田中さん宛のはずが別の人の名前のまま…というバグの原因に！</p>
-<div class="code-block">メール送信("田中さんへ")
-レポート作成("田中さん担当")
-通知送信("田中さん確認済")</div>
+<p>「決まった値をそのまま書けばいいのでは？」と思うかもしれません。ところが<strong>同じ値を何度も使う</strong>フローや、<strong>毎回中身が変わる</strong>フローでは、変数を使わないとあっという間に作り直し・ミスの温床になります。下のシミュレーターで、<strong>担当者が交代したときに何が起きるか</strong>を実際に体験してみましょう。</p>
+<div class="swap-sim" id="swapSim">
+<div class="try-head">🧪 担当者交代シミュレーター：直書き vs 変数</div>
+<p class="try-lead">「担当者の名前」を3つのアクションで使っている、同じ内容のフローが2本あります。<strong>交代ボタン</strong>を押して、それぞれのフローがどうなるか見比べてください。</p>
+<div class="swap-ctrl">
+<span>現在の担当者：<strong id="swapCurrent">田中</strong> さん</span>
+<button class="try-run" id="swapBtn" type="button">👤 担当者を交代する</button>
 </div>
-<div class="compare-box good">
-<h4>😊 変数を使うと！</h4>
-<p>「担当者名」という箱に名前を入れておけば、<strong>箱の中身を1か所変えるだけ</strong>でフロー全体に反映されます。書き換え漏れが構造的に起こりません。</p>
-<div class="code-block">担当者名 = "田中さん"
-↓
-メール送信(%担当者名%へ)
-レポート作成(%担当者名%担当)
-通知送信(%担当者名%確認済)</div>
+<div class="swap-grid">
+<div class="swap-panel bad">
+<h4>😰 直書きフロー</h4>
+<div class="swap-note">名前をそのまま書いたフロー。交代したら、間違っている場所を<strong>自分で探して1つずつ直す</strong>しかありません。</div>
+<div id="badLines"></div>
+<div class="swap-status ok" id="badStatus">✅ いまはすべて正しい名前です</div>
+<div class="swap-count">これまでの手作業修正：<b id="badCount">0</b> 回</div>
 </div>
+<div class="swap-panel good">
+<h4>😊 変数フロー</h4>
+<div class="swap-note">名前は「担当者名」の箱に<strong>1回だけ</strong>。アクションは <code class="pad-var">%担当者名%</code> を参照します。</div>
+<div class="swap-box-row">
+<div class="vs-box"><div class="vs-box-label">担当者名</div><div class="vs-box-value" id="goodBoxValue">田中</div></div>
+<div class="swap-box-note">← 交代ボタンが、この箱への<strong>代入</strong>にあたります</div>
+</div>
+<div id="goodLines"></div>
+<div class="swap-status ok">✨ 箱を書き換えるだけで、全行に自動反映</div>
+<div class="swap-count">これまでの手作業修正：<b>0</b> 回（ずっと 0 回）</div>
+</div>
+</div>
+<div class="swap-takeaway">
+                📌 <strong>交代のたびに、直書きは3か所・変数は0か所</strong>。今回は3行だけですが、実務のフローでは同じ値を<strong>何十か所</strong>で使います。しかも直し忘れてもエラーにはならず、<strong>間違った名前のまま動いてしまう</strong>のが直書きの怖いところです。
+              </div>
 </div>
 
 <h4 style="margin:22px 0 10px; color:#1a3a5c;">変数を使うと、こんな「うれしいこと」が起きます</h4>
@@ -182,6 +329,28 @@
 <strong>③ 「実行のたびに変わる値」を受け止められる</strong><br/>
                 現在日時・ユーザーが選んだ部署・Web から取ってきたスタッフ情報など、<strong>動かすまで中身が決まらない値</strong>は、そもそも直書きできません。こうした値は必ず変数に入れて扱います。次の A-④ で出てくる「ユーザーに選ばせる → 選ばれた値を変数に入れる」がまさにこれです。
               </div>
+
+<h4 style="margin:22px 0 10px; color:#1a3a5c;">実際には、こんな「箱」が活躍します（最終演習より）</h4>
+<div class="use-cases">
+<div class="uc-card">
+<div class="uc-icon">📁</div>
+<div class="uc-title">実行した日時を、フォルダ名にする</div>
+<div class="uc-code">フォルダ名 = %現在の日時_テキスト%<br/>→「20260705_1430」を作成</div>
+<div class="uc-note">実行するたびに中身が変わる「現在日時」は、変数でしか扱えません。<strong>第3回</strong>で作ります。</div>
+</div>
+<div class="uc-card">
+<div class="uc-icon">🔍</div>
+<div class="uc-title">選んだ部署を、URL に埋め込む</div>
+<div class="uc-code">staff-list.html?dept=%選択部署%</div>
+<div class="uc-note">ユーザーがダイアログで選んだ部署で、スタッフ一覧を絞り込みます。<strong>第5回</strong>で作ります。</div>
+</div>
+<div class="uc-card">
+<div class="uc-icon">👥</div>
+<div class="uc-title">スタッフ一覧を、1人ずつ処理する</div>
+<div class="uc-code">%処理中スタッフ['氏名']% のシートを作成</div>
+<div class="uc-note">ループのたびに中身が入れ替わる箱で、全員ぶんの Excel を量産します。<strong>第6回</strong>で作ります。</div>
+</div>
+</div>
 
 <div class="bridge-block" style="margin-top:16px; font-size:14px;">
 <strong>🎯 最終演習とのつながり：</strong> 第7回で組む最終フローは、<strong>選んだ部署・役職</strong>、<strong>取得した現在日時</strong>、<strong>スクレイピングしたスタッフ一覧</strong>を、すべて変数に入れて処理していきます。つまり<strong>変数を制することが、最終演習を完走する土台</strong>になります。この回でしっかり腹落ちさせておきましょう。
@@ -466,6 +635,129 @@
     // STAFF_DATA は common.js に定義されているので、読み込み後に描画
     if (typeof STAFF_DATA !== 'undefined') renderDt();
     else setTimeout(renderDt, 300);
+
+    // ============================================================
+    // A-1：箱の中身を入れ替えるデモ
+    // ============================================================
+    (function () {
+      const inp = document.getElementById('vbInput');
+      const boxValue = document.getElementById('vbBoxValue');
+      const runBtn = document.getElementById('vbRun');
+      const output = document.getElementById('vbOutput');
+      const msg = document.getElementById('vbMsg');
+      const note = document.getElementById('vbNote');
+      if (!inp || !runBtn) return;
+
+      inp.addEventListener('input', () => {
+        const v = inp.value.trim();
+        boxValue.textContent = v || '（空っぽ）';
+        boxValue.classList.remove('pop-flash');
+        void boxValue.offsetWidth;
+        boxValue.classList.add('pop-flash');
+      });
+
+      runBtn.addEventListener('click', () => {
+        const v = inp.value.trim() || '名無し';
+        msg.textContent = v + 'さん、お疲れさまです！';
+        note.innerHTML = 'フロー内の <code class="pad-var">%担当者名%</code> が、箱の中身「<strong>' +
+          v.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') +
+          '</strong>」に置き換わりました。';
+        output.hidden = false;
+        msg.classList.remove('pop-flash');
+        void msg.offsetWidth;
+        msg.classList.add('pop-flash');
+      });
+    })();
+
+    // ============================================================
+    // A-2：担当者交代シミュレーター（直書き vs 変数）
+    // ============================================================
+    (function () {
+      const NAMES = ['田中', '佐藤', '鈴木', '高橋'];
+      const TPLS = [
+        { pre: 'メール送信(「', post: 'さんへ」)' },
+        { pre: 'レポート作成(「', post: 'さん担当」)' },
+        { pre: '通知送信(「', post: 'さん確認済」)' },
+      ];
+      const swapBtn = document.getElementById('swapBtn');
+      const currentEl = document.getElementById('swapCurrent');
+      const badWrap = document.getElementById('badLines');
+      const goodWrap = document.getElementById('goodLines');
+      const badStatus = document.getElementById('badStatus');
+      const badCountEl = document.getElementById('badCount');
+      const goodBox = document.getElementById('goodBoxValue');
+      if (!swapBtn || !badWrap || !goodWrap) return;
+
+      let idx = 0;                                  // 現在の担当者
+      let fixes = 0;                                // 手作業修正の累計
+      const written = TPLS.map(() => NAMES[0]);     // 直書きフローに「書かれている」名前
+
+      function current() { return NAMES[idx]; }
+
+      function renderBad() {
+        badWrap.innerHTML = '';
+        let staleCount = 0;
+        TPLS.forEach((t, i) => {
+          const line = document.createElement('div');
+          line.className = 'swap-line';
+          const isStale = written[i] !== current();
+          if (isStale) { line.classList.add('stale'); staleCount++; }
+          line.innerHTML = '<span>' + t.pre + '<span class="sl-name">' + written[i] + '</span>' + t.post + '</span>';
+          if (isStale) {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'fix-btn';
+            btn.textContent = '✏️ 直す';
+            btn.addEventListener('click', () => {
+              written[i] = current();
+              fixes++;
+              badCountEl.textContent = fixes;
+              renderBad();
+            });
+            line.appendChild(btn);
+          }
+          badWrap.appendChild(line);
+        });
+        if (staleCount > 0) {
+          badStatus.className = 'swap-status warn';
+          badStatus.textContent = '⚠️ 直し忘れが ' + staleCount + ' 件！「✏️ 直す」を1つずつ押して修正してください';
+        } else if (fixes > 0) {
+          badStatus.className = 'swap-status ok';
+          badStatus.textContent = '✅ ぜんぶ直しました…（この手作業を交代のたびに繰り返すことになります）';
+        } else {
+          badStatus.className = 'swap-status ok';
+          badStatus.textContent = '✅ いまはすべて正しい名前です';
+        }
+      }
+
+      function renderGood(flash) {
+        goodWrap.innerHTML = '';
+        TPLS.forEach((t) => {
+          const line = document.createElement('div');
+          line.className = 'swap-line' + (flash ? ' flash' : '');
+          line.innerHTML =
+            '<span>' + t.pre.replace('(「', '(') + '<code class="pad-var">%担当者名%</code>' + t.post.replace('」)', ')') + '</span>' +
+            '<span class="swap-prev">→「' + current() + t.post.replace('」)', '」').replace(')', '') + '</span>';
+          goodWrap.appendChild(line);
+        });
+        goodBox.textContent = current();
+        if (flash) {
+          goodBox.classList.remove('pop-flash');
+          void goodBox.offsetWidth;
+          goodBox.classList.add('pop-flash');
+        }
+      }
+
+      swapBtn.addEventListener('click', () => {
+        idx = (idx + 1) % NAMES.length;
+        currentEl.textContent = current();
+        renderBad();
+        renderGood(true);
+      });
+
+      renderBad();
+      renderGood(false);
+    })();
   </script>
 </body>
 </html>
