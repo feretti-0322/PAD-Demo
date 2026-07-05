@@ -3,8 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>社内フロー事例集 | PAD練習サイト</title>
+  <title>社内フロー事例集 | Fellows PAD道場</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/corporate.css?v=11">
+  <script src="js/theme.js?v=2"></script>
   <style>
     .learn-hero {
       background: linear-gradient(135deg, #1a3a5c 0%, #0d7377 100%);
@@ -94,7 +99,25 @@
     .case-card .delete-btn:hover { background: #fee2e2; }
     .empty-msg { text-align: center; color: #9ca3af; padding: 30px; font-size: 14px; }
     .loading-msg { text-align: center; color: #6b7280; padding: 20px; font-size: 13px; }
+
+    /* ===== 埋め込みモード（ホーム画面のタブに iframe で表示するとき）=====
+       自前のサイドバー・トップバー・フッター・ヒーローを隠し、
+       コンテンツだけをタブ内にフラットに表示する */
+    html.embed body { background: transparent; }
+    html.embed #sidebarContainer { display: none; }
+    html.embed .topbar { display: none; }
+    html.embed .app-footer { display: none; }
+    html.embed .learn-hero { display: none; }
+    html.embed .main-content { margin-left: 0; }
+    html.embed .page-content { padding: 0; max-width: none; }
+    html.embed .card:first-of-type { margin-top: 0; }
   </style>
+  <script>
+    // iframe 埋め込み（?embed=1）のときは body 描画前に embed クラスを付与
+    if (new URLSearchParams(location.search).get('embed') === '1') {
+      document.documentElement.classList.add('embed');
+    }
+  </script>
 </head>
 <body>
   <div class="app-layout">
@@ -108,76 +131,8 @@
 
         <section class="learn-hero">
           <h2>📚 社内フロー事例集 ― 同僚の自動化を真似て学ぼう</h2>
-          <p>自分の業務にPADを応用するとき、ゼロから設計するより<strong>「他の人がどう自動化したか」を真似るほうが圧倒的に早い</strong>。このページは全国200名の受講者がフロー事例を投稿し、互いに参照するための共有スペースです。気に入った事例には「いいね」を押し、フローテキストをZIPでダウンロードしてPADに取り込みましょう。</p>
+          <p>自分の業務にPADを応用するとき、ゼロから設計するより<strong>「他の人がどう自動化したか」を真似るほうが圧倒的に早い</strong>。このページは全国200名の受講者が投稿したフロー事例を<strong>探して・見る</strong>ための共有スペースです。気に入った事例には「いいね」を押し、フローテキストをZIPでダウンロードしてPADに取り込みましょう。<br><strong>✏️ 事例の投稿は<a href="pad-overview.html#post" style="color:#fff; text-decoration:underline;">ホーム画面</a>から行えます。</strong></p>
         </section>
-
-        <div class="card">
-          <div class="card-header"><h3>✏️ 事例を投稿する</h3></div>
-          <div class="card-body">
-            <div class="form-grid">
-              <div class="form-row full">
-                <label>タイトル <span style="color:#b91c1c;">*</span></label>
-                <input type="text" id="fTitle" placeholder="例：マッハバイト応募者を毎朝Excelに集計" maxlength="200">
-              </div>
-              <div class="form-row">
-                <label>業務カテゴリ <span style="color:#b91c1c;">*</span></label>
-                <select id="fCategory">
-                  <option value="">選択してください</option>
-                  <option>スタッフ管理</option>
-                  <option>求人媒体運用</option>
-                  <option>売上集計</option>
-                  <option>Excel自動化</option>
-                  <option>メール処理</option>
-                  <option>その他</option>
-                </select>
-              </div>
-              <div class="form-row">
-                <label>節約時間（時間/月） <span style="color:#b91c1c;">*</span></label>
-                <input type="number" id="fSaved" min="0" max="1000" step="1" placeholder="例：10">
-              </div>
-              <div class="form-row full">
-                <label>使用したPADアクション（任意・複数選択可）</label>
-                <div class="action-checks" id="fActionChecks">
-                  <label><input type="checkbox" value="ブラウザ操作"><span>ブラウザ操作</span></label>
-                  <label><input type="checkbox" value="Excel操作"><span>Excel操作</span></label>
-                  <label><input type="checkbox" value="Outlook操作"><span>Outlook操作</span></label>
-                  <label><input type="checkbox" value="その他"><span>その他</span></label>
-                </div>
-              </div>
-              <div class="form-row full">
-                <label>概要 <span style="color:#b91c1c;">*</span></label>
-                <textarea id="fSummary" rows="4" placeholder="3〜5行でフローの内容を説明してください" maxlength="2000"></textarea>
-              </div>
-            </div>
-
-            <div class="flow-section">
-              <h4>📥 PADフローテキスト（任意）</h4>
-              <div class="hint">
-                PAD編集画面で全選択（Ctrl+A）→ コピー（Ctrl+C）した内容をそのまま貼り付けてください。<br>
-                Mainサブフローと、それ以外のサブフローを別々に保存できます。「+ サブフローを追加」で複数ペアの登録が可能です。
-              </div>
-              <div id="flowList"></div>
-              <button type="button" class="btn-add-flow" id="btnAddFlow">+ サブフローを追加</button>
-            </div>
-
-            <div class="flow-section">
-              <h4>📎 添付ファイル（任意）</h4>
-              <div class="hint">
-                Excelテンプレート、CSV、画像など、フローと一緒に共有したいファイルをアップロードできます。<br>
-                1ファイル最大25MBまで。複数ファイル選択可。
-              </div>
-              <input type="file" id="fAttachInput" class="attach-input" multiple>
-              <div id="attachList"></div>
-            </div>
-
-            <div class="err-msg" id="formErr" style="display:none;"></div>
-            <div class="ok-msg" id="formOk" style="display:none;">投稿しました</div>
-            <div style="margin-top:14px;">
-              <button class="btn btn-primary" id="btnSubmit">投稿する</button>
-              <button class="btn btn-outline" id="btnReset">クリア</button>
-            </div>
-          </div>
-        </div>
 
         <div class="card">
           <div class="card-header"><h3>🔍 事例を探す</h3></div>
@@ -228,7 +183,7 @@
         </div>
 
       </main>
-      <footer class="app-footer">© 2025 PAD練習サイト</footer>
+      <footer class="app-footer">© 2025 Fellows PAD道場</footer>
     </div>
   </div>
 
@@ -237,7 +192,7 @@
   <script src="js/env.js"></script>
   <script src="js/supabase-client.js"></script>
   <script src="js/auth.js"></script>
-  <script src="js/common.js?v=2"></script>
+  <script src="js/common.js?v=8"></script>
   <script>
     let currentUser = null;
     let isAdminFlag = false;
@@ -247,9 +202,8 @@
     let flowFileSet = new Set(); // フローファイルが1件以上ある case_study_id
     let attachmentMap = {};      // { case_study_id: [{file_name, storage_path}, ...] }
     let profileMap = {};         // { user_id: display_name }
-    let attachFiles = [];        // 投稿フォームで選択中の File オブジェクト
-
-    const ATTACH_MAX_SIZE = 25 * 1024 * 1024;
+    const PAGE_SIZE = 15;        // 初期表示＆「もっと見る」1回あたりの表示追加数
+    let visibleCount = PAGE_SIZE;
 
     const FILE_NAME_FORBIDDEN = /[\\/:*?"<>|]/g;
 
@@ -289,84 +243,8 @@
       });
     }
 
-    // -------- フローテキスト入力ペアの動的UI --------
-    function addFlowPair(initialName) {
-      const list = document.getElementById('flowList');
-      const wrap = document.createElement('div');
-      wrap.className = 'flow-pair';
-      wrap.innerHTML = `
-        <div class="pair-head">
-          <input type="text" class="flow-name" placeholder="ファイル名（例：Main / 2日目 / エラー処理）" maxlength="100" value="${escapeHtml(initialName || '')}">
-          <button type="button" class="pair-del">削除</button>
-        </div>
-        <textarea class="flow-text" placeholder="PAD編集画面でCtrl+A→Ctrl+Cした内容をそのまま貼り付け"></textarea>
-      `;
-      // 禁則文字のリアルタイム置換
-      const nameInput = wrap.querySelector('.flow-name');
-      nameInput.addEventListener('input', () => {
-        const sanitized = nameInput.value.replace(FILE_NAME_FORBIDDEN, '_');
-        if (sanitized !== nameInput.value) {
-          const pos = nameInput.selectionStart;
-          nameInput.value = sanitized;
-          nameInput.setSelectionRange(pos, pos);
-        }
-      });
-      wrap.querySelector('.pair-del').onclick = () => wrap.remove();
-      list.appendChild(wrap);
-    }
-
-    function collectFlowPairs() {
-      const pairs = [];
-      document.querySelectorAll('#flowList .flow-pair').forEach(p => {
-        const name = sanitizeFileName(p.querySelector('.flow-name').value);
-        const text = p.querySelector('.flow-text').value;
-        if (name && text.trim()) pairs.push({ file_name: name, flow_text: text });
-      });
-      return pairs;
-    }
-
     function getCheckedActions(containerId) {
       return Array.from(document.querySelectorAll('#' + containerId + ' input[type=checkbox]:checked')).map(c => c.value);
-    }
-
-    // -------- 添付ファイル選択UI --------
-    function formatBytes(n) {
-      if (n < 1024) return n + ' B';
-      if (n < 1024*1024) return (n/1024).toFixed(1) + ' KB';
-      return (n/1024/1024).toFixed(2) + ' MB';
-    }
-
-    function renderAttachList() {
-      const list = document.getElementById('attachList');
-      list.innerHTML = attachFiles.map((f, i) => `
-        <div class="attach-item">
-          <span class="att-name">📎 ${escapeHtml(f.name)}</span>
-          <span class="att-size">${formatBytes(f.size)}</span>
-          <button type="button" class="att-del" data-att-i="${i}">削除</button>
-        </div>
-      `).join('');
-      list.querySelectorAll('[data-att-i]').forEach(btn => {
-        btn.onclick = () => {
-          attachFiles.splice(parseInt(btn.dataset.attI, 10), 1);
-          renderAttachList();
-        };
-      });
-    }
-
-    function onAttachInputChange(e) {
-      const errEl = document.getElementById('formErr');
-      const newFiles = Array.from(e.target.files || []);
-      const tooBig = newFiles.filter(f => f.size > ATTACH_MAX_SIZE);
-      if (tooBig.length > 0) {
-        errEl.textContent = '25MBを超えるファイルは添付できません：' + tooBig.map(f => f.name).join(', ');
-        errEl.style.display = 'block';
-        e.target.value = '';
-        return;
-      }
-      errEl.style.display = 'none';
-      attachFiles.push(...newFiles);
-      e.target.value = ''; // 同じファイルを再選択できるようリセット
-      renderAttachList();
     }
 
     // -------- データ取得 --------
@@ -456,7 +334,8 @@
         return;
       }
 
-      list.innerHTML = '<div class="case-grid">' + filtered.map(c => {
+      const shown = filtered.slice(0, visibleCount);
+      list.innerHTML = '<div class="case-grid">' + shown.map(c => {
         const author = profileMap[c.user_id] || '不明なユーザー';
         const likeCount = likeMap[c.id] || 0;
         const liked = likedSet.has(c.id);
@@ -486,7 +365,10 @@
           <div class="author">👤 ${escapeHtml(author)} ・ ${formatRelativeTime(c.created_at)}</div>
         </div>
       `;
-      }).join('') + '</div>';
+      }).join('') + '</div>'
+      + (filtered.length > visibleCount
+          ? `<div class="load-more-wrap"><button type="button" class="load-more-btn" id="loadMoreBtn">もっと見る（残り ${filtered.length - visibleCount} 件）</button></div>`
+          : '');
 
       document.querySelectorAll('[data-like]').forEach(btn => {
         btn.onclick = () => toggleLike(parseInt(btn.dataset.like, 10));
@@ -497,6 +379,8 @@
       document.querySelectorAll('[data-dl]').forEach(btn => {
         btn.onclick = () => downloadFlowZip(parseInt(btn.dataset.dl, 10), btn.dataset.title, btn);
       });
+      const moreBtn = document.getElementById('loadMoreBtn');
+      if (moreBtn) moreBtn.onclick = () => { visibleCount += PAGE_SIZE; render(); };
     }
 
     // -------- いいね --------
@@ -587,164 +471,6 @@
       }
     }
 
-    // -------- 添付ファイルアップロード（投稿時） --------
-    async function uploadAttachments(caseId, files) {
-      if (!files || files.length === 0) return [];
-      const uploaded = []; // { path } 失敗時のクリーンアップ用
-      try {
-        const inserts = [];
-        for (const f of files) {
-          const safeName = sanitizeFileName(f.name) || 'file';
-          const path = `${currentUser.id}/${caseId}/${Date.now()}_${Math.random().toString(36).slice(2,8)}_${safeName}`;
-          const { error: upErr } = await window.supabaseClient.storage
-            .from('case-attachments')
-            .upload(path, f, { contentType: f.type || 'application/octet-stream' });
-          if (upErr) throw new Error(`「${f.name}」のアップロードに失敗：${upErr.message}`);
-          uploaded.push(path);
-          inserts.push({
-            case_study_id: caseId,
-            file_name: safeName,
-            storage_path: path,
-            file_size: f.size,
-            mime_type: f.type || null
-          });
-        }
-        const { error: insErr } = await window.supabaseClient
-          .from('case_attachments').insert(inserts);
-        if (insErr) throw new Error('添付ファイルの記録に失敗：' + insErr.message);
-        return inserts.map(i => ({ file_name: i.file_name, storage_path: i.storage_path }));
-      } catch (e) {
-        // クリーンアップ：アップロード済みファイルを削除
-        if (uploaded.length > 0) {
-          await window.supabaseClient.storage.from('case-attachments').remove(uploaded).catch(() => {});
-        }
-        throw e;
-      }
-    }
-
-    // -------- 投稿（2段階INSERT＋失敗時ロールバック） --------
-    async function submitCase() {
-      const title = document.getElementById('fTitle').value.trim();
-      const category = document.getElementById('fCategory').value;
-      const savedRaw = document.getElementById('fSaved').value;
-      const summary = document.getElementById('fSummary').value.trim();
-      const actionsArr = getCheckedActions('fActionChecks');
-      const actionsStr = actionsArr.join(',');
-      const flowPairs = collectFlowPairs();
-
-      const errEl = document.getElementById('formErr');
-      const okEl = document.getElementById('formOk');
-
-      const errs = [];
-      if (!title) errs.push('タイトル');
-      if (!category) errs.push('カテゴリ');
-      const savedNum = parseInt(savedRaw, 10);
-      if (savedRaw === '' || isNaN(savedNum) || savedNum < 0 || savedNum > 1000) errs.push('節約時間（0〜1000の数値）');
-      if (!summary) errs.push('概要');
-
-      // フロー：ファイル名重複チェック
-      const nameSet = new Set();
-      for (const p of flowPairs) {
-        if (nameSet.has(p.file_name)) {
-          errs.push(`フローのファイル名が重複しています：「${p.file_name}」`);
-          break;
-        }
-        nameSet.add(p.file_name);
-      }
-
-      if (errs.length) {
-        errEl.textContent = '入力エラー：' + errs.join(' / ') + ' を確認してください。';
-        errEl.style.display = 'block';
-        okEl.style.display = 'none';
-        return;
-      }
-      errEl.style.display = 'none';
-
-      const btn = document.getElementById('btnSubmit');
-      btn.disabled = true; btn.textContent = '投稿中...';
-
-      // ステップ1：case_studies に INSERT
-      const { data: inserted, error: insErr } = await window.supabaseClient
-        .from('case_studies')
-        .insert({
-          user_id: currentUser.id,
-          title, category,
-          saved_hours: savedNum,
-          summary,
-          actions: actionsStr || null
-        })
-        .select('id, user_id, title, category, saved_hours, summary, actions, created_at')
-        .single();
-
-      if (insErr) {
-        btn.disabled = false; btn.textContent = '投稿する';
-        errEl.textContent = '投稿に失敗：' + insErr.message;
-        errEl.style.display = 'block';
-        return;
-      }
-
-      // ステップ2：case_flow_files に複数行 INSERT（任意）
-      let flowSaved = false;
-      if (flowPairs.length > 0) {
-        const rows = flowPairs.map(p => ({
-          case_study_id: inserted.id,
-          file_name: p.file_name,
-          flow_text: p.flow_text
-        }));
-        const { error: flowErr } = await window.supabaseClient
-          .from('case_flow_files').insert(rows);
-        if (flowErr) {
-          await window.supabaseClient.from('case_studies').delete().eq('id', inserted.id);
-          btn.disabled = false; btn.textContent = '投稿する';
-          errEl.textContent = 'フローテキストの保存に失敗したため投稿を取り消しました：' + flowErr.message;
-          errEl.style.display = 'block';
-          return;
-        }
-        flowSaved = true;
-      }
-
-      // ステップ3：添付ファイルをStorageへアップロード＋メタ行INSERT（任意）
-      let savedAttaches = [];
-      if (attachFiles.length > 0) {
-        btn.textContent = 'ファイルをアップロード中...';
-        try {
-          savedAttaches = await uploadAttachments(inserted.id, attachFiles);
-        } catch (e) {
-          await window.supabaseClient.from('case_studies').delete().eq('id', inserted.id);
-          btn.disabled = false; btn.textContent = '投稿する';
-          errEl.textContent = '投稿を取り消しました：' + e.message;
-          errEl.style.display = 'block';
-          return;
-        }
-      }
-
-      btn.disabled = false; btn.textContent = '投稿する';
-      cases.unshift(inserted);
-      if (flowSaved) flowFileSet.add(inserted.id);
-      if (savedAttaches.length > 0) attachmentMap[inserted.id] = savedAttaches;
-      okEl.style.display = 'block';
-      setTimeout(() => okEl.style.display = 'none', 3000);
-      resetForm();
-      render();
-    }
-
-    function resetForm() {
-      document.getElementById('fTitle').value = '';
-      document.getElementById('fCategory').value = '';
-      document.getElementById('fSaved').value = '';
-      document.getElementById('fSummary').value = '';
-      document.querySelectorAll('#fActionChecks input[type=checkbox]').forEach(cb => {
-        cb.checked = false;
-        cb.parentElement.classList.remove('checked');
-      });
-      document.getElementById('flowList').innerHTML = '';
-      addFlowPair('Main');
-      attachFiles = [];
-      renderAttachList();
-      document.getElementById('fAttachInput').value = '';
-      document.getElementById('formErr').style.display = 'none';
-    }
-
     (async () => {
       currentUser = await window.auth.requireAuth();
       if (!currentUser) return;
@@ -755,20 +481,12 @@
       if (profile?.display_name) profileMap[currentUser.id] = profile.display_name;
       document.getElementById('sidebarContainer').innerHTML = renderSidebar('case-study');
 
-      // 初期フローペア
-      addFlowPair('Main');
-
-      // 投稿フォームのアクションチェックボックス：見た目の連動
-      bindActionCheckHighlight(document.getElementById('fActionChecks'));
+      // フィルターのアクションチェックボックス：見た目の連動
       bindActionCheckHighlight(document.getElementById('fFilterActions'));
 
-      document.getElementById('btnSubmit').onclick = submitCase;
-      document.getElementById('btnReset').onclick = resetForm;
-      document.getElementById('btnAddFlow').onclick = () => addFlowPair('');
-      document.getElementById('fAttachInput').onchange = onAttachInputChange;
-
-      ['fSearch','fFilterCat','fSort'].forEach(id => document.getElementById(id).addEventListener('input', render));
-      document.querySelectorAll('#fFilterActions input[type=checkbox]').forEach(cb => cb.addEventListener('change', render));
+      const applyFilter = () => { visibleCount = PAGE_SIZE; render(); };
+      ['fSearch','fFilterCat','fSort'].forEach(id => document.getElementById(id).addEventListener('input', applyFilter));
+      document.querySelectorAll('#fFilterActions input[type=checkbox]').forEach(cb => cb.addEventListener('change', applyFilter));
 
       await loadAll();
     })();

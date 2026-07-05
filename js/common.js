@@ -61,8 +61,8 @@ function renderSidebar(activePage, opts) {
     { id: 'sales-list', icon: '📋', label: '売上一覧', href: 'sales-list.html' },
   ];
 
+  // 事例集（case-study）はホーム画面のタブに統合したためサイドバーからは外す
   const referencePages = [
-    { id: 'case-study', icon: '📚', label: '事例集', href: 'case-study.html' },
     { id: 'glossary',   icon: '📖', label: '用語集', href: 'glossary.html' },
     { id: 'cheatsheet', icon: '⚡', label: 'チートシート', href: 'cheatsheet.html' },
   ];
@@ -127,13 +127,13 @@ function renderSidebar(activePage, opts) {
     <aside class="sidebar">
       <a href="pad-overview.html" class="sidebar-brand" style="text-decoration:none; color:inherit; display:block;">
         <div class="brand-icon">💻</div>
-        <h2>PAD練習サイト</h2>
+        <h2>Fellows PAD道場</h2>
         <div class="brand-sub">Power Automate for Desktop</div>
       </a>
       <nav class="sidebar-nav">
         <a href="pad-overview.html" class="nav-item ${activePage === 'pad-overview' ? 'active' : ''}">
           <span class="nav-icon">🏠</span>
-          ホーム（PADとは／ロードマップ）
+          ホーム（ロードマップ／事例投稿）
         </a>
         <div class="nav-section" style="margin-top:8px;">学習</div>
         ${learnSections.map(makeCollapsibleSection).join('')}
@@ -157,7 +157,7 @@ function renderSidebar(activePage, opts) {
         ${adminLink}
       </nav>
       <div class="sidebar-footer">
-        ログイン中: <strong>${userName}</strong>${isAdminFlag ? ' <span style="color:#ffd700;">👑</span>' : ''}
+        ログイン中: <a href="mypage.html" class="mypage-link" title="マイページを開く"><strong>${userName}</strong></a>${isAdminFlag ? ' <span style="color:#ffd700;">👑</span>' : ''}
         <br>
         <a href="javascript:void(0)" style="color: rgba(255,255,255,0.5); font-size:14px;" onclick="window.auth.signOut()">ログアウト</a>
       </div>
@@ -187,6 +187,15 @@ async function bootstrapPage(activePage) {
 
   const topbarEl = document.getElementById('topbarUser');
   if (topbarEl) topbarEl.textContent = userName + (adminFlag ? ' 👑' : '');
+
+  // トップバーの名前部分をクリックでマイページへ（全ページ共通）
+  const topUserEl = document.querySelector('.topbar-user');
+  if (topUserEl && activePage !== 'mypage' && !topUserEl.dataset.mypageBound) {
+    topUserEl.dataset.mypageBound = '1';
+    topUserEl.style.cursor = 'pointer';
+    topUserEl.title = 'マイページを開く';
+    topUserEl.addEventListener('click', () => { window.location.href = 'mypage.html'; });
+  }
 
   // dashboard.html などで使われる #userName / #userAvatar も上書き
   const userNameEl = document.getElementById('userName');

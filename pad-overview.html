@@ -3,192 +3,204 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PADとは | PAD練習サイト</title>
-  <link rel="stylesheet" href="css/style.css">
-  <style>
-    .hero-section {
-      background: linear-gradient(135deg, #1a3a5c 0%, #2c7be5 100%);
-      border-radius: 12px;
-      padding: 36px;
-      color: #fff;
-      margin-bottom: 24px;
-    }
-    .hero-section h2 { font-size: 24px; font-weight: 700; margin: 0 0 12px; }
-    .hero-section p { font-size: 15px; line-height: 1.9; margin: 0; opacity: 0.95; }
-
-    .big-icon { font-size: 48px; margin-bottom: 10px; display: block; }
-
-    .feature-card {
-      background: #fff;
-      border: 1px solid #e0e6ed;
-      border-radius: 10px;
-      padding: 20px;
-      text-align: center;
-    }
-    .feature-card h4 { font-size: 14px; font-weight: 700; color: #1a3a5c; margin: 8px 0 6px; }
-    .feature-card p { font-size: 13px; color: #666; margin: 0; line-height: 1.6; }
-    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
-
-    .compare-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-    .compare-box { border-radius: 10px; padding: 20px; }
-    .compare-box.pad { background: #f0f5ff; border: 2px solid #2c7be5; }
-    .compare-box.ai { background: #f5f0ff; border: 2px solid #7c3aed; }
-    .compare-box h4 { font-size: 15px; font-weight: 700; margin: 0 0 12px; }
-    .compare-box.pad h4 { color: #1a3a5c; }
-    .compare-box.ai h4 { color: #4c1d95; }
-    .compare-box ul { list-style: none; padding: 0; margin: 0; }
-    .compare-box ul li { font-size: 13px; padding: 5px 0; border-bottom: 1px solid rgba(0,0,0,0.06); line-height: 1.5; }
-    .compare-box ul li:last-child { border-bottom: none; }
-    .compare-box.pad ul li::before { content: '✅ '; }
-    .compare-box.ai ul li::before { content: '✨ '; }
-
-    .tip-box {
-      background: #fffbeb;
-      border: 2px solid #f6c343;
-      border-radius: 10px;
-      padding: 16px 20px;
-      font-size: 13px;
-      line-height: 1.8;
-      color: #555;
-    }
-    .tip-box strong { color: #1a3a5c; }
-
-    .roadmap { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; padding: 8px 0; }
-    .road-step {
-      background: #f0f5ff;
-      border: 2px solid #2c7be5;
-      border-radius: 10px;
-      padding: 10px 14px;
-      text-align: center;
-      min-width: 90px;
-      display: block;
-      color: inherit;
-      cursor: pointer;
-      transition: transform 0.15s, box-shadow 0.15s;
-    }
-    .road-step:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(44,123,229,0.25);
-    }
-    .road-step .num { font-size: 14px; font-weight: 700; color: #2c7be5; margin-bottom: 4px; }
-    .road-step .label { font-size: 13px; font-weight: 700; color: #1a3a5c; }
-    .road-arrow { font-size: 20px; color: #2c7be5; }
-    .road-step.last { background: #e8f8f2; border-color: #00b274; }
-    .road-step.last .num { color: #00b274; }
-    .road-step .kw { font-size: 14px; color: #555; margin-top: 4px; line-height: 1.4; }
-    .road-step .badge-area { margin-top: 6px; font-size: 14px; }
-    .roadmap-wrap { overflow-x: auto; padding-bottom: 6px; }
-    .roadmap-wrap .roadmap { flex-wrap: nowrap; }
-    .road-step { flex-shrink: 0; min-width: 130px; }
-    .point-block { background: #f4f6f9; border-left: 4px solid #2c7be5; border-radius: 0 8px 8px 0; padding: 14px 18px; font-size: 14px; line-height: 1.9; color: #333; margin-top: 16px; }
-    .point-block strong { color: #1a3a5c; }
-  </style>
+  <title>ホーム（ロードマップ／事例投稿） | Fellows PAD道場</title>
+  <link rel="stylesheet" href="css/style.css?v=7">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/corporate.css?v=11">
+  <script src="js/theme.js?v=2"></script>
+  <!-- コンポーネントのスタイルは css/corporate.css に移設 -->
 </head>
 <body>
   <div class="app-layout">
     <div id="sidebarContainer"></div>
     <div class="main-content">
       <header class="topbar">
-        <div class="topbar-title">📖 PADとは</div>
+        <div class="topbar-title">🏠 ホーム</div>
         <div class="topbar-user"><span>👤</span><span id="topbarUser">user</span></div>
       </header>
 
       <main class="page-content">
 
-        <!-- ヒーロー -->
-        <div class="hero-section">
-          <h2>💻 PAD（パッド）って何？</h2>
-          <p>
-            PADとは「<strong>Power Automate for Desktop</strong>」の略で、Microsoftが作ったツールです。<br>
-            パソコンで毎日やっている面倒な繰り返し作業を、<strong>自動でやってくれる</strong>ソフトです。<br>
-            プログラミングの知識がなくても使えて、Windows 11では<strong>無料</strong>で使えます！
-          </p>
+        <!-- ヒーロー：サイトの顔 -->
+        <div class="home-hero">
+          <div class="hero-text">
+            <div class="hero-eyebrow">FELLOWS PAD QUEST</div>
+            <h2>Fellows PAD道場</h2>
+            <p>
+              PADで“面倒な繰り返し作業”を自動化する力を、手を動かしながら身につける道場です。作成したフローは投稿でき、事例として社内のみんなと共有できます。<br>
+              あなたのペースで、一歩ずつ道を極めましょう。
+            </p>
+            <div class="hero-cta"><span class="play"></span>PRESS START</div>
+          </div>
+          <div class="hero-motif" aria-hidden="true">
+            <div class="hm-float">
+              <div class="hm-orbit"><span class="hm-sat hm-sat-gold"></span><span class="hm-sat hm-sat-a"></span><span class="hm-sat hm-sat-b"></span></div>
+              <div class="hm-orbit-inner"></div>
+              <div class="hm-monitor">
+                <div class="hm-screen"><span class="hm-bar"></span><div class="hm-flow"><span class="hm-node"></span><span class="hm-link"></span><span class="hm-node hm-node-gold"></span><span class="hm-link"></span><span class="hm-node"></span></div></div>
+                <div class="hm-stand"></div>
+                <div class="hm-base"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 切り替えタブ -->
+        <div class="home-tabs">
+          <button type="button" class="home-tab active" data-tab="roadmap">🗺️ ロードマップ</button>
+          <button type="button" class="home-tab" data-tab="post">✏️ 事例投稿</button>
+          <button type="button" class="home-tab" data-tab="cases">📚 事例集</button>
+        </div>
+
+        <!-- ===== パネル：ロードマップ ===== -->
+        <div class="home-panel" id="panel-roadmap">
+
+        <!-- 進捗バー（タブの下） -->
+        <div class="progress-card">
+          <div class="ps-top">
+            <span class="ps-label">あなたの進捗</span>
+            <span class="ps-count"><b id="psDone">0</b> / 8 回 完了</span>
+          </div>
+          <div class="progress-bar-track"><div class="progress-bar-fill" id="psBar"></div></div>
         </div>
 
         <!-- 研修ロードマップ -->
         <div class="card">
-          <div class="card-header"><h3>🗺️ 研修の旅路 ― 全8回のロードマップ</h3></div>
+          <div class="card-header"><h3>🗺️ 全8回のロードマップ</h3></div>
           <div class="card-body">
-            <p style="font-size:13px; color:#666; margin-bottom:14px;">第0回キックオフから第7回の総合演習まで、全8ステップで「PADで業務を自動化できる人」になります。各回を受講するとバッジが点灯します。</p>
-            <div class="roadmap-wrap">
-              <div class="roadmap" id="roadmapContainer"></div>
-            </div>
-            <div class="point-block">
-              各回を受講すると、自動でバッジが点灯します。サイドバーからいつでも進捗を確認できます。
-            </div>
+            <p style="font-size:13px; color:#666; margin:0 0 6px;">各回のカードをクリックすると、その回の lesson ページへ移動します。</p>
+            <div id="roadmapContainer"></div>
           </div>
         </div>
 
-        <!-- できること -->
-        <div class="card">
-          <div class="card-header"><h3>PADでできること</h3></div>
-          <div class="card-body">
-            <div class="grid-4">
-              <div class="feature-card">
-                <span style="font-size:40px;">📊</span>
-                <h4>Excelの作業を自動化</h4>
-                <p>データ入力・集計・コピペなどを自動でこなします</p>
-              </div>
-              <div class="feature-card">
-                <span style="font-size:40px;">🌐</span>
-                <h4>Webの操作も自動化</h4>
-                <p>ブラウザでの検索・入力・データ取得も自動でできます</p>
-              </div>
-              <div class="feature-card">
-                <span style="font-size:40px;">📁</span>
-                <h4>ファイル整理も自動化</h4>
-                <p>ファイルの移動・名前変更・フォルダ整理もおまかせ</p>
-              </div>
-              <div class="feature-card">
-                <span style="font-size:40px;">📧</span>
-                <h4>メール送信も自動化</h4>
-                <p>決まった内容のメールを自動で送ることもできます</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        </div><!-- /panel-roadmap -->
 
-        <!-- PAD vs 生成AI -->
+        <!-- ===== パネル：事例投稿 ===== -->
+        <div class="home-panel" id="panel-post" hidden>
+
+        <!-- 事例を投稿する -->
         <div class="card">
-          <div class="card-header"><h3>PADと生成AI（ChatGPTなど）の違いは？</h3></div>
+          <div class="card-header"><h3>✏️ 社内フロー事例を投稿する</h3></div>
           <div class="card-body">
-            <p style="font-size:13px; color:#666; margin-bottom:16px;">
-              「生成AI（ChatGPTやCopilotなど）と何が違うの？」と思う方も多いかもしれません。<br>
-              実はそれぞれ<strong>得意なことが全然違います</strong>！
+            <p class="post-intro">
+              あなたが作ったフローを、全国の仲間にシェアしましょう 🚀　「節約できた時間」「使ったアクション」「フローのテキスト」を投稿すると、他の支社の人がそのまま真似して使えます。みんなの投稿が増えるほど、社内全体の自動化が加速します。
             </p>
-            <div class="compare-wrap">
-              <div class="compare-box pad">
-                <h4>💻 PADが得意なこと</h4>
-                <ul>
-                  <li>毎日同じ手順でやる作業の自動化</li>
-                  <li>大量データの処理（100件でも1000件でも）</li>
-                  <li>ExcelやWebを直接操作する</li>
-                  <li>「決まった手順」をロボットに覚えさせる</li>
-                </ul>
+
+            <div class="form-grid">
+              <div class="form-row full">
+                <label>タイトル <span style="color:#b91c1c;">*</span></label>
+                <input type="text" id="fTitle" placeholder="例：応募者リストを毎朝Excelに集計" maxlength="200">
               </div>
-              <div class="compare-box ai">
-                <h4>🤖 生成AIが得意なこと</h4>
-                <ul>
-                  <li>文章の作成・要約・翻訳</li>
-                  <li>質問への回答・アイデア出し</li>
-                  <li>メールや企画書の下書き作成</li>
-                  <li>「内容が毎回変わる」柔軟な作業</li>
-                </ul>
+              <div class="form-row">
+                <label>業務カテゴリ <span style="color:#b91c1c;">*</span></label>
+                <select id="fCategory">
+                  <option value="">選択してください</option>
+                  <option>スタッフ管理</option>
+                  <option>求人媒体運用</option>
+                  <option>売上集計</option>
+                  <option>Excel自動化</option>
+                  <option>メール処理</option>
+                  <option>その他</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label>節約時間（時間/月） <span style="color:#b91c1c;">*</span></label>
+                <input type="number" id="fSaved" min="0" max="1000" step="1" placeholder="例：10">
+              </div>
+              <div class="form-row full">
+                <label>使用したPADアクション（任意・複数選択可）</label>
+                <div class="action-checks" id="fActionChecks">
+                  <label><input type="checkbox" value="ブラウザ操作"><span>ブラウザ操作</span></label>
+                  <label><input type="checkbox" value="Excel操作"><span>Excel操作</span></label>
+                  <label><input type="checkbox" value="Outlook操作"><span>Outlook操作</span></label>
+                  <label><input type="checkbox" value="その他"><span>その他</span></label>
+                </div>
+              </div>
+              <div class="form-row full">
+                <label>概要 <span style="color:#b91c1c;">*</span></label>
+                <textarea id="fSummary" rows="4" placeholder="3〜5行でフローの内容を説明してください" maxlength="2000"></textarea>
               </div>
             </div>
-            <div class="tip-box">
-              🎯 <strong>かんたんに言うと…</strong><br>
-              「<strong>手順が決まっていて、毎回同じことをやる作業</strong>」→ PADにお任せ！<br>
-              「<strong>文章を考えたり、質問に答えたりする作業</strong>」→ 生成AIにお任せ！<br>
-              <br>
-              たとえば「毎月Excelに同じ操作でデータ転記している」なら、PADで自動化できます 🚀
+
+            <div class="flow-section">
+              <h4>📥 PADフローテキスト（任意）</h4>
+              <div class="hint">
+                PAD編集画面で全選択（Ctrl+A）→ コピー（Ctrl+C）した内容をそのまま貼り付けてください。<br>
+                Mainサブフローと、それ以外のサブフローを別々に保存できます。「+ サブフローを追加」で複数ペアの登録が可能です。
+              </div>
+              <div id="flowList"></div>
+              <button type="button" class="btn-add-flow" id="btnAddFlow">+ サブフローを追加</button>
+            </div>
+
+            <div class="flow-section">
+              <h4>📎 添付ファイル（任意）</h4>
+              <div class="hint">
+                Excelテンプレート、CSV、画像など、フローと一緒に共有したいファイルをアップロードできます。<br>
+                1ファイル最大25MBまで。複数ファイル選択可。
+              </div>
+              <input type="file" id="fAttachInput" class="attach-input" multiple>
+              <div id="attachList"></div>
+            </div>
+
+            <div class="err-msg" id="formErr" style="display:none;"></div>
+            <div class="ok-msg" id="formOk" style="display:none;"></div>
+            <div style="margin-top:14px;">
+              <button class="btn btn-primary" id="btnSubmit">投稿する</button>
+              <button class="btn btn-outline" id="btnReset">クリア</button>
             </div>
           </div>
         </div>
 
+        </div><!-- /panel-post -->
+
+        <!-- ===== パネル：事例集（case-study.html を埋め込み）===== -->
+        <div class="home-panel" id="panel-cases" hidden>
+          <iframe id="caseFrame" class="case-frame" title="社内フロー事例集" scrolling="no"></iframe>
+        </div>
+
+        <!-- ===== 使い方ポップアップ（PRESS START で開く）===== -->
+        <div class="howto-overlay" id="howtoOverlay" aria-hidden="true">
+          <div class="howto-modal" role="dialog" aria-label="PAD道場の使い方">
+            <button type="button" class="howto-close" id="howtoClose" aria-label="閉じる">×</button>
+            <div class="howto-head">
+              <div class="howto-eyebrow">HOW TO USE</div>
+              <h3>PAD道場の使い方</h3>
+              <p>やることは、たった3つ。順番に進めるだけです。</p>
+            </div>
+            <div class="howto-steps">
+              <div class="howto-step">
+                <span class="hs-no">1</span>
+                <span class="hs-icon">📚</span>
+                <div class="hs-body">
+                  <div class="hs-title">学ぶ</div>
+                  <p>第0回〜第7回の<strong>研修回別ページ</strong>を順番に。各回に「解説・ハンズオン・解答例」がそろっています。</p>
+                </div>
+              </div>
+              <div class="howto-step">
+                <span class="hs-no">2</span>
+                <span class="hs-icon">🚀</span>
+                <div class="hs-body">
+                  <div class="hs-title">共有する</div>
+                  <p>作ったフローを<strong>「事例投稿」</strong>から投稿。節約できた時間や使ったアクションを添えて、みんなにシェアしましょう。</p>
+                </div>
+              </div>
+              <div class="howto-step">
+                <span class="hs-no">3</span>
+                <span class="hs-icon">💡</span>
+                <div class="hs-body">
+                  <div class="hs-title">取り入れる</div>
+                  <p><strong>事例集</strong>で他の人のフローを探して、自分の業務にそのまま取り入れる。真似するほど自動化が広がります。</p>
+                </div>
+              </div>
+            </div>
+            <button type="button" class="howto-start" id="howtoStart">さっそく始める</button>
+          </div>
+        </div>
 
       </main>
-      <footer class="app-footer">© 2025 PAD練習サイト</footer>
+      <footer class="app-footer">© 2025 Fellows PAD道場</footer>
     </div>
   </div>
 
@@ -196,52 +208,342 @@
   <script src="js/env.js"></script>
   <script src="js/supabase-client.js"></script>
   <script src="js/auth.js"></script>
-  <script src="js/common.js?v=6"></script>
+  <script src="js/common.js?v=8"></script>
   <script>
-    bootstrapPage('pad-overview');
-
+    /* ============ ロードマップ ============ */
     const ROADMAP_STEPS = [
-      { num: 0, title: 'キックオフ', kw: 'PADの威力体感' },
-      { num: 1, title: '環境セットアップ', kw: 'PAD導入 / WebDriver' },
-      { num: 2, title: '変数を完全理解', kw: '変数 / データ型' },
-      { num: 3, title: 'Excel自動化', kw: 'テンプレ運用 / マクロ' },
-      { num: 4, title: 'ブラウザ自動化①', kw: 'ログイン / クリック' },
-      { num: 5, title: 'ブラウザ自動化②', kw: 'スクレイピング / URL直' },
-      { num: 6, title: '制御構造', kw: 'ループ / 分岐 / 例外 / サブフロー' },
-      { num: 7, title: '総合演習', kw: 'プロフィール一括出力' },
+      { num: 0, title: 'キックオフ',        time: '60分',     goal: 'PADの威力を体感し、最終ゴール（プロフィール一括出力）の完成イメージをつかむ。PADとは何かもここで学びます。' },
+      { num: 1, title: '環境セットアップ',    time: '120分',    goal: 'PADを起動し、新しいフローを作成。ChromeDriverを導入して「Webdriver」での起動に切り替えられる。' },
+      { num: 2, title: '変数を完全理解',      time: '120分',    goal: '変数・データ型・データテーブルを理解。直書きDT→列リスト化→選択ダイアログのパターンを習得。' },
+      { num: 3, title: 'Excel自動化',         time: '120分',    goal: 'Excelの読み書き・マクロ実行・日時整形・フォルダ作成・テンプレ複製まで一気に習得。' },
+      { num: 4, title: 'ブラウザ自動化①',     time: '120分',    goal: 'WebDriverでログイン操作を自動化。機密情報テキストでパスワードを安全に保持する作法を身につける。' },
+      { num: 5, title: 'ブラウザ自動化②',     time: '120分',    goal: 'スクレイピング・URLパラメータ直アクセス・ページング全走破。実務で皆ハマる問題を体系的に攻略。' },
+      { num: 6, title: '制御構造',            time: '120分',    goal: 'ループ・条件分岐・サブフロー・エラー処理。「部品を作って呼ぶ」発想を身につける。' },
+      { num: 7, title: '総合演習',            time: '120分×2',  goal: '第1〜6回の全要素を統合。Main＋4サブフロー構造で一括出力フローを自力で完成させる。' },
+    ];
+    const PHASES = [
+      { label: '🚩 導入',           sub: '第0回',     range: [0, 0] },
+      { label: '🧱 基礎を固める',    sub: '第1〜3回',  range: [1, 3] },
+      { label: '🌐 ブラウザ自動化',  sub: '第4〜5回',  range: [4, 5] },
+      { label: '🎯 応用・統合',      sub: '第6〜7回',  range: [6, 7] },
     ];
     function renderRoadmap() {
-      const progress = getProgress();
-      const current = (() => {
-        for (let i = 0; i < ROADMAP_STEPS.length; i++) {
-          if (!progress.includes(ROADMAP_STEPS[i].num)) return ROADMAP_STEPS[i].num;
-        }
-        return -1;
-      })();
-      const roadmapHtml = ROADMAP_STEPS.map((s, i) => {
-        const done = progress.includes(s.num);
-        const isCurrent = s.num === current;
-        const cls = done ? 'completed' : (isCurrent ? 'current' : '');
-        const last = i === ROADMAP_STEPS.length - 1 ? '' : '<span class="road-arrow">▶</span>';
-        const badge = done ? '✅ 受講済み' : (isCurrent ? '🎯 現在地' : '⚪ 未受講');
-        const href = s.href || `lesson-${s.num}.html`;
-        const numLabel = `第${s.num}回`;
-        return `
-          <a href="${href}" class="road-step ${cls}" style="text-decoration:none;">
-            <div class="num">${numLabel}</div>
-            <div class="label">${s.title}</div>
-            <div class="kw">${s.kw}</div>
-            <div class="badge-area">${badge}</div>
-          </a>
-          ${last}
-        `;
+      const progress = (typeof getProgress === 'function') ? getProgress() : [];
+      const doneCount = ROADMAP_STEPS.filter(s => progress.includes(s.num)).length;
+      const psDone = document.getElementById('psDone');
+      const psBar = document.getElementById('psBar');
+      if (psDone) psDone.textContent = doneCount;
+      if (psBar) psBar.style.width = Math.round((doneCount / ROADMAP_STEPS.length) * 100) + '%';
+      let current = -1;
+      for (const s of ROADMAP_STEPS) { if (!progress.includes(s.num)) { current = s.num; break; } }
+      const html = PHASES.map(ph => {
+        const steps = ROADMAP_STEPS.filter(s => s.num >= ph.range[0] && s.num <= ph.range[1]);
+        const nodes = steps.map(s => {
+          const done = progress.includes(s.num);
+          const isCurrent = s.num === current;
+          const state = done ? 'done' : (isCurrent ? 'current' : 'todo');
+          const cap = done ? '✅' : (isCurrent ? '🎯' : '');
+          const status = done ? '✅ 受講済み' : (isCurrent ? '🎯 現在地 ― ここから始めましょう' : '⚪ 未受講');
+          return `
+            <a href="lesson-${s.num}.html" class="rm-node ${state}">
+              <div class="rm-marker"><span class="m-no">${s.num}</span><span class="m-cap">${cap}</span></div>
+              <div class="rm-content">
+                <div class="rm-title">第${s.num}回 ${s.title}<span class="rm-time">${s.time}</span></div>
+                <div class="rm-goal">${s.goal}</div>
+                <div class="rm-status">${status}</div>
+              </div>
+            </a>`;
+        }).join('');
+        return `<div class="rm-phase">${ph.label}<span class="rm-phase-sub">${ph.sub}</span></div><div class="rm-timeline">${nodes}</div>`;
       }).join('');
-      document.getElementById('roadmapContainer').innerHTML = roadmapHtml;
+      const c = document.getElementById('roadmapContainer');
+      if (c) c.innerHTML = html;
     }
-    // 進捗ロード完了を待ってから描画（bootstrapPage 完了後に発火）
     window.addEventListener('progress-loaded', renderRoadmap);
-    // フォールバック：500ms後に強制描画
     setTimeout(renderRoadmap, 500);
+
+    /* ============ 使い方ポップアップ ============ */
+    (function () {
+      const overlay = document.getElementById('howtoOverlay');
+      if (!overlay) return;
+      const openBtn = document.querySelector('.hero-cta');
+      const closeBtn = document.getElementById('howtoClose');
+      const startBtn = document.getElementById('howtoStart');
+      const open = () => { overlay.classList.add('open'); overlay.setAttribute('aria-hidden', 'false'); };
+      const close = () => { overlay.classList.remove('open'); overlay.setAttribute('aria-hidden', 'true'); };
+      if (openBtn) { openBtn.style.cursor = 'pointer'; openBtn.addEventListener('click', open); }
+      if (closeBtn) closeBtn.addEventListener('click', close);
+      if (startBtn) startBtn.addEventListener('click', close);
+      overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+    })();
+
+    /* ============ タブ切り替え ============ */
+    let caseFrameLoaded = false;
+    let caseFrameDirty = false;   // 投稿後など、再読み込みが必要なとき true
+    let caseObserver = null;
+    function fitCaseFrame() {
+      const f = document.getElementById('caseFrame');
+      if (!f) return;
+      try {
+        const doc = f.contentDocument;
+        f.style.height = doc.body.scrollHeight + 'px';
+        if (caseObserver) caseObserver.disconnect();
+        if (window.ResizeObserver) {
+          caseObserver = new ResizeObserver(() => {
+            try { f.style.height = f.contentDocument.body.scrollHeight + 'px'; } catch (e) {}
+          });
+          caseObserver.observe(doc.body);
+        }
+      } catch (e) { f.style.height = '1400px'; }
+    }
+    function showCases() {
+      const f = document.getElementById('caseFrame');
+      if (!f) return;
+      if (!caseFrameLoaded) {
+        caseFrameLoaded = true;
+        f.addEventListener('load', fitCaseFrame);
+        f.src = 'case-study.html?embed=1';
+      } else if (caseFrameDirty) {
+        try { f.contentWindow.location.reload(); } catch (e) { f.src = 'case-study.html?embed=1'; }
+      }
+      caseFrameDirty = false;
+    }
+    function switchTab(tab) {
+      document.querySelectorAll('.home-tab').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+      document.getElementById('panel-roadmap').hidden = (tab !== 'roadmap');
+      document.getElementById('panel-post').hidden = (tab !== 'post');
+      const cp = document.getElementById('panel-cases');
+      if (cp) cp.hidden = (tab !== 'cases');
+      if (tab === 'cases') {
+        showCases();
+        // 投稿フォーム下部などから来ても、事例集の先頭（タブ列）が見えるよう上へスクロール
+        const anchor = document.querySelector('.home-tabs');
+        if (anchor) anchor.scrollIntoView({ block: 'start' });
+      }
+      if (history.replaceState) history.replaceState(null, '', '#' + tab);
+    }
+    document.querySelectorAll('.home-tab').forEach(btn => {
+      btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+    });
+    // URLハッシュ（#post / #cases）で初期タブを指定可能
+    if (location.hash === '#post') switchTab('post');
+    if (location.hash === '#cases') switchTab('cases');
+
+    /* ============ 事例投稿フォーム ============ */
+    let currentUser = null;
+    let attachFiles = [];
+    const ATTACH_MAX_SIZE = 25 * 1024 * 1024;
+    const FILE_NAME_FORBIDDEN = /[\\/:*?"<>|]/g;
+
+    function escapeHtml(s) {
+      return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+    function sanitizeFileName(s) { return String(s || '').replace(FILE_NAME_FORBIDDEN, '_').trim(); }
+    function formatBytes(n) {
+      if (n < 1024) return n + ' B';
+      if (n < 1024*1024) return (n/1024).toFixed(1) + ' KB';
+      return (n/1024/1024).toFixed(2) + ' MB';
+    }
+    function bindActionCheckHighlight(container) {
+      container.querySelectorAll('input[type=checkbox]').forEach(cb => {
+        const apply = () => cb.parentElement.classList.toggle('checked', cb.checked);
+        cb.addEventListener('change', apply);
+        apply();
+      });
+    }
+    function getCheckedActions(containerId) {
+      return Array.from(document.querySelectorAll('#' + containerId + ' input[type=checkbox]:checked')).map(c => c.value);
+    }
+    function addFlowPair(initialName) {
+      const list = document.getElementById('flowList');
+      const wrap = document.createElement('div');
+      wrap.className = 'flow-pair';
+      wrap.innerHTML = `
+        <div class="pair-head">
+          <input type="text" class="flow-name" placeholder="ファイル名（例：Main / 2日目 / エラー処理）" maxlength="100" value="${escapeHtml(initialName || '')}">
+          <button type="button" class="pair-del">削除</button>
+        </div>
+        <textarea class="flow-text" placeholder="PAD編集画面でCtrl+A→Ctrl+Cした内容をそのまま貼り付け"></textarea>
+      `;
+      const nameInput = wrap.querySelector('.flow-name');
+      nameInput.addEventListener('input', () => {
+        const sanitized = nameInput.value.replace(FILE_NAME_FORBIDDEN, '_');
+        if (sanitized !== nameInput.value) {
+          const pos = nameInput.selectionStart;
+          nameInput.value = sanitized;
+          nameInput.setSelectionRange(pos, pos);
+        }
+      });
+      wrap.querySelector('.pair-del').onclick = () => wrap.remove();
+      list.appendChild(wrap);
+    }
+    function collectFlowPairs() {
+      const pairs = [];
+      document.querySelectorAll('#flowList .flow-pair').forEach(p => {
+        const name = sanitizeFileName(p.querySelector('.flow-name').value);
+        const text = p.querySelector('.flow-text').value;
+        if (name && text.trim()) pairs.push({ file_name: name, flow_text: text });
+      });
+      return pairs;
+    }
+    function renderAttachList() {
+      const list = document.getElementById('attachList');
+      list.innerHTML = attachFiles.map((f, i) => `
+        <div class="attach-item">
+          <span class="att-name">📎 ${escapeHtml(f.name)}</span>
+          <span class="att-size">${formatBytes(f.size)}</span>
+          <button type="button" class="att-del" data-att-i="${i}">削除</button>
+        </div>
+      `).join('');
+      list.querySelectorAll('[data-att-i]').forEach(btn => {
+        btn.onclick = () => { attachFiles.splice(parseInt(btn.dataset.attI, 10), 1); renderAttachList(); };
+      });
+    }
+    function onAttachInputChange(e) {
+      const errEl = document.getElementById('formErr');
+      const newFiles = Array.from(e.target.files || []);
+      const tooBig = newFiles.filter(f => f.size > ATTACH_MAX_SIZE);
+      if (tooBig.length > 0) {
+        errEl.textContent = '25MBを超えるファイルは添付できません：' + tooBig.map(f => f.name).join(', ');
+        errEl.style.display = 'block';
+        e.target.value = '';
+        return;
+      }
+      errEl.style.display = 'none';
+      attachFiles.push(...newFiles);
+      e.target.value = '';
+      renderAttachList();
+    }
+    async function uploadAttachments(caseId, files) {
+      if (!files || files.length === 0) return [];
+      const uploaded = [];
+      try {
+        const inserts = [];
+        for (const f of files) {
+          const safeName = sanitizeFileName(f.name) || 'file';
+          const path = `${currentUser.id}/${caseId}/${Date.now()}_${Math.random().toString(36).slice(2,8)}_${safeName}`;
+          const { error: upErr } = await window.supabaseClient.storage
+            .from('case-attachments')
+            .upload(path, f, { contentType: f.type || 'application/octet-stream' });
+          if (upErr) throw new Error(`「${f.name}」のアップロードに失敗：${upErr.message}`);
+          uploaded.push(path);
+          inserts.push({ case_study_id: caseId, file_name: safeName, storage_path: path, file_size: f.size, mime_type: f.type || null });
+        }
+        const { error: insErr } = await window.supabaseClient.from('case_attachments').insert(inserts);
+        if (insErr) throw new Error('添付ファイルの記録に失敗：' + insErr.message);
+        return inserts;
+      } catch (e) {
+        if (uploaded.length > 0) {
+          await window.supabaseClient.storage.from('case-attachments').remove(uploaded).catch(() => {});
+        }
+        throw e;
+      }
+    }
+    async function submitCase() {
+      const title = document.getElementById('fTitle').value.trim();
+      const category = document.getElementById('fCategory').value;
+      const savedRaw = document.getElementById('fSaved').value;
+      const summary = document.getElementById('fSummary').value.trim();
+      const actionsStr = getCheckedActions('fActionChecks').join(',');
+      const flowPairs = collectFlowPairs();
+      const errEl = document.getElementById('formErr');
+      const okEl = document.getElementById('formOk');
+
+      const errs = [];
+      if (!title) errs.push('タイトル');
+      if (!category) errs.push('カテゴリ');
+      const savedNum = parseInt(savedRaw, 10);
+      if (savedRaw === '' || isNaN(savedNum) || savedNum < 0 || savedNum > 1000) errs.push('節約時間（0〜1000の数値）');
+      if (!summary) errs.push('概要');
+      const nameSet = new Set();
+      for (const p of flowPairs) {
+        if (nameSet.has(p.file_name)) { errs.push(`フローのファイル名が重複しています：「${p.file_name}」`); break; }
+        nameSet.add(p.file_name);
+      }
+      if (errs.length) {
+        errEl.textContent = '入力エラー：' + errs.join(' / ') + ' を確認してください。';
+        errEl.style.display = 'block';
+        okEl.style.display = 'none';
+        return;
+      }
+      errEl.style.display = 'none';
+
+      const btn = document.getElementById('btnSubmit');
+      btn.disabled = true; btn.textContent = '投稿中...';
+
+      const { data: inserted, error: insErr } = await window.supabaseClient
+        .from('case_studies')
+        .insert({ user_id: currentUser.id, title, category, saved_hours: savedNum, summary, actions: actionsStr || null })
+        .select('id')
+        .single();
+      if (insErr) {
+        btn.disabled = false; btn.textContent = '投稿する';
+        errEl.textContent = '投稿に失敗：' + insErr.message;
+        errEl.style.display = 'block';
+        return;
+      }
+
+      if (flowPairs.length > 0) {
+        const rows = flowPairs.map(p => ({ case_study_id: inserted.id, file_name: p.file_name, flow_text: p.flow_text }));
+        const { error: flowErr } = await window.supabaseClient.from('case_flow_files').insert(rows);
+        if (flowErr) {
+          await window.supabaseClient.from('case_studies').delete().eq('id', inserted.id);
+          btn.disabled = false; btn.textContent = '投稿する';
+          errEl.textContent = 'フローテキストの保存に失敗したため投稿を取り消しました：' + flowErr.message;
+          errEl.style.display = 'block';
+          return;
+        }
+      }
+
+      if (attachFiles.length > 0) {
+        btn.textContent = 'ファイルをアップロード中...';
+        try {
+          await uploadAttachments(inserted.id, attachFiles);
+        } catch (e) {
+          await window.supabaseClient.from('case_studies').delete().eq('id', inserted.id);
+          btn.disabled = false; btn.textContent = '投稿する';
+          errEl.textContent = '投稿を取り消しました：' + e.message;
+          errEl.style.display = 'block';
+          return;
+        }
+      }
+
+      btn.disabled = false; btn.textContent = '投稿する';
+      caseFrameDirty = true;   // 事例集タブを次に開いたとき最新を再読み込み
+      okEl.innerHTML = '✅ 投稿しました！　<a href="#cases" onclick="switchTab(\'cases\');return false;">事例集で確認する →</a>';
+      okEl.style.display = 'block';
+      resetForm();
+    }
+    function resetForm() {
+      document.getElementById('fTitle').value = '';
+      document.getElementById('fCategory').value = '';
+      document.getElementById('fSaved').value = '';
+      document.getElementById('fSummary').value = '';
+      document.querySelectorAll('#fActionChecks input[type=checkbox]').forEach(cb => {
+        cb.checked = false; cb.parentElement.classList.remove('checked');
+      });
+      document.getElementById('flowList').innerHTML = '';
+      addFlowPair('Main');
+      attachFiles = [];
+      renderAttachList();
+      document.getElementById('fAttachInput').value = '';
+      document.getElementById('formErr').style.display = 'none';
+    }
+
+    (async () => {
+      const ctx = await bootstrapPage('pad-overview');
+      if (!ctx) return;
+      currentUser = ctx.user;
+      renderRoadmap();
+
+      addFlowPair('Main');
+      bindActionCheckHighlight(document.getElementById('fActionChecks'));
+      document.getElementById('btnSubmit').onclick = submitCase;
+      document.getElementById('btnReset').onclick = resetForm;
+      document.getElementById('btnAddFlow').onclick = () => addFlowPair('');
+      document.getElementById('fAttachInput').onchange = onAttachInputChange;
+    })();
   </script>
 </body>
 </html>

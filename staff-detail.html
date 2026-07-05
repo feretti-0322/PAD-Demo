@@ -3,8 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>スタッフ詳細 | PAD練習サイト</title>
+  <title>スタッフ詳細 | Fellows PAD道場</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/corporate.css?v=11">
+  <script src="js/theme.js?v=2"></script>
   <style>
     .detail-hero {
       display: flex;
@@ -126,7 +131,7 @@
         <div id="detailContent"></div>
 
       </main>
-      <footer class="app-footer">© 2025 PAD練習サイト</footer>
+      <footer class="app-footer">© 2025 Fellows PAD道場</footer>
     </div>
   </div>
 
@@ -134,7 +139,7 @@
   <script src="js/env.js"></script>
   <script src="js/supabase-client.js"></script>
   <script src="js/auth.js"></script>
-  <script src="js/common.js?v=3"></script>
+  <script src="js/common.js?v=8"></script>
   <script>
     bootstrapPage('staff-list');
 
@@ -172,7 +177,7 @@
     } else {
       document.getElementById('pageTitle').textContent = staff.name;
       document.getElementById('pageBreadcrumb').textContent = `スタッフ一覧 › ${staff.name}`;
-      document.title = `${staff.name} | PAD練習サイト`;
+      document.title = `${staff.name} | Fellows PAD道場`;
 
       const years = calcYears(staff.joined);
 

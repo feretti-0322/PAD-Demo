@@ -4,8 +4,13 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>第0回 キックオフ | PAD練習サイト</title>
+<title>第0回 キックオフ | Fellows PAD道場</title>
 <link href="css/style.css?v=7" rel="stylesheet"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="css/corporate.css?v=11" rel="stylesheet"/>
+  <script src="js/theme.js?v=2"></script>
 <style>
     .handson-callout { border:3px solid #dc2626; background:#fff1f2; border-radius:10px; padding:16px 20px; font-size:14px; line-height:1.9; color:#7f1d1d; margin:20px 0; box-shadow:0 4px 14px rgba(220,38,38,0.18); position:relative; }
     .handson-callout::before { content:'🎯 ハンズオン'; position:absolute; top:-12px; left:14px; background:#dc2626; color:#fff; font-size:14px; font-weight:800; padding:3px 12px; border-radius:999px; letter-spacing:0.05em; }
@@ -21,6 +26,28 @@
     .step-split .step-figure figcaption { font-size:14px; color:#64748b; margin-top:6px; text-align:center; }
     .step-split .step-text { font-size:14px; line-height:1.9; }
     @media (max-width: 860px) { .step-split { grid-template-columns: 1fr; } }
+    /* PADでできること（ジャンル別の詳しい説明） */
+    .can-do-list { display: flex; flex-direction: column; gap: 12px; margin: 14px 0; }
+    .can-do { background: #f9fbfd; border: 1px solid #e0e6ed; border-left: 4px solid #2c7be5; border-radius: 0 10px 10px 0; padding: 14px 18px; }
+    .can-do .cd-head { font-size: 15px; font-weight: 800; color: #1a3a5c; margin-bottom: 4px; }
+    .can-do p { font-size: 13.5px; color: #555; margin: 0; line-height: 1.8; }
+    .can-do p .cd-ex { color: #1d4ed8; font-weight: 600; }
+    /* PAD vs 生成AI 比較 */
+    .compare-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 14px 0; }
+    .compare-box { border-radius: 10px; padding: 18px 20px; }
+    .compare-box.pad { background: #f0f5ff; border: 2px solid #2c7be5; }
+    .compare-box.ai { background: #f5f0ff; border: 2px solid #7c3aed; }
+    .compare-box h4 { font-size: 15px; font-weight: 700; margin: 0 0 12px; }
+    .compare-box.pad h4 { color: #1a3a5c; }
+    .compare-box.ai h4 { color: #4c1d95; }
+    .compare-box ul { list-style: none; padding: 0; margin: 0; }
+    .compare-box ul li { font-size: 13.5px; padding: 5px 0; border-bottom: 1px solid rgba(0,0,0,0.06); line-height: 1.5; }
+    .compare-box ul li:last-child { border-bottom: none; }
+    .compare-box.pad ul li::before { content: '✅ '; }
+    .compare-box.ai ul li::before { content: '✨ '; }
+    .tip-box { background: #fffbeb; border: 2px solid #f6c343; border-radius: 10px; padding: 16px 20px; font-size: 13.5px; line-height: 1.8; color: #555; }
+    .tip-box strong { color: #1a3a5c; }
+    @media (max-width: 860px) { .compare-wrap { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -48,7 +75,6 @@
 <ol>
             <li><a href="#sec-a">A. PAD（Power Automate for Desktop）とは</a></li>
             <li><a href="#sec-b">B. 完成動画 〜プロフィールシート一括出力フロー〜</a></li>
-            <li><a href="#sec-c">C. 研修ロードマップ（全8回）</a></li>
             <li><a href="#install">⚙️ PAD のインストール〜サインイン</a></li>
             <li><a href="#handson">🛠️ ハンズオン課題</a></li>
             <li><a href="#faq">❓ よくある詰まりと FAQ</a></li>
@@ -57,10 +83,64 @@
 <section class="lesson-section" id="sec-a"><div class="card">
 <div class="card-header"><h3>A. PAD（Power Automate for Desktop）とは</h3></div>
 <div class="card-body" style="font-size:14px; line-height:1.9;">
-<p>PAD は <strong>Microsoft が提供する RPA（業務自動化）ツール</strong>です。Windows 11 に標準搭載されており、追加費用なしで全社員が使えます。</p>
+<p>PAD とは「<strong>Power Automate for Desktop</strong>」の略で、<strong>Microsoft が提供する RPA（業務自動化）ツール</strong>です。パソコンで毎日やっている面倒な繰り返し作業を、<strong>自動でやってくれる</strong>ソフトです。プログラミングの知識がなくても使えて、<strong>Windows 11 では標準搭載・追加費用なし</strong>で全社員が使えます。</p>
 <p>「Excel を開いて、セルに値を書き込んで、保存する」「ブラウザを開いて、ログインして、検索結果をスクレイピングする」といった<strong>「決まった手順の繰り返し作業」</strong>を、人間の代わりに PAD が実行してくれます。</p>
-<div class="point-block">
-<strong>生成AI（ChatGPT 等）との違い：</strong> 生成AI は「指示の解釈」に揺れがあり毎回少しずつ違う結果を返します。PAD は<strong>「決めた手順通りに毎回 100% 同じ動作」</strong>を保証します。業務の本番運用では再現性が圧倒的に重要です。
+
+<h4 style="margin:20px 0 4px; color:#1a3a5c; font-size:15px;">PAD でできること</h4>
+<p style="font-size:13.5px; color:#666; margin:0 0 4px;">PAD が得意なのは「決まった手順の繰り返し」。業務でよくあるジャンルごとに、具体的にどんなことができるかを見てみましょう。</p>
+<div class="can-do-list">
+<div class="can-do">
+<div class="cd-head">📊 Excel・表計算の自動化</div>
+<p>大量のデータ入力・転記・集計・コピペ、複数ブックをまたいだ突き合わせ、定型レポートの作成、登録済みマクロの実行まで。<span class="cd-ex">「毎月、同じ手順でシートを集計してレポートにまとめている」</span>といった作業をまるごと肩代わりできます。</p>
+</div>
+<div class="can-do">
+<div class="cd-head">🌐 Web・ブラウザ操作の自動化</div>
+<p>業務システムや Web サイトへのログイン、検索・絞り込み、画面に表示されたデータの取得（スクレイピング）、フォームへの入力・申請まで。<span class="cd-ex">「社内ポータルにログインして一覧を開き、必要な情報を1件ずつ拾ってくる」</span>定型操作を代行します。</p>
+</div>
+<div class="can-do">
+<div class="cd-head">📁 ファイル・フォルダ操作の自動化</div>
+<p>ファイルの移動・コピー・リネーム・圧縮、日付名フォルダの自動作成、大量ファイルの仕分け。<span class="cd-ex">「実行するたびに日時フォルダを作って、その中に名前を付けて保存する」</span>といった整理作業を、ミスなく一瞬で終わらせます。</p>
+</div>
+<div class="can-do">
+<div class="cd-head">📧 メール・通知の自動化</div>
+<p>Outlook などで定型メールの作成・送信、添付ファイル付き送信、受信メールの仕分け・保存。<span class="cd-ex">「毎朝、同じ宛先に同じ書式の報告メールを送っている」</span>業務をワンクリック化できます。</p>
+</div>
+<div class="can-do">
+<div class="cd-head">🔗 複数アプリをまたぐ一連の作業</div>
+<p>ここまでのジャンルを<strong>つなげて</strong>、ひとつの流れとして自動化できるのが PAD の真価です。<span class="cd-ex">「Web で取得 → Excel に転記 → 名前を付けて保存 → メールで送付」</span>のように、複数のソフトをまたいだ作業も一気通貫で実行。本研修の最終演習が、まさにこの形のフローです。</p>
+</div>
+</div>
+
+<h4 style="margin:24px 0 4px; color:#1a3a5c; font-size:15px;">PAD と生成AI（ChatGPTなど）の違いは？</h4>
+<p style="font-size:13.5px; color:#666; margin:0 0 6px;">「生成AI と何が違うの？」と思う方も多いはず。実は<strong>得意なことが全然違います</strong>。</p>
+<div class="compare-wrap">
+<div class="compare-box pad">
+<h4>💻 PADが得意なこと</h4>
+<ul>
+<li>毎日同じ手順でやる作業の自動化</li>
+<li>大量データの処理（100件でも1000件でも）</li>
+<li>ExcelやWebを直接操作する</li>
+<li>「決まった手順」をロボットに覚えさせる</li>
+</ul>
+</div>
+<div class="compare-box ai">
+<h4>🤖 生成AIが得意なこと</h4>
+<ul>
+<li>文章の作成・要約・翻訳</li>
+<li>質問への回答・アイデア出し</li>
+<li>メールや企画書の下書き作成</li>
+<li>「内容が毎回変わる」柔軟な作業</li>
+</ul>
+</div>
+</div>
+<div class="tip-box">
+                🎯 <strong>かんたんに言うと…</strong><br/>
+                「<strong>手順が決まっていて、毎回同じことをやる作業</strong>」→ PADにお任せ！<br/>
+                「<strong>文章を考えたり、質問に答えたりする作業</strong>」→ 生成AIにお任せ！<br/><br/>
+                たとえば「毎月Excelに同じ操作でデータ転記している」なら、PADで自動化できます 🚀
+              </div>
+<div class="point-block" style="margin-top:16px;">
+<strong>業務での決め手は「再現性」：</strong> 生成AI は「指示の解釈」に揺れがあり毎回少しずつ違う結果を返します。PAD は<strong>「決めた手順通りに毎回 100% 同じ動作」</strong>を保証します。本番運用ではこの再現性が圧倒的に重要です。
               </div>
 </div>
 </div></section>
@@ -73,22 +153,6 @@
 <video controls="" playsinline="" preload="metadata" src="assets/lessons/lesson-0_01_final_flow_demo.mp4"></video>
 <figcaption>最終演習フローの完成動画（ブラウザ起動 → ログイン → 一覧取得 → 詳細スクレイピング → Excel 一括出力）</figcaption>
 </figure>
-</div>
-</div></section>
-<section class="lesson-section" id="sec-c"><div class="card">
-<div class="card-header"><h3>C. 研修ロードマップ（全8回）</h3></div>
-<div class="card-body" style="font-size:14px; line-height:1.9;">
-<p>サイドバー上部の「<strong>🏠 ホーム（PADとは／ロードマップ）</strong>」を開くと、全8回のロードマップが表示されます。各回の四角をクリックすると対応する lesson ページに遷移できます。</p>
-<ul style="margin:8px 0 0 20px;">
-<li><strong>第0回</strong> キックオフ（今ここ）</li>
-<li><strong>第1回</strong> 環境セットアップ（PAD導入 / WebDriver）</li>
-<li><strong>第2回</strong> 変数を完全理解</li>
-<li><strong>第3回</strong> Excel自動化</li>
-<li><strong>第4回</strong> ブラウザ自動化①（ログイン / クリック）</li>
-<li><strong>第5回</strong> ブラウザ自動化②（スクレイピング / URL直）</li>
-<li><strong>第6回</strong> 制御構造（ループ / 分岐 / 例外 / サブフロー）</li>
-<li><strong>第7回</strong> 総合演習（プロフィール一括出力）</li>
-</ul>
 </div>
 </div></section>
 <section class="lesson-section" id="install">
@@ -153,14 +217,14 @@
 <a class="next" href="lesson-1.html">第1回 環境セットアップ</a>
 </nav>
 </main>
-<footer class="app-footer">© 2025 PAD練習サイト</footer>
+<footer class="app-footer">© 2025 Fellows PAD道場</footer>
 </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/env.js"></script>
 <script src="js/supabase-client.js"></script>
 <script src="js/auth.js"></script>
-<script src="js/common.js?v=6"></script>
+<script src="js/common.js?v=8"></script>
 <script>bootstrapPage('lesson-0');</script>
 </body>
 </html>
