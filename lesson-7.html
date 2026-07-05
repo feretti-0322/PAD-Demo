@@ -31,6 +31,33 @@
     .source-links .sl-label { font-weight:700; color:#1e40af; white-space:nowrap; }
     .source-links a { display:inline-flex; align-items:center; gap:4px; background:#fff; border:1px solid #bfdbfe; color:#1d4ed8; border-radius:999px; padding:3px 12px; text-decoration:none; font-weight:600; transition:all 0.15s; }
     .source-links a:hover { background:#1d4ed8; color:#fff; border-color:#1d4ed8; }
+
+    /* ===== 完成フローの全体像 ===== */
+    .ov-lead { font-size:15px; line-height:1.9; margin:0 0 4px; }
+    .overview-flow { display:flex; align-items:stretch; gap:8px; flex-wrap:wrap; margin:20px 0; }
+    .ov-stage { flex:1 1 0; min-width:158px; background:var(--tint,#f8fafc); border:1.5px solid var(--line,#e0e6ed); border-radius:12px; padding:16px 15px; display:flex; flex-direction:column; gap:7px; }
+    .ov-stage .ov-icon { font-size:30px; line-height:1; }
+    .ov-stage .ov-no { font-family:'Manrope',sans-serif; font-size:11px; font-weight:800; letter-spacing:0.08em; color:var(--brand,#2c7be5); }
+    .ov-stage .ov-title { font-size:15.5px; font-weight:800; color:var(--ink,#1a3a5c); line-height:1.4; }
+    .ov-stage .ov-desc { font-size:13px; color:var(--muted,#555); line-height:1.75; }
+    .ov-stage .ov-tag { margin-top:auto; font-size:11.5px; font-weight:700; color:var(--brand,#1d4ed8); background:var(--card-bg,#fff); border:1px solid var(--line,#e0e6ed); border-radius:999px; padding:4px 11px; align-self:flex-start; }
+    .ov-arrow { align-self:center; color:var(--brand,#2c7be5); font-size:20px; font-weight:800; flex-shrink:0; }
+    @media (max-width:860px) {
+      .overview-flow { flex-direction:column; }
+      .ov-arrow { transform:rotate(90deg); align-self:center; margin:-2px 0; }
+    }
+
+    /* 完成イメージ（フォルダ mockup。成功=緑の意味色ダイアログとして両テーマ共通で明色維持） */
+    .ov-result { display:grid; grid-template-columns:auto 1fr; gap:20px; align-items:center; background:linear-gradient(135deg,#f0fdf4,#ecfdf5); border:1.5px solid #86efac; border-radius:12px; padding:20px 24px; margin-top:4px; }
+    .ov-result .ovr-head { grid-column:1 / -1; font-size:15.5px; font-weight:800; color:#065f46; }
+    .ovr-folder { background:#fff; border:1.5px solid #a7f3d0; border-radius:10px; padding:14px 16px; min-width:230px; box-shadow:0 4px 12px rgba(6,95,70,0.08); }
+    .ovr-folder .ovr-folder-name { font-weight:800; font-size:14px; color:#1a3a5c; display:flex; align-items:center; gap:6px; margin-bottom:9px; padding-bottom:9px; border-bottom:1px dashed #d1d5db; }
+    .ovr-files { display:flex; flex-direction:column; gap:5px; }
+    .ovr-file { display:flex; align-items:center; gap:8px; font-size:13px; color:#374151; background:#f8fafc; border-radius:6px; padding:6px 11px; font-family:Consolas,'Courier New',monospace; }
+    .ovr-file .ovr-more { color:#9ca3af; font-family:inherit; }
+    .ovr-note { font-size:14px; color:#065f46; line-height:1.95; }
+    .ovr-note strong { color:#047857; }
+    @media (max-width:640px) { .ov-result { grid-template-columns:1fr; } }
   </style>
 </head>
 <body>
@@ -56,6 +83,7 @@
 <nav class="lesson-toc">
 <h3>📑 目次</h3>
 <ol>
+            <li><a href="#sec-overview">🗺️ 完成フローの全体像（まずここから）</a></li>
             <li><a href="#prep">🪜 事前準備</a></li>
             <li><a href="#sec-a">A. Main フロー（4サブフローを呼ぶだけ）</a></li>
             <li><a href="#sec-b">B. 出力フォルダ作成〜役職選択 サブフロー</a></li>
@@ -67,6 +95,74 @@
             <li><a href="#faq">❓ よくある詰まりと FAQ</a></li>
           </ol>
 </nav>
+<section class="lesson-section" id="sec-overview">
+<h2 class="lesson-section-title"><span class="sec-icon">🗺️</span>完成フローの全体像（まずここから）</h2>
+<div class="card">
+<div class="card-body" style="font-size:14px; line-height:1.9;">
+<p class="ov-lead">細かい手順に入る前に、<strong>これから作るフローが「何を・どんな順番で」やるのか</strong>をつかんでおきましょう。ざっくり言うと <strong>「ブラウザからスタッフ情報を集めて、1人ずつ Excel に出力する」</strong> フローです。大きく <strong>5 つのステップ</strong>に分かれています。</p>
+<div class="overview-flow">
+<div class="ov-stage">
+<div class="ov-icon">📁</div>
+<div class="ov-no">STEP 1</div>
+<div class="ov-title">準備する</div>
+<div class="ov-desc">デスクトップに「日時フォルダ」を作り、対象の<strong>部署・役職</strong>を画面で選びます。</div>
+<div class="ov-tag">出力フォルダ作成〜役職選択</div>
+</div>
+<div class="ov-arrow">▶</div>
+<div class="ov-stage">
+<div class="ov-icon">🔐</div>
+<div class="ov-no">STEP 2</div>
+<div class="ov-title">ログインする</div>
+<div class="ov-desc">Chrome を自動で起動し、デモサイトに<strong>メール＋パスワード</strong>でログインします。</div>
+<div class="ov-tag">ログイン処理</div>
+</div>
+<div class="ov-arrow">▶</div>
+<div class="ov-stage">
+<div class="ov-icon">📋</div>
+<div class="ov-no">STEP 3</div>
+<div class="ov-title">一覧を集める</div>
+<div class="ov-desc">選んだ条件でスタッフを検索し、<strong>ページをめくって全員ぶんの ID</strong> を取得します。</div>
+<div class="ov-tag">スタッフ詳細取得（前半）</div>
+</div>
+<div class="ov-arrow">▶</div>
+<div class="ov-stage">
+<div class="ov-icon">📊</div>
+<div class="ov-no">STEP 4</div>
+<div class="ov-title">1人ずつ Excel 出力</div>
+<div class="ov-desc">各スタッフの詳細を取得 → テンプレをコピー → セルに記入 → 保存を<strong>人数分くり返し</strong>ます。</div>
+<div class="ov-tag">スタッフ詳細取得（ループ）</div>
+</div>
+<div class="ov-arrow">▶</div>
+<div class="ov-stage">
+<div class="ov-icon">⚠️</div>
+<div class="ov-no">STEP 5</div>
+<div class="ov-title">失敗は記録して継続</div>
+<div class="ov-desc">誰かの取得に失敗しても<strong>止めずに</strong>、エラーログに残して次の人へ進みます。</div>
+<div class="ov-tag">エラー</div>
+</div>
+</div>
+<div class="ov-result">
+<div class="ovr-head">🎁 実行し終わると、こうなります</div>
+<div class="ovr-folder">
+<div class="ovr-folder-name">📁 20260705_143022</div>
+<div class="ovr-files">
+<div class="ovr-file">📄 山田太郎_ST001.xlsx</div>
+<div class="ovr-file">📄 佐藤花子_ST002.xlsx</div>
+<div class="ovr-file">📄 鈴木一郎_ST004.xlsx</div>
+<div class="ovr-file"><span class="ovr-more">… 選んだ条件のスタッフ全員ぶん</span></div>
+</div>
+</div>
+<div class="ovr-note">
+                デスクトップに<strong>実行日時の名前のフォルダ</strong>が1つでき、その中に<strong>スタッフ1人につき1ファイル</strong>のプロフィール Excel が整然と並びます。<br/>
+                手作業なら1人ずつ何十分もかかる資料作成が、<strong>ボタン1つ・数十秒</strong>で終わる——これがこの回のゴールです。
+              </div>
+</div>
+<div class="point-block" style="margin-top:16px;">
+                💡 この5ステップが、そのまま <strong>Main＋4サブフロー</strong>（下の A〜E）の構成に対応しています。<strong>STEP1→B ／ STEP2→C ／ STEP3・4→D ／ STEP5→E</strong>、そしてそれらを順番に呼ぶのが <strong>A. Main</strong> です。まずはこの地図を頭に入れて、次から1本ずつ組んでいきましょう。
+              </div>
+</div>
+</div>
+</section>
 <section class="lesson-section" id="prep">
 <h2 class="lesson-section-title"><span class="sec-icon">🪜</span>事前準備</h2>
 <div class="card"><div class="card-body" style="font-size:14px; line-height:1.9;">
