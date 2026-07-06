@@ -1046,3 +1046,51 @@ html[data-theme="game"] .lesson-group-header .lesson-group-desc{ color:var(--mut
 
 /* 使い方ポップアップの「さっそく始める」（紫と青が混ざったグラデ）→ ブランドグラデへ */
 html[data-theme="game"] .howto-start{ background:var(--brand-grad); color:#0a0c1a; }
+
+/* ---------------------------------------------------------------
+   5) インラインで白/淡色背景が直書きされた「独立ブロック」（lesson-4/5 等）
+   ・背景だけ白/淡色のまま残り、中の文字は一括変換で明色になっていたため
+     「白い箱に白い文字」で消えていた。背景を暗色パネル化して可読に。
+   ・意味色ボーダー（青=情報／橙=警告）は残し、見出し・リンクは明色化。
+   ・意味色の中身ボックス（薄緑 #f0fdf4 の success 等）は据え置き。
+   --------------------------------------------------------------- */
+html[data-theme="game"] [style*="background:#fff;"],
+html[data-theme="game"] [style*="background:#fff7ed"],
+html[data-theme="game"] [style*="background:#eff6ff"],
+html[data-theme="game"] [style*="background:#f8fafc"]{
+  background:var(--card-bg) !important;
+}
+/* 淡色ボックス内の紺色見出し・青リンク（インライン指定）→ 明るいブランド青へ */
+html[data-theme="game"] [style*="color:#1e3a8a"],
+html[data-theme="game"] [style*="color:#1e40af"],
+html[data-theme="game"] [style*="color:#1d4ed8"]{ color:var(--brand-2) !important; }
+/* 警告ボックスの琥珀色見出し（インライン指定）→ ゴールドへ */
+html[data-theme="game"] [style*="color:#92400e"],
+html[data-theme="game"] [style*="color:#9a3412"],
+html[data-theme="game"] [style*="color:#b45309"]{ color:var(--gold) !important; }
+
+/* 薄緑の success ボックス（インライン #f0fdf4）は意味色として明色のまま残すので、
+   中の無色テキストが一括で明色化されて消えないよう、濃い緑に固定して可読化する。 */
+html[data-theme="game"] [style*="background:#f0fdf4"]{ color:#0b3d2e !important; }
+html[data-theme="game"] [style*="background:#f0fdf4"] strong{ color:#065f46 !important; }
+
+/* ---------------------------------------------------------------
+   6) 走査線（CRT オーバーレイ）を画像には かぶせない（視認性優先）
+   ・body::after の全画面走査線（z-index:9998）より、レッスンの画像/動画を
+     前面（z-index:9999）に出して、写真の上にラインが乗らないようにする。
+   ・スクロール時に画像がヘッダーへ被らないよう、トップバーは更に前面へ。
+   ・モーダルを持つページ（管理/ホーム等）はこれらの figure クラスを使わないため影響なし。
+   --------------------------------------------------------------- */
+html[data-theme="game"] .lesson-figure img,
+html[data-theme="game"] .lesson-figure video,
+html[data-theme="game"] .proc-figure img,
+html[data-theme="game"] .step-figure img,
+html[data-theme="game"] .figure-center img,
+html[data-theme="game"] .figure-center video,
+html[data-theme="game"] .type-grid figure img,
+html[data-theme="game"] .type-pair figure img,
+html[data-theme="game"] .img-text-row > img,
+html[data-theme="game"] .pad-image img{
+  position:relative; z-index:9999;
+}
+html[data-theme="game"] .topbar{ z-index:10000; }

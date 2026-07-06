@@ -24,9 +24,8 @@
       desc: 'ダークなドット絵風テーマ',
       swatch: ['#41a6f6', '#ffcd75', '#0c0e18'],
       require: { any: [
-        { type: 'lessons', n: 3 },
-        { type: 'posts',   n: 3 },
-        { type: 'likes',   n: 10 },
+        { type: 'lessons', n: 8 },
+        { type: 'posts',   n: 1 },
       ] },
     },
   ];
