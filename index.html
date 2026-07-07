@@ -55,6 +55,11 @@
         Supabase 認証を利用しています。アカウントをお持ちでない方は下のリンクから新規登録してください。
       </div>
 
+      <div id="pending-notice" style="display:none; background:#fff7ed; border:1px solid #f6a623; border-radius:6px; padding:12px 14px; margin-bottom:20px; font-size:14px; color:#92400e;">
+        <strong>&#128337; 管理者の承認待ちです</strong><br>
+        このアカウントはまだ管理者に承認されていません。承認されるとログインできるようになります。しばらくお待ちください。
+      </div>
+
       <form id="loginForm" onsubmit="return doLogin(event)">
         <div class="form-group">
           <label for="email">メールアドレス <span class="required">*</span></label>
@@ -100,10 +105,22 @@
   <script src="js/supabase-client.js"></script>
   <script src="js/auth.js"></script>
   <script>
-    // すでにログイン済みなら即リダイレクト
+    // 承認待ちで弾かれて戻ってきた場合の通知
+    if (new URLSearchParams(location.search).get('pending') === '1') {
+      document.getElementById('pending-notice').style.display = 'block';
+    }
+
+    // すでにログイン済みなら承認状態を見て振り分け
     (async () => {
       const user = await window.auth.getCurrentUser();
-      if (user) window.location.href = 'pad-overview.html';
+      if (!user) return;
+      if (await window.auth.isApproved(user)) {
+        window.location.href = 'pad-overview.html';
+      } else {
+        // 未承認セッションはこのページ内で破棄（リダイレクトせず承認待ち表示）
+        await window.supabaseClient.auth.signOut();
+        document.getElementById('pending-notice').style.display = 'block';
+      }
     })();
 
     async function doLogin(e) {
@@ -132,6 +149,15 @@
           ? 'メールアドレスまたはパスワードが正しくありません'
           : 'ログインに失敗しました：' + error.message;
         msg.style.display = 'block';
+        btn.innerHTML = 'ログイン';
+        btn.disabled = false;
+        return false;
+      }
+
+      // 承認ゲート：管理者以外で未承認ならアプリに入れない
+      if (!(await window.auth.isApproved(data.user))) {
+        await window.supabaseClient.auth.signOut();
+        document.getElementById('pending-notice').style.display = 'block';
         btn.innerHTML = 'ログイン';
         btn.disabled = false;
         return false;

@@ -12,40 +12,40 @@
   <script src="js/theme.js?v=3"></script>
   <style>
     .learn-hero {
-      background: linear-gradient(135deg, #1a3a5c 0%, #0d7377 100%);
+      background: var(--hero-grad, linear-gradient(135deg, #890C84 0%, #6d0a6a 100%));
       border-radius: 12px; padding: 36px; color: #fff; margin-bottom: 24px;
     }
     .learn-hero h2 { font-size: 24px; font-weight: 700; margin: 0 0 12px; }
     .learn-hero p { font-size: 15px; line-height: 1.9; margin: 0; opacity: 0.95; }
 
-    .point-block { background: #f4f6f9; border-left: 4px solid #2c7be5; border-radius: 0 8px 8px 0; padding: 14px 18px; font-size: 14px; line-height: 1.9; color: #333; margin-top: 16px; }
-    .point-block strong { color: #1a3a5c; }
+    .point-block { background: var(--tint, #f8fafc); border-left: 4px solid var(--brand, #890C84); border-radius: 0 8px 8px 0; padding: 14px 18px; font-size: 14px; line-height: 1.9; color: var(--ink, #333); margin-top: 16px; }
+    .point-block strong { color: var(--brand-d, #5c0759); }
 
     .summary-card { background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%); border-left: 4px solid #00b274; border-radius: 8px; padding: 18px 22px; margin-top: 20px; }
     .summary-card h4 { color: #065f46; margin: 0 0 10px; font-size: 15px; }
     .summary-card ol { margin: 0; padding-left: 22px; font-size: 14px; line-height: 2; color: #333; }
 
-    .search-bar { width: 100%; padding: 12px 16px; font-size: 14px; border: 2px solid #e0e6ed; border-radius: 8px; box-sizing: border-box; }
-    .search-bar:focus { outline: none; border-color: #2c7be5; }
+    .search-bar { width: 100%; padding: 12px 16px; font-size: 14px; border: 2px solid var(--line, #e0e6ed); border-radius: 8px; box-sizing: border-box; }
+    .search-bar:focus { outline: none; border-color: var(--brand, #890C84); }
 
     .cat-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
-    .cat-tab { background: #f4f6f9; color: #1a3a5c; border: 1px solid #e0e6ed; border-radius: 18px; padding: 6px 14px; font-size: 13px; cursor: pointer; transition: all .15s; }
-    .cat-tab:hover { background: #e8eef5; }
-    .cat-tab.active { background: #1a3a5c; color: #fff; border-color: #1a3a5c; }
+    .cat-tab { background: var(--tint, #f4f6f9); color: var(--ink, #1a3a5c); border: 1px solid var(--line, #e0e6ed); border-radius: 18px; padding: 6px 14px; font-size: 13px; cursor: pointer; transition: all .15s; }
+    .cat-tab:hover { background: var(--hover, #f0e4f0); }
+    .cat-tab.active { background: var(--brand, #890C84); color: #fff; border-color: var(--brand, #890C84); }
 
-    .term-card { background: #fff; border: 1px solid #e0e6ed; border-radius: 10px; padding: 18px 22px; margin-top: 14px; }
+    .term-card { background: var(--card-bg, #fff); border: 1px solid var(--line, #e0e6ed); border-radius: 10px; padding: 18px 22px; margin-top: 14px; }
     .term-card .term-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
-    .term-card .term-name { font-size: 18px; font-weight: 700; color: #1a3a5c; }
-    .term-card .term-alt { font-size: 14px; color: #6b7280; }
-    .term-card .cat-badge { background: #eff6ff; color: #1d4ed8; padding: 3px 10px; border-radius: 12px; font-size: 14px; font-weight: 700; }
-    .term-card .term-desc { font-size: 14px; line-height: 1.9; color: #333; margin: 6px 0; }
-    .term-card .term-example { background: #1e293b; color: #7dd3fc; border-radius: 6px; padding: 8px 12px; font-family: monospace; font-size: 13px; line-height: 1.7; margin: 8px 0; }
+    .term-card .term-name { font-size: 18px; font-weight: 700; color: var(--ink, #1a3a5c); }
+    .term-card .term-alt { font-size: 14px; color: var(--muted, #6b7280); }
+    .term-card .cat-badge { background: var(--tint, #f4ecf4); color: var(--brand-d, #5c0759); padding: 3px 10px; border-radius: 12px; font-size: 14px; font-weight: 700; }
+    .term-card .term-desc { font-size: 14px; line-height: 1.9; color: var(--ink, #333); margin: 6px 0; }
+    .term-card .term-example { background: var(--tint, #f6f7f9); color: var(--ink, #334155); border-left: 3px solid var(--line, #e0e6ed); border-radius: 6px; padding: 8px 12px; font-family: monospace; font-size: 13px; line-height: 1.7; margin: 8px 0; }
     .term-card .term-related { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
-    .term-card .related-chip { background: #f4f6f9; color: #1a3a5c; padding: 3px 10px; border-radius: 10px; font-size: 14px; cursor: pointer; border: 1px solid #e0e6ed; }
-    .term-card .related-chip:hover { background: #e8eef5; }
+    .term-card .related-chip { background: var(--tint, #f4f6f9); color: var(--ink, #1a3a5c); padding: 3px 10px; border-radius: 10px; font-size: 14px; cursor: pointer; border: 1px solid var(--line, #e0e6ed); }
+    .term-card .related-chip:hover { background: var(--hover, #f0e4f0); border-color: var(--brand, #890C84); }
 
     .empty-msg { text-align: center; color: #9ca3af; padding: 30px; font-size: 14px; }
-    .term-card.highlight { box-shadow: 0 0 0 3px rgba(44,123,229,0.3); transition: box-shadow .8s; }
+    .term-card.highlight { box-shadow: 0 0 0 3px rgba(137,12,132,0.28); transition: box-shadow .8s; }
   </style>
 </head>
 <body>
@@ -73,15 +73,6 @@
 
         <div id="termList"></div>
 
-        <div class="summary-card">
-          <h4>📝 3行まとめ</h4>
-          <ol>
-            <li>用語の意味は「業務文脈で何の役に立つか」で覚えると忘れにくい。</li>
-            <li>WebDriver・&lt;object&gt;・URL直接ナビゲートは、業務サイト自動化の3大ハマりポイント。第4・5回で必ず体感する。</li>
-            <li>用語が分からなくなったら、研修中でも遠慮なくこのページを開く。検索バーで一発で見つかる。</li>
-          </ol>
-        </div>
-
       </main>
       <footer class="app-footer">© 2025 Fellows PAD道場</footer>
     </div>
@@ -90,7 +81,7 @@
   <script src="js/env.js"></script>
   <script src="js/supabase-client.js"></script>
   <script src="js/auth.js"></script>
-  <script src="js/common.js?v=9"></script>
+  <script src="js/common.js?v=10"></script>
   <script>
     bootstrapPage('glossary');
 

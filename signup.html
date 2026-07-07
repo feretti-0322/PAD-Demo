@@ -156,18 +156,18 @@
         return false;
       }
 
-      // メール確認OFF時：data.session が返り即ログイン状態
-      // メール確認ON時：data.session は null、確認メール送信される
+      // 新規アカウントは「管理者の承認待ち」状態。
+      // メール確認OFFで自動ログインのセッションが返っても、承認前はアプリに入れないので
+      // ここでサインアウトして承認待ちであることを伝える。
       if (data.session) {
-        document.getElementById('success-msg').textContent = '登録完了！PAD学習ページへ移動します...';
-        document.getElementById('success-msg').style.display = 'block';
-        setTimeout(() => { window.location.href = 'pad-overview.html'; }, 1000);
-      } else {
-        document.getElementById('success-msg').textContent = '登録メールを送信しました。メール内のリンクから認証を完了してください。';
-        document.getElementById('success-msg').style.display = 'block';
-        btn.innerHTML = 'アカウント作成';
-        btn.disabled = false;
+        await window.supabaseClient.auth.signOut();
       }
+      document.getElementById('success-msg').innerHTML =
+        '登録を受け付けました。<br>管理者が承認するとログインできるようになります。承認までしばらくお待ちください。';
+      document.getElementById('success-msg').style.display = 'block';
+      document.getElementById('signupForm').querySelectorAll('input').forEach(el => el.disabled = true);
+      btn.innerHTML = '承認待ち';
+      btn.disabled = true;
       return false;
     }
   </script>

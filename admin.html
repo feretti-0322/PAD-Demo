@@ -105,6 +105,17 @@
     /* 一括削除モーダルのレッスンボタン（削除色） */
     .modal-card .lesson-btn.remove:hover:not(.disabled) { border-color: #dc2626; background: #fef2f2; }
 
+    /* 承認まわり */
+    .approve-btn { background: #16a34a; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 700; font-family: inherit; }
+    .approve-btn:hover { background: #15803d; }
+    .status-pill { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 12px; font-size: 13px; font-weight: 700; white-space: nowrap; }
+    .status-pill.ok { background: #d1fae5; color: #065f46; }
+    .status-pill.pending { background: #fef3c7; color: #92400e; }
+    .user-email { color: var(--muted, #6b7280); font-size: 12px; word-break: break-all; }
+    .pending-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .pending-table th, .pending-table td { text-align: left; padding: 10px 12px; border-bottom: 1px solid #e0e6ed; vertical-align: middle; }
+    .pending-table th { background: #fff7ed; color: #92400e; font-weight: 700; }
+
     /* 一括モーダルのレッスンボタン（2段表示） */
     .modal-card .lesson-btn .lb-sub { display: block; font-size: 12px; font-weight: 500; margin-top: 3px; color: var(--muted, #6b7280); }
     .modal-card .lesson-btn.disabled .lb-sub { color: #9ca3af; }
@@ -125,6 +136,17 @@
           <p>全受講者の進捗を確認し、研修完了バッジを手動で付与・取り消しできます。<br>
           このページは <code>app_metadata.role = 'admin'</code> を持つユーザーのみアクセス可能です。</p>
         </section>
+
+        <div class="card" id="pendingCard" style="display:none; border:2px solid #f6a623;">
+          <div class="card-header" style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+            <h3 style="margin:0;">🕐 承認待ちのユーザー（<span id="pendingCount">0</span>名）</h3>
+            <button class="bulk-grant-btn" id="approveAllBtn" onclick="approveAll()">✓ 全員を承認</button>
+          </div>
+          <div class="card-body">
+            <p style="font-size:13px; color:#555; margin:0 0 12px;">新規登録したユーザーは、ここで<strong>管理者が承認するまでログインできません</strong>。内容を確認して「承認」してください。</p>
+            <div id="pendingListContainer"></div>
+          </div>
+        </div>
 
         <div class="card">
           <div class="card-header"><h3>👥 ユーザー一覧（<span id="userCount">0</span>名）</h3></div>
@@ -200,7 +222,7 @@
   <script src="js/env.js"></script>
   <script src="js/supabase-client.js"></script>
   <script src="js/auth.js"></script>
-  <script src="js/common.js?v=9"></script>
+  <script src="js/common.js?v=10"></script>
   <script>
     const LESSONS = [
       { num: 0, label: '第0回 キックオフ' },
@@ -287,24 +309,26 @@
     }
 
     async function loadAll() {
-      const [profilesRes, progressRes] = await Promise.all([
-        window.supabaseClient.from('profiles').select('id, display_name, created_at').order('created_at', { ascending: false }),
+      const [dirRes, progressRes] = await Promise.all([
+        window.supabaseClient.rpc('admin_user_directory'),
         window.supabaseClient.from('lesson_progress').select('user_id, lesson_number, completed_at, granted_by')
       ]);
 
       const container = document.getElementById('userListContainer');
 
-      if (profilesRes.error) {
-        container.innerHTML = '<div class="err-msg">ユーザー一覧の取得に失敗：' + escapeHtml(profilesRes.error.message) + '</div>';
+      if (dirRes.error) {
+        container.innerHTML = '<div class="err-msg">ユーザー一覧の取得に失敗：' + escapeHtml(dirRes.error.message)
+          + '<br>（Supabase の 004 マイグレーションが未適用の可能性があります）</div>';
         return;
       }
-      users = profilesRes.data || [];
+      users = dirRes.data || [];
       progressByUser = {};
       (progressRes.data || []).forEach(p => {
         if (!progressByUser[p.user_id]) progressByUser[p.user_id] = new Set();
         progressByUser[p.user_id].add(p.lesson_number);
       });
 
+      renderPending();
       renderUsers();
     }
 
@@ -345,9 +369,10 @@
           <thead>
             <tr>
               <th class="chk-col"><input type="checkbox" ${allSelected ? 'checked' : ''} onclick="toggleSelectAll(this.checked)" title="表示中の全員を選択／解除"></th>
-              <th class="sortable ${sortedCls('name')}" style="width:26%;" onclick="toggleSort('name')">表示名 ${arrow('name')}</th>
-              <th class="sortable ${sortedCls('created')}" style="width:120px;" onclick="toggleSort('created')">登録日 ${arrow('created')}</th>
-              <th class="sortable ${sortedCls('badges')}" style="width:96px;" onclick="toggleSort('badges')">バッジ数 ${arrow('badges')}</th>
+              <th class="sortable ${sortedCls('name')}" style="width:24%;" onclick="toggleSort('name')">表示名 / メール ${arrow('name')}</th>
+              <th style="width:88px;">承認</th>
+              <th class="sortable ${sortedCls('created')}" style="width:110px;" onclick="toggleSort('created')">登録日 ${arrow('created')}</th>
+              <th class="sortable ${sortedCls('badges')}" style="width:90px;" onclick="toggleSort('badges')">バッジ数 ${arrow('badges')}</th>
               <th>進捗バッジ</th>
               <th style="width:120px;">操作</th>
             </tr>
@@ -363,14 +388,19 @@
                 </span>
               `).join('') || '<span style="color:#9ca3af; font-size:14px;">なし</span>';
               const sel = selectedIds.has(u.id);
+              const statusPill = u.approved
+                ? '<span class="status-pill ok">✓ 承認済</span>'
+                : '<span class="status-pill pending">🕐 未承認</span>';
               return `
                 <tr class="${sel ? 'selected' : ''}">
                   <td class="chk-col"><input type="checkbox" ${sel ? 'checked' : ''} onclick="toggleSelect('${u.id}', this.checked)"></td>
-                  <td><strong>${escapeHtml(u.display_name)}</strong></td>
+                  <td><strong>${escapeHtml(u.display_name)}</strong><br><span class="user-email">${escapeHtml(u.email || '—')}</span></td>
+                  <td>${statusPill}</td>
                   <td style="white-space:nowrap; color:var(--muted,#555);">${fmtDate(u.created_at)}</td>
                   <td class="badge-count">${cnt}<span class="bc-total"> / ${LESSONS.length}</span></td>
                   <td><div class="badge-list">${badges}</div></td>
                   <td>
+                    ${u.approved ? '' : `<button class="approve-btn" onclick="approveUser('${u.id}')" style="margin-bottom:6px;">✓ 承認</button><br>`}
                     <button class="grant-btn" onclick="openGrantModal('${u.id}', '${escapeHtml(u.display_name)}')">+ バッジ付与</button>
                   </td>
                 </tr>
@@ -400,6 +430,53 @@
       const n = selectedIds.size;
       document.getElementById('bulkCount').textContent = n;
       bar.classList.toggle('show', n > 0);
+    }
+
+    // ===== 承認フロー =====
+    function renderPending() {
+      const pending = users.filter(u => !u.approved)
+        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      const card = document.getElementById('pendingCard');
+      document.getElementById('pendingCount').textContent = pending.length;
+      card.style.display = pending.length ? 'block' : 'none';
+      if (!pending.length) return;
+      document.getElementById('pendingListContainer').innerHTML = `
+        <table class="pending-table">
+          <thead><tr><th>表示名</th><th>メール</th><th style="width:110px;">登録日</th><th style="width:110px;">操作</th></tr></thead>
+          <tbody>
+            ${pending.map(u => `
+              <tr>
+                <td><strong>${escapeHtml(u.display_name)}</strong></td>
+                <td class="user-email">${escapeHtml(u.email || '—')}</td>
+                <td style="white-space:nowrap; color:var(--muted,#555);">${fmtDate(u.created_at)}</td>
+                <td><button class="approve-btn" onclick="approveUser('${u.id}')">✓ 承認</button></td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>`;
+    }
+
+    async function approveUser(id) {
+      const { error } = await window.supabaseClient
+        .from('profiles').update({ approved: true }).eq('id', id);
+      if (error) { alert('承認に失敗：' + error.message); return; }
+      const u = users.find(x => x.id === id);
+      if (u) u.approved = true;
+      renderPending();
+      renderUsers();
+    }
+
+    async function approveAll() {
+      const ids = users.filter(u => !u.approved).map(u => u.id);
+      if (!ids.length) return;
+      if (!confirm(`承認待ちの ${ids.length}名を全員承認します。よろしいですか？`)) return;
+      const { error } = await window.supabaseClient
+        .from('profiles').update({ approved: true }).in('id', ids);
+      if (error) { alert('一括承認に失敗：' + error.message); return; }
+      users.forEach(u => { if (ids.includes(u.id)) u.approved = true; });
+      renderPending();
+      renderUsers();
+      alert(`${ids.length}名を承認しました。`);
     }
 
     // ===== 一括バッジ付与 =====
