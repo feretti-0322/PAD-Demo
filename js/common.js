@@ -59,6 +59,7 @@ function renderSidebar(activePage, opts) {
     { id: 'customer', icon: '🏢', label: '得意先一覧', href: 'customer.html' },
     { id: 'sales-input', icon: '✏️', label: '売上入力', href: 'sales-input.html' },
     { id: 'sales-list', icon: '📋', label: '売上一覧', href: 'sales-list.html' },
+    { id: 'staff-list', icon: '👥', label: 'スタッフ一覧', href: 'staff-list.html' },
   ];
 
   // 事例集（case-study）はホーム画面のタブに統合したためサイドバーからは外す
@@ -139,11 +140,6 @@ function renderSidebar(activePage, opts) {
         ${learnSections.map(makeCollapsibleSection).join('')}
         <div class="nav-section" style="margin-top:8px;">業務デモ</div>
         ${makeNavItems(demoPages)}
-        <div class="nav-section" style="margin-top:8px;">スタッフ</div>
-        <a href="staff-list.html" class="nav-item ${activePage === 'staff-list' ? 'active' : ''}">
-          <span class="nav-icon">👥</span>
-          スタッフ一覧
-        </a>
         <a href="javascript:void(0)" class="nav-item ${activePage === 'staff-search' ? 'active' : ''}" onclick="openStaffSearch()">
           <span class="nav-icon">🔍</span>
           スタッフ検索

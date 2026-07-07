@@ -87,8 +87,23 @@
     .bulk-bar .bb-count b { font-size: 20px; }
     .bulk-grant-btn { background: var(--brand, #2c7be5); color: #fff; border: none; padding: 9px 18px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 800; font-family: inherit; }
     .bulk-grant-btn:hover { filter: brightness(1.08); }
+    .bulk-remove-btn { background: #fff; color: #b91c1c; border: 1.5px solid #dc2626; padding: 9px 18px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 800; font-family: inherit; }
+    .bulk-remove-btn:hover { background: #fef2f2; }
     .bulk-clear-btn { background: none; border: none; color: var(--muted, #6b7280); cursor: pointer; font-size: 13px; text-decoration: underline; font-family: inherit; }
     .bulk-clear-btn:hover { color: var(--ink, #1a3a5c); }
+
+    /* 絞り込みバー */
+    .filter-bar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+    .filter-bar .filter-search { position: relative; flex: 1; min-width: 220px; max-width: 360px; }
+    .filter-bar .filter-search input { width: 100%; box-sizing: border-box; padding: 9px 34px 9px 12px; border: 1.5px solid #e0e6ed; border-radius: 8px; font-size: 14px; font-family: inherit; }
+    .filter-bar .filter-search input:focus { outline: none; border-color: var(--brand, #2c7be5); }
+    .filter-bar .filter-search .fs-icon { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; font-size: 14px; pointer-events: none; }
+    .filter-bar select { padding: 9px 12px; border: 1.5px solid #e0e6ed; border-radius: 8px; font-size: 14px; font-family: inherit; background: #fff; cursor: pointer; }
+    .filter-bar select:focus { outline: none; border-color: var(--brand, #2c7be5); }
+    .filter-bar .filter-result { font-size: 13px; color: var(--muted, #6b7280); margin-left: auto; }
+
+    /* 一括削除モーダルのレッスンボタン（削除色） */
+    .modal-card .lesson-btn.remove:hover:not(.disabled) { border-color: #dc2626; background: #fef2f2; }
 
     /* 一括モーダルのレッスンボタン（2段表示） */
     .modal-card .lesson-btn .lb-sub { display: block; font-size: 12px; font-weight: 500; margin-top: 3px; color: var(--muted, #6b7280); }
@@ -117,9 +132,23 @@
             <div class="admin-toolbar">
               <span class="tb-hint">🔀 <strong>並び替え：</strong>表の見出し（表示名 / 登録日 / バッジ数）をクリックすると昇順・降順で並び替えできます。</span>
             </div>
+            <div class="filter-bar">
+              <div class="filter-search">
+                <input type="text" id="filterInput" placeholder="表示名で検索…" oninput="applyFilter(this.value)">
+                <span class="fs-icon">🔍</span>
+              </div>
+              <select id="filterProgress" onchange="applyProgressFilter(this.value)">
+                <option value="all">進捗：すべて</option>
+                <option value="none">バッジなし（未着手）</option>
+                <option value="partial">一部完了（1〜7回）</option>
+                <option value="done">全回完了（8回）</option>
+              </select>
+              <span class="filter-result" id="filterResult"></span>
+            </div>
             <div class="bulk-bar" id="bulkBar">
               <span class="bb-count"><b id="bulkCount">0</b> 名を選択中</span>
               <button class="bulk-grant-btn" onclick="openBulkModal()">＋ 選択した全員にバッジを付与</button>
+              <button class="bulk-remove-btn" onclick="openBulkRemoveModal()">－ 選択した全員からバッジを削除</button>
               <button class="bulk-clear-btn" onclick="clearSelection()">選択を解除</button>
             </div>
             <div id="userListContainer"><div class="loading-msg">読み込み中...</div></div>
@@ -155,11 +184,23 @@
     </div>
   </div>
 
+  <!-- 進捗削除モーダル（一括） -->
+  <div class="modal-bg" id="bulkRemoveModal">
+    <div class="modal-card">
+      <h3>🗑️ 選択した <span id="bulkRemoveTargetCount">0</span> 名からバッジを一括削除</h3>
+      <p style="font-size:13px; color:#555; margin:0 0 12px;">削除するバッジを選んでください。<strong>そのバッジを持っていない人は自動でスキップ</strong>されます。</p>
+      <div class="lesson-grid" id="bulkRemoveLessonGrid"></div>
+      <div class="modal-actions">
+        <button class="btn btn-outline" onclick="closeBulkRemoveModal()">キャンセル</button>
+      </div>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/env.js"></script>
   <script src="js/supabase-client.js"></script>
   <script src="js/auth.js"></script>
-  <script src="js/common.js?v=8"></script>
+  <script src="js/common.js?v=9"></script>
   <script>
     const LESSONS = [
       { num: 0, label: '第0回 キックオフ' },
@@ -182,6 +223,11 @@
     let sortDir = 'desc';              // 'asc' | 'desc'（初期は登録が新しい順）
     let selectedIds = new Set();       // 一括付与の選択ユーザー
 
+    // 絞り込みの状態
+    let filterText = '';               // 表示名の部分一致
+    let filterProgress = 'all';        // 'all' | 'none' | 'partial' | 'done'
+    const TOTAL_LESSONS = 8;           // 第0〜7回
+
     function escapeHtml(s) {
       return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
     }
@@ -195,8 +241,26 @@
       return d.getFullYear() + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + String(d.getDate()).padStart(2, '0');
     }
 
+    // 絞り込み後のユーザー配列（並び替え前）
+    function getFilteredUsers() {
+      const q = filterText.trim().toLowerCase();
+      return users.filter(u => {
+        if (q && !String(u.display_name || '').toLowerCase().includes(q)) return false;
+        if (filterProgress !== 'all') {
+          const cnt = badgeCount(u);
+          if (filterProgress === 'none' && cnt !== 0) return false;
+          if (filterProgress === 'partial' && (cnt === 0 || cnt >= TOTAL_LESSONS)) return false;
+          if (filterProgress === 'done' && cnt < TOTAL_LESSONS) return false;
+        }
+        return true;
+      });
+    }
+
+    function applyFilter(v) { filterText = v; renderUsers(); }
+    function applyProgressFilter(v) { filterProgress = v; renderUsers(); }
+
     function getSortedUsers() {
-      const arr = users.slice();
+      const arr = getFilteredUsers();
       arr.sort((a, b) => {
         let cmp = 0;
         if (sortKey === 'name') {
@@ -248,17 +312,27 @@
       document.getElementById('userCount').textContent = users.length;
       const container = document.getElementById('userListContainer');
 
-      if (users.length === 0) {
-        container.innerHTML = '<div class="empty-msg">ユーザーがまだ登録されていません。</div>';
-        updateBulkBar();
-        return;
-      }
-
       // 存在しないユーザーの選択を掃除
       const validIds = new Set(users.map(u => u.id));
       [...selectedIds].forEach(id => { if (!validIds.has(id)) selectedIds.delete(id); });
 
       const sorted = getSortedUsers();
+
+      // 絞り込み結果の件数表示
+      const isFiltered = filterText.trim() !== '' || filterProgress !== 'all';
+      const resultEl = document.getElementById('filterResult');
+      if (resultEl) resultEl.textContent = isFiltered ? `${sorted.length} / ${users.length} 名を表示中` : '';
+
+      if (users.length === 0) {
+        container.innerHTML = '<div class="empty-msg">ユーザーがまだ登録されていません。</div>';
+        updateBulkBar();
+        return;
+      }
+      if (sorted.length === 0) {
+        container.innerHTML = '<div class="empty-msg">条件に一致するユーザーがいません。絞り込みを変えてください。</div>';
+        updateBulkBar();
+        return;
+      }
       const allSelected = sorted.length > 0 && sorted.every(u => selectedIds.has(u.id));
 
       const arrow = (key) => sortKey === key
@@ -310,8 +384,10 @@
 
     // ===== 複数選択 =====
     function toggleSelectAll(checked) {
-      if (checked) users.forEach(u => selectedIds.add(u.id));
-      else selectedIds.clear();
+      // 絞り込みで表示中のユーザーだけを対象にする
+      const visible = getSortedUsers();
+      if (checked) visible.forEach(u => selectedIds.add(u.id));
+      else visible.forEach(u => selectedIds.delete(u.id));
       renderUsers();
     }
     function toggleSelect(id, checked) {
@@ -359,6 +435,42 @@
       closeBulkModal();
       renderUsers();
       alert(`${targets.length}名に「第${lessonNumber}回」バッジを付与しました。` + (skipped > 0 ? `\n（${skipped}名は付与済みのためスキップ）` : ''));
+    }
+
+    // ===== 一括バッジ削除 =====
+    function openBulkRemoveModal() {
+      if (selectedIds.size === 0) return;
+      document.getElementById('bulkRemoveTargetCount').textContent = selectedIds.size;
+      document.getElementById('bulkRemoveLessonGrid').innerHTML = LESSONS.map(l => {
+        const have = [...selectedIds].filter(id => progressByUser[id] && progressByUser[id].has(l.num)).length;
+        const disabled = have === 0;
+        return `
+          <button class="lesson-btn remove ${disabled ? 'disabled' : ''}" ${disabled ? 'disabled' : ''} onclick="bulkRemove(${l.num})">
+            ${escapeHtml(l.label)}
+            <span class="lb-sub">${disabled ? '該当者なし' : have + '名から削除できます'}</span>
+          </button>
+        `;
+      }).join('');
+      document.getElementById('bulkRemoveModal').classList.add('show');
+    }
+    function closeBulkRemoveModal() {
+      document.getElementById('bulkRemoveModal').classList.remove('show');
+    }
+    async function bulkRemove(lessonNumber) {
+      const targets = [...selectedIds].filter(id => progressByUser[id] && progressByUser[id].has(lessonNumber));
+      if (targets.length === 0) { alert('選択した人の中に、このバッジを持っている人がいません。'); return; }
+      if (!confirm(`選択中の ${targets.length}名から「第${lessonNumber}回」バッジを削除します。よろしいですか？`)) return;
+      const { error } = await window.supabaseClient
+        .from('lesson_progress')
+        .delete()
+        .eq('lesson_number', lessonNumber)
+        .in('user_id', targets);
+      if (error) { alert('一括削除に失敗：' + error.message); return; }
+      targets.forEach(id => { progressByUser[id]?.delete(lessonNumber); });
+      const skipped = selectedIds.size - targets.length;
+      closeBulkRemoveModal();
+      renderUsers();
+      alert(`${targets.length}名から「第${lessonNumber}回」バッジを削除しました。` + (skipped > 0 ? `\n（${skipped}名は未保有のためスキップ）` : ''));
     }
 
     function openGrantModal(userId, displayName) {
