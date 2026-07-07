@@ -340,6 +340,16 @@
       return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
     }
     function sanitizeFileName(s) { return String(s || '').replace(FILE_NAME_FORBIDDEN, '_').trim(); }
+    // Supabase Storage のキーは ASCII の一部文字しか使えない（日本語・スペース等は Invalid key）。
+    // 保存パス用に [A-Za-z0-9._-] 以外を _ に置換したファイル名を作る（表示名・DL名は別に日本語を保持）。
+    function storageSafeName(s) {
+      const cleaned = String(s || 'file')
+        .normalize('NFKC')
+        .replace(/[^A-Za-z0-9._-]/g, '_')
+        .replace(/_+/g, '_')
+        .replace(/^_+|_+$/g, '');
+      return cleaned || 'file';
+    }
     function formatBytes(n) {
       if (n < 1024) return n + ' B';
       if (n < 1024*1024) return (n/1024).toFixed(1) + ' KB';
@@ -422,7 +432,8 @@
         const inserts = [];
         for (const f of files) {
           const safeName = sanitizeFileName(f.name) || 'file';
-          const path = `${currentUser.id}/${caseId}/${Date.now()}_${Math.random().toString(36).slice(2,8)}_${safeName}`;
+          const keyName = storageSafeName(f.name);
+          const path = `${currentUser.id}/${caseId}/${Date.now()}_${Math.random().toString(36).slice(2,8)}_${keyName}`;
           const { error: upErr } = await window.supabaseClient.storage
             .from('case-attachments')
             .upload(path, f, { contentType: f.type || 'application/octet-stream' });
