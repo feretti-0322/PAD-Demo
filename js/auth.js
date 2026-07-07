@@ -43,7 +43,7 @@ async function getCurrentProfile() {
   if (!user) return null;
   const { data, error } = await window.supabaseClient
     .from('profiles')
-    .select('id, display_name')
+    .select('id, display_name, approved')
     .eq('id', user.id)
     .single();
   if (error) {
@@ -53,11 +53,32 @@ async function getCurrentProfile() {
   return data;
 }
 
+function isAdminUser(user) {
+  // ⚠️ user_metadata ではなく app_metadata を見る（user_metadataはユーザー側から書き換え可能）
+  return user?.app_metadata?.role === 'admin';
+}
+
 async function isAdmin() {
   const user = await getCurrentUser();
+  return isAdminUser(user);
+}
+
+// アカウントが管理者に承認済みか（管理者は常に承認済み扱い）
+// user を渡さなければ現在のユーザーを見る
+async function isApproved(user) {
+  if (user === undefined) user = await getCurrentUser();
   if (!user) return false;
-  // ⚠️ user_metadata ではなく app_metadata を見る（user_metadataはユーザー側から書き換え可能）
-  return user.app_metadata?.role === 'admin';
+  if (isAdminUser(user)) return true;
+  const { data, error } = await window.supabaseClient
+    .from('profiles')
+    .select('approved')
+    .eq('id', user.id)
+    .single();
+  if (error) {
+    console.warn('承認状態の取得に失敗', error);
+    return false;
+  }
+  return !!data?.approved;
 }
 
 async function requireAuth() {
@@ -88,6 +109,7 @@ window.auth = {
   getCurrentUser,
   getCurrentProfile,
   isAdmin,
+  isApproved,
   requireAuth,
   requireAdmin
 };

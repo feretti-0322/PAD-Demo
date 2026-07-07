@@ -65,7 +65,6 @@ function renderSidebar(activePage, opts) {
   // 事例集（case-study）はホーム画面のタブに統合したためサイドバーからは外す
   const referencePages = [
     { id: 'glossary',   icon: '📖', label: '用語集', href: 'glossary.html' },
-    { id: 'cheatsheet', icon: '⚡', label: 'チートシート', href: 'cheatsheet.html' },
   ];
 
   // v6：「研修回別」1セクションに統合（旧概念別ページの本文は各 lesson に正本移植）
@@ -171,6 +170,13 @@ async function bootstrapPage(activePage) {
     window.auth.isAdmin(),
     window.supabaseClient.from('lesson_progress').select('lesson_number')
   ]);
+
+  // 承認ゲート：管理者以外で未承認のアカウントはアプリに入れない
+  if (!adminFlag && profile && profile.approved === false) {
+    await window.supabaseClient.auth.signOut();
+    window.location.href = 'index.html?pending=1';
+    return null;
+  }
 
   const completedLessons = new Set((progressRes.data || []).map(p => p.lesson_number));
   window.__completedLessons = completedLessons;
