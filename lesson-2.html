@@ -171,7 +171,7 @@
 <div class="lesson-tag">LESSON 2 / 変数を完全理解</div>
 <h1>第2回 変数を完全理解 〜箱・データテーブル・選択ダイアログ〜</h1>
 <p>
-            以降の全回の土台となる<strong>「変数」「データテーブル」「ユーザー入力ダイアログ」</strong>を、PC スキルゼロでも腹落ちさせる回です。<br/>
+            この回では、以降の全回の土台になる<strong>「変数」「データテーブル」「ユーザー入力ダイアログ」</strong>の3つを、基礎からひとつずつ身につけていきます。<br/>
             最終演習 Main で使う「データテーブル直書き → 列リスト化 → 選択ダイアログ」のパターンをここで完成させます。
           </p>
 <div class="lesson-meta">
@@ -210,7 +210,13 @@
 <div class="lesson-group-header"><span class="lesson-group-label">GROUP A</span><h2>A. 変数の基本</h2><span class="lesson-group-desc">変数とは何か／なぜ使うのか／命名／データ型を一気に押さえる</span></div><section class="lesson-section" id="sec-a-1"><div class="card">
 <div class="card-header"><h3>A-1. 変数 ＝ データを入れておく「箱」</h3></div>
 <div class="card-body" style="font-size:14px; line-height:1.9;">
-<p>変数は、数字や文字などのデータを一時的に保存しておく場所です。箱に名前をつけて、中に好きなデータを入れておけます。使い方は、たったこの<strong>3ステップ</strong>です。</p>
+<p>変数とは、ひとことで言うと <strong>「名前をつけた、データのしまい場所」</strong>です。数字・文字・日付・Yes/No といったデータを、あとで使えるように<strong>いったん入れておく箱</strong>のことを指します。</p>
+<p>身近なイメージだと、<strong>名札のついたロッカー</strong>に近いです。「担当者名」という名札のロッカーには田中さんの名前を、「注文数」という名札のロッカーには 50 を…というふうに、<strong>名札（＝変数名）ごとに中身を出し入れ</strong>できます。取り出したいときは名札を指定するだけ。箱の中身が今なんであっても、名札さえ分かれば呼び出せます。</p>
+<div class="point-block" style="background:var(--tint,#eef4ff); border-left-color:var(--brand,#2c7be5);">
+💡 <strong>「一時的に」ってどういうこと？</strong><br/>
+変数の中身が保たれるのは、<strong>そのフローが動いている間だけ</strong>です。フローが終わると箱は空っぽに戻ります。いわば<strong>作業中のメモ用紙</strong>のようなもので、永久保存ではありません。ずっと残しておきたいデータは、Excel やファイルに書き出して保存します（第3回で扱います）。
+</div>
+<p>PAD では、アクションを1つ実行するたびに <strong>「その結果を入れておく箱」が自動で用意されます</strong>。たとえば「現在の日時を取得」を実行すると、取得した日時が入った箱ができます。あなたはその箱に<strong>分かりやすい名前をつけて、あとで呼び出す</strong>だけ。むずかしそうに聞こえても、やることは<strong>たったこの3ステップ</strong>です。</p>
 <div class="var-steps">
 <div class="vs-step">
 <div class="vs-no">1</div>
