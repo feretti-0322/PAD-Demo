@@ -111,6 +111,17 @@
     .status-pill { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 12px; font-size: 13px; font-weight: 700; white-space: nowrap; }
     .status-pill.ok { background: #d1fae5; color: #065f46; }
     .status-pill.pending { background: #fef3c7; color: #92400e; }
+    .loc-pill { display: inline-block; padding: 3px 9px; border-radius: 12px; font-size: 13px; font-weight: 700; white-space: nowrap; background: #ede9fe; color: #6d28d9; }
+    .loc-pill.none { background: #f4f6f9; color: #9ca3af; font-weight: 500; }
+    .edit-user-btn { background: #fff; color: var(--brand,#2c7be5); border: 1px solid #cbd5e1; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 700; font-family: inherit; }
+    .edit-user-btn:hover { background: var(--tint,#eef4ff); border-color: var(--brand,#2c7be5); }
+    .delete-user-btn { background: #fff; color: #b91c1c; border: 1px solid #fecaca; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 700; font-family: inherit; }
+    .delete-user-btn:hover { background: #fef2f2; border-color: #dc2626; }
+    .modal-card .edit-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; font-size: 13px; }
+    .modal-card .edit-field label { font-weight: 700; color: #1a3a5c; }
+    .modal-card .edit-field input, .modal-card .edit-field select { padding: 9px 12px; border: 2px solid #e0e6ed; border-radius: 6px; font-size: 14px; font-family: inherit; box-sizing: border-box; width: 100%; }
+    .modal-card .edit-field input:focus, .modal-card .edit-field select:focus { outline: none; border-color: var(--brand,#2c7be5); }
+    .modal-card .edit-msg { color: #b91c1c; font-size: 13px; margin-bottom: 8px; min-height: 1em; }
     .user-email { color: var(--muted, #6b7280); font-size: 12px; word-break: break-all; }
     .pending-table { width: 100%; border-collapse: collapse; font-size: 13px; }
     .pending-table th, .pending-table td { text-align: left; padding: 10px 12px; border-bottom: 1px solid #e0e6ed; vertical-align: middle; }
@@ -159,6 +170,16 @@
                 <input type="text" id="filterInput" placeholder="表示名で検索…" oninput="applyFilter(this.value)">
                 <span class="fs-icon">🔍</span>
               </div>
+              <select id="filterLocation" onchange="applyLocationFilter(this.value)">
+                <option value="all">拠点：すべて</option>
+                <option value="本社">本社</option>
+                <option value="札幌">札幌</option>
+                <option value="仙台">仙台</option>
+                <option value="名古屋">名古屋</option>
+                <option value="大阪">大阪</option>
+                <option value="福岡">福岡</option>
+                <option value="__none__">拠点未設定</option>
+              </select>
               <select id="filterProgress" onchange="applyProgressFilter(this.value)">
                 <option value="all">進捗：すべて</option>
                 <option value="none">バッジなし（未着手）</option>
@@ -206,6 +227,34 @@
     </div>
   </div>
 
+  <!-- ユーザー編集モーダル（表示名・拠点） -->
+  <div class="modal-bg" id="editUserModal">
+    <div class="modal-card">
+      <h3>✏️ ユーザー情報を編集</h3>
+      <div class="edit-field">
+        <label>表示名</label>
+        <input type="text" id="editName" maxlength="60" placeholder="表示名">
+      </div>
+      <div class="edit-field">
+        <label>拠点</label>
+        <select id="editLocation">
+          <option value="">未設定</option>
+          <option value="本社">本社</option>
+          <option value="札幌">札幌</option>
+          <option value="仙台">仙台</option>
+          <option value="名古屋">名古屋</option>
+          <option value="大阪">大阪</option>
+          <option value="福岡">福岡</option>
+        </select>
+      </div>
+      <div class="edit-msg" id="editMsg"></div>
+      <div class="modal-actions">
+        <button class="btn btn-outline" onclick="closeEditModal()">キャンセル</button>
+        <button class="btn btn-primary" id="editSaveBtn" onclick="saveEditUser()">保存する</button>
+      </div>
+    </div>
+  </div>
+
   <!-- 進捗削除モーダル（一括） -->
   <div class="modal-bg" id="bulkRemoveModal">
     <div class="modal-card">
@@ -248,7 +297,9 @@
     // 絞り込みの状態
     let filterText = '';               // 表示名の部分一致
     let filterProgress = 'all';        // 'all' | 'none' | 'partial' | 'done'
+    let filterLocation = 'all';        // 'all' | 拠点名 | '__none__'（未設定）
     const TOTAL_LESSONS = 8;           // 第0〜7回
+    let editTargetUserId = null;       // 編集モーダルの対象
 
     function escapeHtml(s) {
       return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -268,6 +319,10 @@
       const q = filterText.trim().toLowerCase();
       return users.filter(u => {
         if (q && !String(u.display_name || '').toLowerCase().includes(q)) return false;
+        if (filterLocation !== 'all') {
+          if (filterLocation === '__none__') { if (u.location) return false; }
+          else if (u.location !== filterLocation) return false;
+        }
         if (filterProgress !== 'all') {
           const cnt = badgeCount(u);
           if (filterProgress === 'none' && cnt !== 0) return false;
@@ -280,6 +335,7 @@
 
     function applyFilter(v) { filterText = v; renderUsers(); }
     function applyProgressFilter(v) { filterProgress = v; renderUsers(); }
+    function applyLocationFilter(v) { filterLocation = v; renderUsers(); }
 
     function getSortedUsers() {
       const arr = getFilteredUsers();
@@ -343,7 +399,7 @@
       const sorted = getSortedUsers();
 
       // 絞り込み結果の件数表示
-      const isFiltered = filterText.trim() !== '' || filterProgress !== 'all';
+      const isFiltered = filterText.trim() !== '' || filterProgress !== 'all' || filterLocation !== 'all';
       const resultEl = document.getElementById('filterResult');
       if (resultEl) resultEl.textContent = isFiltered ? `${sorted.length} / ${users.length} 名を表示中` : '';
 
@@ -369,7 +425,8 @@
           <thead>
             <tr>
               <th class="chk-col"><input type="checkbox" ${allSelected ? 'checked' : ''} onclick="toggleSelectAll(this.checked)" title="表示中の全員を選択／解除"></th>
-              <th class="sortable ${sortedCls('name')}" style="width:24%;" onclick="toggleSort('name')">表示名 / メール ${arrow('name')}</th>
+              <th class="sortable ${sortedCls('name')}" style="width:22%;" onclick="toggleSort('name')">表示名 / メール ${arrow('name')}</th>
+              <th style="width:80px;">拠点</th>
               <th style="width:88px;">承認</th>
               <th class="sortable ${sortedCls('created')}" style="width:110px;" onclick="toggleSort('created')">登録日 ${arrow('created')}</th>
               <th class="sortable ${sortedCls('badges')}" style="width:90px;" onclick="toggleSort('badges')">バッジ数 ${arrow('badges')}</th>
@@ -391,17 +448,24 @@
               const statusPill = u.approved
                 ? '<span class="status-pill ok">✓ 承認済</span>'
                 : '<span class="status-pill pending">🕐 未承認</span>';
+              const locPill = u.location
+                ? `<span class="loc-pill">${escapeHtml(u.location)}</span>`
+                : '<span class="loc-pill none">未設定</span>';
+              const isSelf = currentUser && u.id === currentUser.id;
               return `
                 <tr class="${sel ? 'selected' : ''}">
                   <td class="chk-col"><input type="checkbox" ${sel ? 'checked' : ''} onclick="toggleSelect('${u.id}', this.checked)"></td>
                   <td><strong>${escapeHtml(u.display_name)}</strong><br><span class="user-email">${escapeHtml(u.email || '—')}</span></td>
+                  <td>${locPill}</td>
                   <td>${statusPill}</td>
                   <td style="white-space:nowrap; color:var(--muted,#555);">${fmtDate(u.created_at)}</td>
                   <td class="badge-count">${cnt}<span class="bc-total"> / ${LESSONS.length}</span></td>
                   <td><div class="badge-list">${badges}</div></td>
                   <td>
                     ${u.approved ? '' : `<button class="approve-btn" onclick="approveUser('${u.id}')" style="margin-bottom:6px;">✓ 承認</button><br>`}
-                    <button class="grant-btn" onclick="openGrantModal('${u.id}', '${escapeHtml(u.display_name)}')">+ バッジ付与</button>
+                    <button class="grant-btn" onclick="openGrantModal('${u.id}', '${escapeHtml(u.display_name)}')">+ バッジ付与</button><br>
+                    <button class="edit-user-btn" onclick="openEditModal('${u.id}')" style="margin-top:6px;">✏️ 編集</button>
+                    ${isSelf ? '' : `<button class="delete-user-btn" onclick="deleteUser('${u.id}')" style="margin-top:6px;">🗑️ 削除</button>`}
                   </td>
                 </tr>
               `;
@@ -597,6 +661,56 @@
       if (error) { alert('取り消しに失敗：' + error.message); return; }
       progressByUser[userId]?.delete(lessonNumber);
       renderUsers();
+    }
+
+    // ===== ユーザー編集（表示名・拠点）=====
+    function openEditModal(userId) {
+      const u = users.find(x => x.id === userId);
+      if (!u) return;
+      editTargetUserId = userId;
+      document.getElementById('editName').value = u.display_name || '';
+      document.getElementById('editLocation').value = u.location || '';
+      document.getElementById('editMsg').textContent = '';
+      document.getElementById('editUserModal').classList.add('show');
+    }
+    function closeEditModal() {
+      document.getElementById('editUserModal').classList.remove('show');
+      editTargetUserId = null;
+    }
+    async function saveEditUser() {
+      if (!editTargetUserId) return;
+      const name = document.getElementById('editName').value.trim();
+      const location = document.getElementById('editLocation').value;
+      const msg = document.getElementById('editMsg');
+      if (!name) { msg.textContent = '表示名を入力してください。'; return; }
+      const btn = document.getElementById('editSaveBtn');
+      btn.disabled = true; btn.textContent = '保存中...';
+      const { error } = await window.supabaseClient
+        .from('profiles')
+        .update({ display_name: name, location: location || null })
+        .eq('id', editTargetUserId);
+      btn.disabled = false; btn.textContent = '保存する';
+      if (error) { msg.textContent = '保存に失敗：' + error.message; return; }
+      const u = users.find(x => x.id === editTargetUserId);
+      if (u) { u.display_name = name; u.location = location || null; }
+      closeEditModal();
+      renderPending();
+      renderUsers();
+    }
+
+    // ===== ユーザー削除（auth.users から完全削除・全データ連動）=====
+    async function deleteUser(userId) {
+      const u = users.find(x => x.id === userId);
+      if (!u) return;
+      if (!confirm(`「${u.display_name}」を完全に削除します。\nこのユーザーの投稿事例・いいね・進捗バッジもすべて削除され、元に戻せません。\n\n本当に削除しますか？`)) return;
+      const { error } = await window.supabaseClient.rpc('admin_delete_user', { target_id: userId });
+      if (error) { alert('削除に失敗：' + error.message); return; }
+      users = users.filter(x => x.id !== userId);
+      selectedIds.delete(userId);
+      delete progressByUser[userId];
+      renderPending();
+      renderUsers();
+      alert(`「${u.display_name}」を削除しました。`);
     }
 
     (async () => {

@@ -86,6 +86,20 @@
           <div class="error-msg" id="displayName-error">表示名を入力してください</div>
         </div>
 
+        <div class="form-group">
+          <label for="location">拠点 <span class="required">*</span></label>
+          <select id="location" class="form-control">
+            <option value="">選択してください</option>
+            <option value="本社">本社</option>
+            <option value="札幌">札幌</option>
+            <option value="仙台">仙台</option>
+            <option value="名古屋">名古屋</option>
+            <option value="大阪">大阪</option>
+            <option value="福岡">福岡</option>
+          </select>
+          <div class="error-msg" id="location-error">拠点を選択してください</div>
+        </div>
+
         <div class="error-msg" id="auth-error" style="font-size:13px; text-align:center; margin-bottom:12px;">
           登録に失敗しました
         </div>
@@ -144,6 +158,7 @@
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
       const displayName = document.getElementById('displayName').value.trim();
+      const location = document.getElementById('location').value;
 
       document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
       document.getElementById('success-msg').style.display = 'none';
@@ -158,13 +173,16 @@
       if (!displayName) {
         document.getElementById('displayName-error').style.display = 'block'; hasError = true;
       }
+      if (!location) {
+        document.getElementById('location-error').style.display = 'block'; hasError = true;
+      }
       if (hasError) return false;
 
       const btn = document.getElementById('signupBtn');
       btn.innerHTML = '<span class="loading"></span> 登録中...';
       btn.disabled = true;
 
-      const { data, error } = await window.auth.signUp(email, password, displayName);
+      const { data, error } = await window.auth.signUp(email, password, displayName, location);
 
       if (error) {
         const msg = document.getElementById('auth-error');

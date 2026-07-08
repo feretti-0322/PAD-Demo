@@ -31,13 +31,23 @@
               <span class="mp-crown" id="mpCrown" hidden>👑 管理者</span>
             </div>
             <div class="mp-email" id="mpEmail"></div>
+            <div class="mp-location" id="mpLocation"></div>
             <div class="mp-joined" id="mpJoined"></div>
           </div>
-          <button type="button" class="btn btn-outline btn-sm mp-edit-btn" id="mpEditBtn">表示名を変更</button>
+          <button type="button" class="btn btn-outline btn-sm mp-edit-btn" id="mpEditBtn">表示名・拠点を変更</button>
 
-          <!-- 表示名の編集（初期は非表示） -->
+          <!-- 表示名・拠点の編集（初期は非表示） -->
           <div class="mp-edit" id="mpEditBox" hidden>
             <input type="text" id="mpEditInput" maxlength="60" placeholder="新しい表示名">
+            <select id="mpEditLocation" style="padding:8px 10px; border:2px solid var(--line,#e0e6ed); border-radius:6px; font-size:14px; font-family:inherit;">
+              <option value="">拠点を選択</option>
+              <option value="本社">本社</option>
+              <option value="札幌">札幌</option>
+              <option value="仙台">仙台</option>
+              <option value="名古屋">名古屋</option>
+              <option value="大阪">大阪</option>
+              <option value="福岡">福岡</option>
+            </select>
             <button type="button" class="btn btn-primary btn-sm" id="mpSaveBtn">保存</button>
             <button type="button" class="btn btn-outline btn-sm" id="mpCancelBtn">キャンセル</button>
             <div class="mp-edit-msg" id="mpEditMsg"></div>
@@ -95,6 +105,77 @@
     </div>
   </div>
 
+  <!-- 事例の編集モーダル -->
+  <div class="modal-bg" id="caseEditModal">
+    <div class="modal-card">
+      <h3>✏️ 事例を編集</h3>
+      <div class="ce-form">
+        <div class="ce-row">
+          <label>タイトル <span style="color:#b91c1c;">*</span></label>
+          <input type="text" id="ceTitle" maxlength="200">
+        </div>
+        <div class="ce-row">
+          <label>業務カテゴリ <span style="color:#b91c1c;">*</span></label>
+          <select id="ceCategory">
+            <option value="">選択してください</option>
+            <option>スタッフ管理</option>
+            <option>求人媒体運用</option>
+            <option>売上集計</option>
+            <option>Excel自動化</option>
+            <option>メール処理</option>
+            <option>その他</option>
+          </select>
+        </div>
+        <div class="ce-row">
+          <label>節約時間（時間/月） <span style="color:#b91c1c;">*</span></label>
+          <input type="number" id="ceSaved" min="0" max="1000" step="1">
+        </div>
+        <div class="ce-row">
+          <label>使用したPADアクション（任意・複数選択可）</label>
+          <div class="action-checks" id="ceActions">
+            <label><input type="checkbox" value="ブラウザ操作"><span>ブラウザ操作</span></label>
+            <label><input type="checkbox" value="Excel操作"><span>Excel操作</span></label>
+            <label><input type="checkbox" value="Outlook操作"><span>Outlook操作</span></label>
+            <label><input type="checkbox" value="その他"><span>その他</span></label>
+          </div>
+        </div>
+        <div class="ce-row">
+          <label>概要 <span style="color:#b91c1c;">*</span></label>
+          <textarea id="ceSummary" rows="4" maxlength="2000"></textarea>
+        </div>
+        <p style="font-size:12px; color:var(--muted,#6b7280); margin:2px 0 0;">※ フローテキスト・添付ファイルはこの画面からは変更できません（事例を削除して投稿し直してください）。</p>
+        <div class="ce-msg" id="ceMsg"></div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline btn-sm" id="ceCancelBtn">キャンセル</button>
+        <button type="button" class="btn btn-primary btn-sm" id="ceSaveBtn">保存する</button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .modal-bg { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:1000; align-items:center; justify-content:center; padding:16px; }
+    .modal-bg.show { display:flex; }
+    .modal-card { background:var(--card-bg,#fff); border-radius:12px; padding:24px; width:100%; max-width:520px; max-height:90vh; overflow-y:auto; box-shadow:0 10px 40px rgba(0,0,0,0.2); }
+    .modal-card h3 { margin:0 0 16px; color:var(--ink,#1a3a5c); font-size:18px; }
+    .modal-card .modal-actions { display:flex; justify-content:flex-end; gap:8px; margin-top:18px; }
+    .ce-form { display:flex; flex-direction:column; gap:14px; }
+    .ce-row { display:flex; flex-direction:column; gap:6px; font-size:13px; }
+    .ce-row label { font-weight:700; color:var(--ink,#1a3a5c); }
+    .ce-row input[type=text], .ce-row input[type=number], .ce-row select, .ce-row textarea {
+      padding:8px 10px; border:2px solid var(--line,#e0e6ed); border-radius:6px; font-size:14px; font-family:inherit; box-sizing:border-box; width:100%;
+    }
+    .ce-row input:focus, .ce-row select:focus, .ce-row textarea:focus { outline:none; border-color:var(--brand,#2c7be5); }
+    .action-checks { display:flex; flex-wrap:wrap; gap:8px; padding-top:2px; }
+    .action-checks label { display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border:2px solid var(--line,#e0e6ed); border-radius:18px; font-size:13px; font-weight:500; cursor:pointer; background:var(--surface,#fff); }
+    .action-checks label.checked { background:var(--tint,#e0ecff); border-color:var(--brand,#2c7be5); color:var(--ink,#1a3a5c); font-weight:700; }
+    .action-checks input[type=checkbox] { margin:0; }
+    .ce-msg { color:#b91c1c; font-size:13px; }
+    .mp-case-edit-btn { background:var(--surface,#fff); border:1px solid var(--line,#e0e6ed); color:var(--brand,#2c7be5); padding:3px 12px; border-radius:12px; cursor:pointer; font-size:13px; font-family:inherit; font-weight:700; }
+    .mp-case-edit-btn:hover { background:var(--tint,#eef4ff); border-color:var(--brand,#2c7be5); }
+    .mp-case-actions { display:flex; gap:8px; margin-top:8px; }
+  </style>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/env.js"></script>
   <script src="js/supabase-client.js"></script>
@@ -120,13 +201,14 @@
       document.getElementById('mpAvatar').textContent = (name.charAt(0) || 'U').toUpperCase();
       document.getElementById('mpName').textContent = name;
       document.getElementById('mpEmail').textContent = '📧 ' + (user.email || '');
+      document.getElementById('mpLocation').textContent = '📍 拠点：' + ((profile && profile.location) || '未設定');
       document.getElementById('mpJoined').textContent = user.created_at ? ('🗓️ ' + fmtDate(user.created_at) + ' に参加') : '';
       if (isAdmin) document.getElementById('mpCrown').hidden = false;
 
       // --- 私の投稿した事例 ＋ もらったいいね ---
       const { data: myCases, error: caseErr } = await window.supabaseClient
         .from('case_studies')
-        .select('id, title, category, saved_hours, created_at')
+        .select('id, title, category, saved_hours, summary, actions, created_at')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false });
 
@@ -187,30 +269,108 @@
       }
       renderThemes();
 
-      if (cases.length === 0) {
-        list.innerHTML = '<div class="empty-msg">まだ投稿がありません。<a href="pad-overview.html#post">最初の事例を投稿</a>してみましょう 🚀</div>';
-      } else {
+      function renderCaseList() {
+        if (cases.length === 0) {
+          list.innerHTML = '<div class="empty-msg">まだ投稿がありません。<a href="pad-overview.html#post">最初の事例を投稿</a>してみましょう 🚀</div>';
+          return;
+        }
         list.innerHTML = '<div class="mp-case-list">' + cases.map(c => `
-          <a href="pad-overview.html#cases" class="mp-case">
-            <div class="mp-case-main">
+          <div class="mp-case">
+            <a href="pad-overview.html#cases" class="mp-case-main" style="text-decoration:none; color:inherit; display:block;">
               <span class="badge badge-info">${escapeHtml(c.category)}</span>
               <span class="mp-case-title">${escapeHtml(c.title)}</span>
-            </div>
+            </a>
             <div class="mp-case-meta">
               <span>⏱️ 月${c.saved_hours}時間</span>
               <span>❤️ ${likeCountMap[c.id] || 0}</span>
               <span>${fmtDate(c.created_at)}</span>
             </div>
-          </a>
+            <div class="mp-case-actions">
+              <button type="button" class="mp-case-edit-btn" data-edit="${c.id}">✏️ 編集</button>
+            </div>
+          </div>
         `).join('') + '</div>';
+        list.querySelectorAll('[data-edit]').forEach(btn => {
+          btn.onclick = () => openCaseEdit(parseInt(btn.dataset.edit, 10));
+        });
       }
+      renderCaseList();
+
+      // ===== 事例の編集モーダル =====
+      let editingCaseId = null;
+      const ceModal = document.getElementById('caseEditModal');
+      const ceMsg = document.getElementById('ceMsg');
+
+      function setCeActions(actionsStr) {
+        const set = new Set((actionsStr || '').split(',').map(s => s.trim()).filter(Boolean));
+        document.querySelectorAll('#ceActions input[type=checkbox]').forEach(cb => {
+          cb.checked = set.has(cb.value);
+          cb.parentElement.classList.toggle('checked', cb.checked);
+        });
+      }
+      function getCeActions() {
+        return Array.from(document.querySelectorAll('#ceActions input[type=checkbox]:checked')).map(c => c.value).join(',');
+      }
+      document.querySelectorAll('#ceActions input[type=checkbox]').forEach(cb => {
+        cb.addEventListener('change', () => cb.parentElement.classList.toggle('checked', cb.checked));
+      });
+
+      function openCaseEdit(id) {
+        const c = cases.find(x => x.id === id);
+        if (!c) return;
+        editingCaseId = id;
+        ceMsg.textContent = '';
+        document.getElementById('ceTitle').value = c.title || '';
+        document.getElementById('ceCategory').value = c.category || '';
+        document.getElementById('ceSaved').value = (c.saved_hours != null ? c.saved_hours : '');
+        document.getElementById('ceSummary').value = c.summary || '';
+        setCeActions(c.actions);
+        ceModal.classList.add('show');
+      }
+      function closeCaseEdit() { ceModal.classList.remove('show'); editingCaseId = null; }
+      document.getElementById('ceCancelBtn').onclick = closeCaseEdit;
+      ceModal.addEventListener('click', e => { if (e.target === ceModal) closeCaseEdit(); });
+
+      document.getElementById('ceSaveBtn').onclick = async () => {
+        if (editingCaseId == null) return;
+        const title = document.getElementById('ceTitle').value.trim();
+        const category = document.getElementById('ceCategory').value;
+        const savedRaw = document.getElementById('ceSaved').value;
+        const summary = document.getElementById('ceSummary').value.trim();
+        const actions = getCeActions();
+        const savedNum = parseInt(savedRaw, 10);
+        const errs = [];
+        if (!title) errs.push('タイトル');
+        if (!category) errs.push('カテゴリ');
+        if (savedRaw === '' || isNaN(savedNum) || savedNum < 0 || savedNum > 1000) errs.push('節約時間（0〜1000）');
+        if (!summary) errs.push('概要');
+        if (errs.length) { ceMsg.textContent = '入力エラー：' + errs.join(' / ') + ' を確認してください。'; return; }
+
+        const btn = document.getElementById('ceSaveBtn');
+        btn.disabled = true; btn.textContent = '保存中...';
+        const { error } = await window.supabaseClient
+          .from('case_studies')
+          .update({ title, category, saved_hours: savedNum, summary, actions: actions || null })
+          .eq('id', editingCaseId);
+        btn.disabled = false; btn.textContent = '保存する';
+        if (error) { ceMsg.textContent = '保存に失敗しました：' + error.message; return; }
+
+        // ローカル反映して再描画
+        const c = cases.find(x => x.id === editingCaseId);
+        if (c) { c.title = title; c.category = category; c.saved_hours = savedNum; c.summary = summary; c.actions = actions || null; }
+        closeCaseEdit();
+        renderCaseList();
+      };
 
       // --- 表示名の変更 ---
       const editBox = document.getElementById('mpEditBox');
       const editInput = document.getElementById('mpEditInput');
       const editMsg = document.getElementById('mpEditMsg');
+      const editLocation = document.getElementById('mpEditLocation');
+      let currentLocation = (profile && profile.location) || '';
       document.getElementById('mpEditBtn').onclick = () => {
         editInput.value = document.getElementById('mpName').textContent;
+        editLocation.value = currentLocation;
         editMsg.textContent = '';
         editBox.hidden = false;
         editInput.focus();
@@ -218,11 +378,15 @@
       document.getElementById('mpCancelBtn').onclick = () => { editBox.hidden = true; };
       document.getElementById('mpSaveBtn').onclick = async () => {
         const newName = editInput.value.trim();
+        const newLocation = editLocation.value;
         if (!newName) { editMsg.textContent = '表示名を入力してください。'; return; }
+        if (!newLocation) { editMsg.textContent = '拠点を選択してください。'; return; }
         const { error } = await window.supabaseClient
-          .from('profiles').update({ display_name: newName }).eq('id', user.id);
+          .from('profiles').update({ display_name: newName, location: newLocation }).eq('id', user.id);
         if (error) { editMsg.textContent = '保存に失敗しました：' + error.message; return; }
+        currentLocation = newLocation;
         document.getElementById('mpName').textContent = newName;
+        document.getElementById('mpLocation').textContent = '📍 拠点：' + newLocation;
         document.getElementById('mpAvatar').textContent = (newName.charAt(0) || 'U').toUpperCase();
         // サイドバー・トップバーの表示名も更新
         const tb = document.getElementById('topbarUser');

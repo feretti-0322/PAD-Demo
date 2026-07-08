@@ -4,13 +4,14 @@
 // すべて window.supabaseClient に依存
 // ============================================================
 
-async function signUp(email, password, displayName) {
+async function signUp(email, password, displayName, location) {
   const { data, error } = await window.supabaseClient.auth.signUp({
     email,
     password,
     options: {
       data: {
-        display_name: displayName
+        display_name: displayName,
+        location: location || null
       }
     }
   });
@@ -43,7 +44,7 @@ async function getCurrentProfile() {
   if (!user) return null;
   const { data, error } = await window.supabaseClient
     .from('profiles')
-    .select('id, display_name, approved')
+    .select('id, display_name, location, approved')
     .eq('id', user.id)
     .single();
   if (error) {
