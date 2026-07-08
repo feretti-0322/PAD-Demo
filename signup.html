@@ -120,6 +120,25 @@
       if (user) window.location.href = 'pad-overview.html';
     })();
 
+    // Supabase の英語エラーを受講者向けのやさしい日本語に変換する
+    function friendlySignupError(raw) {
+      const m = (raw || '').toLowerCase();
+      if (m.includes('rate limit') || m.includes('too many')) {
+        return 'ただ今メール送信が混み合っています。しばらく時間をおいて、もう一度お試しください。';
+      }
+      if (m.includes('already registered') || m.includes('already been registered') || m.includes('user already')) {
+        return 'このメールアドレスはすでに登録されています。ログイン画面からお進みください。';
+      }
+      if (m.includes('invalid') && m.includes('email')) {
+        return 'メールアドレスの形式が正しくないようです。ご確認ください。';
+      }
+      if (m.includes('password')) {
+        return 'パスワードは8文字以上で、半角英数を含めて入力してください。';
+      }
+      // 未知のエラーは原文も添えて表示（サポート時の切り分け用）
+      return '登録に失敗しました。時間をおいて再度お試しください。（詳細: ' + raw + '）';
+    }
+
     async function doSignup(e) {
       e.preventDefault();
       const email = document.getElementById('email').value.trim();
@@ -149,7 +168,7 @@
 
       if (error) {
         const msg = document.getElementById('auth-error');
-        msg.textContent = '登録に失敗しました：' + error.message;
+        msg.textContent = friendlySignupError(error.message);
         msg.style.display = 'block';
         btn.innerHTML = 'アカウント作成';
         btn.disabled = false;
