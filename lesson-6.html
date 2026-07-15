@@ -36,6 +36,11 @@
     .fe-table { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 13px; }
     .fe-table th { padding: 8px 10px; border: 1px solid #e0e6ed; text-align: left; background: #1a3a5c; color: #fff; }
     .fe-table td { padding: 8px 10px; border: 1px solid #e0e6ed; transition: background .3s; }
+    /* 行の状態（薄背景＋濃い文字：紫・game 両テーマで可読） */
+    .fe-table td.status { color: #888; }
+    .fe-table tr.processing td { background: #fef3c7; color: #7c4a03; }
+    .fe-table tr.done td { background: #f0fdf4; color: #065f46; }
+    .fe-table tr.processing td.status, .fe-table tr.done td.status { font-weight: 700; }
 
     /* IF シミュレーター */
     .threshold-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 10px; margin-bottom: 16px; }
@@ -63,7 +68,8 @@
     .switch-code .default-line { color: #7dd3fc; display: block; white-space: pre; border-radius: 4px; padding: 0 6px; margin: 0 -6px; transition: background .2s, color .2s; }
     .switch-code .default-line.active { background: #fef3c7; color: #92400e; }
     .switch-input label { display: block; font-size: 13px; color: #444; margin-bottom: 6px; }
-    .switch-input select { width: 100%; padding: 10px 12px; border: 1px solid #d0d7de; border-radius: 6px; font-size: 14px; background: #fff; }
+    .switch-input select { width: 100%; padding: 10px 12px; border: 2px solid var(--gold, #f5a623); border-radius: 6px; font-size: 14px; background: #fff; cursor: pointer; box-shadow: 0 0 0 3px rgba(245,166,35,.22); }
+    .switch-input select:hover, .switch-input select:focus { box-shadow: 0 0 0 3px rgba(245,166,35,.38); }
     .switch-result { background: #f9fafb; border: 2px solid #e0e6ed; border-radius: 8px; padding: 18px; margin-top: 14px; min-height: 60px; font-size: 14px; color: #333; line-height: 1.8; }
     .switch-result .match-label { font-size: 14px; color: #888; margin-bottom: 6px; }
     .switch-result .match-case { font-weight: 700; color: #1a3a5c; font-size: 15px; }
@@ -659,7 +665,7 @@
         feBody.innerHTML = feRows.map(r => `
           <tr data-id="${r.id}">
             <td>${r.id}</td><td>${r.name}</td><td>${r.dept}</td>
-            <td class="status" style="color:#888;">―</td>
+            <td class="status">―</td>
           </tr>
         `).join('');
       }
@@ -668,14 +674,12 @@
         renderFeTable();
         const trs = feBody.querySelectorAll('tr');
         for (const tr of trs) {
-          tr.style.background = '#fef3c7';
+          tr.classList.add('processing');
           tr.querySelector('.status').textContent = '⏳ 処理中...';
-          tr.querySelector('.status').style.color = '#b45309';
           await new Promise(r => setTimeout(r, 800));
-          tr.style.background = '#f0fdf4';
+          tr.classList.remove('processing');
+          tr.classList.add('done');
           tr.querySelector('.status').textContent = '✓ 完了';
-          tr.querySelector('.status').style.color = '#065f46';
-          tr.querySelector('.status').style.fontWeight = '700';
           await new Promise(r => setTimeout(r, 200));
         }
         btnForEachStart.disabled = false;
