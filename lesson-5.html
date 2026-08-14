@@ -151,10 +151,10 @@
 </li>
 <li>
   <figure class="proc-figure">
-    <img alt="画面右の「変数」ペインに DataFromWebPage（データテーブル型）が登録され、右クリック→名前の変更で StaffList にリネームしている画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_03_extracted_variable.png"/>
+    <img alt="画面右の「変数」ペインに DataFromWebPage（データテーブル型）が登録され、右クリック→名前の変更で スタッフデータ にリネームしている画面" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_03_extracted_variable.png"/>
     <figure class="pad-image-placeholder" data-image-slot="lesson-5/03_extracted_variable" style="display:none;">
       <span class="placeholder-icon">📋</span>
-      画面右の「変数」ペインに <code>DataFromWebPage</code>（データテーブル型）が登録され、右クリック→名前の変更で <code>StaffList</code> にリネームしている画面<br/>
+      画面右の「変数」ペインに <code>DataFromWebPage</code>（データテーブル型）が登録され、右クリック→名前の変更で <code>スタッフデータ</code> にリネームしている画面<br/>
       <code>data-image-slot="lesson-5/03_extracted_variable"</code>
     </figure>
   </figure>
@@ -162,7 +162,7 @@
     <span class="proc-headline">取得結果は変数に格納される（既定名：<code>DataFromWebPage</code>）</span>
     ライブ Web ヘルパーを「完了」で閉じると、抽出結果は自動で変数に格納されます。<strong>「HTML テーブル全体を抽出する」</strong>を選んだ場合は<strong>データテーブル型</strong>の変数に入ります（Excel の表のように行×列で持っているイメージ）。
     <div class="point-block" style="margin-top:10px;">
-      <strong>💡 変数名はリネームしておく：</strong> 既定の <code>DataFromWebPage</code> のままだと、複数の抽出を組み合わせたときに「どれがどれだか分からない」事故が起きます。右側の「変数」ペインで右クリック →「名前の変更」で <code>StaffList</code> など<strong>内容がわかる名前</strong>に変えておくのがおすすめです。
+      <strong>💡 変数名はリネームしておく：</strong> 既定の <code>DataFromWebPage</code> のままだと、複数の抽出を組み合わせたときに「どれがどれだか分からない」事故が起きます。右側の「変数」ペインで右クリック →「名前の変更」で <code>スタッフデータ</code> など<strong>内容がわかる名前</strong>に変えておくのがおすすめです。
     </div>
   </div>
 </li>
@@ -365,10 +365,10 @@
 </li>
 <li>
 <figure class="proc-figure">
-<img alt="「データテーブルをマージする」アクション設定画面（最初のデータテーブル＝蓄積テーブル／2 番目＝DataFromWebPage／マージモード＝行を末尾に追加する）" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_05e_merge_data_table.png"/>
+<img alt="「データテーブルをマージする」アクション設定画面（最初のデータテーブル＝蓄積テーブル／2 番目＝スタッフデータ／マージモード＝行を末尾に追加する）" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" src="assets/lessons/lesson-5_05e_merge_data_table.png"/>
 <figure class="pad-image-placeholder" data-image-slot="lesson-5/05e_merge_data_table" style="margin:0; display:none;">
 <span class="placeholder-icon">🔗</span>
-                            「データテーブルをマージする」アクション設定画面（最初のデータテーブル＝蓄積テーブル／2 番目＝DataFromWebPage／マージモード＝行を末尾に追加する）<br/>
+                            「データテーブルをマージする」アクション設定画面（最初のデータテーブル＝蓄積テーブル／2 番目＝スタッフデータ／マージモード＝行を末尾に追加する）<br/>
 <code>data-image-slot="lesson-5/05e_merge_data_table"</code>
 </figure>
 </figure>
@@ -376,8 +376,8 @@
 <span class="proc-headline"><code>データテーブルをマージする</code>で、いま抽出したぶんを<strong>蓄積テーブルに追記</strong></span>
 <span style="font-size:14px; color:#374151;">設定画面で：</span>
 <ul style="margin:4px 0 0 22px; font-size:14px;">
-<li><strong>最初のデータテーブル</strong>：<code class="pad-var">%蓄積テーブル%</code>（手順 1 で作成したもの）</li>
-<li><strong>2 番目のデータテーブル</strong>：<code class="pad-var">%DataFromWebPage%</code>（手順 4 でいま抽出したぶん）</li>
+<li><strong>最初のデータテーブル</strong>：<code class="pad-var">%蓄積データテーブル%</code>（手順 1 で作成したもの）</li>
+<li><strong>2 番目のデータテーブル</strong>：<code class="pad-var">%スタッフデータ%</code>（手順 4 でいま抽出したぶん）</li>
 <li><strong>マージモード</strong>：そのまま変更しなくて <strong>OK</strong></li>
 </ul>
 <span style="display:block; font-size:14px; color:#374151; margin-top:6px;">これで蓄積テーブルの末尾に、いま抽出した 1 ページぶんが<strong>追記</strong>されます。<strong>抽出の直後にマージする</strong>のが大事なポイント。次のページに送る前に必ず手元に取り込んでおかないと、変数が次のページのデータで塗り替えられて消えてしまいます。</span>

@@ -1,0 +1,17 @@
+# Supabase 環境変数
+# 注：anon key は公開設計のキー（RLSで保護される前提）なので、
+#     GitHub Pages 等の静的ホスティング利用時はコミット必須です。
+#     コミットしてはいけないのは service_role key の方です（このファイルには絶対書かない）。
+# js/env.js   ← 必要ならコメントアウトを外す（その場合は別途デプロイ手段で env.js を配置すること）
+
+# OS
+.DS_Store
+Thumbs.db
+
+# エディタ
+.vscode/
+.idea/
+*.swp
+
+# ローカル開発用の設定（サイト本体ではないので公開しない）
+.claude/
