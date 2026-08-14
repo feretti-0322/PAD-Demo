@@ -201,14 +201,14 @@
 
                 <li>
                   <figure class="proc-figure">
-                    <img src="assets/lessons/lesson-6_03_webpage_navigate.png" alt="「Web ページに移動する」アクション設定画面（URL＝https://feretti0322.github.io/PAD-Demo/staff-detail.html?id=%処理中スタッフ['id']%）" />
+                    <img src="assets/lessons/lesson-6_03_webpage_navigate.png" alt="「Web ページに移動する」アクション設定画面（URL＝https://feretti-0322.github.io/PAD-Demo/staff-detail.html?id=%処理中スタッフ['id']%）" />
                     <figcaption>「Web ページに移動する」アクション設定画面（URL に <code class="pad-var">%処理中スタッフ['id']%</code> を埋め込んでいる様子）</figcaption>
                   </figure>
                   <div class="proc-content">
                     <span class="proc-headline">「Web ページに移動する」を For each の中に置き、ID を URL に埋め込む</span>
                     <code class="pad-var">%処理中スタッフ%</code> は 1 行ぶんのデータです。その中から <strong>「id」列</strong>（例：<code>ST001</code>）だけを取り出すには <strong>列名で指定</strong>します（蓄積テーブルの列名は小文字の <code>id</code> なので → <code class="pad-var">%処理中スタッフ['id']%</code>）。<br>
                     For each のループの内側に「<strong>Web ページに移動する</strong>」アクションを追加し、URL 欄に下記を入力します：
-                    <div class="code-block" style="margin-top:8px;">https://feretti0322.github.io/PAD-Demo/staff-detail.html?id=%処理中スタッフ['id']%</div>
+                    <div class="code-block" style="margin-top:8px;">https://feretti-0322.github.io/PAD-Demo/staff-detail.html?id=%処理中スタッフ['id']%</div>
                     <span style="display:block; margin-top:6px; color:#374151;">固定部分の URL に、<strong>For each で取り出した ID 変数</strong>を埋め込むかたちです。実行すると、ループの周回ごとに <code>?id=ST001</code> → <code>?id=ST002</code> → … と URL が動的に変わって、各スタッフの詳細ページが次々と開きます。</span>
                   </div>
                 </li>

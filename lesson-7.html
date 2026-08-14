@@ -217,7 +217,7 @@
 <div class="card-body" style="font-size:14px; line-height:1.9;">
 <p>Chrome（WebDriver）起動 → メール・PW 入力 → 規約チェック → ログインボタン押下。第4回のログインフローをそのまま流用します。</p>
 <div class="source-links"><span class="sl-label">📚 復習はこちら：</span><a href="lesson-4.html#sec-a">第4回 A WebDriver でブラウザ起動</a><a href="lesson-4.html#sec-b">第4回 B メール入力（UI要素ピッカー）</a><a href="lesson-4.html#sec-c">第4回 C 機密情報テキスト</a><a href="lesson-4.html#sec-d">第4回 D チェックボックス＋ボタン</a></div>
-<div class="flow-step"><div class="step-no">1</div><div class="step-body"><strong>新しい Chrome を起動する</strong><br/>Chrome を起動して <code>'https://feretti0322.github.io/PAD-Demo/'</code> に移動し、インスタンスを <span class="vchip">ブラウザ</span> に保存します</div></div>
+<div class="flow-step"><div class="step-no">1</div><div class="step-body"><strong>新しい Chrome を起動する</strong><br/>Chrome を起動して <code>'https://feretti-0322.github.io/PAD-Demo/'</code> に移動し、インスタンスを <span class="vchip">ブラウザ</span> に保存します</div></div>
 <div class="flow-step"><div class="step-no">2</div><div class="step-body"><strong>Web ページ内のテキストフィールドに入力する</strong><br/>エミュレート入力を使わずにテキスト フィールド <em>Input email 'email'</em> に <code>'shimura.fellows@gmail.com'</code> を入力します</div></div>
 <div class="flow-step"><div class="step-no">3</div><div class="step-body"><strong>Web ページ内のテキストフィールドに入力する</strong><br/>エミュレート入力を使わずにテキスト フィールド <em>Input password 'password' 2</em> に <code>●●●●●</code>（機密情報テキスト）を入力します</div></div>
 <div class="flow-step"><div class="step-no">4</div><div class="step-body"><strong>Web ページのチェックボックスの状態を設定します</strong><br/>チェック ボックス <em>Input checkbox 'agree' 2</em> の状態を <strong>オン</strong> に設定します</div></div>
@@ -232,7 +232,7 @@
 <div class="card-body" style="font-size:14px; line-height:1.9;">
 <p>URL 直接ナビゲートで絞り込み一覧へ → ラベル＋移動先で全ページ走破して ID を蓄積 → ブロックエラー発生時の中で For each → 詳細取得 → Excel 出力。最終演習の中心となるサブフローです。</p>
 <div class="source-links"><span class="sl-label">📚 復習はこちら：</span><a href="lesson-5.html#sec-a">第5回 A データ抽出の基本</a><a href="lesson-5.html#sec-b-2">第5回 B-2 ラベル＋移動先でページ走破</a><a href="lesson-5.html#sec-c-3">第5回 C-3 URLパラメータの動的組立</a><a href="lesson-6.html#sec-a-2">第6回 A-2 For each×データテーブル</a><a href="lesson-6.html#sec-b-2">第6回 B-2 IF の使いどころ</a><a href="lesson-6.html#sec-d-2">第6回 D-2 全体中断 vs 個別スキップ</a><a href="lesson-3.html#sec-a">第3回 A Excel 基本3アクション</a><a href="lesson-3.html#sec-b">第3回 B マクロの実行</a></div>
-<div class="flow-step"><div class="step-no">1</div><div class="step-body"><strong>Web ページに移動</strong><br/><code>'https://feretti0322.github.io/PAD-Demo/staff-list.html?dept='</code> <span class="vchip">選択部署</span> <code>'&amp;role='</code> <span class="vchip">選択役職</span> に移動</div></div>
+<div class="flow-step"><div class="step-no">1</div><div class="step-body"><strong>Web ページに移動</strong><br/><code>'https://feretti-0322.github.io/PAD-Demo/staff-list.html?dept='</code> <span class="vchip">選択部署</span> <code>'&amp;role='</code> <span class="vchip">選択役職</span> に移動</div></div>
 <div class="flow-step"><div class="step-no">2</div><div class="step-body"><strong>新しいデータ テーブルを作成する</strong><br/>新しいデータ テーブルを作成して <span class="vchip">データテーブル_スタッフID</span> に格納する</div></div>
 <div class="flow-step"><div class="step-no">3</div><div class="step-body"><strong>データ テーブルから空の行を削除する</strong><br/>データ テーブル <span class="vchip">データテーブル_スタッフID</span> から空の行をすべて削除する</div></div>
 <div class="flow-step"><div class="step-no">4</div><div class="step-body"><strong>ラベル</strong>　<em>移動先</em> ラベル</div></div>
@@ -249,7 +249,7 @@
 <div class="flow-nested">
 <div class="flow-step"><div class="step-no">13</div><div class="step-body"><strong>For each</strong> <span class="vchip">フォーイーチ_スタッフID</span> in <span class="vchip">データテーブル_スタッフID</span></div></div>
 <div class="flow-nested">
-<div class="flow-step"><div class="step-no">14</div><div class="step-body"><strong>Web ページに移動</strong><br/><code>'https://feretti0322.github.io/PAD-Demo/staff-detail.html?id='</code> <span class="vchip">フォーイーチ_スタッフID</span> に移動</div></div>
+<div class="flow-step"><div class="step-no">14</div><div class="step-body"><strong>Web ページに移動</strong><br/><code>'https://feretti-0322.github.io/PAD-Demo/staff-detail.html?id='</code> <span class="vchip">フォーイーチ_スタッフID</span> に移動</div></div>
 <div class="flow-step"><div class="step-no">15</div><div class="step-body"><strong>Web ページからデータを抽出する</strong><br/>Web ページからリストを抽出し、それを <span class="vchip">スクレイピング_スタッフ詳細</span> にストアします</div></div>
 <div class="flow-step"><div class="step-no">16</div><div class="step-body"><strong>Excel の起動</strong><br/>Excel を起動し、既存の Excel プロセスを使用してドキュメント <code>'C:\Users\'</code><span class="vchip">USERNAME</span><code>'\Desktop\PAD研修\スタッフ情報_テンプレート.xlsm'</code> を開き、Excel インスタンス <span class="vchip">Excel</span> に保存します</div></div>
 <div class="flow-step"><div class="step-no">17</div><div class="step-body"><strong>Excel ワークシートに書き込む</strong><br/>Excel インスタンス <span class="vchip">Excel</span> の列 <strong>2</strong> および行 <strong>2</strong> のセルに値 <span class="vchip">スクレイピング_スタッフ詳細</span> を書き込み</div></div>
